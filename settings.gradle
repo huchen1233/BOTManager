@@ -1,0 +1,5 @@
+rootProject.name='BOTManager'
+include ':app'
+include ':user'
+include ':device'
+include ':common'
