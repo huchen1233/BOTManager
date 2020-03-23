@@ -75,7 +75,8 @@
                 app:layout_constraintStart_toEndOf="@id/et_verification_code"
                 app:layout_constraintBottom_toBottomOf="@id/et_verification_code"
                 android:layout_marginStart="10dp"
-                android:text="@string/yl_user_get_verification_code"/>
+                android:text="@string/yl_user_get_verification_code"
+                android:textColor="@android:color/holo_green_dark"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
