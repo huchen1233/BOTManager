@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="yl_common_AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="yl_common_AppTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/yl_common_colorPrimary</item>
         <item name="colorPrimaryDark">@color/yl_common_colorPrimaryDark</item>
