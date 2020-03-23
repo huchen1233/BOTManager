@@ -1,0 +1,9 @@
+<resources>
+    <string name="yl_user_module_name">用户模块</string>
+    <string name="yl_user_account_hint">邮箱或手机号码</string>
+    <string name="yl_user_account_password">密码</string>
+    <string name="yl_user_account_confirm_password">确认密码</string>
+    <string name="yl_user_verification_code">验证码</string>
+    <string name="yl_user_get_verification_code">获取验证码</string>
+    <string name="yl_user_register">注册</string>
+</resources>

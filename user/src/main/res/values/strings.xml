@@ -1,3 +1,9 @@
 <resources>
     <string name="yl_user_module_name">user module</string>
+    <string name="yl_user_account_hint">email or mobile number</string>
+    <string name="yl_user_account_password">password</string>
+    <string name="yl_user_account_confirm_password">confirm password</string>
+    <string name="yl_user_verification_code">verification code</string>
+    <string name="yl_user_get_verification_code">get code</string>
+    <string name="yl_user_register">register</string>
 </resources>
