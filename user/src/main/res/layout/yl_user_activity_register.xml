@@ -80,6 +80,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
+            android:id="@+id/btn_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
@@ -92,5 +93,7 @@
             android:text="@string/yl_user_register"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include layout="@layout/yl_common_company_information"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

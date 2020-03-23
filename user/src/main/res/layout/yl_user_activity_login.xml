@@ -61,4 +61,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <include layout="@layout/yl_common_company_information"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
