@@ -1,3 +1,10 @@
 <resources>
     <string name="yl_common_company_information">Shanghai Yongli Information Technology Co., Ltd</string>
+    <string name="yl_common_log_flag">log flag</string>
+    <string name="yl_common_log_info">input info</string>
+    <string name="yl_common_on">on</string>
+    <string name="yl_common_off">off</string>
+    <string name="yl_common_log_debug">input debug</string>
+    <string name="yl_common_log_error">input error</string>
+    <string name="yl_common_module_name">common module</string>
 </resources>

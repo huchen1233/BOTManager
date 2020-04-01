@@ -1,7 +1,6 @@
 package com.evertrend.tiger.device.activity;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
+import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.common.utils.network.OKHttpManager;
 import com.evertrend.tiger.device.R;
 import com.evertrend.tiger.device.bean.Device;
@@ -39,19 +39,19 @@ public class DeviceShowActivity extends AppCompatActivity {
                         int resultCode = jsonObject.getIntValue(NetReq.RESULT_CODE);
                         if (NetReq.CODE_SUCCESS == resultCode) {
                             deviceList = loadDeviceSuccess(jsonObject.getJSONArray(NetReq.RESULT_DATA));
-                            Log.i(TAG, "chenhu size: "+deviceList.size());
+                            LogUtil.i(TAG, "chenhu size: "+deviceList.size());
                         }
                     }
                 }, new OKHttpManager.FuncFailure() {
                     @Override
                     public void onFailure() {
-                        Log.e(TAG, "出错：请求网络失败");
+                        LogUtil.e(TAG, "出错：请求网络失败");
                     }
                 });
     }
 
     private List<Device> loadDeviceSuccess(JSONArray devices) {
-        Log.i(TAG, "===loadDeviceSuccess===");
+        LogUtil.i(TAG, "===loadDeviceSuccess===");
         List<Device> deviceLists = new ArrayList<>();
         for (int i = 0; i < devices.size(); i++) {
             Device device = new Device();

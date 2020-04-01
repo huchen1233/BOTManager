@@ -8,21 +8,37 @@ import android.widget.Button;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.device.activity.DeviceShowActivity;
 import com.evertrend.tiger.evertrendbotmanager.R;
 import com.evertrend.tiger.user.activity.UserLoginActivity;
 import com.evertrend.tiger.user.activity.UserRegisterActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    private static final String TAG = MainActivity.class.getSimpleName();
+
     private Button btn_user_register;
     private Button btn_user_login;
     private Button btn_show_device;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        LogUtil.i(TAG, "===onCreate===");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+    }
+
+    @Override
+    protected void onStart() {
+        LogUtil.i(TAG, "===onStart===");
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        LogUtil.i(TAG, "===onStop===");
+        super.onStop();
     }
 
     private void initView() {

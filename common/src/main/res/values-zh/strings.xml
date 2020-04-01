@@ -1,3 +1,10 @@
 <resources>
     <string name="yl_common_company_information">上海永力信息科技股份有限公司</string>
+    <string name="yl_common_log_flag">日志标记</string>
+    <string name="yl_common_log_info">输出一般信息</string>
+    <string name="yl_common_on">开</string>
+    <string name="yl_common_off">关</string>
+    <string name="yl_common_log_debug">输出调试信息</string>
+    <string name="yl_common_log_error">输出错误信息</string>
+    <string name="yl_common_module_name">common module</string>
 </resources>

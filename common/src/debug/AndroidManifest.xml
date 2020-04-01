@@ -1,0 +1,27 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.evertrend.tiger.common">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/yl_common_module_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/yl_common_AppTheme">
+
+        <activity android:name="com.evertrend.tiger.common.activity.LogConfigActivity">
+        </activity>
+
+        <receiver android:name="com.evertrend.tiger.common.utils.LogSettingReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SECRET_CODE"/>
+                <data android:scheme="android_secret_code"
+                    android:host="109"/>
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>

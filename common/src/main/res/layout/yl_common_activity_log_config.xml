@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <EditText
+        android:id="@+id/et_log_flag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="20dp"
+        android:hint="@string/yl_common_log_flag"/>
+
+    <Button
+        android:id="@+id/btn_log_flag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/et_log_flag"
+        app:layout_constraintTop_toTopOf="@id/et_log_flag"
+        android:text="@android:string/ok"/>
+
+    <Switch
+        android:id="@+id/swt_log_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_log_flag"
+        android:layout_marginTop="20dp"
+        android:text="@string/yl_common_log_info"
+        android:switchPadding="20dp"
+        android:textOn="@string/yl_common_on"
+        android:textOff="@string/yl_common_off"/>
+
+<!--    <Switch-->
+<!--        android:id="@+id/swt_log_debug"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/swt_log_info"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:text="@string/yl_common_log_debug"-->
+<!--        android:switchPadding="20dp"-->
+<!--        android:textOn="@string/yl_common_on"-->
+<!--        android:textOff="@string/yl_common_off"/>-->
+
+<!--    <Switch-->
+<!--        android:id="@+id/swt_log_error"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/swt_log_debug"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:text="@string/yl_common_log_error"-->
+<!--        android:switchPadding="20dp"-->
+<!--        android:textOn="@string/yl_common_on"-->
+<!--        android:textOff="@string/yl_common_off"/>-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>
