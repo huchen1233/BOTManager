@@ -11,7 +11,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.evertrend.tiger.common.fragment.BaseFragment;
-import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.device.fragment.DevicesFragment;
 import com.evertrend.tiger.evertrendbotmanager.R;
 import com.evertrend.tiger.user.fragment.MeFragment;
