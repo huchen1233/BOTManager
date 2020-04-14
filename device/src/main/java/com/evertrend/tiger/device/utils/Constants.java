@@ -61,4 +61,5 @@ public class Constants {
     public static final String DEVICE_TYPE_SWBOT_AP = "3";//SWBOT-SL(扫地机器人-AP)
     public static final String DEVICE_TYPE_SWBOT_MINI = "4";//SWBOT-SL(扫地机器人-MINI)
     public static final String DEVICE_TYPE_MFBOT_SL = "5";//MFBOT-SL(拖地机器人-SL)
+    public static final int SCANNER_QR_CODE_REQUEST_CODE = 100;
 }

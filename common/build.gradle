@@ -42,4 +42,5 @@ dependencies {
     //解决ClassNotFoundException: Didn't find class "org.conscrypt.ConscryptHostnameVerifier"
     api 'org.conscrypt:conscrypt-android:2.2.1'
     api 'org.greenrobot:eventbus:3.2.0'
+    api 'cn.yipianfengye.android:zxing-library:2.2'
 }

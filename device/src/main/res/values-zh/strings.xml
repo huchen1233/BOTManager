@@ -5,4 +5,9 @@
     <string name="yl_device_malfunction">异常</string>
     <string name="yl_device_normal">正常</string>
     <string name="yl_device_not_detected">未检测</string>
+    <string name="yl_device_title_register_device">注册设备</string>
+    <string name="yl_device_message_input_register_number">请输入注册码</string>
+    <string name="yl_device_str_input_empty">输入为空</string>
+    <string name="yl_device_scan_QR_code_registration">扫描二维码注册</string>
+    <string name="yl_device_registering">Registering</string>
 </resources>

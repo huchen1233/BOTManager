@@ -1,9 +1,11 @@
 package com.evertrend.tiger.common.utils.general;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 
+import com.evertrend.tiger.common.R;
 import com.evertrend.tiger.common.bean.event.ProgressStopEvent;
 
 import org.greenrobot.eventbus.EventBus;

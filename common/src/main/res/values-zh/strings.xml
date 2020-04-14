@@ -8,4 +8,7 @@
     <string name="yl_common_log_error">输出错误信息</string>
     <string name="yl_common_module_name">通用模块</string>
     <string name="yl_common_devices">设备</string>
+    <string name="yl_common_not_found_device">未找到设备</string>
+    <string name="yl_common_device_has_been_registered">设备已经注册</string>
+    <string name="yl_common_register_device_fail">注册设备失败</string>
 </resources>
