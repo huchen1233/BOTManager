@@ -10,4 +10,9 @@
     <string name="yl_device_str_input_empty">input empty</string>
     <string name="yl_device_scan_QR_code_registration">scan QR code registration</string>
     <string name="yl_device_registering">Registering</string>
+    <string name="yl_device_permission_camera_and_vibrate_rationale">使用二维码扫描注册设备，需要打开摄像头和震动的权限，请允许</string>
+    <string name="yl_device_permission_camera_denied">打开摄像头权限已被拒绝，您将不能使用扫描功能</string>
+    <string name="yl_device_permission_camera_neverask">您已经拒绝允许程序使用相机权限，如您需要，请在设置中自行打开</string>
+    <string name="yl_device_permission_vibrate_denied">震动权限已被拒绝，您将不能使用扫描功能</string>
+    <string name="yl_device_permission_vibrate_neverask">您已经拒绝允许程序使用震动权限，如您需要，请在设置中自行打开</string>
 </resources>

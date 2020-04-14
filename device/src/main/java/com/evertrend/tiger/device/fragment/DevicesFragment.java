@@ -1,5 +1,7 @@
 package com.evertrend.tiger.device.fragment;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -45,6 +47,14 @@ import java.util.List;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnNeverAskAgain;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.OnShowRationale;
+import permissions.dispatcher.PermissionRequest;
+import permissions.dispatcher.RuntimePermissions;
+
+@RuntimePermissions
 public class DevicesFragment extends BaseFragment implements View.OnClickListener {
     private static final String TAG = DevicesFragment.class.getSimpleName();
 
@@ -124,6 +134,48 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
         }
     }
 
+    @NeedsPermission({Manifest.permission.CAMERA, Manifest.permission.VIBRATE})
+    void mulPermission() {
+        Intent intent = new Intent(getActivity(), CaptureActivity.class);
+        startActivityForResult(intent, Constants.SCANNER_QR_CODE_REQUEST_CODE);
+    }
+
+    @OnShowRationale({Manifest.permission.CAMERA, Manifest.permission.VIBRATE})
+    void showRationaleForMulPermission(final PermissionRequest request) {
+        new AlertDialog.Builder(getActivity())
+                .setMessage(R.string.yl_device_permission_camera_and_vibrate_rationale)
+                .setPositiveButton(android.R.string.yes, (dialog, button) -> request.proceed())
+                .setNegativeButton(android.R.string.no, (dialog, button) -> request.cancel())
+                .show();
+    }
+
+    @OnPermissionDenied(Manifest.permission.CAMERA)
+    void showDeniedForCamera() {
+        Toast.makeText(getActivity(), R.string.yl_device_permission_camera_denied, Toast.LENGTH_SHORT).show();
+    }
+
+    @OnNeverAskAgain(Manifest.permission.CAMERA)
+    void showNeverAskForCamera() {
+        Toast.makeText(getActivity(), R.string.yl_device_permission_camera_neverask, Toast.LENGTH_SHORT).show();
+    }
+
+    @OnPermissionDenied(Manifest.permission.VIBRATE)
+    void showDeniedForVibrate() {
+        Toast.makeText(getActivity(), R.string.yl_device_permission_vibrate_denied, Toast.LENGTH_SHORT).show();
+    }
+
+    @OnNeverAskAgain(Manifest.permission.VIBRATE)
+    void showNeverAskForVibrate() {
+        Toast.makeText(getActivity(), R.string.yl_device_permission_vibrate_neverask, Toast.LENGTH_SHORT).show();
+    }
+
+    @SuppressLint("NeedOnRequestPermissionsResult")
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        DevicesFragmentPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
     private void showScannerResult(Intent data) {
         //处理扫描结果（在界面上显示）
         if (null != data) {
@@ -133,7 +185,7 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
             }
             if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
                 String result = bundle.getString(CodeUtils.RESULT_STRING);
-                LogUtil.i(TAG, "reg code: "+result);
+                LogUtil.i(TAG, "reg code: " + result);
                 if (!TextUtils.isEmpty(result)) registerDevice(result);
             } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
                 Toast.makeText(getActivity(), "解析二维码失败", Toast.LENGTH_LONG).show();
@@ -202,8 +254,9 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         LogUtil.i(TAG, "btn_add_device_by_QR");
-                        Intent intent = new Intent(getActivity(), CaptureActivity.class);
-                        startActivityForResult(intent, Constants.SCANNER_QR_CODE_REQUEST_CODE);
+                        DevicesFragmentPermissionsDispatcher.mulPermissionWithPermissionCheck(DevicesFragment.this);
+//                        Intent intent = new Intent(getActivity(), CaptureActivity.class);
+//                        startActivityForResult(intent, Constants.SCANNER_QR_CODE_REQUEST_CODE);
                     }
                 })
                 .create()
@@ -212,7 +265,7 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
 
     private void registerDevice(String registerCode) {
         DialogUtil.showProgressDialog(getActivity(), getResources().getString(R.string.yl_device_registering), false, false);
-        LogUtil.i(TAG, "registerDevice");
+        LogUtil.i(TAG, "registerDevice : "+registerCode);
         OKHttpManager.getInstance()
                 .url(NetReq.NET_REGISTER_DEVICE)
                 .addParams(NetReq.TOKEN, "QrcjN4tVK5-F7ptk_1581326752_12")
@@ -244,7 +297,7 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
                 }, new OKHttpManager.FuncFailure() {
                     @Override
                     public void onFailure() {
-
+                        LogUtil.i(TAG, "FuncFailure");
                     }
                 });
     }
