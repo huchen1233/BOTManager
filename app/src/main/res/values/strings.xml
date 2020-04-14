@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BOTManager</string>
+    <string name="yl_user_me">me</string>
 </resources>

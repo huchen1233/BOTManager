@@ -7,4 +7,5 @@
     <string name="yl_common_log_debug">input debug</string>
     <string name="yl_common_log_error">input error</string>
     <string name="yl_common_module_name">common module</string>
+    <string name="yl_common_devices">devices</string>
 </resources>

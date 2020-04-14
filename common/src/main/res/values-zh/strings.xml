@@ -6,5 +6,6 @@
     <string name="yl_common_off">关</string>
     <string name="yl_common_log_debug">输出调试信息</string>
     <string name="yl_common_log_error">输出错误信息</string>
-    <string name="yl_common_module_name">common module</string>
+    <string name="yl_common_module_name">通用模块</string>
+    <string name="yl_common_devices">设备</string>
 </resources>
