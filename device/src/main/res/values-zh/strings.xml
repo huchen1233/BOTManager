@@ -1,3 +1,8 @@
 <resources>
     <string name="yl_device_module_name">设备模块</string>
+    <string name="yl_device_description">描述</string>
+    <string name="yl_device_status">状态</string>
+    <string name="yl_device_malfunction">异常</string>
+    <string name="yl_device_normal">正常</string>
+    <string name="yl_device_not_detected">未检测</string>
 </resources>

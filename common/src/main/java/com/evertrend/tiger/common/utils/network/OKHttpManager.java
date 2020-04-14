@@ -40,7 +40,7 @@ public class OKHttpManager {
     private Object object;
     private List<Object> list;
 
-    private OKHttpManager() {
+    public OKHttpManager() {
         getClient();
         handler = new Handler(Looper.getMainLooper());
     }

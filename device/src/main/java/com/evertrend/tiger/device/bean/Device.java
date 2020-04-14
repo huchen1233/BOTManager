@@ -3,6 +3,7 @@ package com.evertrend.tiger.device.bean;
 import java.io.Serializable;
 
 public class Device implements Serializable {
+    private int id;
     private String device_type;
     private String device_id;
     private int status;
@@ -51,6 +52,14 @@ public class Device implements Serializable {
     private int timing_end_2;
     private int timing_start_3;
     private int timing_end_3;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public int getHorn_status() {
         return horn_status;
@@ -468,7 +477,8 @@ public class Device implements Serializable {
     @Override
     public String toString() {
         return "Device{" +
-                "device_type='" + device_type + '\'' +
+                "id=" + id +
+                ", device_type='" + device_type + '\'' +
                 ", device_id='" + device_id + '\'' +
                 ", status=" + status +
                 ", description='" + description + '\'' +

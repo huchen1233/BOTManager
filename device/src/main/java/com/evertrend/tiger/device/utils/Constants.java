@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 
 public class Constants {
 
+    public static final String ID = "id";
     public static final String LONGITUDE = "longitude";
     public static final String LATITUDE = "latitude";
     public static final String DEVICE_ID = "device_id";
