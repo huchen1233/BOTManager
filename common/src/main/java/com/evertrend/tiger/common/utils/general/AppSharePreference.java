@@ -13,6 +13,7 @@ public class AppSharePreference {
     public static final String IS_INPUT_LOG_I = "isInputLogI";
     public static final String IS_INPUT_LOG_D = "isInputLogD";
     public static final String IS_INPUT_LOG_E = "isInputLogE";
+    public static final String IS_LOGIN = "IS_LOGIN";
 
     //初始化保存的环境
     public static void initSharedPreference(Context context) {
@@ -29,10 +30,18 @@ public class AppSharePreference {
         return appSP;
     }
 
+    public void saveIsLogin(boolean isLogin) {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean(IS_LOGIN, isLogin);
+        editor.apply();
+    }
+    public boolean loadIsLogin() {
+        return sp.getBoolean(IS_LOGIN, false);
+    }
+
     public String loadLogFlag() {
         return sp.getString(LOG_FLAG, "chenhu");
     }
-
     public void saveLogFlag(String logFlag) {
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(LOG_FLAG, logFlag);
@@ -42,7 +51,6 @@ public class AppSharePreference {
     public boolean loadIsInputLogI() {
         return sp.getBoolean(IS_INPUT_LOG_I, false);
     }
-
     public void saveIsInputLogI(boolean isInputLogI) {
         SharedPreferences.Editor editor = sp.edit();
         editor.putBoolean(IS_INPUT_LOG_I, isInputLogI);

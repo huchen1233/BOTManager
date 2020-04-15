@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,7 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.evertrend.tiger.common.bean.event.ProgressStopEvent;
 import com.evertrend.tiger.common.fragment.BaseFragment;
+import com.evertrend.tiger.common.utils.general.AppSharePreference;
 import com.evertrend.tiger.common.utils.general.DialogUtil;
 import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.common.utils.network.OKHttpManager;
@@ -60,6 +62,7 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
 
     private RecyclerView rlv_devices;
     private ImageButton ibtn_add_device;
+    private TextView tv_login_first;
 
     private List<Device> deviceList;
     private DevicesAdapter devicesAdapter;
@@ -78,10 +81,16 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
         LogUtil.i(TAG, "===onCreateView===");
         View root = inflater.inflate(R.layout.yl_device_fragment_devices, container, false);
         initView(root);
+        EventBus.getDefault().register(this);
         deviceList = new ArrayList<>();
         initDeviceShow();
-        EventBus.getDefault().register(this);
-        loadDevice();
+        if (AppSharePreference.getAppSharedPreference().loadIsLogin()) {
+            loadDevice();
+        } else {
+            tv_login_first.setVisibility(View.VISIBLE);
+            ibtn_add_device.setVisibility(View.GONE);
+            rlv_devices.setVisibility(View.GONE);
+        }
         return root;
     }
 
@@ -226,6 +235,7 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
     private void initView(View root) {
         rlv_devices = root.findViewById(R.id.rlv_devices);
         ibtn_add_device = root.findViewById(R.id.ibtn_add_device);
+        tv_login_first = root.findViewById(R.id.tv_login_first);
         ibtn_add_device.setOnClickListener(this);
     }
 

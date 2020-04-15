@@ -15,4 +15,5 @@
     <string name="yl_device_permission_camera_neverask">您已经拒绝允许程序使用相机权限，如您需要，请在设置中自行打开</string>
     <string name="yl_device_permission_vibrate_denied">震动权限已被拒绝，您将不能使用扫描功能</string>
     <string name="yl_device_permission_vibrate_neverask">您已经拒绝允许程序使用震动权限，如您需要，请在设置中自行打开</string>
+    <string name="yl_device_login_first">请先登录</string>
 </resources>
