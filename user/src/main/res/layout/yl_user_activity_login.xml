@@ -36,18 +36,48 @@
             android:inputType="textPassword"
             android:hint="@string/yl_user_account_password"/>
 
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/cb_remember_me"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_password"
+            android:layout_marginStart="10dp"
+            android:checked="true"
+            android:text="@string/yl_user_remember_me"/>
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/cb_remember_pass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/cb_remember_me"
+            app:layout_constraintTop_toBottomOf="@id/et_password"
+            android:layout_marginStart="10dp"
+            android:text="@string/yl_user_remember_pass"/>
+
         <Button
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_password"
+            app:layout_constraintTop_toBottomOf="@id/cb_remember_me"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:gravity="center"
             android:text="@string/yl_user_login"/>
+
+        <TextView
+            android:id="@+id/tv_no_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_login"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/yl_user_no_account"
+            android:textColor="@android:color/holo_green_dark"/>
 
         <TextView
             android:id="@+id/tv_forget_password"

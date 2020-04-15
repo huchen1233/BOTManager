@@ -8,4 +8,7 @@
     <string name="yl_user_register">register</string>
     <string name="yl_user_login">login</string>
     <string name="yl_user_forget_password">forget password?</string>
+    <string name="yl_user_no_account">no account?</string>
+    <string name="yl_user_remember_me">remember me</string>
+    <string name="yl_user_remember_pass">remember password</string>
 </resources>
