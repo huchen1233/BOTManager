@@ -10,7 +10,7 @@
     <item
         android:id="@+id/action_me"
         android:enabled="true"
-        android:icon="@drawable/ic_me_black_24dp"
+        android:icon="@drawable/yl_user_ic_me_black_24dp"
         android:title="@string/yl_user_me"
         app:showAsAction="ifRoom" />
 </menu>

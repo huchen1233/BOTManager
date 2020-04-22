@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="yl_user_operation_item">
+        <item>设置</item>
+        <item>检查新版本</item>
+        <item>退出登录</item>
+    </string-array>
+</resources>

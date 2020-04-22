@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="yl_user_operation_item">
+        <item>settings</item>
+        <item>check new version</item>
+        <item>Sign out</item>
+    </string-array>
+</resources>
