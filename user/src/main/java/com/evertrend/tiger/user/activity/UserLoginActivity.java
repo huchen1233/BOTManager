@@ -1,8 +1,10 @@
 package com.evertrend.tiger.user.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -44,6 +46,14 @@ public class UserLoginActivity extends AppCompatActivity implements CompoundButt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.yl_user_activity_login);
         initView();
+        String account = getIntent().getStringExtra("account");
+        if (!TextUtils.isEmpty(account)) {
+            et_account.setText(account);
+            et_password.setFocusable(true);
+            et_password.setFocusableInTouchMode(true);
+            et_password.requestFocus();
+            this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
         initAccountAndPass();
     }
 
@@ -69,7 +79,8 @@ public class UserLoginActivity extends AppCompatActivity implements CompoundButt
         if (v.getId() == R.id.btn_login) {
             startLogin();
         } else if (v.getId() == R.id.tv_no_account) {
-
+            Intent intent = new Intent(this, UserRegisterActivity.class);
+            startActivity(intent);
         } else if (v.getId() == R.id.tv_forget_password) {
 
         }

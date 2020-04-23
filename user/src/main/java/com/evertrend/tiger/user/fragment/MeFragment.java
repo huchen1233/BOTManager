@@ -109,7 +109,8 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     public void onMessageEvent(LoginSuccessEvent event) {
         DialogUtil.showSuccessToast(getContext());
         LogUtil.i(TAG, "===LoginSuccessEvent===");
-        tv_name.setText(event.getUser().getName());
+        user = event.getUser();
+        tv_name.setText(user.getName());
         EventBus.getDefault().post(new SuccessEvent(CommonConstants.TYPE_SUCCESS_EVENT_LOGIN));
     }
 

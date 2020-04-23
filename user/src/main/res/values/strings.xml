@@ -19,4 +19,8 @@
     <string name="yl_user_logout_confirm">您确定要退出登录吗?</string>
     <string name="yl_user_login_first">请先登录</string>
     <string name="yl_user_already_logged">您已经登录</string>
+    <string name="yl_user_password_is_different">输入密码不一致</string>
+    <string name="yl_user_verification_code_is_empty">验证码为空</string>
+    <string name="yl_user_user_exist">用户已存在</string>
+    <string name="yl_user_register_success">注册成功，请登录</string>
 </resources>
