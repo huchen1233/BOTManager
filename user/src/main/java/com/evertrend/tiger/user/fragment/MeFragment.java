@@ -24,8 +24,10 @@ import com.evertrend.tiger.common.utils.general.CommonConstants;
 import com.evertrend.tiger.common.utils.general.DialogUtil;
 import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.user.R;
+import com.evertrend.tiger.user.activity.AboutAppActivity;
 import com.evertrend.tiger.user.activity.UserLoginActivity;
 import com.evertrend.tiger.user.adapter.UserOperationItemAdapter;
+import com.evertrend.tiger.user.bean.OperationItem;
 import com.evertrend.tiger.user.bean.User;
 import com.evertrend.tiger.user.bean.event.LoginSuccessEvent;
 import com.evertrend.tiger.user.bean.event.UserOperationItemEvent;
@@ -35,6 +37,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.litepal.LitePal;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MeFragment extends BaseFragment implements View.OnClickListener {
@@ -43,7 +46,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     private LinearLayout ll_me;
     private TextView tv_name;
     private RecyclerView rlv_user_operation;
-    private String[] userOperationItems;
+    private List<OperationItem> itemList;
 
     private User user;
 
@@ -58,7 +61,6 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         LogUtil.i(TAG, "===onCreateView===");
         View root = inflater.inflate(R.layout.yl_user_fragment_me, container, false);
         initView(root);
-        userOperationItems = getResources().getStringArray(R.array.yl_user_operation_item);
         initViewData();
         return root;
     }
@@ -72,11 +74,11 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     @Override
-    public void onDestroy() {
+    public void onStop() {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
-        super.onDestroy();
+        super.onStop();
     }
 
     @Override
@@ -91,11 +93,15 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(UserOperationItemEvent event) {
-        LogUtil.i(TAG, "===DeviceMessageEvent==="+userOperationItems[event.getPosition()]);
+        LogUtil.i(TAG, "===DeviceMessageEvent==="+itemList.get(event.getPosition()).getName());
         switch (event.getPosition()) {
-            case 2:
+            case 1:
+                Intent intent = new Intent(getContext(), AboutAppActivity.class);
+                startActivity(intent);
+                break;
+            case 3:
                 if (AppSharePreference.getAppSharedPreference().loadIsLogin()) {
                     DialogUtil.showChoiceDialog(getContext(), R.string.yl_user_logout_confirm, CommonConstants.TYPE_SUCCESS_EVENT_LOGOUT);
                 } else {
@@ -141,11 +147,25 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 tv_name.setText(user.getName());
             }
         }
+        String[] userOperationItems = getResources().getStringArray(R.array.yl_user_operation_item);
+        itemList = new ArrayList<>();
+        int size = userOperationItems.length;
+        for (int i = 0; i < size; i++) {
+            OperationItem item = new OperationItem();
+            item.setName(userOperationItems[i]);
+            item.setImageId(getResources().obtainTypedArray(R.array.yl_user_operation_item_image).getResourceId(i, 0));
+            if (i == size - 1) {
+                item.setShowCenter(true);
+            } else {
+                item.setShowCenter(false);
+            }
+            itemList.add(item);
+        }
         rlv_user_operation.setHasFixedSize(true);
         rlv_user_operation.setItemAnimator(new DefaultItemAnimator());
         rlv_user_operation.setLayoutManager(new LinearLayoutManager(getContext()));
         //添加Android自带的分割线
         rlv_user_operation.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        rlv_user_operation.setAdapter(new UserOperationItemAdapter(getContext(), userOperationItems));
+        rlv_user_operation.setAdapter(new UserOperationItemAdapter(getContext(), itemList));
     }
 }

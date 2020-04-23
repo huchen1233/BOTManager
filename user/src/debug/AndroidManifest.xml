@@ -15,5 +15,8 @@
         </activity>
         <activity android:name="com.evertrend.tiger.user.activity.UserPINLoginActivity">
         </activity>
+        <activity android:name="com.evertrend.tiger.user.activity.AboutAppActivity"
+            android:label="@string/yl_user_about_app">
+        </activity>
     </application>
 </manifest>

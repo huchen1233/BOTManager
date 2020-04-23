@@ -3,7 +3,21 @@
 
     <string-array name="yl_user_operation_item">
         <item>settings</item>
+        <item>@string/yl_user_about_app</item>
         <item>check new version</item>
         <item>Sign out</item>
+    </string-array>
+
+    <integer-array name="yl_user_operation_item_image">
+        <item>@drawable/yl_user_ic_settings_blue_36dp</item>
+        <item>@drawable/yl_user_ic_about_app_orange__36dp</item>
+        <item>@drawable/yl_user_ic_update_violet_36dp</item>
+        <item>@drawable/yl_user_ic_settings_blue_36dp</item>
+    </integer-array>
+
+    <string-array name="yl_user_about_app_item">
+        <item>Use agreement</item>
+        <item>Privacy policy</item>
+        <item>Application permission</item>
     </string-array>
 </resources>

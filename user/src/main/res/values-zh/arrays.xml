@@ -3,7 +3,14 @@
 
     <string-array name="yl_user_operation_item">
         <item>设置</item>
+        <item>@string/yl_user_about_app</item>
         <item>检查新版本</item>
         <item>退出登录</item>
+    </string-array>
+
+    <string-array name="yl_user_about_app_item">
+        <item>使用协议</item>
+        <item>隐私政策</item>
+        <item>应用权限</item>
     </string-array>
 </resources>

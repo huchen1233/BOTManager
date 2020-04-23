@@ -13,21 +13,24 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.evertrend.tiger.user.R;
+import com.evertrend.tiger.user.bean.OperationItem;
 import com.evertrend.tiger.user.bean.event.UserOperationItemEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.List;
+
 public class UserOperationItemAdapter extends  RecyclerView.Adapter<UserOperationItemAdapter.ViewHolder>{
     private static final String TAG = UserOperationItemAdapter.class.getSimpleName();
-    private String[] userOperationItems;
+    private List<OperationItem> itemList;
     private Context mContext;
 
     public UserOperationItemAdapter() {
     }
 
-    public UserOperationItemAdapter(Context context, String[] userOperationItems) {
+    public UserOperationItemAdapter(Context context, List<OperationItem> itemList) {
         mContext = context;
-        this.userOperationItems = userOperationItems;
+        this.itemList = itemList;
     }
 
     @NonNull
@@ -48,26 +51,19 @@ public class UserOperationItemAdapter extends  RecyclerView.Adapter<UserOperatio
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.itemName.setText(userOperationItems[position]);
-        switch (position) {
-            case 0:
-                holder.itemImage.setImageResource(R.drawable.yl_user_ic_settings_blue_36dp);
-                break;
-            case 1:
-                holder.itemImage.setImageResource(R.drawable.yl_user_ic_update_orange__36dp);
-                break;
-            case 2:
-                holder.itemImage.setVisibility(View.GONE);
-                holder.iv_right.setVisibility(View.GONE);
-                holder.itemName.setTextColor(Color.RED);
-                holder.itemName.setGravity(Gravity.CENTER);
-                break;
+        holder.itemName.setText(itemList.get(position).getName());
+        holder.itemImage.setImageResource(itemList.get(position).getImageId());
+        if (itemList.get(position).isShowCenter()) {
+            holder.itemImage.setVisibility(View.GONE);
+            holder.iv_right.setVisibility(View.GONE);
+            holder.itemName.setTextColor(Color.RED);
+            holder.itemName.setGravity(Gravity.CENTER);
         }
     }
 
     @Override
     public int getItemCount() {
-        return userOperationItems.length;
+        return itemList.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
