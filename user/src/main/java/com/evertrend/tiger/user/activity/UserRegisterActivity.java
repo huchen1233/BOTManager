@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
+import com.evertrend.tiger.common.utils.general.AppSharePreference;
 import com.evertrend.tiger.common.utils.general.CommonConstants;
 import com.evertrend.tiger.common.utils.general.DialogUtil;
 import com.evertrend.tiger.common.utils.general.LogUtil;
@@ -56,11 +57,10 @@ public class UserRegisterActivity extends AppCompatActivity implements View.OnCl
         if (TextUtils.isEmpty(strAccount)) {
             DialogUtil.showToast(this, R.string.yl_user_account_is_empty, Toast.LENGTH_SHORT);
         } else {
-            OKHttpManager.getInstance()
-                    .url(NetReq.NET_MOBILE_VERIFICATION_CODE)
-                    .addParams(NetReq.MOBILE, strAccount)
-                    .addParams(NetReq.FLAG, String.valueOf(NetReq.FLAG_SIGNUP))
-                    .sendComplexForm(new OKHttpManager.FuncJsonObj() {
+            HashMap<String, String> map = new HashMap<>();
+            map.put(NetReq.MOBILE, strAccount);
+            map.put(NetReq.FLAG, String.valueOf(NetReq.FLAG_SIGNUP));
+            OKHttpManager.getInstance().sendComplexForm(NetReq.NET_MOBILE_VERIFICATION_CODE, map, new OKHttpManager.FuncJsonObj() {
                         @Override
                         public void onResponse(JSONObject jsonObject) throws JSONException {
                             try {
@@ -111,12 +111,11 @@ public class UserRegisterActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void registerPhonePwdPin(final String strAccount, String strPwd, String strPin) {
-        OKHttpManager.getInstance()
-                .url(NetReq.NET_SIGNUP)
-                .addParams(NetReq.MOBILE, strAccount)
-                .addParams(NetReq.PASSWORD, strPwd)
-                .addParams(NetReq.VERI_CODE, strPin)
-                .sendComplexForm(new OKHttpManager.FuncJsonObj() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(NetReq.MOBILE, strAccount);
+        map.put(NetReq.PASSWORD, strPwd);
+        map.put(NetReq.VERI_CODE, strPin);
+        OKHttpManager.getInstance().sendComplexForm(NetReq.NET_SIGNUP, map, new OKHttpManager.FuncJsonObj() {
                     @Override
                     public void onResponse(JSONObject jsonObject) throws JSONException {
                         try {

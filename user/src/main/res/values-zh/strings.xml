@@ -24,4 +24,8 @@
     <string name="yl_user_user_exist">用户已存在</string>
     <string name="yl_user_register_success">注册成功，请登录</string>
     <string name="yl_user_about_app">关于应用</string>
+    <string name="yl_user_detecting_new_version">正在检查新版本</string>
+    <string name="yl_user_no_new_version">没有检测到新版本</string>
+    <string name="yl_user_updateing">更新中...</string>
+    <string name="yl_user_new_version_can_be_update">发现新版本可以更新啦!</string>
 </resources>

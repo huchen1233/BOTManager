@@ -48,6 +48,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -290,11 +291,10 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
     private void registerDevice(String registerCode) {
         DialogUtil.showProgressDialog(getActivity(), getResources().getString(R.string.yl_device_registering), false, false);
         LogUtil.i(TAG, "registerDevice : "+registerCode);
-        OKHttpManager.getInstance()
-                .url(NetReq.NET_REGISTER_DEVICE)
-                .addParams(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken())
-                .addParams(NetReq.REG_CODE, registerCode)
-                .sendComplexForm(new OKHttpManager.FuncJsonObj() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
+        map.put(NetReq.REG_CODE, registerCode);
+        OKHttpManager.getInstance().sendComplexForm(NetReq.NET_REGISTER_DEVICE, map, new OKHttpManager.FuncJsonObj() {
                     @Override
                     public void onResponse(JSONObject jsonObject) throws JSONException {
                         DialogUtil.hideProgressDialog();

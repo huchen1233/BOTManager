@@ -24,4 +24,8 @@
     <string name="yl_user_user_exist">user exist</string>
     <string name="yl_user_register_success">signup success</string>
     <string name="yl_user_about_app">about application</string>
+    <string name="yl_user_detecting_new_version">Checking for new version</string>
+    <string name="yl_user_no_new_version">No new version detected</string>
+    <string name="yl_user_updateing">updating...</string>
+    <string name="yl_user_new_version_can_be_update">Found new version can be updated!</string>
 </resources>

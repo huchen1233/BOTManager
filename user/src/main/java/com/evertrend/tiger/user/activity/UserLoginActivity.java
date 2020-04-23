@@ -30,6 +30,8 @@ import com.evertrend.tiger.user.bean.event.LoginSuccessEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.HashMap;
+
 public class UserLoginActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
     private static final String TAG = UserLoginActivity.class.getSimpleName();
 
@@ -112,11 +114,10 @@ public class UserLoginActivity extends AppCompatActivity implements CompoundButt
 
     private void loginPhonePwd(final String strAccount, String strPwd) {
         saveAccountAndPass(strAccount, strPwd);
-        OKHttpManager.getInstance()
-                .url(NetReq.NET_LOGIN_PASS)
-                .addParams(NetReq.MOBILE, strAccount)
-                .addParams(NetReq.PASSWORD, strPwd)
-                .sendComplexForm(new OKHttpManager.FuncJsonObj() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(NetReq.MOBILE, strAccount);
+        map.put(NetReq.PASSWORD, strPwd);
+        OKHttpManager.getInstance().sendComplexForm(NetReq.NET_LOGIN_PASS, map, new OKHttpManager.FuncJsonObj() {
                     @Override
                     public void onResponse(JSONObject jsonObject) throws JSONException {
                         try {
@@ -151,7 +152,7 @@ public class UserLoginActivity extends AppCompatActivity implements CompoundButt
         user.setName(account);
         user.setKey(strToken);
         user.save();
-        EventBus.getDefault().post(new LoginSuccessEvent(user));
+        EventBus.getDefault().postSticky(new LoginSuccessEvent(user));
         finish();
     }
 

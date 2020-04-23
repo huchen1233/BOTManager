@@ -9,6 +9,8 @@ public class NetReq {
     public static final String NET_MOBILE_VERIFICATION_CODE = CommonNetReq.REQ_HOST + "api/user/send-mobile-verification-code";
     public static final String NET_SIGNUP = CommonNetReq.REQ_HOST + "api/user/signup";
 
+    public static final String NET_CHECK_UPDATE = CommonNetReq.REQ_HOST + "api/remote/check-update";
+
     public static final String MOBILE = "mobile";
     public static final String FLAG = "flag";
     public static final String VERI_CODE = "code";

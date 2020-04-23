@@ -26,6 +26,8 @@ import com.evertrend.tiger.user.utils.NetReq;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.HashMap;
+
 public class UserPINLoginActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = UserPINLoginActivity.class.getSimpleName();
 
@@ -60,11 +62,10 @@ public class UserPINLoginActivity extends AppCompatActivity implements View.OnCl
         if (TextUtils.isEmpty(strAccount)) {
             DialogUtil.showToast(this, R.string.yl_user_account_is_empty, Toast.LENGTH_SHORT);
         } else {
-            OKHttpManager.getInstance()
-                    .url(NetReq.NET_MOBILE_VERIFICATION_CODE)
-                    .addParams(NetReq.MOBILE, strAccount)
-                    .addParams(NetReq.FLAG, String.valueOf(NetReq.FLAG_LOGIN))
-                    .sendComplexForm(new OKHttpManager.FuncJsonObj() {
+            HashMap<String, String> map = new HashMap<>();
+            map.put(NetReq.MOBILE, strAccount);
+            map.put(NetReq.FLAG, String.valueOf(NetReq.FLAG_LOGIN));
+            OKHttpManager.getInstance().sendComplexForm(NetReq.NET_MOBILE_VERIFICATION_CODE, map, new OKHttpManager.FuncJsonObj() {
                         @Override
                         public void onResponse(JSONObject jsonObject) throws JSONException {
                             try {
@@ -109,11 +110,10 @@ public class UserPINLoginActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void loginPhonePin(final String strAccount, String strPin) {
-        OKHttpManager.getInstance()
-                .url(NetReq.NET_LOGIN_CODE)
-                .addParams(NetReq.MOBILE, strAccount)
-                .addParams(NetReq.VERI_CODE, strPin)
-                .sendComplexForm(new OKHttpManager.FuncJsonObj() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(NetReq.MOBILE, strAccount);
+        map.put(NetReq.VERI_CODE, strPin);
+        OKHttpManager.getInstance().sendComplexForm(NetReq.NET_LOGIN_CODE, map, new OKHttpManager.FuncJsonObj() {
                     @Override
                     public void onResponse(JSONObject jsonObject) throws JSONException {
                         try {
@@ -148,7 +148,7 @@ public class UserPINLoginActivity extends AppCompatActivity implements View.OnCl
         user.setName(account);
         user.setKey(strToken);
         user.save();
-        EventBus.getDefault().post(new LoginSuccessEvent(user));
+        EventBus.getDefault().postSticky(new LoginSuccessEvent(user));
         finish();
     }
 

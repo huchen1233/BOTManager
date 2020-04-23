@@ -40,4 +40,5 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation project(':common')
+    implementation 'com.azhon:appupdateX:2.8.0'
 }

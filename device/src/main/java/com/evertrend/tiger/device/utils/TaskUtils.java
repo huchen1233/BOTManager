@@ -13,6 +13,7 @@ import com.evertrend.tiger.device.bean.event.LoadDevicesEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class TaskUtils {
@@ -21,10 +22,9 @@ public class TaskUtils {
     public static class TaskGetAssocitedDevice implements Runnable {
         @Override
         public void run() {
-            OKHttpManager.getInstance()
-                    .url(NetReq.NET_ASSOCIATED_DEVICE)
-                    .addParams(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken())
-                    .sendComplexForm(new OKHttpManager.FuncJsonObj() {
+            HashMap<String, String> map = new HashMap<>();
+            map.put(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
+            OKHttpManager.getInstance().sendComplexForm(NetReq.NET_ASSOCIATED_DEVICE, map, new OKHttpManager.FuncJsonObj() {
                         @Override
                         public void onResponse(JSONObject jsonObject) throws JSONException {
                             try {

@@ -7,9 +7,6 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -24,10 +21,10 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class OKHttpManager {
-    private static final String TAG = OKHttpManager.class.getSimpleName();
+    private final String TAG = OKHttpManager.class.getSimpleName();
 
-    private OkHttpClient okHttpClient = null;
-    private volatile static OKHttpManager okHttpManager = null;
+    private OkHttpClient client = null;
+    private volatile static OKHttpManager manager = null;
     private Handler handler;
 
     //提交json数据
@@ -35,58 +32,41 @@ public class OKHttpManager {
     //提交字符串
     private static final MediaType MEDIA_TYE_MARKDOWN = MediaType.parse("text/x-markdown;charset=utf-8");
 
-    private String url;
-    private Map<String, String> params;
-    private Object object;
-    private List<Object> list;
-
-    public OKHttpManager() {
+    private OKHttpManager(){
         getClient();
         handler = new Handler(Looper.getMainLooper());
     }
 
-    private void getClient() {
-        if (okHttpClient == null) {
+    public OkHttpClient getClient() {
+        if (client == null) {
             OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
             builder.connectTimeout(10, TimeUnit.SECONDS)
                     .writeTimeout(30, TimeUnit.SECONDS)
                     .readTimeout(30, TimeUnit.SECONDS)
                     .connectionPool(new ConnectionPool());
-            okHttpClient = builder.build();
+            client = builder.build();
         }
+        return client;
     }
-
     /**
      * 采用单例模式获取对象
      */
     public static OKHttpManager getInstance(){
         synchronized (OKHttpManager.class) {
-            if (okHttpManager == null) {
-                okHttpManager = new OKHttpManager();
+            if (manager == null) {
+                manager = new OKHttpManager();
             }
-            return okHttpManager;
+            return manager;
         }
-    }
-
-    public OKHttpManager url(String url) {
-        this.url = url;
-        return okHttpManager;
-    }
-
-    public OKHttpManager addParams(String key, String val) {
-        if (this.params == null)
-        {
-            params = new LinkedHashMap<>();
-        }
-        params.put(key, val);
-        return okHttpManager;
     }
 
     /**
      * 模拟表单提交
+     * @param url
+     * @param params
      * @param callBack
      */
-    public void sendComplexForm(final FuncJsonObj callBack, final FuncFailure callFailure){
+    public void sendComplexForm(String url, Map<String, String> params, final FuncJsonObj callBack, final FuncFailure callFailure){
         FormBody.Builder form_builder = new FormBody.Builder(); //表单对象，包含以input开始的对象，以html表单为主
         if(params != null && !params.isEmpty()){
             for(Map.Entry<String, String> entry : params.entrySet()){
@@ -96,7 +76,7 @@ public class OKHttpManager {
 
         RequestBody request_body = form_builder.build();
         Request request = new Request.Builder().url(url).post(request_body).build();  //采用post方式提交
-        okHttpClient.newCall(request).enqueue(new Callback() {
+        client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 //LogUtil.i(TAG, "onFailure");
@@ -126,6 +106,7 @@ public class OKHttpManager {
             public void run() {
                 if(callBack != null){
                     try{
+//                        callBack.onResponse(new JSONObject(jsonValue));
                         callBack.onResponse(JSONObject.parseObject(jsonValue));
                     } catch (JSONException e){
                         e.printStackTrace();
@@ -148,6 +129,10 @@ public class OKHttpManager {
 
     public interface FuncJsonObj{
         void onResponse(JSONObject jsonObject) throws JSONException;
+    }
+
+    public interface FuncResponse{
+        void onResponse(Response response);
     }
 
     public interface FuncFailure{
