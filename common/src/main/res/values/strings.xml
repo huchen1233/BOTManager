@@ -11,4 +11,5 @@
     <string name="yl_common_not_found_device">not found device</string>
     <string name="yl_common_device_has_been_registered">device has been registered</string>
     <string name="yl_common_register_device_fail">register device fail</string>
+    <string name="yl_common_success">成功</string>
 </resources>

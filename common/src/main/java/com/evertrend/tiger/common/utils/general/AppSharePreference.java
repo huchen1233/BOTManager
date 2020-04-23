@@ -3,6 +3,7 @@ package com.evertrend.tiger.common.utils.general;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Base64;
 
 public class AppSharePreference {
     public static final String SHARED_PREFERENCE_NAME = "evertrend_botmanager_pre";
@@ -14,6 +15,11 @@ public class AppSharePreference {
     public static final String IS_INPUT_LOG_D = "isInputLogD";
     public static final String IS_INPUT_LOG_E = "isInputLogE";
     public static final String IS_LOGIN = "IS_LOGIN";
+    public static final String USER_TOKEN = "USER_TOKEN";
+    public static final String ACCOUNT = "account";
+    public static final String PASS = "pass";
+    public static final String REMEMBER_ME = "remember_me";
+    public static final String REMEMBER_PASS = "remember_pass";
 
     //初始化保存的环境
     public static void initSharedPreference(Context context) {
@@ -28,6 +34,61 @@ public class AppSharePreference {
             appSP = new AppSharePreference();
         }
         return appSP;
+    }
+
+    public void saveRememberMe(boolean rememberMe) {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean(REMEMBER_ME, rememberMe);
+        editor.apply();
+    }
+    public boolean loadRememberMe() {
+        return sp.getBoolean(REMEMBER_ME, false);
+    }
+
+    public void saveRememberPass(boolean rememberPass) {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean(REMEMBER_PASS, rememberPass);
+        editor.apply();
+    }
+    public boolean loadRememberPass() {
+        return sp.getBoolean(REMEMBER_PASS, false);
+    }
+
+    public void saveAccount(String account) {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(ACCOUNT, account);
+        editor.apply();
+    }
+    public String loadaccount() {
+        return sp.getString(ACCOUNT, null);
+    }
+
+    public void savePass(String pass) {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(PASS, Base64.encodeToString(pass.getBytes(), Base64.DEFAULT));
+        editor.apply();
+    }
+    public String loadPass() {
+        String pass = sp.getString(PASS, null);
+        if (pass == null) {
+            return null;
+        } else {
+            return new String(Base64.decode(pass, Base64.DEFAULT));
+        }
+    }
+
+    public void saveUserToken(String userToken) {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(USER_TOKEN, Base64.encodeToString(userToken.getBytes(), Base64.DEFAULT));
+        editor.apply();
+    }
+    public String loadUserToken() {
+        String token = sp.getString(USER_TOKEN, "error");
+        if (token.equals("error")) {
+            return "error";
+        } else {
+            return new String(Base64.decode(token, Base64.DEFAULT));
+        }
     }
 
     public void saveIsLogin(boolean isLogin) {

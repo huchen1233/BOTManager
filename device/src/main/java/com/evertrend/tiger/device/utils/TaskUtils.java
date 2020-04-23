@@ -4,7 +4,9 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
+import com.evertrend.tiger.common.utils.general.AppSharePreference;
 import com.evertrend.tiger.common.utils.general.LogUtil;
+import com.evertrend.tiger.common.utils.network.CommonNetReq;
 import com.evertrend.tiger.common.utils.network.OKHttpManager;
 import com.evertrend.tiger.device.bean.Device;
 import com.evertrend.tiger.device.bean.event.LoadDevicesEvent;
@@ -19,18 +21,17 @@ public class TaskUtils {
     public static class TaskGetAssocitedDevice implements Runnable {
         @Override
         public void run() {
-//            map.put(NetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
             OKHttpManager.getInstance()
                     .url(NetReq.NET_ASSOCIATED_DEVICE)
-                    .addParams(NetReq.TOKEN, "QrcjN4tVK5-F7ptk_1581326752_12")
+                    .addParams(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken())
                     .sendComplexForm(new OKHttpManager.FuncJsonObj() {
                         @Override
                         public void onResponse(JSONObject jsonObject) throws JSONException {
                             try {
-                                LogUtil.i(TAG, jsonObject.getString(NetReq.RESULT_DESC));
-                                switch (jsonObject.getIntValue(NetReq.RESULT_CODE)) {
-                                    case NetReq.CODE_SUCCESS:
-                                        List<Device> deviceList = JsonAnalysisUtil.loadAllDevice(jsonObject.getJSONArray(NetReq.RESULT_DATA));
+                                LogUtil.i(TAG, jsonObject.getString(CommonNetReq.RESULT_DESC));
+                                switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
+                                    case CommonNetReq.CODE_SUCCESS:
+                                        List<Device> deviceList = JsonAnalysisUtil.loadAllDevice(jsonObject.getJSONArray(CommonNetReq.RESULT_DATA));
                                         EventBus.getDefault().post(new LoadDevicesEvent(deviceList));
                                         break;
                                     default:

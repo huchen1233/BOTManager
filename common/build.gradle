@@ -43,4 +43,5 @@ dependencies {
     api 'org.conscrypt:conscrypt-android:2.2.1'
     api 'org.greenrobot:eventbus:3.2.0'
     api 'cn.yipianfengye.android:zxing-library:2.2'
+    api 'org.litepal.android:java:3.0.0'
 }

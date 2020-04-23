@@ -25,10 +25,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.evertrend.tiger.common.bean.event.ProgressStopEvent;
+import com.evertrend.tiger.common.bean.event.SuccessEvent;
 import com.evertrend.tiger.common.fragment.BaseFragment;
 import com.evertrend.tiger.common.utils.general.AppSharePreference;
+import com.evertrend.tiger.common.utils.general.CommonConstants;
 import com.evertrend.tiger.common.utils.general.DialogUtil;
 import com.evertrend.tiger.common.utils.general.LogUtil;
+import com.evertrend.tiger.common.utils.network.CommonNetReq;
 import com.evertrend.tiger.common.utils.network.OKHttpManager;
 import com.evertrend.tiger.device.R;
 import com.evertrend.tiger.device.bean.Device;
@@ -140,6 +143,17 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
         deviceList.addAll(event.getDeviceList());
         if (deviceList.size() > 0) {
             devicesAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(SuccessEvent event) {
+        LogUtil.i(TAG, "===SuccessEvent===");
+        if (event.getType() == CommonConstants.TYPE_SUCCESS_EVENT_LOGIN) {
+            loadDevice();
+            tv_login_first.setVisibility(View.GONE);
+            ibtn_add_device.setVisibility(View.VISIBLE);
+            rlv_devices.setVisibility(View.VISIBLE);
         }
     }
 
@@ -278,14 +292,14 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
         LogUtil.i(TAG, "registerDevice : "+registerCode);
         OKHttpManager.getInstance()
                 .url(NetReq.NET_REGISTER_DEVICE)
-                .addParams(NetReq.TOKEN, "QrcjN4tVK5-F7ptk_1581326752_12")
+                .addParams(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken())
                 .addParams(NetReq.REG_CODE, registerCode)
                 .sendComplexForm(new OKHttpManager.FuncJsonObj() {
                     @Override
                     public void onResponse(JSONObject jsonObject) throws JSONException {
                         DialogUtil.hideProgressDialog();
-                        switch (jsonObject.getIntValue(NetReq.RESULT_CODE)) {
-                            case NetReq.CODE_SUCCESS:
+                        switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
+                            case CommonNetReq.CODE_SUCCESS:
 //                                registerDeviceSuccess(jsonObject.getJSONObject(NetReq.RESULT_DATA));
                                 Toast.makeText(getActivity(), "register success", Toast.LENGTH_LONG).show();
                                 break;
@@ -299,8 +313,8 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
                                 showTipsDialog(getActivity(), NetReq.ERR_CODE_REGISTER_DEVICE_FAIL);
                                 break;
                             default:
-                                LogUtil.i(TAG, jsonObject.getString(NetReq.RESULT_DESC));
-                                Toast.makeText(getActivity(), jsonObject.getString(NetReq.RESULT_DESC), Toast.LENGTH_SHORT).show();
+                                LogUtil.i(TAG, jsonObject.getString(CommonNetReq.RESULT_DESC));
+                                Toast.makeText(getActivity(), jsonObject.getString(CommonNetReq.RESULT_DESC), Toast.LENGTH_SHORT).show();
                                 break;
                         }
                     }
