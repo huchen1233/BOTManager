@@ -1,6 +1,5 @@
 package com.evertrend.tiger.user.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -14,40 +13,45 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
-import com.evertrend.tiger.common.utils.general.CommonConstants;
+import com.evertrend.tiger.common.utils.general.AppSharePreference;
 import com.evertrend.tiger.common.utils.general.DialogUtil;
 import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.common.utils.general.Utils;
 import com.evertrend.tiger.common.utils.network.CommonNetReq;
 import com.evertrend.tiger.common.utils.network.OKHttpManager;
 import com.evertrend.tiger.user.R;
+import com.evertrend.tiger.user.bean.User;
+import com.evertrend.tiger.user.bean.event.LoginSuccessEvent;
 import com.evertrend.tiger.user.utils.NetReq;
 
-import java.util.HashMap;
+import org.greenrobot.eventbus.EventBus;
 
-public class UserRegisterActivity extends AppCompatActivity implements View.OnClickListener {
-    private static final String TAG = UserRegisterActivity.class.getSimpleName();
+public class UserPINLoginActivity extends AppCompatActivity implements View.OnClickListener {
+    private static final String TAG = UserPINLoginActivity.class.getSimpleName();
 
     private EditText et_account;
-    private EditText et_password;
-    private EditText et_confirm_password;
     private EditText et_verification_code;
     private Button btn_get_verification_code;
-    private Button btn_register;
+    private Button btn_login;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.yl_user_activity_register);
+        setContentView(R.layout.yl_user_activity_pin_login);
         initView();
+        String account = getIntent().getStringExtra("account");
+        if (!TextUtils.isEmpty(account)) {
+            et_account.setText(account);
+            et_account.setSelection(account.length());
+        }
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btn_get_verification_code) {
             getVerCode();
-        } else if (v.getId() == R.id.btn_register) {
-            startRefister();
+        } else if (v.getId() == R.id.btn_login) {
+            startLogin();
         }
     }
 
@@ -59,7 +63,7 @@ public class UserRegisterActivity extends AppCompatActivity implements View.OnCl
             OKHttpManager.getInstance()
                     .url(NetReq.NET_MOBILE_VERIFICATION_CODE)
                     .addParams(NetReq.MOBILE, strAccount)
-                    .addParams(NetReq.FLAG, String.valueOf(NetReq.FLAG_SIGNUP))
+                    .addParams(NetReq.FLAG, String.valueOf(NetReq.FLAG_LOGIN))
                     .sendComplexForm(new OKHttpManager.FuncJsonObj() {
                         @Override
                         public void onResponse(JSONObject jsonObject) throws JSONException {
@@ -86,35 +90,28 @@ public class UserRegisterActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    private void startRefister() {
+    private void startLogin() {
         String strAccount = et_account.getText().toString().trim();
         if (TextUtils.isEmpty(strAccount)) {
             DialogUtil.showToast(this, R.string.yl_user_account_is_empty, Toast.LENGTH_SHORT);
         } else if (!Utils.isPhone(strAccount) && !Utils.isEmail(strAccount)) {
             DialogUtil.showToast(this, R.string.yl_user_account_format_error, Toast.LENGTH_SHORT);
         } else {
-            String strPwd = et_password.getText().toString();
-            String strPwdConfirm = et_confirm_password.getText().toString();
             String strPin = et_verification_code.getText().toString();
-            if (TextUtils.isEmpty(strPwd)) {
-                DialogUtil.showToast(this, R.string.yl_user_password_is_empty, Toast.LENGTH_SHORT);
-            } else if (!strPwd.equals(strPwdConfirm)) {
-                DialogUtil.showToast(this, R.string.yl_user_password_is_different, Toast.LENGTH_SHORT);
-            }  else if (TextUtils.isEmpty(strPin)) {
+            if (TextUtils.isEmpty(strPin)) {
                 DialogUtil.showToast(this, R.string.yl_user_verification_code_is_empty, Toast.LENGTH_SHORT);
             } else {
                 if (Utils.isPhone(strAccount)) {
-                    registerPhonePwdPin(strAccount, strPwd, strPin);
+                    loginPhonePin(strAccount, strPin);
                 }
             }
         }
     }
 
-    private void registerPhonePwdPin(final String strAccount, String strPwd, String strPin) {
+    private void loginPhonePin(final String strAccount, String strPin) {
         OKHttpManager.getInstance()
-                .url(NetReq.NET_SIGNUP)
+                .url(NetReq.NET_LOGIN_CODE)
                 .addParams(NetReq.MOBILE, strAccount)
-                .addParams(NetReq.PASSWORD, strPwd)
                 .addParams(NetReq.VERI_CODE, strPin)
                 .sendComplexForm(new OKHttpManager.FuncJsonObj() {
                     @Override
@@ -123,44 +120,44 @@ public class UserRegisterActivity extends AppCompatActivity implements View.OnCl
                             LogUtil.i(TAG, jsonObject.getString(CommonNetReq.RESULT_DESC));
                             switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
                                 case CommonNetReq.CODE_SUCCESS:
-                                    registerSuccess(jsonObject.getString(NetReq.RESULT_TOKEN), strAccount);
+                                    loginSuccess(jsonObject.getString(NetReq.RESULT_TOKEN), strAccount);
                                     break;
-                                case NetReq.CODE_FAIL_USER_EXIST:
-                                    DialogUtil.showToast(UserRegisterActivity.this, R.string.yl_user_user_exist, Toast.LENGTH_SHORT);
+                                case NetReq.CODE_FAIL_USER_NOT_EXIST:
+                                    DialogUtil.showToast(UserPINLoginActivity.this, R.string.yl_user_account_not_exist, Toast.LENGTH_SHORT);
                                     break;
                                 default:
                                     break;
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
-                            Log.e(TAG, "出错：解析数据失败");
+                            LogUtil.e(TAG, "出错：解析数据失败");
                         }
                     }
                 }, new OKHttpManager.FuncFailure() {
                     @Override
                     public void onFailure() {
-                        Log.e(TAG, "出错：请求网络失败");
+                        LogUtil.e(TAG, "出错：请求网络失败");
                     }
                 });
     }
 
-    private void registerSuccess(String key, String account) {
-        DialogUtil.showToast(this, R.string.yl_user_register_success, Toast.LENGTH_SHORT);
-        Intent intent = new Intent(this, UserLoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("account", account);
-        startActivity(intent);
+    private void loginSuccess(String strToken, String account) {
+        AppSharePreference.getAppSharedPreference().saveIsLogin(true);
+        AppSharePreference.getAppSharedPreference().saveUserToken(strToken);
+        User user = new User();
+        user.setName(account);
+        user.setKey(strToken);
+        user.save();
+        EventBus.getDefault().post(new LoginSuccessEvent(user));
         finish();
     }
 
     private void initView() {
         et_account = findViewById(R.id.et_account);
-        et_password = findViewById(R.id.et_password);
-        et_confirm_password = findViewById(R.id.et_confirm_password);
         et_verification_code = findViewById(R.id.et_verification_code);
         btn_get_verification_code = findViewById(R.id.btn_get_verification_code);
-        btn_register = findViewById(R.id.btn_register);
+        btn_login = findViewById(R.id.btn_login);
         btn_get_verification_code.setOnClickListener(this);
-        btn_register.setOnClickListener(this);
+        btn_login.setOnClickListener(this);
     }
 }

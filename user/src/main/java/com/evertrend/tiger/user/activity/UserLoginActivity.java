@@ -82,7 +82,13 @@ public class UserLoginActivity extends AppCompatActivity implements CompoundButt
             Intent intent = new Intent(this, UserRegisterActivity.class);
             startActivity(intent);
         } else if (v.getId() == R.id.tv_forget_password) {
-
+            Intent intent = new Intent(this, UserPINLoginActivity.class);
+            String strAccount = et_account.getText().toString().trim();
+            if (!TextUtils.isEmpty(strAccount)) {
+                intent.putExtra("account", strAccount);
+            }
+            startActivity(intent);
+            finish();
         }
     }
 
@@ -188,7 +194,9 @@ public class UserLoginActivity extends AppCompatActivity implements CompoundButt
         LogUtil.i(TAG, "init account and pass");
         if (AppSharePreference.getAppSharedPreference().loadRememberMe()) {
             cb_remember_me.setChecked(true);
-            et_account.setText(AppSharePreference.getAppSharedPreference().loadaccount());
+            String account = AppSharePreference.getAppSharedPreference().loadaccount();
+            et_account.setText(account);
+            et_account.setSelection(account.length());
         }
         if (AppSharePreference.getAppSharedPreference().loadRememberPass()) {
             cb_remember_pass.setChecked(true);
