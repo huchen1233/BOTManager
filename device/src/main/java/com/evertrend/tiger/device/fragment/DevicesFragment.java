@@ -217,7 +217,7 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void loadDevice() {
-        DialogUtil.showProgressDialog(getActivity(), getResources().getString(R.string.yl_common_devices), false, true);
+        DialogUtil.showProgressDialog(getActivity(), getResources().getString(R.string.yl_common_loading_devices), false, true);
         scheduledThreadGetAssociatedDevice = new ScheduledThreadPoolExecutor(4);
         scheduledThreadGetAssociatedDevice.scheduleAtFixedRate(new TaskUtils.TaskGetAssocitedDevice(),
                 0, 6, TimeUnit.SECONDS);

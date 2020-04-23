@@ -8,6 +8,7 @@
     <string name="yl_common_log_error">input error</string>
     <string name="yl_common_module_name">common module</string>
     <string name="yl_common_devices">devices</string>
+    <string name="yl_common_loading_devices">loading devices</string>
     <string name="yl_common_not_found_device">not found device</string>
     <string name="yl_common_device_has_been_registered">device has been registered</string>
     <string name="yl_common_register_device_fail">register device fail</string>
