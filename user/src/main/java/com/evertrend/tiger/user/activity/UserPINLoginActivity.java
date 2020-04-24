@@ -61,33 +61,65 @@ public class UserPINLoginActivity extends AppCompatActivity implements View.OnCl
         String strAccount = et_account.getText().toString().trim();
         if (TextUtils.isEmpty(strAccount)) {
             DialogUtil.showToast(this, R.string.yl_user_account_is_empty, Toast.LENGTH_SHORT);
+        } else if (!Utils.isPhone(strAccount) && !Utils.isEmail(strAccount)) {
+            DialogUtil.showToast(this, R.string.yl_user_account_format_error, Toast.LENGTH_SHORT);
         } else {
-            HashMap<String, String> map = new HashMap<>();
-            map.put(NetReq.MOBILE, strAccount);
-            map.put(NetReq.FLAG, String.valueOf(NetReq.FLAG_LOGIN));
-            OKHttpManager.getInstance().sendComplexForm(NetReq.NET_MOBILE_VERIFICATION_CODE, map, new OKHttpManager.FuncJsonObj() {
-                        @Override
-                        public void onResponse(JSONObject jsonObject) throws JSONException {
-                            try {
-                                LogUtil.i(UserPINLoginActivity.this, TAG, jsonObject.getString(CommonNetReq.RESULT_DESC));
-                                switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)){
-                                    case CommonNetReq.CODE_SUCCESS:
-                                        et_verification_code.setText(jsonObject.getString(CommonNetReq.RESULT_PIN));//临时调试用
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                Log.e(TAG, "出错：解析数据失败");
+            if (Utils.isPhone(strAccount)) {
+                HashMap<String, String> map = new HashMap<>();
+                map.put(NetReq.MOBILE, strAccount);
+                map.put(NetReq.FLAG, String.valueOf(NetReq.FLAG_LOGIN));
+                OKHttpManager.getInstance().sendComplexForm(NetReq.NET_MOBILE_VERIFICATION_CODE, map, new OKHttpManager.FuncJsonObj() {
+                    @Override
+                    public void onResponse(JSONObject jsonObject) throws JSONException {
+                        try {
+                            LogUtil.i(UserPINLoginActivity.this, TAG, jsonObject.getString(CommonNetReq.RESULT_DESC));
+                            switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)){
+                                case CommonNetReq.CODE_SUCCESS:
+                                    et_verification_code.setText(jsonObject.getString(CommonNetReq.RESULT_PIN));//临时调试用
+                                    break;
+                                default:
+                                    break;
                             }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(TAG, "出错：解析数据失败");
                         }
-                    }, new OKHttpManager.FuncFailure() {
-                        @Override
-                        public void onFailure() {
-                            LogUtil.e(TAG, "出错：请求网络失败");
+                    }
+                }, new OKHttpManager.FuncFailure() {
+                    @Override
+                    public void onFailure() {
+                        LogUtil.e(TAG, "出错：请求网络失败");
+                    }
+                });
+            } else if (Utils.isEmail(strAccount)) {
+                HashMap<String, String> map = new HashMap<>();
+                map.put(NetReq.EMAIL, strAccount);
+                map.put(NetReq.FLAG, String.valueOf(NetReq.FLAG_LOGIN));
+                OKHttpManager.getInstance().sendComplexForm(NetReq.NET_EMAIL_VERIFICATION_CODE, map, new OKHttpManager.FuncJsonObj() {
+                    @Override
+                    public void onResponse(JSONObject jsonObject) throws JSONException {
+                        try {
+                            LogUtil.i(UserPINLoginActivity.this, TAG, jsonObject.getString(CommonNetReq.RESULT_DESC));
+                            switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)){
+                                case CommonNetReq.CODE_SUCCESS:
+//                                    et_verification_code.setText(jsonObject.getString(CommonNetReq.RESULT_PIN));//临时调试用
+                                    break;
+                                default:
+                                    break;
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(TAG, "出错：解析数据失败");
                         }
-                    });
+                    }
+                }, new OKHttpManager.FuncFailure() {
+                    @Override
+                    public void onFailure() {
+                        LogUtil.e(TAG, "出错：请求网络失败");
+                    }
+                });
+            }
+
         }
     }
 
@@ -104,9 +136,43 @@ public class UserPINLoginActivity extends AppCompatActivity implements View.OnCl
             } else {
                 if (Utils.isPhone(strAccount)) {
                     loginPhonePin(strAccount, strPin);
+                }  else if (Utils.isEmail(strAccount)) {
+                    loginEmailPin(strAccount, strPin);
                 }
             }
         }
+    }
+
+    private void loginEmailPin(final String strAccount, String strPin) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(NetReq.EMAIL, strAccount);
+        map.put(NetReq.VERI_CODE, strPin);
+        OKHttpManager.getInstance().sendComplexForm(NetReq.NET_LOGIN_CODE_EMAIL, map, new OKHttpManager.FuncJsonObj() {
+                    @Override
+                    public void onResponse(JSONObject jsonObject) throws JSONException {
+                        try {
+                            LogUtil.i(UserPINLoginActivity.this, TAG, jsonObject.getString(CommonNetReq.RESULT_DESC));
+                            switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
+                                case CommonNetReq.CODE_SUCCESS:
+                                    loginSuccess(jsonObject.getString(NetReq.RESULT_TOKEN), strAccount);
+                                    break;
+                                case NetReq.CODE_FAIL_USER_NOT_EXIST:
+                                    DialogUtil.showToast(UserPINLoginActivity.this, R.string.yl_user_account_not_exist, Toast.LENGTH_SHORT);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            LogUtil.e(TAG, "出错：解析数据失败");
+                        }
+                    }
+                }, new OKHttpManager.FuncFailure() {
+                    @Override
+                    public void onFailure() {
+                        LogUtil.e(TAG, "出错：请求网络失败");
+                    }
+                });
     }
 
     private void loginPhonePin(final String strAccount, String strPin) {

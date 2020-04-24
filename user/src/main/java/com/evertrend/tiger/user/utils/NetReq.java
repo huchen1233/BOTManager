@@ -5,13 +5,18 @@ import com.evertrend.tiger.common.utils.network.CommonNetReq;
 public class NetReq {
 
     public static final String NET_LOGIN_PASS = CommonNetReq.REQ_HOST + "api/user/login-pass";
+    public static final String NET_LOGIN_PASS_EMAIL = CommonNetReq.REQ_HOST + "api/user/login-pass-email";
     public static final String NET_LOGIN_CODE = CommonNetReq.REQ_HOST + "api/user/login-code";
+    public static final String NET_LOGIN_CODE_EMAIL = CommonNetReq.REQ_HOST + "api/user/login-code-email";
     public static final String NET_MOBILE_VERIFICATION_CODE = CommonNetReq.REQ_HOST + "api/user/send-mobile-verification-code";
+    public static final String NET_EMAIL_VERIFICATION_CODE = CommonNetReq.REQ_HOST + "api/user/send-email-verification-code";
     public static final String NET_SIGNUP = CommonNetReq.REQ_HOST + "api/user/signup";
+    public static final String NET_SIGNUP_EMAIL = CommonNetReq.REQ_HOST + "api/user/signup-email";
 
     public static final String NET_CHECK_UPDATE = CommonNetReq.REQ_HOST + "api/remote/check-update";
 
     public static final String MOBILE = "mobile";
+    public static final String EMAIL = "email";
     public static final String FLAG = "flag";
     public static final String VERI_CODE = "code";
     public static final String PASSWORD = "password";

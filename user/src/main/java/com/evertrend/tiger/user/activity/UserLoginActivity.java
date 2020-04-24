@@ -107,9 +107,44 @@ public class UserLoginActivity extends AppCompatActivity implements CompoundButt
             } else {
                 if (Utils.isPhone(strAccount)) {
                     loginPhonePwd(strAccount, strPwd);
+                } else if (Utils.isEmail(strAccount)) {
+                    loginEmailPwd(strAccount, strPwd);
                 }
             }
         }
+    }
+
+    private void loginEmailPwd(final String strAccount, String strPwd) {
+        saveAccountAndPass(strAccount, strPwd);
+        HashMap<String, String> map = new HashMap<>();
+        map.put(NetReq.EMAIL, strAccount);
+        map.put(NetReq.PASSWORD, strPwd);
+        OKHttpManager.getInstance().sendComplexForm(NetReq.NET_LOGIN_PASS_EMAIL, map, new OKHttpManager.FuncJsonObj() {
+                    @Override
+                    public void onResponse(JSONObject jsonObject) throws JSONException {
+                        try {
+                            LogUtil.i(UserLoginActivity.this, TAG, jsonObject.getString(CommonNetReq.RESULT_DESC));
+                            switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
+                                case CommonNetReq.CODE_SUCCESS:
+                                    loginSuccess(jsonObject.getString(NetReq.RESULT_TOKEN), strAccount);
+                                    break;
+                                case NetReq.CODE_FAIL_USER_NOT_EXIST:
+                                    DialogUtil.showToast(UserLoginActivity.this, R.string.yl_user_account_not_exist, Toast.LENGTH_SHORT);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            LogUtil.e(TAG, "出错：解析数据失败");
+                        }
+                    }
+                }, new OKHttpManager.FuncFailure() {
+                    @Override
+                    public void onFailure() {
+                        LogUtil.e(TAG, "出错：请求网络失败");
+                    }
+                });
     }
 
     private void loginPhonePwd(final String strAccount, String strPwd) {
