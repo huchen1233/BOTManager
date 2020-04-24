@@ -1,82 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+<!--        <androidx.appcompat.widget.AppCompatSpinner-->
+<!--            android:id="@+id/spinner_region_code"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:dropDownWidth="200dp"-->
+<!--            android:prompt="@string/yl_user_phone_region_code"-->
+<!--            android:spinnerMode="dialog"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            android:entries="@array/yl_user_region_code" />-->
 
         <EditText
             android:id="@+id/et_account"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:hint="@string/yl_user_account_hint"/>
+            android:layout_marginTop="10dp"
+            android:hint="@string/yl_user_account_hint"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+<!--            app:layout_constraintTop_toBottomOf="@id/spinner_region_code" />-->
 
         <EditText
             android:id="@+id/et_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_account"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
             android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:hint="@string/yl_user_account_password"
             android:inputType="textPassword"
-            android:hint="@string/yl_user_account_password"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_account" />
 
         <EditText
             android:id="@+id/et_confirm_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_password"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
             android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:hint="@string/yl_user_account_confirm_password"
             android:inputType="textPassword"
-            android:hint="@string/yl_user_account_confirm_password"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_password" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/ll_verification_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_confirm_password"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginTop="20dp">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_confirm_password">
 
             <EditText
                 android:id="@+id/et_verification_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:hint="@string/yl_user_verification_code"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:hint="@string/yl_user_verification_code"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/btn_get_verification_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toEndOf="@id/et_verification_code"
-                app:layout_constraintBottom_toBottomOf="@id/et_verification_code"
                 android:layout_marginStart="10dp"
                 android:text="@string/yl_user_get_verification_code"
-                android:textColor="@android:color/holo_green_dark"/>
+                android:textColor="@android:color/holo_green_dark"
+                app:layout_constraintBottom_toBottomOf="@id/et_verification_code"
+                app:layout_constraintStart_toEndOf="@id/et_verification_code" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -84,17 +97,17 @@
             android:id="@+id/btn_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ll_verification_code"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
             android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
             android:gravity="center"
-            android:text="@string/yl_user_register"/>
+            android:text="@string/yl_user_register"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_verification_code" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <include layout="@layout/yl_common_company_information"/>
+    <include layout="@layout/yl_common_company_information" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

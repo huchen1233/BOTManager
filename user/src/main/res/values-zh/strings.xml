@@ -28,4 +28,5 @@
     <string name="yl_user_no_new_version">没有检测到新版本</string>
     <string name="yl_user_updateing">更新中...</string>
     <string name="yl_user_new_version_can_be_update">发现新版本可以更新啦!</string>
+    <string name="yl_user_phone_region_code">手机号地区码</string>
 </resources>

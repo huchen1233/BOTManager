@@ -41,4 +41,5 @@ dependencies {
 
     implementation project(':common')
     implementation 'com.azhon:appupdateX:2.8.0'
+    implementation files('libs\\libphonenumber-8.12.2.jar')
 }
