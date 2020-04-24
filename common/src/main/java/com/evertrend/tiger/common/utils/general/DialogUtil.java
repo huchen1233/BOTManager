@@ -48,7 +48,7 @@ public class DialogUtil {
         choiceDialog.show();
     }
 
-    public static void showProgressDialog(Context context, String message, boolean cancelable, boolean canceledOnTouchOutside) {
+    public static void showProgressDialog(final Context context, String message, boolean cancelable, boolean canceledOnTouchOutside) {
         progressDialog = new ProgressDialog(context);
         progressDialog.setMessage(message);
         progressDialog.setCancelable(cancelable);
@@ -56,7 +56,7 @@ public class DialogUtil {
         progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
-                LogUtil.i(TAG, "cancel");
+                LogUtil.i(context, TAG, "cancel");
                 EventBus.getDefault().post(new ProgressStopEvent());
             }
         });

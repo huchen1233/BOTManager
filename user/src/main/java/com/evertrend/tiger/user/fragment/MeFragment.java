@@ -78,7 +78,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        LogUtil.i(TAG, "===onCreateView===");
+        LogUtil.i(getContext(), TAG, "===onCreateView===");
         View root = inflater.inflate(R.layout.yl_user_fragment_me, container, false);
         initView(root);
         initViewData();
@@ -120,7 +120,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(UserOperationItemEvent event) {
-        LogUtil.i(TAG, "===DeviceMessageEvent===" + itemList.get(event.getPosition()).getName());
+        LogUtil.i(getContext(), TAG, "===DeviceMessageEvent===" + itemList.get(event.getPosition()).getName());
         if (AppSharePreference.getAppSharedPreference().loadIsLogin()) {
             switch (event.getPosition()) {
                 case 1:
@@ -142,7 +142,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onMessageEvent(LoginSuccessEvent event) {
         DialogUtil.showSuccessToast(getContext());
-        LogUtil.i(TAG, "===LoginSuccessEvent===");
+        LogUtil.i(getContext(), TAG, "===LoginSuccessEvent===");
         user = event.getUser();
         tv_name.setText(user.getName());
         EventBus.getDefault().post(new SuccessEvent(CommonConstants.TYPE_SUCCESS_EVENT_LOGIN));
@@ -150,7 +150,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(DialogChoiceEvent event) {
-        LogUtil.i(TAG, "===DialogChoiceEvent===");
+        LogUtil.i(getContext(), TAG, "===DialogChoiceEvent===");
         if (event.getType() == CommonConstants.TYPE_SUCCESS_EVENT_LOGOUT) {
             AppSharePreference.getAppSharedPreference().saveIsLogin(false);
             AppSharePreference.getAppSharedPreference().saveUserToken("exit");
@@ -162,12 +162,12 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(CheckUpdateEvent event) {
-        LogUtil.i(TAG, "===CheckUpdateEvent===");
+        LogUtil.i(getContext(), TAG, "===CheckUpdateEvent===");
         stopCheckUpdateTimer();
         DialogUtil.hideProgressDialog();
         UpdateApp updateApp = event.getUpdateApp();
-        LogUtil.i(TAG, "isUpdate:" + updateApp.getIsUpdate());
-        LogUtil.i(TAG, "isUpdate:" + updateApp.getApkFileUrl());
+        LogUtil.i(getContext(), TAG, "isUpdate:" + updateApp.getIsUpdate());
+        LogUtil.i(getContext(), TAG, "isUpdate:" + updateApp.getApkFileUrl());
         if (updateApp.getIsUpdate() == 1) {
             isNeedUpdate(updateApp);
         } else {
@@ -233,7 +233,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
                     @Override
                     public void done(File apk) {
-                        LogUtil.i(TAG, "file path:" + apk.getAbsolutePath());
+                        LogUtil.i(getContext(), TAG, "file path:" + apk.getAbsolutePath());
                         downloadDialog.dismiss();
                     }
 

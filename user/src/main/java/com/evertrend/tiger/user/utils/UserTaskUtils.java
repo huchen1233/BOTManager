@@ -31,7 +31,7 @@ public class UserTaskUtils {
                 @Override
                 public void onResponse(JSONObject jsonObject) throws JSONException {
                     try {
-                        LogUtil.i(TAG, jsonObject.getString(CommonNetReq.RESULT_DESC));
+                        LogUtil.d(TAG, jsonObject.getString(CommonNetReq.RESULT_DESC));
                         switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
                             case CommonNetReq.CODE_SUCCESS:
                                 UpdateApp updateApp = new UpdateApp();

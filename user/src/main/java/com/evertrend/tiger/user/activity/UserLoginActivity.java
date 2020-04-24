@@ -121,7 +121,7 @@ public class UserLoginActivity extends AppCompatActivity implements CompoundButt
                     @Override
                     public void onResponse(JSONObject jsonObject) throws JSONException {
                         try {
-                            LogUtil.i(TAG, jsonObject.getString(CommonNetReq.RESULT_DESC));
+                            LogUtil.i(UserLoginActivity.this, TAG, jsonObject.getString(CommonNetReq.RESULT_DESC));
                             switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
                                 case CommonNetReq.CODE_SUCCESS:
                                     loginSuccess(jsonObject.getString(NetReq.RESULT_TOKEN), strAccount);
@@ -157,7 +157,7 @@ public class UserLoginActivity extends AppCompatActivity implements CompoundButt
     }
 
     private void saveAccountAndPass(String strAccount, String strPwd) {
-        LogUtil.i(TAG, "save account and pass");
+        LogUtil.i(this, TAG, "save account and pass");
         if (cb_remember_me.isChecked()) {
             AppSharePreference.getAppSharedPreference().saveRememberMe(true);
             if (!TextUtils.isEmpty(strAccount)) {
@@ -192,7 +192,7 @@ public class UserLoginActivity extends AppCompatActivity implements CompoundButt
     }
 
     private void initAccountAndPass() {
-        LogUtil.i(TAG, "init account and pass");
+        LogUtil.i(this, TAG, "init account and pass");
         if (AppSharePreference.getAppSharedPreference().loadRememberMe()) {
             cb_remember_me.setChecked(true);
             String account = AppSharePreference.getAppSharedPreference().loadaccount();

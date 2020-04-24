@@ -64,7 +64,7 @@ public class UserRegisterActivity extends AppCompatActivity implements View.OnCl
                         @Override
                         public void onResponse(JSONObject jsonObject) throws JSONException {
                             try {
-                                LogUtil.i(TAG, jsonObject.getString(CommonNetReq.RESULT_DESC));
+                                LogUtil.i(UserRegisterActivity.this, TAG, jsonObject.getString(CommonNetReq.RESULT_DESC));
                                 switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)){
                                     case CommonNetReq.CODE_SUCCESS:
                                         et_verification_code.setText(jsonObject.getString(CommonNetReq.RESULT_PIN));//临时调试用
@@ -119,7 +119,7 @@ public class UserRegisterActivity extends AppCompatActivity implements View.OnCl
                     @Override
                     public void onResponse(JSONObject jsonObject) throws JSONException {
                         try {
-                            LogUtil.i(TAG, jsonObject.getString(CommonNetReq.RESULT_DESC));
+                            LogUtil.i(UserRegisterActivity.this, TAG, jsonObject.getString(CommonNetReq.RESULT_DESC));
                             switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
                                 case CommonNetReq.CODE_SUCCESS:
                                     registerSuccess(jsonObject.getString(NetReq.RESULT_TOKEN), strAccount);

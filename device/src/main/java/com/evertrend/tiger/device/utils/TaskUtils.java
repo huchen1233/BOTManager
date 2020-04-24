@@ -28,7 +28,7 @@ public class TaskUtils {
                         @Override
                         public void onResponse(JSONObject jsonObject) throws JSONException {
                             try {
-                                LogUtil.i(TAG, jsonObject.getString(CommonNetReq.RESULT_DESC));
+                                LogUtil.d(TAG, jsonObject.getString(CommonNetReq.RESULT_DESC));
                                 switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
                                     case CommonNetReq.CODE_SUCCESS:
                                         List<Device> deviceList = JsonAnalysisUtil.loadAllDevice(jsonObject.getJSONArray(CommonNetReq.RESULT_DATA));

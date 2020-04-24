@@ -82,7 +82,7 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        LogUtil.i(TAG, "===onCreateView===");
+        LogUtil.i(getContext(), TAG, "===onCreateView===");
         View root = inflater.inflate(R.layout.yl_device_fragment_devices, container, false);
         initView(root);
         EventBus.getDefault().register(this);
@@ -124,20 +124,20 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.ibtn_add_device) {
-            LogUtil.i(TAG, "btn_add_device_by_number");
+             LogUtil.i(getContext(), TAG, "btn_add_device_by_number");
             showInputNumberDialog();
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(ProgressStopEvent event) {
-        LogUtil.i(TAG, "===ProgressStopEvent===");
+         LogUtil.i(getContext(), TAG, "===ProgressStopEvent===");
         stopGetAssociatedDeviceTimer();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(LoadDevicesEvent event) {
-        LogUtil.i(TAG, "===LoadDevicesEvent===");
+         LogUtil.i(getContext(), TAG, "===LoadDevicesEvent===");
         stopGetAssociatedDeviceTimer();
         DialogUtil.hideProgressDialog();
         deviceList.clear();
@@ -149,7 +149,7 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(SuccessEvent event) {
-        LogUtil.i(TAG, "===SuccessEvent===");
+         LogUtil.i(getContext(), TAG, "===SuccessEvent===");
         if (event.getType() == CommonConstants.TYPE_SUCCESS_EVENT_LOGIN) {
             loadDevice();
             tv_login_first.setVisibility(View.GONE);
@@ -209,7 +209,7 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
             }
             if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
                 String result = bundle.getString(CodeUtils.RESULT_STRING);
-                LogUtil.i(TAG, "reg code: " + result);
+                 LogUtil.i(getContext(), TAG, "reg code: " + result);
                 if (!TextUtils.isEmpty(result)) registerDevice(result);
             } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
                 Toast.makeText(getActivity(), "解析二维码失败", Toast.LENGTH_LONG).show();
@@ -266,7 +266,7 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String registerCode = etInput.getText().toString().trim();
-                        LogUtil.i(TAG, "etInput = " + registerCode);
+                         LogUtil.i(getContext(), TAG, "etInput = " + registerCode);
                         if (TextUtils.isEmpty(registerCode)) {
                             Toast.makeText(getActivity(), R.string.yl_device_str_input_empty, Toast.LENGTH_SHORT).show();
                         } else {
@@ -278,7 +278,7 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
                 .setNeutralButton(R.string.yl_device_scan_QR_code_registration, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        LogUtil.i(TAG, "btn_add_device_by_QR");
+                         LogUtil.i(getContext(), TAG, "btn_add_device_by_QR");
                         DevicesFragmentPermissionsDispatcher.mulPermissionWithPermissionCheck(DevicesFragment.this);
 //                        Intent intent = new Intent(getActivity(), CaptureActivity.class);
 //                        startActivityForResult(intent, Constants.SCANNER_QR_CODE_REQUEST_CODE);
@@ -290,7 +290,7 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
 
     private void registerDevice(String registerCode) {
         DialogUtil.showProgressDialog(getActivity(), getResources().getString(R.string.yl_device_registering), false, false);
-        LogUtil.i(TAG, "registerDevice : "+registerCode);
+         LogUtil.i(getContext(), TAG, "registerDevice : "+registerCode);
         HashMap<String, String> map = new HashMap<>();
         map.put(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
         map.put(NetReq.REG_CODE, registerCode);
@@ -313,7 +313,7 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
                                 showTipsDialog(getActivity(), NetReq.ERR_CODE_REGISTER_DEVICE_FAIL);
                                 break;
                             default:
-                                LogUtil.i(TAG, jsonObject.getString(CommonNetReq.RESULT_DESC));
+                                 LogUtil.i(getContext(), TAG, jsonObject.getString(CommonNetReq.RESULT_DESC));
                                 Toast.makeText(getActivity(), jsonObject.getString(CommonNetReq.RESULT_DESC), Toast.LENGTH_SHORT).show();
                                 break;
                         }
@@ -321,7 +321,7 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
                 }, new OKHttpManager.FuncFailure() {
                     @Override
                     public void onFailure() {
-                        LogUtil.i(TAG, "FuncFailure");
+                         LogUtil.i(getContext(), TAG, "FuncFailure");
                     }
                 });
     }

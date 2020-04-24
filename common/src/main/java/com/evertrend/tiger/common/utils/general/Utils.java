@@ -1,11 +1,24 @@
 package com.evertrend.tiger.common.utils.general;
 
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.text.TextUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Utils {
+
+    public static boolean isDebug(Context context) {
+        try {
+            ApplicationInfo info = context.getApplicationInfo();
+            return (info.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
     /**
      * @param phone 字符串类型的手机号
      * 传入手机号,判断后返回

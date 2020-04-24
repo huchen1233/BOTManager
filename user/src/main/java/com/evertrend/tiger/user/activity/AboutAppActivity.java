@@ -77,7 +77,7 @@ public class AboutAppActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(UserOperationItemEvent event) {
-        LogUtil.i(TAG, "===DeviceMessageEvent==="+itemList.get(event.getPosition()).getName());
+        LogUtil.i(this, TAG, "===DeviceMessageEvent==="+itemList.get(event.getPosition()).getName());
     }
 
     private void initView() {
