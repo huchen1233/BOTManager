@@ -167,7 +167,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         DialogUtil.hideProgressDialog();
         UpdateApp updateApp = event.getUpdateApp();
         LogUtil.i(TAG, "isUpdate:" + updateApp.getIsUpdate());
-        LogUtil.i(TAG, "isUpdate:" + updateApp.getUpdateLog());
+        LogUtil.i(TAG, "isUpdate:" + updateApp.getApkFileUrl());
         if (updateApp.getIsUpdate() == 1) {
             isNeedUpdate(updateApp);
         } else {
