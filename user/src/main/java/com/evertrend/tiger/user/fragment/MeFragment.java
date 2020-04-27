@@ -146,6 +146,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         user = event.getUser();
         tv_name.setText(user.getName());
         EventBus.getDefault().post(new SuccessEvent(CommonConstants.TYPE_SUCCESS_EVENT_LOGIN));
+        EventBus.getDefault().removeStickyEvent(event);//收到后移除，避免下次启动还会接收到
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
