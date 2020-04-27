@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="yl_device_type_evbot_sl_detail_info_name">
+        <item>设备状态</item>
+        <item>电池电量</item>
+        <item>充电状态</item>
+        <item>设备运行状态</item>
+    </string-array>
+
+    <string-array name="yl_device_type_evbot_sl_running_info_name">
+    </string-array>
+
+    <string-array name="yl_device_type_swbot_sl_detail_info_name">
+        <item>设备状态</item>
+        <item>电池电量</item>
+        <item>充电状态</item>
+        <item>水箱水位</item>
+        <item>加水状态</item>
+        <item>倾倒垃圾状态</item>
+        <item>设备运行状态</item>
+    </string-array>
+
+    <string-array name="yl_device_type_swbot_sl_running_info_name">
+        <item>主扫状态</item>
+        <item>边扫状态</item>
+        <item>洒水状态</item>
+        <item>警告灯状态</item>
+        <item>前照灯状态</item>
+        <item>左尾灯状态</item>
+        <item>右尾灯状态</item>
+    </string-array>
+
+    <string-array name="yl_device_type_swbot_ap_detail_info_name">
+        <item>设备状态</item>
+        <item>电池电量</item>
+        <item>充电状态</item>
+        <item>水箱水位</item>
+        <item>加水状态</item>
+        <item>倾倒垃圾状态</item>
+        <item>设备运行状态</item>
+    </string-array>
+
+    <string-array name="yl_device_type_swbot_ap_running_info_name">
+        <item>主扫状态</item>
+        <item>边扫状态</item>
+        <item>洒水状态</item>
+        <item>警告灯状态</item>
+        <item>前照灯状态</item>
+        <item>左尾灯状态</item>
+        <item>右尾灯状态</item>
+    </string-array>
+
+    <string-array name="yl_device_type_swbot_mini_detail_info_name">
+        <item>设备状态</item>
+        <item>电池电量</item>
+        <item>充电状态</item>
+        <item>倾倒垃圾状态</item>
+        <item>设备运行状态</item>
+    </string-array>
+
+    <string-array name="yl_device_type_swbot_mini_running_info_name">
+        <item>主扫状态</item>
+        <item>边扫状态</item>
+    </string-array>
+
+    <string-array name="yl_device_type_mfbot_sl_detail_info_name">
+        <item>设备状态</item>
+        <item>电池电量</item>
+        <item>充电状态</item>
+        <item>水箱水位</item>
+        <item>加水状态</item>
+        <item>设备运行状态</item>
+    </string-array>
+
+    <string-array name="yl_device_type_mfbot_sl_running_info_name">
+        <item>主扫状态</item>
+        <item>边扫状态</item>
+        <item>洒水状态</item>
+    </string-array>
+</resources>

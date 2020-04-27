@@ -17,6 +17,7 @@ import com.evertrend.tiger.device.R;
 import com.evertrend.tiger.device.activity.DeviceMainActivity;
 import com.evertrend.tiger.device.bean.Device;
 import com.evertrend.tiger.device.bean.event.DeviceListEvent;
+import com.evertrend.tiger.device.bean.event.DeviceMessageEvent;
 import com.evertrend.tiger.device.utils.Constants;
 
 import org.greenrobot.eventbus.EventBus;
@@ -51,7 +52,7 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.ViewHold
                 Intent intent = new Intent(mContext, DeviceMainActivity.class);
                 intent.putExtra("device", device);
                 mContext.startActivity(intent);
-//                EventBus.getDefault().postSticky(new DeviceMessageEvent(device));
+                EventBus.getDefault().postSticky(new DeviceMessageEvent(device));
                 EventBus.getDefault().postSticky(new DeviceListEvent(mDeviceList));
             }
         });

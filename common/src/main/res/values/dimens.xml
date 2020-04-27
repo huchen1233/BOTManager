@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="yl_common_item_padding">10dp</dimen>
-    <dimen name="yl_common_start_padding">10dp</dimen>
+    <dimen name="yl_common_padding_10">10dp</dimen>
+    <dimen name="yl_common_padding_5">5dp</dimen>
+    <dimen name="yl_common_padding_3">3dp</dimen>
     <dimen name="yl_common_margin_20">20dp</dimen>
     <dimen name="yl_common_margin_10">10dp</dimen>
     <dimen name="yl_common_margin_5">5dp</dimen>

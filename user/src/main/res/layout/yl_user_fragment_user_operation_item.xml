@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:paddingStart="@dimen/yl_common_start_padding"
+        android:paddingStart="@dimen/yl_common_padding_10"
         android:layout_weight="10"/>
 
     <ImageView

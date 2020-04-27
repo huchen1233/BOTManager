@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="yl_device_type_evbot_sl_detail_info_name">
+        <item>device status</item>
+        <item>battery level</item>
+        <item>rechange status</item>
+        <item>device running status</item>
+    </string-array>
+
+    <string-array name="yl_device_type_evbot_sl_running_info_name">
+    </string-array>
+
+    <string-array name="yl_device_type_swbot_sl_detail_info_name">
+        <item>device status</item>
+        <item>battery level</item>
+        <item>rechange status</item>
+        <item>water level</item>
+        <item>add water status</item>
+        <item>empty trash status</item>
+        <item>device running status</item>
+    </string-array>
+
+    <string-array name="yl_device_type_swbot_sl_running_info_name">
+        <item>main sweep</item>
+        <item>side sweep</item>
+        <item>sprinkling water</item>
+        <item>alarm light</item>
+        <item>front light</item>
+        <item>left tail light</item>
+        <item>right tail light</item>
+    </string-array>
+
+    <string-array name="yl_device_type_swbot_ap_detail_info_name">
+        <item>device status</item>
+        <item>battery level</item>
+        <item>rechange status</item>
+        <item>water level</item>
+        <item>add water status</item>
+        <item>empty trash status</item>
+        <item>device running status</item>
+    </string-array>
+
+    <string-array name="yl_device_type_swbot_ap_running_info_name">
+        <item>main sweep</item>
+        <item>side sweep</item>
+        <item>sprinkling water</item>
+        <item>alarm light</item>
+        <item>front light</item>
+        <item>left tail light</item>
+        <item>right tail light</item>
+    </string-array>
+
+    <string-array name="yl_device_type_swbot_mini_detail_info_name">
+        <item>device status</item>
+        <item>battery level</item>
+        <item>rechange status</item>
+        <item>empty trash status</item>
+        <item>device running status</item>
+    </string-array>
+
+    <string-array name="yl_device_type_swbot_mini_running_info_name">
+        <item>main sweep</item>
+        <item>side sweep</item>
+    </string-array>
+
+    <string-array name="yl_device_type_mfbot_sl_detail_info_name">
+        <item>device status</item>
+        <item>battery level</item>
+        <item>rechange status</item>
+        <item>water level</item>
+        <item>add water status</item>
+        <item>device running status</item>
+    </string-array>
+
+    <string-array name="yl_device_type_mfbot_sl_running_info_name">
+        <item>main sweep</item>
+        <item>side sweep</item>
+        <item>sprinkling water</item>
+    </string-array>
+</resources>
