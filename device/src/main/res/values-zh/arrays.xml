@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string-array name="yl_device_clean_task_detail_info">
+        <item>名称: </item>
+        <item>描述: </item>
+        <item>重复: </item>
+        <item>状态: </item>
+        <item>进度: </item>
+        <item>开始时间: </item>
+    </string-array>
+
     <string-array name="yl_device_type_evbot_sl_detail_info_name">
         <item>设备状态</item>
         <item>电池电量</item>

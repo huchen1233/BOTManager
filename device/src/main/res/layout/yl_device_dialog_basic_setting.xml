@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="?android:dividerHorizontal"
+        android:background="@drawable/yl_common_bottom_dialog_backgroud"
+        android:orientation="vertical"
+        android:showDividers="middle">
+
+        <LinearLayout
+            android:id="@+id/ll_config_enable_auto_task"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/yl_device_enable_auto_task"/>
+
+            <CheckBox
+                android:id="@+id/cb_enable_auto_recharge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/yl_device_enable_auto_recharge"/>
+            <CheckBox
+                android:id="@+id/cb_enable_auto_add_water"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/yl_device_enable_auto_add_water"/>
+            <CheckBox
+                android:id="@+id/cb_enable_auto_empty_trash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/yl_device_enable_auto_empty_trash"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_config_battery_low_limit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/yl_device_config_battery_low_limit" />
+
+            <EditText
+                android:id="@+id/et_basic_battery_low_limit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:inputType="number"
+                android:hint="5-20" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_config_water_low_limit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/yl_device_config_water_low_limit" />
+
+            <EditText
+                android:id="@+id/et_basic_water_low_limit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="1-5" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_config_empty_trash_interval"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/yl_device_config_empty_trash_interval" />
+
+            <EditText
+                android:id="@+id/et_basic_empty_trash_interval"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:inputType="number"
+                android:hint="60-240" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/yl_common_button_background"
+            android:text="@string/yl_common_submit" />
+
+    </LinearLayout>
+
+</LinearLayout>

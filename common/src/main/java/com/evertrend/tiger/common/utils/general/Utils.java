@@ -9,6 +9,19 @@ import java.util.regex.Pattern;
 
 public class Utils {
 
+    /**
+     * 获取当前时间戳
+     * @return 当前时间戳
+     */
+    public static String getTimeStame() {
+        //获取当前的毫秒值
+        long time = System.currentTimeMillis();
+        //将毫秒值转换为String类型数据
+        String time_stamp = String.valueOf(time);
+        //返回出去
+        return time_stamp;
+    }
+
     public static boolean isDebug(Context context) {
         try {
             ApplicationInfo info = context.getApplicationInfo();

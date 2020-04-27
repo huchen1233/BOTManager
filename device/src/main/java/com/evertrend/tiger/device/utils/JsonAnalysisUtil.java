@@ -2,12 +2,38 @@ package com.evertrend.tiger.device.utils;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.evertrend.tiger.device.bean.CleanTask;
 import com.evertrend.tiger.device.bean.Device;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class JsonAnalysisUtil {
+
+    public static CleanTask getCleanTask(JSONObject jsonObject) {
+        CleanTask cleanTask = new CleanTask();
+        cleanTask.setId(jsonObject.getIntValue(Constants.ID));
+        cleanTask.setName(jsonObject.getString(Constants.NAME));
+        cleanTask.setDevice(jsonObject.getIntValue(Constants.DEVICE));
+        cleanTask.setMapPage(jsonObject.getIntValue(Constants.MAP_PAGE));
+        cleanTask.setTaskPriority(jsonObject.getIntValue(Constants.PRIORITY));
+        cleanTask.setDesc(jsonObject.getString(Constants.DESCRIPTION));
+        cleanTask.setTracePaths(jsonObject.getString(Constants.TRACE_PATH));
+        cleanTask.setTaskPriority(jsonObject.getIntValue(Constants.TRACE_PATH_PRIORITY));
+        cleanTask.setVirtualTrackGroups(jsonObject.getString(Constants.VIRTUAL_TRACK));
+        cleanTask.setVirtualTrackGroupsPriority(jsonObject.getIntValue(Constants.VIRTUAL_TRACK_PRIORITY));
+        cleanTask.setSpecialWorks(jsonObject.getString(Constants.SPE_WROK));
+        cleanTask.setSpecialWorksPriority(jsonObject.getIntValue(Constants.SPE_WROK_PRIORITY));
+        cleanTask.setStartTime(formatStartTime(jsonObject.getLongValue(Constants.START_TIME)));
+        cleanTask.setTaskOption(jsonObject.getIntValue(Constants.EXEC_FLAG));
+        cleanTask.setEst_end_time(jsonObject.getString(Constants.EST_END_TIME));
+        cleanTask.setEst_consume_time(jsonObject.getString(Constants.EST_CONSUME_TIME));
+        cleanTask.setRun_once(jsonObject.getIntValue(Constants.RUN_ONCE));
+        cleanTask.setTaskType(jsonObject.getIntValue(Constants.TASK_TYPE));
+        return cleanTask;
+    }
+
     public static List<Device> loadAllDevice(JSONArray devices) {
         List<Device> deviceLists = new ArrayList<>();
         for (int i = 0; i < devices.size(); i++) {
@@ -126,5 +152,48 @@ public class JsonAnalysisUtil {
         device.setEnable_auto_add_water(jsonObject.getIntValue(Constants.ENABLE_AUTO_ADD_WATER));
         device.setEnable_auto_empty_trash(jsonObject.getIntValue(Constants.ENABLE_AUTO_EMPTY_TRASH));
         return device;
+    }
+
+    public static List<CleanTask> loadAllCLeanTask(JSONArray jsonArray) {
+        List<CleanTask> cleanTaskList = new ArrayList<>();
+        if (jsonArray.size() > 0) {
+            for (int i = 0; i < jsonArray.size(); i++) {
+                CleanTask cleanTask = new CleanTask();
+                cleanTask.setId(jsonArray.getJSONObject(i).getIntValue(Constants.ID));
+                cleanTask.setName(jsonArray.getJSONObject(i).getString(Constants.NAME));
+                cleanTask.setDevice(jsonArray.getJSONObject(i).getIntValue(Constants.DEVICE));
+                cleanTask.setMapPage(jsonArray.getJSONObject(i).getIntValue(Constants.MAP_PAGE));
+                cleanTask.setTaskPriority(jsonArray.getJSONObject(i).getIntValue(Constants.PRIORITY));
+                cleanTask.setDesc(jsonArray.getJSONObject(i).getString(Constants.DESCRIPTION));
+                cleanTask.setTracePaths(jsonArray.getJSONObject(i).getString(Constants.TRACE_PATH));
+                cleanTask.setTaskPriority(jsonArray.getJSONObject(i).getIntValue(Constants.TRACE_PATH_PRIORITY));
+                cleanTask.setVirtualTrackGroups(jsonArray.getJSONObject(i).getString(Constants.VIRTUAL_TRACK));
+                cleanTask.setVirtualTrackGroupsPriority(jsonArray.getJSONObject(i).getIntValue(Constants.VIRTUAL_TRACK_PRIORITY));
+                cleanTask.setSpecialWorks(jsonArray.getJSONObject(i).getString(Constants.SPE_WROK));
+                cleanTask.setSpecialWorksPriority(jsonArray.getJSONObject(i).getIntValue(Constants.SPE_WROK_PRIORITY));
+                cleanTask.setStartTime(formatStartTime(jsonArray.getJSONObject(i).getLongValue(Constants.START_TIME)));
+                cleanTask.setTaskOption(jsonArray.getJSONObject(i).getIntValue(Constants.EXEC_FLAG));
+                cleanTask.setEst_end_time(jsonArray.getJSONObject(i).getString(Constants.EST_END_TIME));
+                cleanTask.setEst_consume_time(jsonArray.getJSONObject(i).getString(Constants.EST_CONSUME_TIME));
+                cleanTask.setRun_once(jsonArray.getJSONObject(i).getIntValue(Constants.RUN_ONCE));
+                cleanTask.setTaskType(jsonArray.getJSONObject(i).getIntValue(Constants.TASK_TYPE));
+                cleanTaskList.add(cleanTask);
+            }
+        }
+        return cleanTaskList;
+    }
+
+    private static String formatStartTime(long intValue) {
+        Calendar beginC = Calendar.getInstance();
+        beginC.setTimeInMillis(intValue*1000);
+        int hourB = beginC.get(Calendar.HOUR_OF_DAY);
+        int minuteB = beginC.get(Calendar.MINUTE);
+        String strStartTime;
+        if (minuteB < 10) {
+            strStartTime = hourB + ":0" + minuteB;
+        } else {
+            strStartTime = hourB + ":" + minuteB;
+        }
+        return strStartTime;
     }
 }

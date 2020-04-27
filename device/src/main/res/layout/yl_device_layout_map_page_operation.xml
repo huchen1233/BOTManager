@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/popup_bg_color_blue">
+
+    <Button
+        android:id="@+id/btn_map_page_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/yl_common_button_background"
+        android:layout_margin="5dp"
+        android:text="@string/yl_device_delete_mappage"/>
+
+    <Button
+        android:id="@+id/btn_map_page_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@drawable/yl_common_button_background"
+        android:text="@string/yl_device_edit_mappage"/>
+
+    <Button
+        android:id="@+id/btn_map_page_trace_path"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@drawable/yl_common_button_background"
+        android:text="@string/yl_device_trace_path"/>
+
+    <Button
+        android:id="@+id/btn_map_page_virtual_track_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@drawable/yl_common_button_background"
+        android:text="@string/yl_device_virtual_tracks"/>
+
+</LinearLayout>

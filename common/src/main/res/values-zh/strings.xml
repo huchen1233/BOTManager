@@ -13,4 +13,7 @@
     <string name="yl_common_device_has_been_registered">设备已经注册</string>
     <string name="yl_common_register_device_fail">注册设备失败</string>
     <string name="yl_common_success">成功</string>
+    <string name="yl_common_submit">提交</string>
+    <string name="yl_common_saving">正在保存...</string>
+    <string name="yl_common_deleting">正在删除...</string>
 </resources>

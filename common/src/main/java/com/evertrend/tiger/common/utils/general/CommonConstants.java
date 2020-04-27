@@ -4,4 +4,5 @@ public class CommonConstants {
 
     public static final int TYPE_SUCCESS_EVENT_LOGIN = 1;
     public static final int TYPE_SUCCESS_EVENT_LOGOUT = 2;
+    public static final int TYPE_SUCCESS_EVENT_DELETE_CLEANTASK = 3;
 }

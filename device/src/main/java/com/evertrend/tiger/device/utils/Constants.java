@@ -60,6 +60,26 @@ public class Constants {
     public static final String ENABLE_AUTO_RECHARGE = "enable_auto_recharge";
     public static final String ENABLE_AUTO_ADD_WATER = "enable_auto_add_water";
     public static final String ENABLE_AUTO_EMPTY_TRASH = "enable_auto_empty_trash";
+    public static final String NAME = "name";
+    public static final String DESC = "desc";
+    public static final String DEVICE = "device";
+    public static final String FLAG = "flag";
+    public static final String NUMBER = "number";
+    public static final String MAP_PAGE = "map_page";
+    public static final String SPOT_FLAG = "spot_flag";
+    public static final String PRIORITY = "priority";
+    public static final String TRACE_PATH = "trace_path";
+    public static final String TRACE_PATH_PRIORITY = "trace_path_priority";
+    public static final String VIRTUAL_TRACK = "virtual_track";
+    public static final String VIRTUAL_TRACK_PRIORITY = "virtual_track_priority";
+    public static final String SPE_WROK = "spe_wrok";
+    public static final String SPE_WROK_PRIORITY = "spe_wrok_priority";
+    public static final String START_TIME = "start_time";
+    public static final String EXEC_FLAG = "exec_flag";
+    public static final String EST_END_TIME = "est_end_time";
+    public static final String EST_CONSUME_TIME = "est_consume_time";
+    public static final String RUN_ONCE = "run_once";
+    public static final String TASK_TYPE = "task_type";
 
     public static final String DEVICE_TYPE_EVBOT_SL = "1";//EVBOT-SL(服务机器人-SL)
     public static final String DEVICE_TYPE_SWBOT_SL = "2";//SWBOT-SL(扫地机器人-SL)
@@ -69,4 +89,47 @@ public class Constants {
     public static final int SCANNER_QR_CODE_REQUEST_CODE = 100;
 
     public static final int GET_DEVICE_TIME_INTERVAL = 60;//秒
+
+    public static final int TYPE_TRACE_PATH_OPERATION_SAVE_SPOT = 0;
+    public static final int TYPE_TRACE_PATH_OPERATION_SHOW_PATH = 1;
+
+    public static final int TYPE_DELETE_ALL_VIRTUAL_WALL = 0;
+    public static final int TYPE_DELETE_ALL_VIRTUAL_TRACK = 1;
+
+    public static final int TYPE_ADD_VIRTUAL_WALL = 0;
+    public static final int TYPE_DELETE_VIRTUAL_WALL = 1;
+    public static final int TYPE_MOVE_VIRTUAL_WALL = 2;
+    public static final int TYPE_MOVE_VIRTUAL_WALL_START = 0;
+    public static final int TYPE_MOVE_VIRTUAL_WALL_END = 1;
+
+    public static final int TYPE_ADD_VIRTUAL_TRACK = 0;
+    public static final int TYPE_DELETE_VIRTUAL_TRACK = 1;
+    public static final int TYPE_MOVE_VIRTUAL_TRACK = 2;
+    public static final int TYPE_MOVE_VIRTUAL_TRACK_START = 0;
+    public static final int TYPE_MOVE_VIRTUAL_TRACK_END = 1;
+
+    public static final int TYPE_EXEC_FLAG_ONLY_ONCE = 1;
+    public static final int TYPE_EXEC_FLAG_EVERYDAY = 2;
+    public static final int TYPE_EXEC_FLAG_INFINITE_CYCLE = 3;
+
+    public static final int TASK_TYPE_TRACE_PATH = 1;
+    public static final int TASK_TYPE_VIRTUAL_TRACK = 2;
+    public static final int TASK_TYPE_SPE_WORK = 3;
+
+    public static final int TYPE_MAPPAGE_OPERATION_OPEN = 0;
+    public static final int TYPE_MAPPAGE_OPERATION_DELETE = 1;
+    public static final int TYPE_MAPPAGE_OPERATION_EDIT = 2;
+    public static final int TYPE_MAPPAGE_OPERATION_TRACE_PATH = 3;
+    public static final int TYPE_MAPPAGE_OPERATION_VIRTUAL_TRACK = 4;
+    public static final int TYPE_MAPPAGE_OPERATION_CREATE_TASK_CHOICE = 5;
+
+    public static final int LIST_OPERATION_UPDATE = 1;
+    public static final int LIST_OPERATION_CREATE = 2;
+    public static final int LIST_OPERATION_DELETE = 3;
+
+    public static final int BASE_TRACE_OPERATION_CHOICE = 1;
+    public static final int BASE_TRACE_OPERATION_EDIT = 2;
+
+    public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    public static final DecimalFormat df = new DecimalFormat("######0.00");
 }

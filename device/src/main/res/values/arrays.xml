@@ -1,5 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string-array name="yl_device_clean_task_operation">
+        <item>@string/yl_device_delete_task</item>
+        <item>@string/yl_device_update_task</item>
+    </string-array>
+
+    <string-array name="yl_device_map_page_operation">
+        <item>@string/yl_device_delete_mappage</item>
+        <item>@string/yl_device_edit_mappage</item>
+        <item>@string/yl_device_trace_path</item>
+        <item>@string/yl_device_virtual_track_group</item>
+    </string-array>
+
+    <string-array name="yl_device_clean_task_detail_info">
+        <item>name: </item>
+        <item>desc: </item>
+        <item>repeat: </item>
+        <item>status: </item>
+        <item>progress: </item>
+        <item>start time: </item>
+    </string-array>
+
     <string-array name="yl_device_type_evbot_sl_detail_info_name">
         <item>device status</item>
         <item>battery level</item>

@@ -44,4 +44,5 @@ dependencies {
     api 'org.greenrobot:eventbus:3.2.0'
     api 'cn.yipianfengye.android:zxing-library:2.2'
     api 'org.litepal.android:java:3.0.0'
+    api 'com.lxj:xpopup:1.8.12'
 }
