@@ -9,11 +9,14 @@
         android:supportsRtl="true"
         android:theme="@style/yl_common_AppTheme">
         
-        <activity android:name="com.evertrend.tiger.user.activity.UserRegisterActivity">
+        <activity android:name="com.evertrend.tiger.user.activity.UserRegisterActivity"
+            android:label="@string/yl_user_register">
         </activity>
-        <activity android:name="com.evertrend.tiger.user.activity.UserLoginActivity">
+        <activity android:name="com.evertrend.tiger.user.activity.UserLoginActivity"
+            android:label="@string/yl_user_login">
         </activity>
-        <activity android:name="com.evertrend.tiger.user.activity.UserPINLoginActivity">
+        <activity android:name="com.evertrend.tiger.user.activity.UserPINLoginActivity"
+            android:label="@string/yl_user_pin_login">
         </activity>
         <activity android:name="com.evertrend.tiger.user.activity.AboutAppActivity"
             android:label="@string/yl_user_about_app">
