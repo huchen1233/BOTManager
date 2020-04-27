@@ -26,7 +26,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_launcher"
-            android:layout_marginTop="@dimen/yl_common_top_margin_5"/>
+            android:layout_marginTop="@dimen/yl_common_margin_5"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rlv_about_app"
@@ -35,7 +35,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_version"
-            android:layout_marginTop="@dimen/yl_common_top_margin_10"/>
+            android:layout_marginTop="@dimen/yl_common_margin_10"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

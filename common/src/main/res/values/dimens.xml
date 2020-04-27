@@ -2,7 +2,7 @@
 <resources>
     <dimen name="yl_common_item_padding">10dp</dimen>
     <dimen name="yl_common_start_padding">10dp</dimen>
-    <dimen name="yl_common_top_margin_20">20dp</dimen>
-    <dimen name="yl_common_top_margin_10">10dp</dimen>
-    <dimen name="yl_common_top_margin_5">5dp</dimen>
+    <dimen name="yl_common_margin_20">20dp</dimen>
+    <dimen name="yl_common_margin_10">10dp</dimen>
+    <dimen name="yl_common_margin_5">5dp</dimen>
 </resources>

@@ -29,6 +29,6 @@
         android:id="@+id/rlv_user_operation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/yl_common_top_margin_20"/>
+        android:layout_marginTop="@dimen/yl_common_margin_20"/>
 
 </LinearLayout>

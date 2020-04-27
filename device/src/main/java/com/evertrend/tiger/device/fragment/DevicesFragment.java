@@ -18,7 +18,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -242,7 +241,7 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rlv_devices.setLayoutManager(layoutManager);
         //添加Android自带的分割线
-        rlv_devices.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+//        rlv_devices.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         devicesAdapter = new DevicesAdapter(getActivity(), deviceList);
         rlv_devices.setAdapter(devicesAdapter);
     }

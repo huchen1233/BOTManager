@@ -5,4 +5,5 @@
     <color name="yl_common_colorAccent">#03DAC5</color>
     <color name="yl_common_color_white">#FFFFFF</color>
     <color name="yl_common_color_blue">#0000FF</color>
+    <color name="yl_common_block_bg_color">#FAFAD2</color>
 </resources>
