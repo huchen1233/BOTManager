@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_devices_status"
+        android:enabled="true"
+        android:icon="@drawable/yl_device_ic_status_black_24dp"
+        android:title="@string/yl_device_status"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_devices_task"
+        android:enabled="true"
+        android:icon="@drawable/yl_device_ic_task_black_24dp"
+        android:title="@string/yl_device_task"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_devices_mappage"
+        android:enabled="true"
+        android:icon="@drawable/yl_device_ic_map_black_24dp"
+        android:title="@string/yl_device_mappage"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_devices_operation"
+        android:enabled="true"
+        android:icon="@drawable/yl_device_ic_operation_black_24dp"
+        android:title="@string/yl_device_operation"
+        app:showAsAction="ifRoom" />
+</menu>

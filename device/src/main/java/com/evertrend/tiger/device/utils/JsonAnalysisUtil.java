@@ -1,6 +1,7 @@
 package com.evertrend.tiger.device.utils;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.evertrend.tiger.device.bean.Device;
 
 import java.util.ArrayList;
@@ -59,8 +60,71 @@ public class JsonAnalysisUtil {
             device.setVibrating_dust_status(devices.getJSONObject(i).getIntValue(Constants.VIBRATING_DUST_STATUS));
             device.setMotor_release_status(devices.getJSONObject(i).getIntValue(Constants.MOTOR_RELEASE_STATUS));
             device.setEmergency_stop_status(devices.getJSONObject(i).getIntValue(Constants.EMERGENCY_STOP_STATUS));
+            device.setSet_current_task(devices.getJSONObject(i).getIntValue(Constants.SET_CURRENT_TASK));
+            device.setCurrent_virtaul_track_group(devices.getJSONObject(i).getIntValue(Constants.CURRENT_VIRTAUL_TRACK_GROUP));
+            device.setEnable_auto_recharge(devices.getJSONObject(i).getIntValue(Constants.ENABLE_AUTO_RECHARGE));
+            device.setEnable_auto_add_water(devices.getJSONObject(i).getIntValue(Constants.ENABLE_AUTO_ADD_WATER));
+            device.setEnable_auto_empty_trash(devices.getJSONObject(i).getIntValue(Constants.ENABLE_AUTO_EMPTY_TRASH));
             deviceLists.add(device);
         }
         return deviceLists;
+    }
+
+    public static Device getDevice(JSONObject jsonObject) {
+        Device device = new Device();
+        device.setId(jsonObject.getIntValue(Constants.ID));
+        device.setDescription(jsonObject.getString(Constants.DESCRIPTION));
+        device.setStatus(jsonObject.getIntValue(Constants.STATUS));
+        device.setDevice_type(jsonObject.getString(Constants.DEVICE_TYPE));
+        device.setDevice_id(jsonObject.getString(Constants.DEVICE_ID));
+        device.setCreate_time(jsonObject.getLongValue(Constants.CREATE_TIME));
+        device.setDevice_ip(jsonObject.getString(Constants.DEVICE_IP));
+        device.setBattery_level(jsonObject.getString(Constants.BATTERY_LEVEL));
+        device.setIs_recharge(jsonObject.getIntValue(Constants.IS_RECHARGE));
+        device.setWater_level(jsonObject.getString(Constants.WATER_LEVEL));
+        device.setIs_adding_water(jsonObject.getIntValue(Constants.IS_ADDING_WATER));
+        device.setIs_emptying_trash(jsonObject.getIntValue(Constants.IS_EMPTYING_TRASH));
+        device.setIs_running(jsonObject.getIntValue(Constants.DEVICE_STATUS));
+        device.setMain_sweep_status(jsonObject.getIntValue(Constants.MAIN_SWEEP_STATUS));
+        device.setSide_sweep_status(jsonObject.getIntValue(Constants.SIDE_SWEEP_STATUS));
+        device.setSprinkling_water_status(jsonObject.getIntValue(Constants.SPRINKLING_WATER_STATUS));
+        device.setAlarm_light_status(jsonObject.getIntValue(Constants.ALARM_LIGHT_STATUS));
+        device.setFront_light_status(jsonObject.getIntValue(Constants.FRONT_LIGHT_STATUS));
+        device.setTail_light_status(jsonObject.getIntValue(Constants.TAIL_LIGHT_STATUS));
+        device.setLeft_tail_light_status(jsonObject.getIntValue(Constants.LEFT_TAIL_LIGHT_STATUS));
+        device.setRight_tail_light_status(jsonObject.getIntValue(Constants.RIGHT_TAIL_LIGHT_STATUS));
+        device.setLatitude(jsonObject.getDoubleValue(Constants.LATITUDE));
+        device.setLongitude(jsonObject.getDoubleValue(Constants.LONGITUDE));
+        device.setClean_mode(jsonObject.getString(Constants.CLEAN_MODE));
+        device.setWork_mode(jsonObject.getString(Constants.WORK_MODE));
+        device.setCurrent_trace_path_id(jsonObject.getIntValue(Constants.CURRENT_TRACE_PATH_ID));
+        device.setDelete_trace_path(jsonObject.getString(Constants.DELETE_TRACE_PATH));
+        device.setLocal_ins_ip(jsonObject.getString(Constants.LOCAL_INS_IP));
+        device.setLocal_chassis_ip(jsonObject.getString(Constants.LOCAL_CHASSIS_IP));
+        device.setLocal_camera_ip(jsonObject.getString(Constants.LOCAL_CAMERA_IP));
+        device.setIs_created_map(jsonObject.getIntValue(Constants.IS_CREATED_MAP));
+        device.setSave_map(jsonObject.getIntValue(Constants.SAVE_MAP));
+        device.setCurrent_map_page(jsonObject.getIntValue(Constants.CURRENT_MAP_PAGE));
+        device.setBattery_low_limit(jsonObject.getIntValue(Constants.BATTERY_LOW_LIMIT));
+        device.setWater_low_limit(jsonObject.getIntValue(Constants.WATER_LOW_LIMIT));
+        device.setEmpty_trash_interval(jsonObject.getIntValue(Constants.EMPTY_TRASH_INTERVAL));
+        device.setIs_timing_path(jsonObject.getIntValue(Constants.IS_TIMING_PATH));
+        device.setTiming_start_1(jsonObject.getIntValue(Constants.TIMING_START_1));
+        device.setTiming_start_2(jsonObject.getIntValue(Constants.TIMING_START_2));
+        device.setTiming_start_3(jsonObject.getIntValue(Constants.TIMING_START_3));
+        device.setTiming_end_1(jsonObject.getIntValue(Constants.TIMING_END_1));
+        device.setTiming_end_2(jsonObject.getIntValue(Constants.TIMING_END_2));
+        device.setTiming_end_3(jsonObject.getIntValue(Constants.TIMING_END_3));
+        device.setHorn_status(jsonObject.getIntValue(Constants.HORN_STATUS));
+        device.setSuck_fan_status(jsonObject.getIntValue(Constants.SUCK_FAN_STATUS));
+        device.setVibrating_dust_status(jsonObject.getIntValue(Constants.VIBRATING_DUST_STATUS));
+        device.setMotor_release_status(jsonObject.getIntValue(Constants.MOTOR_RELEASE_STATUS));
+        device.setEmergency_stop_status(jsonObject.getIntValue(Constants.EMERGENCY_STOP_STATUS));
+        device.setSet_current_task(jsonObject.getIntValue(Constants.SET_CURRENT_TASK));
+        device.setCurrent_virtaul_track_group(jsonObject.getIntValue(Constants.CURRENT_VIRTAUL_TRACK_GROUP));
+        device.setEnable_auto_recharge(jsonObject.getIntValue(Constants.ENABLE_AUTO_RECHARGE));
+        device.setEnable_auto_add_water(jsonObject.getIntValue(Constants.ENABLE_AUTO_ADD_WATER));
+        device.setEnable_auto_empty_trash(jsonObject.getIntValue(Constants.ENABLE_AUTO_EMPTY_TRASH));
+        return device;
     }
 }

@@ -16,4 +16,7 @@
     <string name="yl_device_permission_vibrate_denied">Vibration permission has been denied, you will not be able to use the scanning function</string>
     <string name="yl_device_permission_vibrate_neverask">You have refused to allow the program to use the vibration permission. If you need to, please open it in the settings</string>
     <string name="yl_device_login_first">请先登录</string>
+    <string name="yl_device_task">task</string>
+    <string name="yl_device_mappage">map</string>
+    <string name="yl_device_operation">operation</string>
 </resources>

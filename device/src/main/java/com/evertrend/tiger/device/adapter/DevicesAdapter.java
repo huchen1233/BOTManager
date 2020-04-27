@@ -1,6 +1,7 @@
 package com.evertrend.tiger.device.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +14,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.evertrend.tiger.device.R;
+import com.evertrend.tiger.device.activity.DeviceMainActivity;
 import com.evertrend.tiger.device.bean.Device;
+import com.evertrend.tiger.device.bean.event.DeviceListEvent;
 import com.evertrend.tiger.device.utils.Constants;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -43,11 +48,11 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.ViewHold
             public void onClick(View v) {
                 Device device = mDeviceList.get(viewHolder.getAdapterPosition());
                 Toast.makeText(mContext, device.getDescription(), Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(mContext, MainActivity.class);
-//                intent.putExtra("device", device);
-//                mContext.startActivity(intent);
+                Intent intent = new Intent(mContext, DeviceMainActivity.class);
+                intent.putExtra("device", device);
+                mContext.startActivity(intent);
 //                EventBus.getDefault().postSticky(new DeviceMessageEvent(device));
-//                EventBus.getDefault().postSticky(new DeviceListEvent(mDeviceList));
+                EventBus.getDefault().postSticky(new DeviceListEvent(mDeviceList));
             }
         });
         return viewHolder;

@@ -52,6 +52,43 @@ public class Device implements Serializable {
     private int timing_end_2;
     private int timing_start_3;
     private int timing_end_3;
+    private int set_current_task;//当前执行的任务
+    private int current_virtaul_track_group;//当前虚拟轨道组
+    private int enable_auto_recharge;
+    private int enable_auto_add_water;
+    private int enable_auto_empty_trash;
+
+    public int getEnable_auto_recharge() {
+        return enable_auto_recharge;
+    }
+
+    public void setEnable_auto_recharge(int enable_auto_recharge) {
+        this.enable_auto_recharge = enable_auto_recharge;
+    }
+
+    public int getEnable_auto_add_water() {
+        return enable_auto_add_water;
+    }
+
+    public void setEnable_auto_add_water(int enable_auto_add_water) {
+        this.enable_auto_add_water = enable_auto_add_water;
+    }
+
+    public int getEnable_auto_empty_trash() {
+        return enable_auto_empty_trash;
+    }
+
+    public void setEnable_auto_empty_trash(int enable_auto_empty_trash) {
+        this.enable_auto_empty_trash = enable_auto_empty_trash;
+    }
+
+    public int getCurrent_virtaul_track_group() {
+        return current_virtaul_track_group;
+    }
+
+    public void setCurrent_virtaul_track_group(int current_virtaul_track_group) {
+        this.current_virtaul_track_group = current_virtaul_track_group;
+    }
 
     public int getId() {
         return id;
@@ -474,6 +511,14 @@ public class Device implements Serializable {
         this.owner_user_id = owner_user_id;
     }
 
+    public int getSet_current_task() {
+        return set_current_task;
+    }
+
+    public void setSet_current_task(int set_current_task) {
+        this.set_current_task = set_current_task;
+    }
+
     @Override
     public String toString() {
         return "Device{" +
@@ -526,6 +571,11 @@ public class Device implements Serializable {
                 ", timing_end_2=" + timing_end_2 +
                 ", timing_start_3=" + timing_start_3 +
                 ", timing_end_3=" + timing_end_3 +
+                ", set_current_task=" + set_current_task +
+                ", current_virtaul_track_group=" + current_virtaul_track_group +
+                ", enable_auto_recharge=" + enable_auto_recharge +
+                ", enable_auto_add_water=" + enable_auto_add_water +
+                ", enable_auto_empty_trash=" + enable_auto_empty_trash +
                 '}';
     }
 }

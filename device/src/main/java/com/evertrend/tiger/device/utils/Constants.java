@@ -55,6 +55,11 @@ public class Constants {
     public static final String TIMING_END_1 = "timing_end_1";
     public static final String TIMING_END_2 = "timing_end_2";
     public static final String TIMING_END_3 = "timing_end_3";
+    public static final String SET_CURRENT_TASK = "set_current_task";
+    public static final String CURRENT_VIRTAUL_TRACK_GROUP = "current_virtaul_track_group";
+    public static final String ENABLE_AUTO_RECHARGE = "enable_auto_recharge";
+    public static final String ENABLE_AUTO_ADD_WATER = "enable_auto_add_water";
+    public static final String ENABLE_AUTO_EMPTY_TRASH = "enable_auto_empty_trash";
 
     public static final String DEVICE_TYPE_EVBOT_SL = "1";//EVBOT-SL(服务机器人-SL)
     public static final String DEVICE_TYPE_SWBOT_SL = "2";//SWBOT-SL(扫地机器人-SL)
@@ -62,4 +67,6 @@ public class Constants {
     public static final String DEVICE_TYPE_SWBOT_MINI = "4";//SWBOT-SL(扫地机器人-MINI)
     public static final String DEVICE_TYPE_MFBOT_SL = "5";//MFBOT-SL(拖地机器人-SL)
     public static final int SCANNER_QR_CODE_REQUEST_CODE = 100;
+
+    public static final int GET_DEVICE_TIME_INTERVAL = 60;//秒
 }
