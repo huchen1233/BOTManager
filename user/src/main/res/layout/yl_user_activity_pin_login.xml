@@ -64,6 +64,8 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginTop="20dp"
+            android:background="@drawable/yl_common_btn_bg_round_click"
+            android:textColor="@drawable/yl_common_btn_click_text_color"
             android:gravity="center"
             android:text="@string/yl_user_login"/>
 
