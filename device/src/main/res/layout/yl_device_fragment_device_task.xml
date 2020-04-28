@@ -12,11 +12,10 @@
             android:id="@+id/cl_show_clean_task"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="visible"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="5dp"
-            android:background="@drawable/yl_common_block_background"
-            android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -27,7 +26,8 @@
                 android:text="@string/yl_device_clean_task"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/iv_create_clean_task"/>
 
             <ImageView
                 android:id="@+id/iv_create_clean_task"
@@ -41,7 +41,7 @@
                 android:id="@+id/rlv_clean_task"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/yl_common_margin_5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_clean_task_label" />
 
@@ -54,8 +54,7 @@
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="5dp"
-            android:background="@drawable/yl_common_block_background"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="@id/cl_show_clean_task"
             app:layout_constraintTop_toBottomOf="@id/cl_show_clean_task">
 
@@ -66,7 +65,8 @@
                 android:text="@string/yl_device_patrol_task"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/iv_create_patrol_task"/>
 
             <ImageView
                 android:id="@+id/iv_create_patrol_task"

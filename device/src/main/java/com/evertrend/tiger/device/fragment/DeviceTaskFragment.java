@@ -196,7 +196,7 @@ public class DeviceTaskFragment extends BaseFragment implements View.OnClickList
         rlv_clean_task.setItemAnimator(new DefaultItemAnimator());
         rlv_clean_task.setLayoutManager(new LinearLayoutManager(getContext()));
         //添加Android自带的分割线
-        rlv_clean_task.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+//        rlv_clean_task.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         cleanTaskReclyViewAdapter = new CleanTaskReclyViewAdapter(getContext(), cleanTaskList);
         rlv_clean_task.setAdapter(cleanTaskReclyViewAdapter);
     }
@@ -247,8 +247,9 @@ public class DeviceTaskFragment extends BaseFragment implements View.OnClickList
     private void refreshCleanTaskList(CleanTask cleanTask, String operation) {
         if (operation.equals("create")) {
             cleanTaskList.add(cleanTask);
-            cleanTaskReclyViewAdapter.notifyItemInserted(cleanTaskList.size()-1);
-            rlv_clean_task.smoothScrollToPosition(cleanTaskList.size()-1);
+            cleanTaskReclyViewAdapter.notifyDataSetChanged();
+//            cleanTaskReclyViewAdapter.notifyItemInserted(cleanTaskList.size()-1);
+//            rlv_clean_task.smoothScrollToPosition(cleanTaskList.size()-1);
         } else {
             for (int i = 0; i < cleanTaskList.size(); i++) {
                 if (cleanTask.getId() == cleanTaskList.get(i).getId()) {

@@ -93,6 +93,11 @@ public class CleanTaskReclyViewAdapter extends  RecyclerView.Adapter<CleanTaskRe
             holder.cleanTaskDesc.setText(cleanTask.getDesc());
             holder.cleanTaskDesc.setVisibility(View.VISIBLE);
         }
+        if (cleanTask.getId()%2 == 0) {
+            holder.cleanTaskExecStatus.setText(R.string.yl_device_in_progress);
+        } else {
+            holder.cleanTaskExecStatus.setText(R.string.yl_device_not_started_yet);
+        }
         switch (cleanTask.getTaskType()) {
             case Constants.TASK_TYPE_TRACE_PATH:
                 holder.cleanTaskImage.setImageResource(R.drawable.yl_device_task_trace_path_orange_72dp);
