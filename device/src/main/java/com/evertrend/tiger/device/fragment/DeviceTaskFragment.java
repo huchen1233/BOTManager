@@ -1,6 +1,5 @@
 package com.evertrend.tiger.device.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +38,7 @@ import com.evertrend.tiger.device.bean.event.SaveBasicConfigEvent;
 import com.evertrend.tiger.device.bean.event.SaveCleanTaskSuccessEvent;
 import com.evertrend.tiger.device.bean.event.SpinnerChoiceDeviceMessageEvent;
 import com.evertrend.tiger.device.utils.Constants;
+import com.evertrend.tiger.device.utils.ScheduledThreadUtils;
 import com.evertrend.tiger.device.utils.TaskUtils;
 import com.evertrend.tiger.device.widget.BasicSettingBottomPopupView;
 import com.evertrend.tiger.device.widget.CleanTaskBottomPopupView;
@@ -72,7 +72,6 @@ public class DeviceTaskFragment extends BaseFragment implements View.OnClickList
 
     private AlertDialog mapPagesChoiceDialog;
 
-    private ScheduledThreadPoolExecutor scheduledThreadGetAllMapPages;
     private ScheduledThreadPoolExecutor scheduledThreadGetAllCleanTasks;
     private ScheduledThreadPoolExecutor scheduledThreadDeleteCleanTask;
 
@@ -106,7 +105,7 @@ public class DeviceTaskFragment extends BaseFragment implements View.OnClickList
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onMessageEvent(SpinnerChoiceDeviceMessageEvent messageEvent) {
         device = messageEvent.getDevice();
-        startGetAllMapPages(device);
+        ScheduledThreadUtils.ThreadGetAllMapPages(device);
         if (device.getDevice_type().equals(Constants.DEVICE_TYPE_EVBOT_SL)) {
             cl_show_clean_task.setVisibility(View.GONE);
         } else {
@@ -117,7 +116,7 @@ public class DeviceTaskFragment extends BaseFragment implements View.OnClickList
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(GetAllMapPagesSuccessEvent event) {
-        stopGetAllMapPagesTimer();
+        ScheduledThreadUtils.stopGetAllMapPagesTimer();
         DialogUtil.hideProgressDialog();
         mapPagesList = event.getMapPagesList();
     }
@@ -182,7 +181,7 @@ public class DeviceTaskFragment extends BaseFragment implements View.OnClickList
 
 
     private void exit() {
-        stopGetAllMapPagesTimer();
+        ScheduledThreadUtils.stopGetAllMapPagesTimer();
         stopGetAllCleanTasksTimer();
         stopDeleteCleanTaskTimer();
         if (EventBus.getDefault().isRegistered(this)) {
@@ -201,24 +200,11 @@ public class DeviceTaskFragment extends BaseFragment implements View.OnClickList
         rlv_clean_task.setAdapter(cleanTaskReclyViewAdapter);
     }
 
-    private void startGetAllMapPages(Device mDevice) {
-        if (scheduledThreadGetAllMapPages == null) scheduledThreadGetAllMapPages = new ScheduledThreadPoolExecutor(4);
-        scheduledThreadGetAllMapPages.scheduleAtFixedRate(new TaskUtils.TaskGetAllMapPages(mDevice),
-                0, 10, TimeUnit.SECONDS);
-    }
-
     private void startGetAllCleanTasks(Device mDevice) {
         DialogUtil.showProgressDialog(getContext(), getResources().getString(R.string.yl_device_get_clean_task), false, false);
         if (scheduledThreadGetAllCleanTasks == null) scheduledThreadGetAllCleanTasks = new ScheduledThreadPoolExecutor(4);
         scheduledThreadGetAllCleanTasks.scheduleAtFixedRate(new TaskUtils.TaskGetAllCleanTasks(mDevice),
                 0, 10, TimeUnit.SECONDS);
-    }
-
-    private void stopGetAllMapPagesTimer() {
-        if (scheduledThreadGetAllMapPages != null) {
-            scheduledThreadGetAllMapPages.shutdownNow();
-            scheduledThreadGetAllMapPages = null;
-        }
     }
 
     private void stopGetAllCleanTasksTimer() {

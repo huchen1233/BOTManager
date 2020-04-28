@@ -7,6 +7,7 @@ public class NetReq {
     public static final String NET_ASSOCIATED_DEVICE = CommonNetReq.REQ_HOST + "api/remote/associated-device";
     public static final String NET_REGISTER_DEVICE = CommonNetReq.REQ_HOST + "api/remote/register-device";
     public static final String NET_GET_DEVICE = CommonNetReq.REQ_HOST + "api/remote/get-device";
+
     public static final String NET_GET_ALL_MAP_PAGES = CommonNetReq.REQ_HOST + "api/remote/get-map-pages";
     public static final String NET_GET_CLEAN_TASK = CommonNetReq.REQ_HOST + "api/remote/get-clean-task";
     public static final String NET_SAVE_BASIC_CONFIG = CommonNetReq.REQ_HOST + "api/remote/save-basic-config";
@@ -17,6 +18,10 @@ public class NetReq {
     public static final String NET_ADD_CLEAN_TASK = CommonNetReq.REQ_HOST + "api/remote/add-clean-task";
     public static final String NET_UPDATE_CLEAN_TASK = CommonNetReq.REQ_HOST + "api/remote/update-clean-task";
     public static final String NET_DELETE_CLEAN_TASK = CommonNetReq.REQ_HOST + "api/remote/delete-clean-task";
+
+    public static final String NET_UPDATE_MAP_PAGE = CommonNetReq.REQ_HOST + "api/remote/update-map-page";
+    public static final String NET_DELETE_MAP_PAGE = CommonNetReq.REQ_HOST + "api/remote/delete-map-page";
+    public static final String NET_CREATE_NEW_MAP_APGE = CommonNetReq.REQ_HOST + "api/remote/create-new-map-page";
 
     public static final String REG_CODE = "reg_code";
     public static final String DEVICE_ID = "device_id";

@@ -8,6 +8,13 @@ public class MapPages implements Serializable {
     private String description;
     private int deviceId;
 
+    public void setMapPages(MapPages mapPages) {
+        this.name = mapPages.getName();
+        this.description = mapPages.getDescription();
+        this.id = mapPages.getId();
+        this.deviceId = mapPages.getDeviceId();
+    }
+
     public int getId() {
         return id;
     }
