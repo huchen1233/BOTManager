@@ -57,7 +57,7 @@
     <string name="yl_device_add_rechange_point">请先添加充电点</string>
     <string name="yl_device_get_clean_task">正在获取清扫任务列表</string>
     <string name="yl_device_clean_task">清扫任务</string>
-    <string name="yl_device_patrol_task">清扫任务</string>
+    <string name="yl_device_patrol_task">巡视任务</string>
     <string name="yl_device_config_basic_setting">基本设置</string>
     <string name="yl_device_enable_auto_task">使能自动任务</string>
     <string name="yl_device_enable_auto_recharge">使能自动充电</string>
