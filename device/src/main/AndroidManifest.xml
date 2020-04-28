@@ -1,2 +1,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.evertrend.tiger.device" />
+    package="com.evertrend.tiger.device">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/yl_device_module_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/yl_common_AppTheme">
+
+        <activity android:name=".activity.DeviceMainActivity"></activity>
+    </application>
+</manifest>
