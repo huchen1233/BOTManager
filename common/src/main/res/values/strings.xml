@@ -15,5 +15,5 @@
     <string name="yl_common_success">success</string>
     <string name="yl_common_submit">submit</string>
     <string name="yl_common_saving">saving...</string>
-    <string name="yl_common_deleting">正在删除...</string>
+    <string name="yl_common_deleting">deleting...</string>
 </resources>

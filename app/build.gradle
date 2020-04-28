@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
 
     defaultConfig {
         applicationId "com.evertrend.tiger.evertrendbotmanager"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0.1"
 
@@ -33,7 +33,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -47,6 +51,37 @@ static def releaseTime() {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+//测试打包aar时使用
+    //common
+//    implementation 'androidx.appcompat:appcompat:1.1.0'
+//    testImplementation 'junit:junit:4.12'
+//    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+//    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+//    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
+//    implementation 'com.google.android.material:material:1.0.0'
+//    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+//    implementation 'androidx.viewpager2:viewpager2:1.1.0-alpha01'
+//
+//    implementation 'com.squareup.okhttp3:okhttp:4.4.0'
+//    implementation 'com.alibaba:fastjson:1.2.61'
+//    //解决ClassNotFoundException: Didn't find class "org.conscrypt.ConscryptHostnameVerifier"
+//    implementation 'org.conscrypt:conscrypt-android:2.2.1'
+//    implementation 'org.greenrobot:eventbus:3.2.0'
+//    implementation 'cn.yipianfengye.android:zxing-library:2.2'
+//    implementation 'org.litepal.android:java:3.0.0'
+//    implementation 'com.lxj:xpopup:1.8.12'
+    //user
+//    implementation 'com.azhon:appupdateX:2.8.0'
+    //device
+//    implementation 'com.github.hotchemi:permissionsdispatcher:3.1.0'
+//    annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:3.1.0'
+
+//    implementation (name: 'device-release', ext: 'aar')
+//    implementation (name: 'user-release', ext: 'aar')
+//    implementation (name: 'common-release', ext: 'aar')
+
+//开始时使用
     implementation project(':common')
     if (!isDebug.toBoolean()) {
         implementation project(':user')
