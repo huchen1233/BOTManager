@@ -146,7 +146,8 @@ public class DeviceTaskFragment extends BaseFragment implements View.OnClickList
         if (event.getMark().equals("execute")) {
 //            executeCleanTask();
         } else if (event.getMark().equals("delete")) {
-            DialogUtil.showChoiceDialog(getActivity(), R.string.yl_device_delete_task_confirm, CommonConstants.TYPE_SUCCESS_EVENT_DELETE_CLEANTASK);
+            String deleteConfirm = getResources().getString(R.string.yl_device_delete_task_confirm);
+            DialogUtil.showChoiceDialog(getActivity(), String.format(deleteConfirm, cleanTask.getName()), CommonConstants.TYPE_SUCCESS_EVENT_DELETE_CLEANTASK);
         } else if (event.getMark().equals("edit")) {
             showEditCleanTaskBottomDialog();
         } else if (event.getMark().equals("detail")) {

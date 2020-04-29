@@ -126,7 +126,8 @@ public class DeviceMapFragment extends BaseFragment {
             intent.setAction("android.intent.action.OperationAreaMapActivity");
             startActivity(intent);
         } else if (Constants.TYPE_MAPPAGE_OPERATION_DELETE == event.getType()) {
-            DialogUtil.showChoiceDialog(getActivity(), R.string.yl_device_delete_mappage_confirm, Constants.TYPE_MAPPAGE_OPERATION_DELETE);
+            String deleteConfirm = getResources().getString(R.string.yl_device_delete_mappage_confirm);
+            DialogUtil.showChoiceDialog(getActivity(), String.format(deleteConfirm, choiceMapPages.getName()), Constants.TYPE_MAPPAGE_OPERATION_DELETE);
         } else if (Constants.TYPE_MAPPAGE_OPERATION_EDIT == event.getType()) {
             mapBottomPopupView = new MapBottomPopupView(getActivity(), mDevice, choiceMapPages);
             new XPopup.Builder(getActivity())

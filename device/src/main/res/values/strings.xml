@@ -95,9 +95,9 @@
     <string name="yl_device_update_task">update task</string>
     <string name="yl_device_in_progress">in progress...</string>
     <string name="yl_device_not_started_yet">Not started</string>
-    <string name="yl_device_delete_task_confirm">Are you sure you want to delete the task?</string>
+    <string name="yl_device_delete_task_confirm">Are you sure you want to delete the task(%1$s)?</string>
     <string name="yl_device_task_detail_info">task detail info</string>
-    <string name="yl_device_delete_mappage_confirm">Are you sure you want to delete the map?</string>
+    <string name="yl_device_delete_mappage_confirm">Are you sure you want to delete the map(%1$s)?</string>
     <string name="yl_device_control_of_work">control of work</string>
     <string name="yl_device_run">run</string>
     <string name="yl_device_go_to_garage">go to garage</string>
