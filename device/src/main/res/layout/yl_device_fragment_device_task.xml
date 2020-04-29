@@ -94,7 +94,8 @@
             android:background="@drawable/yl_common_block_background"
             android:text="@string/yl_device_config_basic_setting"
             app:layout_constraintTop_toBottomOf="@id/cl_show_patrol_task"
-            app:layout_constraintStart_toStartOf="@id/cl_show_patrol_task" />
+            app:layout_constraintStart_toStartOf="@id/cl_show_patrol_task"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

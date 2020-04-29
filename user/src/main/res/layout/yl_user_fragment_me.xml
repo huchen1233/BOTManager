@@ -8,7 +8,8 @@
         android:id="@+id/ll_me"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/yl_common_item_padding">
+        android:padding="@dimen/yl_common_item_padding"
+        android:background="@color/yl_common_color_white">
 
         <ImageView
             android:id="@+id/iv_me_head"
@@ -29,6 +30,7 @@
         android:id="@+id/rlv_user_operation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/yl_common_color_white"
         android:layout_marginTop="@dimen/yl_common_margin_20"/>
 
 </LinearLayout>

@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:hint="@string/yl_device_mappage_name"/>
+        android:hint="@string/yl_common_mappage_name"/>
 
     <EditText
         android:id="@+id/et_map_page_desc"
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_map_page_name"
-        android:hint="@string/yl_device_mappage_desc"/>
+        android:hint="@string/yl_common_mappage_desc"/>
 
     <Button
         android:id="@+id/btn_submit"
@@ -29,7 +29,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_map_page_desc"
         android:layout_marginTop="10dp"
-        android:background="@drawable/yl_common_button_background"
+        android:background="@drawable/yl_common_btn_bg_round_click"
+        android:textColor="@drawable/yl_common_btn_click_text_color"
         android:text="@string/yl_common_submit"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -106,7 +106,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
-            android:background="@drawable/yl_common_button_background"
+            android:background="@drawable/yl_common_btn_bg_round_click"
+            android:textColor="@drawable/yl_common_btn_click_text_color"
             android:text="@string/yl_common_submit" />
 
     </LinearLayout>

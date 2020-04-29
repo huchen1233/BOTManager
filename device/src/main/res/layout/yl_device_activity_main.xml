@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="?android:attr/windowBackground"
+        android:background="@color/yl_common_color_white"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/yl_device_bottom_nav_menu"/>
 

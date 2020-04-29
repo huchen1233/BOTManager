@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/yl_common_colorPrimary</item>
         <item name="colorPrimaryDark">@color/yl_common_colorPrimaryDark</item>
         <item name="colorAccent">@color/yl_common_colorAccent</item>
+        <item name="android:windowBackground">@color/yl_common_color_white_gray</item>
     </style>
 
     <style name="yl_common_ButtonStyle">

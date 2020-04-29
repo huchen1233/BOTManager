@@ -97,8 +97,6 @@
     <string name="yl_device_not_started_yet">未开始</string>
     <string name="yl_device_delete_task_confirm">确定要删除任务吗?</string>
     <string name="yl_device_task_detail_info">任务详细信息</string>
-    <string name="yl_device_mappage_name">地图名称</string>
-    <string name="yl_device_mappage_desc">地图描述</string>
     <string name="yl_device_delete_mappage_confirm">您确定要删除地图吗?</string>
     <string name="yl_device_control_of_work">工作控制</string>
     <string name="yl_device_run">运行</string>
