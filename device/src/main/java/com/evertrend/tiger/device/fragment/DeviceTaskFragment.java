@@ -200,7 +200,7 @@ public class DeviceTaskFragment extends BaseFragment implements View.OnClickList
     }
 
     private void startGetAllCleanTasks(Device mDevice) {
-        DialogUtil.showProgressDialog(getContext(), getResources().getString(R.string.yl_device_get_clean_task), false, false);
+        DialogUtil.showProgressDialog(getContext(), getResources().getString(R.string.yl_device_get_clean_task), false, true);
         if (scheduledThreadGetAllCleanTasks == null) scheduledThreadGetAllCleanTasks = new ScheduledThreadPoolExecutor(4);
         scheduledThreadGetAllCleanTasks.scheduleAtFixedRate(new TaskUtils.TaskGetAllCleanTasks(mDevice),
                 0, 10, TimeUnit.SECONDS);

@@ -100,4 +100,23 @@
     <string name="yl_device_mappage_name">地图名称</string>
     <string name="yl_device_mappage_desc">地图描述</string>
     <string name="yl_device_delete_mappage_confirm">您确定要删除地图吗?</string>
+    <string name="yl_device_control_of_work">工作控制</string>
+    <string name="yl_device_run">运行</string>
+    <string name="yl_device_go_to_garage">回车库</string>
+    <string name="yl_device_go_to_recharge">去充电</string>
+    <string name="yl_device_go_to_add_water">去加水</string>
+    <string name="yl_device_go_to_empty_trash">去倒垃圾</string>
+    <string name="yl_device_control_of_cleaning_parts">部件控制</string>
+    <string name="yl_device_main_sweep">主刷</string>
+    <string name="yl_device_side_sweep">边刷</string>
+    <string name="yl_device_left_tail_light">左尾灯</string>
+    <string name="yl_device_right_tail_light">右尾灯</string>
+    <string name="yl_device_sprinkling_water">洒水</string>
+    <string name="yl_device_alarm_light">警告灯</string>
+    <string name="yl_device_front_light">前照灯</string>
+    <string name="yl_device_horn">喇叭</string>
+    <string name="yl_device_suck_fan">风机</string>
+    <string name="yl_device_vibrating_dust">振尘</string>
+    <string name="yl_device_motor">电机</string>
+    <string name="yl_device_emergency_stop">急停</string>
 </resources>

@@ -45,4 +45,6 @@
     <string name="yl_common_choice_virtual_track_group">循迹轨道组选择</string>
     <string name="yl_common_reloading">重新定位中...</string>
     <string name="yl_common_create_new">新建</string>
+    <string name="yl_common_standby">待机</string>
+    <string name="yl_common_execute">执行任务</string>
 </resources>

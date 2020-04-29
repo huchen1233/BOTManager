@@ -23,6 +23,28 @@ public class NetReq {
     public static final String NET_DELETE_MAP_PAGE = CommonNetReq.REQ_HOST + "api/remote/delete-map-page";
     public static final String NET_CREATE_NEW_MAP_APGE = CommonNetReq.REQ_HOST + "api/remote/create-new-map-page";
 
+    public static final String NET_READ_CONTROL_STATUS = CommonNetReq.REQ_HOST + "api/remote/read-control-status";
+    public static final String NET_SET_DEVICE_STATUS = CommonNetReq.REQ_HOST + "api/remote/set-device-status";
+    public static final String NET_SET_MAIN_SWEEP = CommonNetReq.REQ_HOST + "api/remote/set-main-sweep";
+    public static final String NET_SET_SIDE_SWEEP = CommonNetReq.REQ_HOST + "api/remote/set-side-sweep";
+    public static final String NET_SET_SPRINKLING_WATER = CommonNetReq.REQ_HOST + "api/remote/set-sprinkling-water";
+    public static final String NET_SET_ALARM_LIGHT = CommonNetReq.REQ_HOST + "api/remote/set-alarm-light";
+    public static final String NET_SET_FRONT_LIGHT = CommonNetReq.REQ_HOST + "api/remote/set-front-light";
+    public static final String NET_SET_HORN = CommonNetReq.REQ_HOST + "api/remote/set-horn";
+    public static final String NET_SET_SUCK_FUN = CommonNetReq.REQ_HOST + "api/remote/set-suck-fun";
+    public static final String NET_SET_VIBRATING_DUST = CommonNetReq.REQ_HOST + "api/remote/set-vibrating-dust";
+    public static final String NET_SET_MOTOR = CommonNetReq.REQ_HOST + "api/remote/set-motor";
+    public static final String NET_SET_EMERGENCY_STOP = CommonNetReq.REQ_HOST + "api/remote/set-emergency-stop";
+    public static final String NET_SET_TAIL_LIGHT = CommonNetReq.REQ_HOST + "api/remote/set-tail-light";
+    public static final String NET_SET_LEFT_TAIL_LIGHT = CommonNetReq.REQ_HOST + "api/remote/set-left-tail-light";
+    public static final String NET_SET_RIGHT_TAIL_LIGHT = CommonNetReq.REQ_HOST + "api/remote/set-right-tail-light";
+    public static final String NET_GO_TO_RECHARGE = CommonNetReq.REQ_HOST + "api/remote/go-to-recharge";
+    public static final String NET_GO_TO_EMPTY_TRASH = CommonNetReq.REQ_HOST + "api/remote/go-to-empty-trash";
+    public static final String NET_GO_TO_GARAGE = CommonNetReq.REQ_HOST + "api/remote/go-to-garage";
+    public static final String NET_GO_TO_WORK = CommonNetReq.REQ_HOST + "api/remote/go-to-work";
+    public static final String NET_GO_TO_IDEL = CommonNetReq.REQ_HOST + "api/remote/go-to-idel";
+    public static final String NET_GO_TO_ADD_WATER = CommonNetReq.REQ_HOST + "api/remote/go-to-add-water";
+
     public static final String REG_CODE = "reg_code";
     public static final String DEVICE_ID = "device_id";
     public static final String PASS = "pass";
