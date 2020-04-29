@@ -4,21 +4,16 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.evertrend.tiger.common.utils.general.DialogUtil;
 import com.evertrend.tiger.device.R;
-import com.evertrend.tiger.device.bean.Device;
-import com.evertrend.tiger.device.bean.MapPages;
+import com.evertrend.tiger.common.bean.Device;
+import com.evertrend.tiger.common.bean.MapPages;
 import com.evertrend.tiger.device.bean.event.SaveMapPageEvent;
-import com.evertrend.tiger.device.bean.event.SaveBasicConfigEvent;
-import com.evertrend.tiger.device.utils.Constants;
 import com.evertrend.tiger.device.utils.TaskUtils;
 import com.lxj.xpopup.core.BottomPopupView;
 import com.lxj.xpopup.util.XPopupUtils;

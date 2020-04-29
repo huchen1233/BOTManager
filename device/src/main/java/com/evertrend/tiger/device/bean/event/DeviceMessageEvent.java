@@ -1,6 +1,6 @@
 package com.evertrend.tiger.device.bean.event;
 
-import com.evertrend.tiger.device.bean.Device;
+import com.evertrend.tiger.common.bean.Device;
 
 public class DeviceMessageEvent {
     private Device message;

@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.evertrend.tiger.device.R;
-import com.evertrend.tiger.device.bean.Device;
+import com.evertrend.tiger.common.bean.Device;
 import java.util.List;
 
 public class StatusShowAdapter extends BaseAdapter {

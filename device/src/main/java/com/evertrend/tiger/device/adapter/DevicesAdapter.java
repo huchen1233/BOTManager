@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.evertrend.tiger.device.R;
 import com.evertrend.tiger.device.activity.DeviceMainActivity;
-import com.evertrend.tiger.device.bean.Device;
+import com.evertrend.tiger.common.bean.Device;
 import com.evertrend.tiger.device.bean.event.DeviceListEvent;
 import com.evertrend.tiger.device.bean.event.DeviceMessageEvent;
 import com.evertrend.tiger.device.utils.Constants;

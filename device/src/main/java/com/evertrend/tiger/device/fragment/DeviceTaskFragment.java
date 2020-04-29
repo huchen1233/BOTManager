@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,8 +25,8 @@ import com.evertrend.tiger.device.R;
 import com.evertrend.tiger.device.adapter.CleanTaskReclyViewAdapter;
 import com.evertrend.tiger.device.adapter.MapPagesChoiceAdapter;
 import com.evertrend.tiger.device.bean.CleanTask;
-import com.evertrend.tiger.device.bean.Device;
-import com.evertrend.tiger.device.bean.MapPages;
+import com.evertrend.tiger.common.bean.Device;
+import com.evertrend.tiger.common.bean.MapPages;
 import com.evertrend.tiger.device.bean.event.ChoiceCleanTaskEvent;
 import com.evertrend.tiger.device.bean.event.ChoiceMapPagesEvent;
 import com.evertrend.tiger.device.bean.event.DeleteCleanTaskEvent;

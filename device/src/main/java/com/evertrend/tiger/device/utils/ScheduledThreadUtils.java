@@ -1,6 +1,6 @@
 package com.evertrend.tiger.device.utils;
 
-import com.evertrend.tiger.device.bean.Device;
+import com.evertrend.tiger.common.bean.Device;
 
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;

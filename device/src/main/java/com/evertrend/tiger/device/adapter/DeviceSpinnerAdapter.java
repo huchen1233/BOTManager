@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.evertrend.tiger.device.bean.Device;
+import com.evertrend.tiger.common.bean.Device;
 
 import java.util.List;
 

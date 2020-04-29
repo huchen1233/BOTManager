@@ -3,7 +3,7 @@ package com.evertrend.tiger.device.utils;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.evertrend.tiger.device.bean.CleanTask;
-import com.evertrend.tiger.device.bean.Device;
+import com.evertrend.tiger.common.bean.Device;
 
 import java.util.ArrayList;
 import java.util.Calendar;

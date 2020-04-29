@@ -3,7 +3,7 @@ package com.evertrend.tiger.device.utils;
 import android.content.Context;
 
 import com.evertrend.tiger.device.R;
-import com.evertrend.tiger.device.bean.Device;
+import com.evertrend.tiger.common.bean.Device;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.evertrend.tiger.device.R;
-import com.evertrend.tiger.device.bean.MapPages;
+import com.evertrend.tiger.common.bean.MapPages;
 import com.evertrend.tiger.device.bean.event.ChoiceMapPagesEvent;
 import com.evertrend.tiger.device.utils.Constants;
 import com.lxj.xpopup.XPopup;

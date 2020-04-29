@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -18,8 +17,8 @@ import com.evertrend.tiger.common.fragment.BaseFragment;
 import com.evertrend.tiger.common.utils.general.DialogUtil;
 import com.evertrend.tiger.device.R;
 import com.evertrend.tiger.device.adapter.MapPagesChoiceAdapter;
-import com.evertrend.tiger.device.bean.Device;
-import com.evertrend.tiger.device.bean.MapPages;
+import com.evertrend.tiger.common.bean.Device;
+import com.evertrend.tiger.common.bean.MapPages;
 import com.evertrend.tiger.device.bean.event.ChoiceMapPagesEvent;
 import com.evertrend.tiger.device.bean.event.DeleteMapPageEvent;
 import com.evertrend.tiger.device.bean.event.SaveMapPageEvent;

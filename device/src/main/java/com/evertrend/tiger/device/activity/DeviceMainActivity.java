@@ -19,7 +19,7 @@ import com.evertrend.tiger.common.fragment.BaseFragment;
 import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.device.R;
 import com.evertrend.tiger.device.adapter.DeviceSpinnerAdapter;
-import com.evertrend.tiger.device.bean.Device;
+import com.evertrend.tiger.common.bean.Device;
 import com.evertrend.tiger.device.bean.event.DeviceListEvent;
 import com.evertrend.tiger.device.bean.event.SpinnerChoiceDeviceMessageEvent;
 import com.evertrend.tiger.device.fragment.DeviceMapFragment;
