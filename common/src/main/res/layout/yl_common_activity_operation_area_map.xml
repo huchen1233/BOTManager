@@ -29,6 +29,8 @@
                 android:id="@+id/btn_save_map"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/yl_common_btn_bg_round_click"
+                android:textColor="@drawable/yl_common_btn_click_text_color"
                 android:textSize="12sp"
                 android:text="@string/yl_common_save_map"/>
 
@@ -36,6 +38,8 @@
                 android:id="@+id/btn_relocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/yl_common_btn_bg_round_click"
+                android:textColor="@drawable/yl_common_btn_click_text_color"
                 android:textSize="12sp"
                 android:text="@string/yl_common_reload_location"/>
 
@@ -43,6 +47,8 @@
                 android:id="@+id/btn_trace_path"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/yl_common_btn_bg_round_click"
+                android:textColor="@drawable/yl_common_btn_click_text_color"
                 android:textSize="12sp"
                 android:text="@string/yl_common_trace_path"/>
 
@@ -151,6 +157,8 @@
                 android:id="@+id/btn_set_spot"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/yl_common_btn_bg_round_click"
+                android:textColor="@drawable/yl_common_btn_click_text_color"
                 android:layout_weight="1"
                 android:text="@string/yl_common_spot"/>
 
@@ -158,6 +166,8 @@
                 android:id="@+id/btn_action"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/yl_common_btn_bg_round_click"
+                android:textColor="@drawable/yl_common_btn_click_text_color"
                 android:layout_weight="1"
                 android:text="@string/yl_common_action"/>
 
@@ -165,6 +175,8 @@
                 android:id="@+id/btn_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/yl_common_btn_bg_round_click"
+                android:textColor="@drawable/yl_common_btn_click_text_color"
                 android:layout_weight="1"
                 android:text="@string/yl_common_edit"/>
         </LinearLayout>
