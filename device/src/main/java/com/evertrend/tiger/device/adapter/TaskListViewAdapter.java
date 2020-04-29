@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckedTextView;
 
-import com.evertrend.tiger.device.bean.BaseTrace;
+import com.evertrend.tiger.common.bean.BaseTrace;
 
 import java.util.List;
 

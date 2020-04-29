@@ -12,11 +12,11 @@ import com.evertrend.tiger.common.utils.network.OKHttpManager;
 import com.evertrend.tiger.device.bean.CleanTask;
 import com.evertrend.tiger.common.bean.Device;
 import com.evertrend.tiger.common.bean.MapPages;
-import com.evertrend.tiger.device.bean.RobotSpot;
-import com.evertrend.tiger.device.bean.TracePath;
-import com.evertrend.tiger.device.bean.VirtualTrackGroup;
+import com.evertrend.tiger.common.bean.RobotSpot;
+import com.evertrend.tiger.common.bean.TracePath;
+import com.evertrend.tiger.common.bean.VirtualTrackGroup;
 import com.evertrend.tiger.device.bean.event.DeleteMapPageEvent;
-import com.evertrend.tiger.device.bean.event.SaveMapPageEvent;
+import com.evertrend.tiger.common.bean.event.SaveMapPageEvent;
 import com.evertrend.tiger.device.bean.event.DeleteCleanTaskEvent;
 import com.evertrend.tiger.device.bean.event.DeviceMessageEvent;
 import com.evertrend.tiger.device.bean.event.GetAllCleanTasksSuccessEvent;
@@ -517,72 +517,6 @@ public class TaskUtils {
                         switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
                             case CommonNetReq.CODE_SUCCESS:
                                 EventBus.getDefault().post(new DeleteCleanTaskEvent(cleanTask));
-                                break;
-                            default:
-                                break;
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(TAG, "出错：解析数据失败");
-                    }
-                }
-            }, new OKHttpManager.FuncFailure() {
-                @Override
-                public void onFailure() {
-                    Log.e(TAG, "出错：请求网络失败");
-                }
-            });
-        }
-    }
-
-    public static class TaskSaveMapPages implements Runnable {
-        private Device device;
-        private MapPages mapPages;
-        private int doSaveMap;
-        private boolean isUpdate;
-
-        public TaskSaveMapPages(Device device, MapPages mapPages, int doSaveMap, boolean isUpdate) {
-            this.device = device;
-            this.mapPages = mapPages;
-            this.doSaveMap = doSaveMap;
-            this.isUpdate = isUpdate;
-        }
-
-        @Override
-        public void run() {
-            startCreateNewMapPage();
-        }
-
-        private void startCreateNewMapPage() {
-            HashMap<String, String> map = new HashMap<>();
-            map.put(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
-            map.put(NetReq.DEVICE_ID, String.valueOf(device.getId()));
-            map.put(NetReq.PAGE_NAME, mapPages.getName());
-            map.put(NetReq.PAGE_DESC, mapPages.getDescription());
-            String net = null;
-            if (isUpdate) {
-                map.put(NetReq.MAP_PAGE, String.valueOf(mapPages.getId()));
-                map.put(NetReq.PAGE_DO_SAVE_MAP, String.valueOf(doSaveMap));
-                net = NetReq.NET_UPDATE_MAP_PAGE;
-            } else {
-                net = NetReq.NET_CREATE_NEW_MAP_APGE;
-            }
-            OKHttpManager.getInstance().sendComplexForm(net, map, new OKHttpManager.FuncJsonObj() {
-                @Override
-                public void onResponse(JSONObject jsonObject) throws JSONException {
-                    try {
-                        switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
-                            case CommonNetReq.CODE_SUCCESS:
-                                if (isUpdate) {
-                                    EventBus.getDefault().post(new SaveMapPageEvent(mapPages, isUpdate));
-                                } else {
-                                    MapPages mapPages = new MapPages();
-                                    mapPages.setName(jsonObject.getJSONObject(CommonNetReq.RESULT_DATA).getString(Constants.NAME));
-                                    mapPages.setDescription(jsonObject.getJSONObject(CommonNetReq.RESULT_DATA).getString(Constants.DESCRIPTION));
-                                    mapPages.setDeviceId(jsonObject.getJSONObject(CommonNetReq.RESULT_DATA).getIntValue(Constants.DEVICE));
-                                    mapPages.setId(jsonObject.getJSONObject(CommonNetReq.RESULT_DATA).getIntValue(Constants.ID));
-                                    EventBus.getDefault().post(new SaveMapPageEvent(mapPages, isUpdate));
-                                }
                                 break;
                             default:
                                 break;

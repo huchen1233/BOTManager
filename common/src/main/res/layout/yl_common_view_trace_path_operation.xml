@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#99000000">
+
+    <ImageButton
+        android:id="@+id/ibtn_trace_path_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/yl_common_ic_close_black_48dp"/>
+
+    <Button
+        android:id="@+id/btn_trace_path_show"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/yl_common_ButtonStyle"
+        android:text="显示"/>
+
+    <Button
+        android:id="@+id/btn_trace_path_hide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/yl_common_ButtonStyle"
+        android:text="隐藏"/>
+
+    <Button
+        android:id="@+id/btn_trace_path_rollback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/yl_common_ButtonStyle"
+        android:text="回滚"/>
+
+</LinearLayout>

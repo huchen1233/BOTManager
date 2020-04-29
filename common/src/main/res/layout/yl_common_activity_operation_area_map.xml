@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_area_map_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/ll_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@android:color/darker_gray"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageButton
+                android:id="@+id/ibtn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/yl_common_ic_arrow_back_white_36dp"/>
+
+            <Button
+                android:id="@+id/btn_save_map"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="@string/yl_common_save_map"/>
+
+            <Button
+                android:id="@+id/btn_relocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="@string/yl_common_reload_location"/>
+
+            <Button
+                android:id="@+id/btn_trace_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="@string/yl_common_trace_path"/>
+
+            <ImageButton
+                android:id="@+id/ibtn_map_settings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/yl_common_ic_settings_black_36dp" />
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/ll_bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_top" >
+
+            <com.evertrend.tiger.common.bean.mapview.MapView
+                android:id="@+id/device_map_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#808080"
+                app:layout_constraintBottom_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_location_pose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00ffffff"
+                app:layout_constraintStart_toStartOf="@id/device_map_view"
+                app:layout_constraintTop_toTopOf="@+id/device_map_view"
+                android:text="0,0,0"/>
+
+            <ImageButton
+                android:id="@+id/ibtn_map_set_centred"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                app:layout_constraintEnd_toEndOf="@id/device_map_view"
+                app:layout_constraintTop_toTopOf="@+id/device_map_view"
+                android:background="@drawable/yl_common_ic_center_black_36dp" />
+
+            <include
+                android:id="@+id/ll_trace_path_operation"
+                layout="@layout/yl_common_view_trace_path_operation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@id/device_map_view"
+                app:layout_constraintTop_toTopOf="@+id/device_map_view"
+                android:visibility="gone"/>
+
+            <include
+                android:id="@+id/ll_trace_path_spot"
+                layout="@layout/yl_common_view_trace_path_spot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@id/device_map_view"
+                app:layout_constraintTop_toTopOf="@+id/device_map_view"
+                android:layout_marginTop="20dp"
+                android:visibility="gone"/>
+
+            <include
+                android:id="@+id/ll_set_spot"
+                layout="@layout/yl_common_view_set_spot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:visibility="gone"/>
+
+            <include
+                android:id="@+id/cl_action"
+                layout="@layout/yl_common_view_device_action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:visibility="gone"/>
+
+            <include
+                android:id="@+id/ll_edit"
+                layout="@layout/yl_common_view_device_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:visibility="gone"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:orientation="horizontal"
+            android:background="@android:color/darker_gray"
+            android:weightSum="3">
+
+            <Button
+                android:id="@+id/btn_set_spot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/yl_common_spot"/>
+
+            <Button
+                android:id="@+id/btn_action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/yl_common_action"/>
+
+            <Button
+                android:id="@+id/btn_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/yl_common_edit"/>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include
+        android:id="@+id/ll_map_settings"
+        layout="@layout/yl_common_view_map_settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
+
+    <include
+        android:id="@+id/ll_map_virtual_walls"
+        layout="@layout/yl_common_view_map_virtual_walls"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+
+    <include
+        android:id="@+id/ll_map_virtual_tracks"
+        layout="@layout/yl_common_view_map_virtual_tracks"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

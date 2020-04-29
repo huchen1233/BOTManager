@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <GridLayout
+        android:id="@+id/gl_action_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="3"
+        android:rowCount="3"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.evertrend.tiger.common.widget.LongClickImageView
+            style="@style/yl_common_ControlImgVStyle"
+            android:background="#00000000" />
+
+        <com.evertrend.tiger.common.widget.LongClickImageView
+            android:id="@+id/iv_action_forward"
+            style="@style/yl_common_ControlImgVStyle"
+            android:background="@drawable/ic_ahead" />
+
+        <com.evertrend.tiger.common.widget.LongClickImageView
+            style="@style/yl_common_ControlImgVStyle"
+            android:background="#00000000" />
+
+        <com.evertrend.tiger.common.widget.LongClickImageView
+            android:id="@+id/iv_action_left"
+            style="@style/yl_common_ControlImgVStyle"
+            android:background="@drawable/ic_left" />
+
+        <com.evertrend.tiger.common.widget.LongClickImageView
+            android:id="@+id/iv_action_stop"
+            style="@style/yl_common_ControlImgVStyle"
+            android:background="@drawable/ic_stop" />
+
+        <com.evertrend.tiger.common.widget.LongClickImageView
+            android:id="@+id/iv_action_right"
+            style="@style/yl_common_ControlImgVStyle"
+            android:background="@drawable/ic_right" />
+
+        <com.evertrend.tiger.common.widget.LongClickImageView
+            style="@style/yl_common_ControlImgVStyle"
+            android:background="#00000000" />
+
+        <com.evertrend.tiger.common.widget.LongClickImageView
+            android:id="@+id/iv_action_backward"
+            style="@style/yl_common_ControlImgVStyle"
+            android:background="@drawable/ic_backword" />
+
+        <com.evertrend.tiger.common.widget.LongClickImageView
+            style="@style/yl_common_ControlImgVStyle"
+            android:background="#00000000" />
+
+    </GridLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,6 @@
 package com.evertrend.tiger.device.bean.event;
 
-import com.evertrend.tiger.device.bean.TracePath;
+import com.evertrend.tiger.common.bean.TracePath;
 
 import java.util.List;
 

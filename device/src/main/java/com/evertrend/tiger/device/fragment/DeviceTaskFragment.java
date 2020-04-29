@@ -296,7 +296,7 @@ public class DeviceTaskFragment extends BaseFragment implements View.OnClickList
     }
 
     private void showMapPagesChoice(List<MapPages> list, int type) {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.yl_device_dialog_list_choice, null);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.yl_common_dialog_list_choice, null);
         RecyclerView recyclerView = view.findViewById(R.id.rl_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);

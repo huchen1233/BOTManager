@@ -38,6 +38,11 @@ android {
             dirs 'libs'
         }
     }
+//    sourceSets {
+//        main {
+//            jniLibs.srcDir 'libs'
+//        }
+//    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -80,6 +85,7 @@ dependencies {
 //    implementation (name: 'device-release', ext: 'aar')
 //    implementation (name: 'user-release', ext: 'aar')
 //    implementation (name: 'common-release', ext: 'aar')
+//    implementation files('libs/slamware_sdk_android.jar')
 
 //开始时使用
     implementation project(':common')

@@ -20,6 +20,9 @@ public class AppSharePreference {
     public static final String PASS = "pass";
     public static final String REMEMBER_ME = "remember_me";
     public static final String REMEMBER_PASS = "remember_pass";
+    public static final String DEVICE_SPEED = "DEVICE_SPEED";
+    public static final String DEVICE_TRACE_SPOT_LAST_POSE = "DEVICE_TRACE_SPOT_LAST_POSE";//最后一点
+    public static final String DEVICE_TRACE_PATH_ROLLBACK_NUM = "DEVICE_TRACE_PATH_ROLLBACK_NUM";//循迹路径回滚个数
 
     //初始化保存的环境
     public static void initSharedPreference(Context context) {
@@ -34,6 +37,36 @@ public class AppSharePreference {
             appSP = new AppSharePreference();
         }
         return appSP;
+    }
+
+    public void saveTracePathRollbackNum(int num) {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt(DEVICE_TRACE_PATH_ROLLBACK_NUM, num);
+        editor.apply();
+    }
+
+    public int loadTracePathRollbackNum() {
+        return sp.getInt(DEVICE_TRACE_PATH_ROLLBACK_NUM, 5);
+    }
+
+    public void saveTraceSpotAutoModeLastPose(String pose) {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(DEVICE_TRACE_SPOT_LAST_POSE, pose);
+        editor.apply();
+    }
+
+    public String loadTraceSpotAutoModeLastPose() {
+        return sp.getString(DEVICE_TRACE_SPOT_LAST_POSE, null);
+    }
+
+    public void saveDeviceSpeed(String speed) {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(DEVICE_SPEED, speed);
+        editor.apply();
+    }
+
+    public String loadDeviceSpeed() {
+        return sp.getString(DEVICE_SPEED, "0.3");
     }
 
     public void saveRememberMe(boolean rememberMe) {

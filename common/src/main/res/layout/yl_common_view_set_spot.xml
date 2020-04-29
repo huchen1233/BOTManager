@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        style="@style/yl_common_LineLayoutControlStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:background="#33000000">
+
+        <Button
+            android:id="@+id/btn_set_empty_trash"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/yl_common_ButtonStyle"
+            android:text="@string/yl_common_set_empty_trash_spot" />
+
+        <Button
+            android:id="@+id/btn_set_garage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/yl_common_ButtonStyle"
+            android:text="@string/yl_common_set_garage_spot" />
+
+        <Button
+            android:id="@+id/btn_set_add_water"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/yl_common_ButtonStyle"
+            android:text="@string/yl_common_set_add_water_spot" />
+
+        <Button
+            android:id="@+id/btn_set_recharge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/yl_common_ButtonStyle"
+            android:text="@string/yl_common_set_recharge_spot" />
+
+        <Button
+            android:id="@+id/btn_set_trace_spot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/yl_common_ButtonStyle"
+            android:text="@string/yl_common_set_trace_spot" />
+
+        <Switch
+            android:id="@+id/btn_auto_record_trace_spot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:showText="true"
+            android:textOn="@string/yl_common_on"
+            android:textOff="@string/yl_common_off"
+            android:switchPadding="5dp"
+            style="@style/yl_common_ButtonStyle"
+            android:text="@string/yl_common_auto_record_trace_spot" />
+    </LinearLayout>
+
+</LinearLayout>

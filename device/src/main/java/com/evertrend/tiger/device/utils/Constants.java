@@ -90,24 +90,6 @@ public class Constants {
 
     public static final int GET_DEVICE_TIME_INTERVAL = 60;//秒
 
-    public static final int TYPE_TRACE_PATH_OPERATION_SAVE_SPOT = 0;
-    public static final int TYPE_TRACE_PATH_OPERATION_SHOW_PATH = 1;
-
-    public static final int TYPE_DELETE_ALL_VIRTUAL_WALL = 0;
-    public static final int TYPE_DELETE_ALL_VIRTUAL_TRACK = 1;
-
-    public static final int TYPE_ADD_VIRTUAL_WALL = 0;
-    public static final int TYPE_DELETE_VIRTUAL_WALL = 1;
-    public static final int TYPE_MOVE_VIRTUAL_WALL = 2;
-    public static final int TYPE_MOVE_VIRTUAL_WALL_START = 0;
-    public static final int TYPE_MOVE_VIRTUAL_WALL_END = 1;
-
-    public static final int TYPE_ADD_VIRTUAL_TRACK = 0;
-    public static final int TYPE_DELETE_VIRTUAL_TRACK = 1;
-    public static final int TYPE_MOVE_VIRTUAL_TRACK = 2;
-    public static final int TYPE_MOVE_VIRTUAL_TRACK_START = 0;
-    public static final int TYPE_MOVE_VIRTUAL_TRACK_END = 1;
-
     public static final int TYPE_EXEC_FLAG_ONLY_ONCE = 1;
     public static final int TYPE_EXEC_FLAG_EVERYDAY = 2;
     public static final int TYPE_EXEC_FLAG_INFINITE_CYCLE = 3;
@@ -131,5 +113,4 @@ public class Constants {
     public static final int BASE_TRACE_OPERATION_EDIT = 2;
 
     public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-    public static final DecimalFormat df = new DecimalFormat("######0.00");
 }

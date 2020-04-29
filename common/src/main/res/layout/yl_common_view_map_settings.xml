@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_create_map_settiongs"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:divider="?android:dividerHorizontal"
+    android:orientation="vertical"
+    android:showDividers="middle">
+
+    <LinearLayout
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:paddingStart="5dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp">
+
+        <ImageView
+            android:id="@+id/iv_settings_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/yl_common_ic_arrow_back_black_24dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/yl_common_back"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tv_device_speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/yl_common_maximum_speed"
+            android:textSize="16sp" />
+
+        <SeekBar
+            android:id="@+id/sb_device_speed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:max="70"
+            android:min="1" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/yl_common_navigation_mode"
+            android:textSize="16sp" />
+
+        <RadioGroup
+            android:id="@+id/rg_navigation_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/rb_navigation_mode_freedom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/yl_common_free_navigation" />
+
+            <RadioButton
+                android:id="@+id/rb_navigation_mode_track"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/yl_common_track_navigation" />
+
+            <RadioButton
+                android:id="@+id/rb_navigation_mode_track_first"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/yl_common_track_first" />
+        </RadioGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="循迹点添加模式:"
+            android:textSize="16sp" />
+
+        <RadioGroup
+            android:id="@+id/rg_trace_spot_add_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rg_trace_spot_manual_mode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="手动" />
+
+            <RadioButton
+                android:id="@+id/rg_trace_spot_auto_mode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="自动" />
+        </RadioGroup>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_trace_spot_add_mode"
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="自动模式:"
+            android:textSize="16sp" />
+
+        <RadioGroup
+            android:id="@+id/rg_trace_spot_auto_mode_chioce"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rg_trace_spot_auto_mode_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="距离优先" />
+
+            <RadioButton
+                android:id="@+id/rg_trace_spot_auto_mode_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="时间优先" />
+        </RadioGroup>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_auto_mode_config"
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="距离: "
+            android:textSize="16sp" />
+        <EditText
+            android:id="@+id/et_auto_mode_config_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:digits="12345"
+            android:inputType="number"
+            android:maxLength="1"
+            android:hint="1-5"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="米"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="    "/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="时间间隔: "
+            android:textSize="16sp" />
+        <EditText
+            android:id="@+id/et_auto_mode_config_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:digits="2345678"
+            android:inputType="number"
+            android:maxLength="1"
+            android:hint="2-8"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="秒"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_rollback_trace_path_config"
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:visibility="visible"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/yl_common_rollback_trace_spot_num"
+            android:textSize="16sp" />
+        <EditText
+            android:id="@+id/et_rollback_trace_path_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:digits="56789"
+            android:inputType="number"
+            android:maxLength="1"
+            android:hint="5-9"/>
+    </LinearLayout>
+
+</LinearLayout>

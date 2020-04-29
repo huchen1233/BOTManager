@@ -21,14 +21,14 @@ import com.evertrend.tiger.common.bean.Device;
 import com.evertrend.tiger.common.bean.MapPages;
 import com.evertrend.tiger.device.bean.event.ChoiceMapPagesEvent;
 import com.evertrend.tiger.device.bean.event.DeleteMapPageEvent;
-import com.evertrend.tiger.device.bean.event.SaveMapPageEvent;
+import com.evertrend.tiger.common.bean.event.SaveMapPageEvent;
 import com.evertrend.tiger.device.bean.event.DeviceMessageEvent;
 import com.evertrend.tiger.device.bean.event.GetAllMapPagesSuccessEvent;
 import com.evertrend.tiger.device.bean.event.SpinnerChoiceDeviceMessageEvent;
 import com.evertrend.tiger.device.utils.Constants;
 import com.evertrend.tiger.device.utils.ScheduledThreadUtils;
 import com.evertrend.tiger.device.utils.TaskUtils;
-import com.evertrend.tiger.device.widget.MapBottomPopupView;
+import com.evertrend.tiger.common.widget.MapBottomPopupView;
 import com.lxj.xpopup.XPopup;
 
 import org.greenrobot.eventbus.EventBus;

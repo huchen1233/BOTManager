@@ -18,6 +18,13 @@
 
         <activity android:name="com.evertrend.tiger.common.activity.LogConfigActivity">
         </activity>
+        <activity android:name=".activity.OperationAreaMapActivity"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.OperationAreaMapActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
 
         <receiver android:name="com.evertrend.tiger.common.utils.LogSettingReceiver"
             android:enabled="true"

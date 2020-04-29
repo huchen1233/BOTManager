@@ -1,6 +1,6 @@
 package com.evertrend.tiger.device.bean.event;
 
-import com.evertrend.tiger.device.bean.VirtualTrackGroup;
+import com.evertrend.tiger.common.bean.VirtualTrackGroup;
 
 import java.util.List;
 

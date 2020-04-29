@@ -27,7 +27,6 @@ public class MapPagesChoiceAdapter extends  RecyclerView.Adapter<MapPagesChoiceA
     private List<MapPages> mMapPagesList;
     private Context mContext;
     private int type;
-//    private EasyPopup mCirclePop;
 
     public MapPagesChoiceAdapter() {
     }
