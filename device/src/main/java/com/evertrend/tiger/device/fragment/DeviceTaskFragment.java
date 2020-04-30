@@ -125,7 +125,7 @@ public class DeviceTaskFragment extends BaseFragment implements View.OnClickList
     public void onEventMainThread(ChoiceMapPagesEvent event) {
         mapPagesChoiceDialog.dismiss();
         choiceMapPages = event.getMapPages();
-        if (Constants.TYPE_MAPPAGE_OPERATION_CREATE_TASK_CHOICE == event.getType()) {
+        if (CommonConstants.TYPE_MAPPAGE_OPERATION_CREATE_TASK_CHOICE == event.getType()) {
             showCreateCleanTaskBottomDialog();
         }
     }
@@ -290,7 +290,7 @@ public class DeviceTaskFragment extends BaseFragment implements View.OnClickList
             showDeviceBasicSettingBottomDialog();
         } else if (v.getId() == R.id.iv_create_clean_task) {
             if (mapPagesList.size() > 0) {
-                showMapPagesChoice(mapPagesList, Constants.TYPE_MAPPAGE_OPERATION_CREATE_TASK_CHOICE);
+                showMapPagesChoice(mapPagesList, CommonConstants.TYPE_MAPPAGE_OPERATION_CREATE_TASK_CHOICE);
             } else {
                 Toast.makeText(getActivity(), "请先创建地图", Toast.LENGTH_SHORT).show();
             }

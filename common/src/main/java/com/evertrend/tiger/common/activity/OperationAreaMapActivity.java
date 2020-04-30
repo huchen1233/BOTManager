@@ -35,7 +35,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.evertrend.tiger.common.R;
-import com.evertrend.tiger.common.adapter.BaseTraceChoiceAdapter;
+import com.evertrend.tiger.common.adapter.BaseTraceAdapter;
 import com.evertrend.tiger.common.bean.Device;
 import com.evertrend.tiger.common.bean.MapPages;
 import com.evertrend.tiger.common.bean.RobotSpot;
@@ -1170,7 +1170,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         recyclerView.setLayoutManager(layoutManager);
         //添加Android自带的分割线
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        recyclerView.setAdapter(new BaseTraceChoiceAdapter(this, list, typeOperation, false));
+        recyclerView.setAdapter(new BaseTraceAdapter(this, list));
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("添加循迹点列表到循迹路径");
         builder.setView(view);

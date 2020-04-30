@@ -23,6 +23,17 @@ public class CommonConstants {
     public static final int TYPE_MOVE_VIRTUAL_TRACK_START = 0;
     public static final int TYPE_MOVE_VIRTUAL_TRACK_END = 1;
 
+    public static final int TYPE_MAPPAGE_OPERATION_OPEN = 0;
+    public static final int TYPE_MAPPAGE_OPERATION_DELETE = 1;
+    public static final int TYPE_MAPPAGE_OPERATION_EDIT = 2;
+    public static final int TYPE_MAPPAGE_OPERATION_TRACE_PATH = 3;
+    public static final int TYPE_MAPPAGE_OPERATION_VIRTUAL_TRACK = 4;
+    public static final int TYPE_MAPPAGE_OPERATION_CREATE_TASK_CHOICE = 5;
+
+    public static final int LIST_OPERATION_UPDATE = 1;
+    public static final int LIST_OPERATION_CREATE = 2;
+    public static final int LIST_OPERATION_DELETE = 3;
+
     public static final int TYPE_TRACE_PATH_OPERATION_SAVE_SPOT = 0;
     public static final int TYPE_TRACE_PATH_OPERATION_SHOW_PATH = 1;
 

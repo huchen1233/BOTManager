@@ -13,12 +13,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
-import com.evertrend.tiger.common.utils.general.AppSharePreference;
-import com.evertrend.tiger.common.utils.general.CommonConstants;
 import com.evertrend.tiger.common.utils.general.DialogUtil;
 import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.common.utils.general.Utils;
@@ -29,7 +26,7 @@ import com.evertrend.tiger.user.utils.NetReq;
 
 import java.util.HashMap;
 
-public class UserRegisterActivity extends AppCompatActivity implements View.OnClickListener {
+public class UserRegisterActivity extends UserBaseActivity implements View.OnClickListener {
     private static final String TAG = UserRegisterActivity.class.getSimpleName();
 
     private EditText et_account;

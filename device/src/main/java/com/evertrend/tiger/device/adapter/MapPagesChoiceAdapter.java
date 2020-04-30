@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.evertrend.tiger.common.utils.general.CommonConstants;
 import com.evertrend.tiger.device.R;
 import com.evertrend.tiger.common.bean.MapPages;
 import com.evertrend.tiger.device.bean.event.ChoiceMapPagesEvent;
@@ -55,7 +56,7 @@ public class MapPagesChoiceAdapter extends  RecyclerView.Adapter<MapPagesChoiceA
                 MapPages mapPages = mMapPagesList.get(viewHolder.getAdapterPosition());
                 Toast.makeText(mContext, mapPages.getName(), Toast.LENGTH_SHORT).show();
                 if (type == 0) {
-                    EventBus.getDefault().post(new ChoiceMapPagesEvent(mapPages, Constants.TYPE_MAPPAGE_OPERATION_OPEN));
+                    EventBus.getDefault().post(new ChoiceMapPagesEvent(mapPages, CommonConstants.TYPE_MAPPAGE_OPERATION_OPEN));
                 } else {
                     EventBus.getDefault().post(new ChoiceMapPagesEvent(mapPages, type));
                 }
@@ -83,38 +84,21 @@ public class MapPagesChoiceAdapter extends  RecyclerView.Adapter<MapPagesChoiceA
                             public void onSelect(int position, String text) {
                                 switch (position) {
                                     case 0:
-                                        EventBus.getDefault().post(new ChoiceMapPagesEvent(mapPages, Constants.TYPE_MAPPAGE_OPERATION_DELETE));
+                                        EventBus.getDefault().post(new ChoiceMapPagesEvent(mapPages, CommonConstants.TYPE_MAPPAGE_OPERATION_DELETE));
                                         break;
                                     case 1:
-                                        EventBus.getDefault().post(new ChoiceMapPagesEvent(mapPages, Constants.TYPE_MAPPAGE_OPERATION_EDIT));
+                                        EventBus.getDefault().post(new ChoiceMapPagesEvent(mapPages, CommonConstants.TYPE_MAPPAGE_OPERATION_EDIT));
                                         break;
                                     case 2:
-                                        EventBus.getDefault().post(new ChoiceMapPagesEvent(mapPages, Constants.TYPE_MAPPAGE_OPERATION_TRACE_PATH));
+                                        EventBus.getDefault().post(new ChoiceMapPagesEvent(mapPages, CommonConstants.TYPE_MAPPAGE_OPERATION_TRACE_PATH));
                                         break;
                                     case 3:
-                                        EventBus.getDefault().post(new ChoiceMapPagesEvent(mapPages, Constants.TYPE_MAPPAGE_OPERATION_VIRTUAL_TRACK));
+                                        EventBus.getDefault().post(new ChoiceMapPagesEvent(mapPages, CommonConstants.TYPE_MAPPAGE_OPERATION_VIRTUAL_TRACK));
                                         break;
                                 }
                             }
                         })
                 .show();
-//
-//        btn_map_page_trace_path.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                EventBus.getDefault().post(new ChoiceMapPagesEvent(mapPages, Constants.TYPE_MAPPAGE_OPERATION_TRACE_PATH));
-//                mCirclePop.dismiss();
-//            }
-//        });
-//
-//        btn_map_page_virtual_track_group.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                EventBus.getDefault().post(new ChoiceMapPagesEvent(mapPages, Constants.TYPE_MAPPAGE_OPERATION_VIRTUAL_TRACK));
-//                mCirclePop.dismiss();
-//            }
-//        });
-//        mCirclePop.showAtAnchorView(v, YGravity.BELOW, XGravity.CENTER, 0, 0);
     }
 
     @Override

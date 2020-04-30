@@ -49,4 +49,7 @@
     <string name="yl_common_execute">execute task</string>
     <string name="yl_common_mappage_name">map name</string>
     <string name="yl_common_mappage_desc">map description</string>
+    <string name="yl_common_map">map</string>
+    <string name="yl_common_delete">delete</string>
+    <string name="yl_common_update">update</string>
 </resources>

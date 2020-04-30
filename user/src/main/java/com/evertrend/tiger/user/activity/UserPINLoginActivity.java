@@ -12,7 +12,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
@@ -31,7 +30,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 
-public class UserPINLoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class UserPINLoginActivity extends UserBaseActivity implements View.OnClickListener {
     private static final String TAG = UserPINLoginActivity.class.getSimpleName();
 
     private EditText et_account;

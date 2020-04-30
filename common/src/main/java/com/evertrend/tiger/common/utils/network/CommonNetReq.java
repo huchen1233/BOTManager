@@ -78,6 +78,7 @@ public class CommonNetReq {
     public static final String PAGE_NAME = "page_name";
     public static final String PAGE_DESC = "page_desc";
     public static final String PAGE_DO_SAVE_MAP = "do_save_map";
+    public static final String VIRTUAL_TRACK = "virtual_track";
 
     public static final int CODE_SUCCESS = 0;
 }

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.evertrend.tiger.common.bean.event.DialogChoiceEvent;
 import com.evertrend.tiger.common.fragment.BaseFragment;
+import com.evertrend.tiger.common.utils.general.CommonConstants;
 import com.evertrend.tiger.common.utils.general.DialogUtil;
 import com.evertrend.tiger.device.R;
 import com.evertrend.tiger.device.adapter.MapPagesChoiceAdapter;
@@ -25,7 +26,6 @@ import com.evertrend.tiger.common.bean.event.SaveMapPageEvent;
 import com.evertrend.tiger.device.bean.event.DeviceMessageEvent;
 import com.evertrend.tiger.device.bean.event.GetAllMapPagesSuccessEvent;
 import com.evertrend.tiger.device.bean.event.SpinnerChoiceDeviceMessageEvent;
-import com.evertrend.tiger.device.utils.Constants;
 import com.evertrend.tiger.device.utils.ScheduledThreadUtils;
 import com.evertrend.tiger.device.utils.TaskUtils;
 import com.evertrend.tiger.common.widget.MapBottomPopupView;
@@ -110,9 +110,9 @@ public class DeviceMapFragment extends BaseFragment {
         MapPages mapPages = event.getMapPages();
         DialogUtil.showSuccessToast(getContext());
         if (event.isUpdate()) {
-            refreshMapPageList(mapPages, Constants.LIST_OPERATION_UPDATE);
+            refreshMapPageList(mapPages, CommonConstants.LIST_OPERATION_UPDATE);
         } else {
-            refreshMapPageList(mapPages, Constants.LIST_OPERATION_CREATE);
+            refreshMapPageList(mapPages, CommonConstants.LIST_OPERATION_CREATE);
         }
     }
 
@@ -122,22 +122,22 @@ public class DeviceMapFragment extends BaseFragment {
         Intent intent = new Intent();
         intent.putExtra("device", mDevice);
         intent.putExtra("mappage", choiceMapPages);
-        if (Constants.TYPE_MAPPAGE_OPERATION_OPEN == event.getType()) {
+        if (CommonConstants.TYPE_MAPPAGE_OPERATION_OPEN == event.getType()) {
             intent.setAction("android.intent.action.OperationAreaMapActivity");
             startActivity(intent);
-        } else if (Constants.TYPE_MAPPAGE_OPERATION_DELETE == event.getType()) {
+        } else if (CommonConstants.TYPE_MAPPAGE_OPERATION_DELETE == event.getType()) {
             String deleteConfirm = getResources().getString(R.string.yl_device_delete_mappage_confirm);
-            DialogUtil.showChoiceDialog(getActivity(), String.format(deleteConfirm, choiceMapPages.getName()), Constants.TYPE_MAPPAGE_OPERATION_DELETE);
-        } else if (Constants.TYPE_MAPPAGE_OPERATION_EDIT == event.getType()) {
+            DialogUtil.showChoiceDialog(getActivity(), String.format(deleteConfirm, choiceMapPages.getName()), CommonConstants.TYPE_MAPPAGE_OPERATION_DELETE);
+        } else if (CommonConstants.TYPE_MAPPAGE_OPERATION_EDIT == event.getType()) {
             mapBottomPopupView = new MapBottomPopupView(getActivity(), mDevice, choiceMapPages);
             new XPopup.Builder(getActivity())
                     .autoOpenSoftInput(true)
                     .asCustom(mapBottomPopupView)
                     .show();
-        } else if (Constants.TYPE_MAPPAGE_OPERATION_TRACE_PATH == event.getType()) {
+        } else if (CommonConstants.TYPE_MAPPAGE_OPERATION_TRACE_PATH == event.getType()) {
             intent.setAction("android.intent.action.TracePathOperationActivity");
             startActivity(intent);
-        } else if (Constants.TYPE_MAPPAGE_OPERATION_VIRTUAL_TRACK == event.getType()) {
+        } else if (CommonConstants.TYPE_MAPPAGE_OPERATION_VIRTUAL_TRACK == event.getType()) {
             intent.setAction("android.intent.action.VirtualTrackGroupOperationActivity");
             startActivity(intent);
         }
@@ -145,7 +145,7 @@ public class DeviceMapFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(DialogChoiceEvent event) {
-        if (event.getType() == Constants.TYPE_MAPPAGE_OPERATION_DELETE) {
+        if (event.getType() == CommonConstants.TYPE_MAPPAGE_OPERATION_DELETE) {
             DialogUtil.showProgressDialog(getActivity(), getResources().getString(R.string.yl_common_deleting), false, false);
             scheduledThreadDeleteMapPages = new ScheduledThreadPoolExecutor(4);
             scheduledThreadDeleteMapPages.scheduleAtFixedRate(new TaskUtils.TaskDeleteMapPages(mDevice, choiceMapPages),
@@ -156,23 +156,23 @@ public class DeviceMapFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(DeleteMapPageEvent event) {
         MapPages mapPages = event.getMapPages();
-        refreshMapPageList(mapPages, Constants.LIST_OPERATION_DELETE);
+        refreshMapPageList(mapPages, CommonConstants.LIST_OPERATION_DELETE);
         stopDeleteMapPagesTimer();
         DialogUtil.hideProgressDialog();
         DialogUtil.showSuccessToast(getContext());
     }
 
     private void refreshMapPageList(MapPages mapPages, int operation) {
-        if (Constants.LIST_OPERATION_CREATE == operation) {
+        if (CommonConstants.LIST_OPERATION_CREATE == operation) {
             mapPagesList.add(mapPages);
             mapPagesChoiceAdapter.notifyItemInserted(mapPagesList.size()-1);
         } else {
             for (int i = 0; i < mapPagesList.size(); i++) {
                 if (mapPages.getId() == mapPagesList.get(i).getId()) {
-                    if (Constants.LIST_OPERATION_DELETE == operation) {
+                    if (CommonConstants.LIST_OPERATION_DELETE == operation) {
                         mapPagesList.remove(i);
                         mapPagesChoiceAdapter.notifyItemRemoved(i);
-                    } else if (Constants.LIST_OPERATION_UPDATE == operation) {
+                    } else if (CommonConstants.LIST_OPERATION_UPDATE == operation) {
                         mapPagesList.set(i, mapPages);
                         mapPagesChoiceAdapter.notifyItemChanged(i);
                     }

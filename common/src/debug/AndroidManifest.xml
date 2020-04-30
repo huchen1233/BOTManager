@@ -25,6 +25,15 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.TracePathActivity"
+            android:label="@string/yl_common_trace_path"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.TracePathOperationActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
 
         <receiver android:name="com.evertrend.tiger.common.utils.LogSettingReceiver"
             android:enabled="true"

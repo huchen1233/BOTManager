@@ -1,5 +1,7 @@
 package com.evertrend.tiger.device.activity;
 
+import android.annotation.SuppressLint;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -58,9 +60,11 @@ public class DeviceMainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private ScheduledThreadPoolExecutor scheduledThreadGetDeviceInfoPoolExecutor;
 
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.yl_device_activity_main);
         this.getSupportActionBar().hide();
         device = (Device) getIntent().getSerializableExtra("device");

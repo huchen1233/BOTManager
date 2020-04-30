@@ -49,4 +49,7 @@
     <string name="yl_common_execute">执行任务</string>
     <string name="yl_common_mappage_name">地图名称</string>
     <string name="yl_common_mappage_desc">地图描述</string>
+    <string name="yl_common_map">地图</string>
+    <string name="yl_common_delete">删除</string>
+    <string name="yl_common_update">更新</string>
 </resources>

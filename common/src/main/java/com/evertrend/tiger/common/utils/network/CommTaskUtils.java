@@ -5,12 +5,16 @@ import android.util.Log;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
+import com.evertrend.tiger.common.bean.BaseTrace;
 import com.evertrend.tiger.common.bean.Device;
 import com.evertrend.tiger.common.bean.MapPages;
 import com.evertrend.tiger.common.bean.RobotSpot;
 import com.evertrend.tiger.common.bean.TracePath;
 import com.evertrend.tiger.common.bean.VirtualTrackGroup;
+import com.evertrend.tiger.common.bean.event.CreateNewBaseTraceSuccessEvent;
+import com.evertrend.tiger.common.bean.event.DeleteBaseTraceEvent;
 import com.evertrend.tiger.common.bean.event.SaveMapPageEvent;
+import com.evertrend.tiger.common.bean.event.UpdateBaseTraceSuccessEvent;
 import com.evertrend.tiger.common.bean.event.map.DeleteOneTraceSpotListEvent;
 import com.evertrend.tiger.common.bean.event.map.DeleteTraceSpotListCompleteEvent;
 import com.evertrend.tiger.common.bean.event.map.GetAllVirtualTrackGroupSuccessEvent;
@@ -24,6 +28,7 @@ import com.evertrend.tiger.common.bean.event.map.SaveTraceSpotListEvent;
 import com.evertrend.tiger.common.bean.event.map.SaveVirtualTrackEvent;
 import com.evertrend.tiger.common.bean.mapview.MapView;
 import com.evertrend.tiger.common.utils.general.AppSharePreference;
+import com.evertrend.tiger.common.utils.general.CommonConstants;
 import com.evertrend.tiger.common.utils.general.DBUtil;
 import com.evertrend.tiger.common.utils.general.LogUtil;
 
@@ -628,6 +633,200 @@ public class CommTaskUtils {
         @Override
         public void run() {
             startSaveTraceSpot(device, mapPageId, device.getCurrent_trace_path_id(), spotFlag, currentPose, true);
+        }
+    }
+
+    public static class TaskSaveBaseTrace implements Runnable {
+        private BaseTrace baseTrace;
+        private int type;
+
+        public TaskSaveBaseTrace(BaseTrace baseTrace, int type) {
+            this.baseTrace = baseTrace;
+            this.type = type;
+        }
+
+        @Override
+        public void run() {
+            startSaveBaseTrace();
+        }
+
+        private void startSaveBaseTrace() {
+            HashMap<String, String> map = new HashMap<>();
+            map.put(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
+            map.put(CommonNetReq.DEVICE_ID, String.valueOf(baseTrace.getDeviceId()));
+            map.put(CommonNetReq.MAP_PAGE, String.valueOf(baseTrace.getMapPage()));
+            map.put(CommonNetReq.NAME, baseTrace.getName());
+            map.put(CommonNetReq.DESCRIPTION, baseTrace.getDesc());
+            String host = null;
+            if (type == CommonConstants.TYPE_MAPPAGE_OPERATION_TRACE_PATH) {
+                host = CommonNetReq.NET_NEW_TRACE_PATH;
+            } else if (type == CommonConstants.TYPE_MAPPAGE_OPERATION_VIRTUAL_TRACK) {
+                host = CommonNetReq.NET_NEW_VT_GROUP;
+            }
+            OKHttpManager.getInstance().sendComplexForm(host, map, new OKHttpManager.FuncJsonObj() {
+                @Override
+                public void onResponse(JSONObject jsonObject) throws JSONException {
+                    try {
+                        LogUtil.d(TAG, "startSaveTracePath:" + jsonObject.getString(CommonNetReq.RESULT_DESC));
+                        switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
+                            case CommonNetReq.CODE_SUCCESS:
+                                JSONObject jsonObject1 = jsonObject.getJSONObject(CommonNetReq.RESULT_DATA);
+                                if (type == CommonConstants.TYPE_MAPPAGE_OPERATION_TRACE_PATH) {
+                                    BaseTrace baseTrace = new TracePath();
+                                    baseTrace.setId(jsonObject1.getIntValue(CommonNetReq.ID));
+                                    baseTrace.setName(jsonObject1.getString(CommonNetReq.NAME));
+                                    baseTrace.setDesc(jsonObject1.getString(CommonNetReq.DESC));
+                                    baseTrace.setMapPage(jsonObject1.getIntValue(CommonNetReq.MAP_PAGE));
+                                    baseTrace.setDeviceId(jsonObject1.getIntValue(CommonNetReq.DEVICE));
+                                    EventBus.getDefault().post(new CreateNewBaseTraceSuccessEvent(baseTrace));
+                                } else if (type == CommonConstants.TYPE_MAPPAGE_OPERATION_VIRTUAL_TRACK) {
+                                    BaseTrace baseTrace = new VirtualTrackGroup();
+                                    baseTrace.setId(jsonObject1.getIntValue(CommonNetReq.ID));
+                                    baseTrace.setName(jsonObject1.getString(CommonNetReq.NAME));
+                                    baseTrace.setDesc(jsonObject1.getString(CommonNetReq.DESCRIPTION));
+                                    baseTrace.setMapPage(jsonObject1.getIntValue(CommonNetReq.MAP_PAGE));
+                                    baseTrace.setDeviceId(jsonObject1.getIntValue(CommonNetReq.DEVICE));
+                                    EventBus.getDefault().post(new CreateNewBaseTraceSuccessEvent(baseTrace));
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(TAG, "出错：解析数据失败");
+                    }
+                }
+            }, new OKHttpManager.FuncFailure() {
+                @Override
+                public void onFailure() {
+                    Log.e(TAG, "出错：请求网络失败");
+                }
+            });
+        }
+    }
+
+    public static class TaskUpdateBaseTrace implements Runnable {
+        private BaseTrace baseTrace;
+        private int type;
+
+        public TaskUpdateBaseTrace(BaseTrace baseTrace, int type) {
+            this.baseTrace = baseTrace;
+            this.type = type;
+        }
+
+        @Override
+        public void run() {
+            startUpdateBaseTrace();
+        }
+
+        private void startUpdateBaseTrace() {
+            HashMap<String, String> map = new HashMap<>();
+            map.put(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
+            map.put(CommonNetReq.DEVICE_ID, String.valueOf(baseTrace.getDeviceId()));
+            map.put(CommonNetReq.ID, String.valueOf(baseTrace.getId()));
+            map.put(CommonNetReq.NAME, baseTrace.getName());
+            map.put(CommonNetReq.DESCRIPTION, baseTrace.getDesc());
+            String host = null;
+            if (type == CommonConstants.TYPE_MAPPAGE_OPERATION_TRACE_PATH) {
+                host = CommonNetReq.NET_UPDATE_TRACE_PATH;
+            } else if (type == CommonConstants.TYPE_MAPPAGE_OPERATION_VIRTUAL_TRACK) {
+                host = CommonNetReq.NET_UPDATE_VT_GROUP;
+            }
+            OKHttpManager.getInstance().sendComplexForm(host, map, new OKHttpManager.FuncJsonObj() {
+                @Override
+                public void onResponse(JSONObject jsonObject) throws JSONException {
+                    try {
+                        LogUtil.d(TAG, "startUpdateBaseTrace:" + jsonObject.getString(CommonNetReq.RESULT_DESC));
+                        switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
+                            case CommonNetReq.CODE_SUCCESS:
+                                JSONObject jsonObject1 = jsonObject.getJSONObject(CommonNetReq.RESULT_DATA);
+                                if (type == CommonConstants.TYPE_MAPPAGE_OPERATION_TRACE_PATH) {
+                                    BaseTrace baseTrace = new TracePath();
+                                    baseTrace.setId(jsonObject1.getIntValue(CommonNetReq.ID));
+                                    baseTrace.setName(jsonObject1.getString(CommonNetReq.NAME));
+                                    baseTrace.setDesc(jsonObject1.getString(CommonNetReq.DESC));
+                                    baseTrace.setMapPage(jsonObject1.getIntValue(CommonNetReq.MAP_PAGE));
+                                    baseTrace.setDeviceId(jsonObject1.getIntValue(CommonNetReq.DEVICE));
+                                    EventBus.getDefault().post(new UpdateBaseTraceSuccessEvent(baseTrace));
+                                } else if (type == CommonConstants.TYPE_MAPPAGE_OPERATION_VIRTUAL_TRACK) {
+                                    BaseTrace baseTrace = new VirtualTrackGroup();
+                                    baseTrace.setId(jsonObject1.getIntValue(CommonNetReq.ID));
+                                    baseTrace.setName(jsonObject1.getString(CommonNetReq.NAME));
+                                    baseTrace.setDesc(jsonObject1.getString(CommonNetReq.DESCRIPTION));
+                                    baseTrace.setMapPage(jsonObject1.getIntValue(CommonNetReq.MAP_PAGE));
+                                    baseTrace.setDeviceId(jsonObject1.getIntValue(CommonNetReq.DEVICE));
+                                    EventBus.getDefault().post(new UpdateBaseTraceSuccessEvent(baseTrace));
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(TAG, "出错：解析数据失败");
+                    }
+                }
+            }, new OKHttpManager.FuncFailure() {
+                @Override
+                public void onFailure() {
+                    Log.e(TAG, "出错：请求网络失败");
+                }
+            });
+        }
+    }
+
+    public static class TaskDeleteBaseTrace implements Runnable {
+        private Device device;
+        private BaseTrace baseTrace;
+        private int type;
+
+        public TaskDeleteBaseTrace(Device device, BaseTrace baseTrace, int type) {
+            this.device = device;
+            this.baseTrace = baseTrace;
+            this.type = type;
+        }
+
+        @Override
+        public void run() {
+            startDeleteBaseTrace();
+        }
+
+        private void startDeleteBaseTrace() {
+            HashMap<String, String> map = new HashMap<>();
+            map.put(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
+            map.put(CommonNetReq.DEVICE_ID, String.valueOf(device.getId()));
+            String requset = null;
+            if (type == CommonConstants.TYPE_MAPPAGE_OPERATION_TRACE_PATH) {
+                map.put(CommonNetReq.TRACE_PATH_ID, String.valueOf(baseTrace.getId()));
+                requset = CommonNetReq.NET_DELETE_MAP_PAGE_PATH;
+            } else if (type == CommonConstants.TYPE_MAPPAGE_OPERATION_VIRTUAL_TRACK) {
+                map.put(CommonNetReq.VIRTUAL_TRACK, String.valueOf(baseTrace.getId()));
+                requset = CommonNetReq.NET_DELETE_MAP_PAGE_VTGROUP;
+            }
+            OKHttpManager.getInstance().sendComplexForm(requset, map, new OKHttpManager.FuncJsonObj() {
+                @Override
+                public void onResponse(JSONObject jsonObject) throws JSONException {
+                    try {
+                        LogUtil.d(TAG, jsonObject.getString(CommonNetReq.RESULT_DESC));
+                        switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
+                            case CommonNetReq.CODE_SUCCESS:
+                                EventBus.getDefault().post(new DeleteBaseTraceEvent(baseTrace));
+                                break;
+                            default:
+                                break;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(TAG, "出错：解析数据失败");
+                    }
+                }
+            }, new OKHttpManager.FuncFailure() {
+                @Override
+                public void onFailure() {
+                    Log.e(TAG, "出错：请求网络失败");
+                }
+            });
         }
     }
 }

@@ -15,7 +15,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatCheckBox;
 
 import com.alibaba.fastjson.JSONException;
@@ -35,7 +34,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 
-public class UserLoginActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
+public class UserLoginActivity extends UserBaseActivity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
     private static final String TAG = UserLoginActivity.class.getSimpleName();
 
     private EditText et_account;

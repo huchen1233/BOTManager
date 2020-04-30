@@ -1,4 +1,4 @@
-package com.evertrend.tiger.common.activity;
+package com.evertrend.tiger.user.activity;
 
 import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
@@ -7,21 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.evertrend.tiger.common.utils.SlamwareAgent;
-
-public class BaseActivity extends AppCompatActivity {
-    public static final String TAG = BaseActivity.class.getCanonicalName();
-
-    private static SlamwareAgent mSlamwareAgent;
-
-    static {
-        mSlamwareAgent = new SlamwareAgent();
-    }
-
-    public SlamwareAgent getSlamwareAgent() {
-        return mSlamwareAgent;
-    }
-
+public class UserBaseActivity extends AppCompatActivity {
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

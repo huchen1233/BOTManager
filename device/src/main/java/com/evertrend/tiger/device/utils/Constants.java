@@ -98,17 +98,6 @@ public class Constants {
     public static final int TASK_TYPE_VIRTUAL_TRACK = 2;
     public static final int TASK_TYPE_SPE_WORK = 3;
 
-    public static final int TYPE_MAPPAGE_OPERATION_OPEN = 0;
-    public static final int TYPE_MAPPAGE_OPERATION_DELETE = 1;
-    public static final int TYPE_MAPPAGE_OPERATION_EDIT = 2;
-    public static final int TYPE_MAPPAGE_OPERATION_TRACE_PATH = 3;
-    public static final int TYPE_MAPPAGE_OPERATION_VIRTUAL_TRACK = 4;
-    public static final int TYPE_MAPPAGE_OPERATION_CREATE_TASK_CHOICE = 5;
-
-    public static final int LIST_OPERATION_UPDATE = 1;
-    public static final int LIST_OPERATION_CREATE = 2;
-    public static final int LIST_OPERATION_DELETE = 3;
-
     public static final int BASE_TRACE_OPERATION_CHOICE = 1;
     public static final int BASE_TRACE_OPERATION_EDIT = 2;
 

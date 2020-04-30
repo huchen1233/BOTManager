@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="yl_common_base_trace_operation">
+        <item>@string/yl_common_delete</item>
+        <item>@string/yl_common_update</item>
+    </string-array>
+</resources>
