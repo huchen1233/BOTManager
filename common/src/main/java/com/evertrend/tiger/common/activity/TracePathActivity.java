@@ -183,7 +183,7 @@ public class TracePathActivity extends BaseActivity {
         rlv_all_trace.setHasFixedSize(true);
         rlv_all_trace.setItemAnimator(new DefaultItemAnimator());
         rlv_all_trace.setLayoutManager(new LinearLayoutManager(this));
-        baseTraceAdapter = new BaseTraceAdapter(this, tracePathList);
+        baseTraceAdapter = new BaseTraceAdapter(this, tracePathList, CommonConstants.TYPE_MAPPAGE_OPERATION_TRACE_PATH);
         rlv_all_trace.setAdapter(baseTraceAdapter);
     }
 

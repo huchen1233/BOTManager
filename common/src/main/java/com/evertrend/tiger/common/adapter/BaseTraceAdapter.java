@@ -25,6 +25,7 @@ public class BaseTraceAdapter extends  RecyclerView.Adapter<BaseTraceAdapter.Vie
     private static final String TAG = BaseTraceAdapter.class.getSimpleName();
     private List<? extends BaseTrace> baseTraces;
     private Context mContext;
+    private int type;
 
     public BaseTraceAdapter() {
     }
@@ -32,6 +33,12 @@ public class BaseTraceAdapter extends  RecyclerView.Adapter<BaseTraceAdapter.Vie
     public BaseTraceAdapter(Context context, List<? extends BaseTrace> baseTraces) {
         mContext = context;
         this.baseTraces = baseTraces;
+    }
+
+    public BaseTraceAdapter(Context context, List<? extends BaseTrace> baseTraces, int type) {
+        mContext = context;
+        this.baseTraces = baseTraces;
+        this.type = type;
     }
 
     @NonNull
@@ -85,7 +92,11 @@ public class BaseTraceAdapter extends  RecyclerView.Adapter<BaseTraceAdapter.Vie
         BaseTrace baseTrace = baseTraces.get(position);
         holder.tv_name.setText(baseTrace.getName());
         holder.tv_desc.setText(baseTrace.getDesc());
-        holder.iv_base_trace.setImageResource(R.drawable.yl_common_ic_trace_path_blue_36dp);
+        if (type == CommonConstants.TYPE_MAPPAGE_OPERATION_TRACE_PATH) {
+            holder.iv_base_trace.setImageResource(R.drawable.yl_common_ic_trace_path_orange_36dp);
+        } else if (type == CommonConstants.TYPE_MAPPAGE_OPERATION_VIRTUAL_TRACK) {
+            holder.iv_base_trace.setImageResource(R.drawable.yl_common_ic_virtual_track_group_blue_36dp);
+        }
     }
 
     @Override
