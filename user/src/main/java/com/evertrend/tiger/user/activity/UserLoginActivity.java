@@ -115,8 +115,6 @@ public class UserLoginActivity extends UserBaseActivity implements CompoundButto
         String strAccount = et_account.getText().toString().trim();
         if (TextUtils.isEmpty(strAccount)) {
             DialogUtil.showToast(this, R.string.yl_user_account_is_empty, Toast.LENGTH_SHORT);
-        } else if (!Utils.isPhone(strAccount) && !Utils.isEmail(strAccount)) {
-            DialogUtil.showToast(this, R.string.yl_user_account_format_error, Toast.LENGTH_SHORT);
         } else {
             String strPwd = et_password.getText().toString();
             if (TextUtils.isEmpty(strPwd)) {
@@ -126,6 +124,8 @@ public class UserLoginActivity extends UserBaseActivity implements CompoundButto
                     loginPhonePwd(strAccount, strPwd);
                 } else if (Utils.isEmail(strAccount)) {
                     loginEmailPwd(strAccount, strPwd);
+                } else {
+                    DialogUtil.showToast(this, R.string.yl_user_account_format_error, Toast.LENGTH_SHORT);
                 }
             }
         }

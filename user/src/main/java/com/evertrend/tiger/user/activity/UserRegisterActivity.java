@@ -71,8 +71,6 @@ public class UserRegisterActivity extends UserBaseActivity implements View.OnCli
         String strAccount = et_account.getText().toString().trim();
         if (TextUtils.isEmpty(strAccount)) {
             DialogUtil.showToast(this, R.string.yl_user_account_is_empty, Toast.LENGTH_SHORT);
-        }  else if (!Utils.isPhone(strAccount) && !Utils.isEmail(strAccount)) {
-            DialogUtil.showToast(this, R.string.yl_user_account_format_error, Toast.LENGTH_SHORT);
         } else {
             if (Utils.isPhone(strAccount)) {
                 HashMap<String, String> map = new HashMap<>();
@@ -128,6 +126,8 @@ public class UserRegisterActivity extends UserBaseActivity implements View.OnCli
                         LogUtil.e(TAG, "出错：请求网络失败");
                     }
                 });
+            } else {
+                DialogUtil.showToast(this, R.string.yl_user_account_format_error, Toast.LENGTH_SHORT);
             }
         }
     }
@@ -136,8 +136,6 @@ public class UserRegisterActivity extends UserBaseActivity implements View.OnCli
         String strAccount = et_account.getText().toString().trim();
         if (TextUtils.isEmpty(strAccount)) {
             DialogUtil.showToast(this, R.string.yl_user_account_is_empty, Toast.LENGTH_SHORT);
-        } else if (!Utils.isPhone(strAccount) && !Utils.isEmail(strAccount)) {
-            DialogUtil.showToast(this, R.string.yl_user_account_format_error, Toast.LENGTH_SHORT);
         } else {
             String strPwd = et_password.getText().toString();
             String strPwdConfirm = et_confirm_password.getText().toString();
@@ -153,6 +151,8 @@ public class UserRegisterActivity extends UserBaseActivity implements View.OnCli
                     registerPhonePwdPin(strAccount, strPwd, strPin);
                 } else if (Utils.isEmail(strAccount)) {
                     registerEmailPwdPin(strAccount, strPwd, strPin);
+                } else {
+                    DialogUtil.showToast(this, R.string.yl_user_account_format_error, Toast.LENGTH_SHORT);
                 }
             }
         }
