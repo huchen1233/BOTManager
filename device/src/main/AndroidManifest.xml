@@ -10,5 +10,6 @@
         android:theme="@style/yl_common_AppTheme">
 
         <activity android:name=".activity.DeviceMainActivity"></activity>
+        <activity android:name=".activity.DevicesActivity"></activity>
     </application>
 </manifest>

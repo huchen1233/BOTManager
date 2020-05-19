@@ -4,6 +4,9 @@ import com.evertrend.tiger.common.utils.network.CommonNetReq;
 
 public class NetReq {
 
+    public static final String NET_LOGIN_PASS = CommonNetReq.REQ_HOST + "api/user/login-pass";
+    public static final String NET_LOGIN_PASS_EMAIL = CommonNetReq.REQ_HOST + "api/user/login-pass-email";
+
     public static final String NET_ASSOCIATED_DEVICE = CommonNetReq.REQ_HOST + "api/remote/associated-device";
     public static final String NET_REGISTER_DEVICE = CommonNetReq.REQ_HOST + "api/remote/register-device";
     public static final String NET_GET_DEVICE = CommonNetReq.REQ_HOST + "api/remote/get-device";
@@ -44,6 +47,13 @@ public class NetReq {
     public static final String NET_GO_TO_WORK = CommonNetReq.REQ_HOST + "api/remote/go-to-work";
     public static final String NET_GO_TO_IDEL = CommonNetReq.REQ_HOST + "api/remote/go-to-idel";
     public static final String NET_GO_TO_ADD_WATER = CommonNetReq.REQ_HOST + "api/remote/go-to-add-water";
+
+    public static final String MOBILE = "mobile";
+    public static final String EMAIL = "email";
+    public static final String FLAG = "flag";
+    public static final String VERI_CODE = "code";
+    public static final String PASSWORD = "password";
+    public static final String RESULT_TOKEN = "token";
 
     public static final String REG_CODE = "reg_code";
     public static final String DEVICE_ID = "device_id";
@@ -87,6 +97,7 @@ public class NetReq {
     public static final String SPOT_FLAG_DATA = "spot_flag_data";
     public static final String TRACK_ID = "track_id";
 
+    public static final int CODE_FAIL_USER_NOT_EXIST = 5100;             //用户不存在
     public static final int ERR_CODE_NOT_FOUND_DEVICE = 5200;         //未找到设备
     public static final int ERR_CODE_DEVICE_HAS_BEEN_REGISTERED = 5204;      //设备已经被其他用户注册
     public static final int ERR_CODE_REGISTER_DEVICE_FAIL = 5205;     //注册设备失败

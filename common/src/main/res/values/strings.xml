@@ -54,4 +54,5 @@
     <string name="yl_common_update">update</string>
     <string name="yl_common_delete_trace_path_confirm">Are you sure you want to delete the trace path(%1$s)?</string>
     <string name="yl_common_delete_virtual_track_group_confirm">Are you sure you want to delete the virtual track group(%1$s)?</string>
+    <string name="yl_common_testing">Testing......</string>
 </resources>

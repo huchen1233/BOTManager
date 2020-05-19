@@ -54,4 +54,5 @@
     <string name="yl_common_update">更新</string>
     <string name="yl_common_delete_trace_path_confirm">您确定要删除循迹路径(%1$s)吗?</string>
     <string name="yl_common_delete_virtual_track_group_confirm">您确定要删除虚拟轨道组(%1$s)吗?</string>
+    <string name="yl_common_testing">检测中......</string>
 </resources>

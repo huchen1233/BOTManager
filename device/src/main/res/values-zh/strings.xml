@@ -117,4 +117,6 @@
     <string name="yl_device_vibrating_dust">振尘</string>
     <string name="yl_device_motor">电机</string>
     <string name="yl_device_emergency_stop">急停</string>
+    <string name="yl_device_account_format_error">账号格式错误</string>
+    <string name="yl_device_account_not_exist">账号不存在</string>
 </resources>
