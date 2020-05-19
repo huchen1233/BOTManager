@@ -10,8 +10,17 @@ android {
         versionCode 1
         versionName "1.1"
 
+        //版本名后面添加一句话，意思就是flavor dimension 它的维度就是该版本号，这样维度就是都是统一的了
+        flavorDimensions "versionCode"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
+    }
+    //自定义aar名称
+    android.libraryVariants.all {
+        variant ->
+            variant.outputs.all {
+                outputFileName = "common_${buildType.name}_${defaultConfig.versionName}.aar"
+            }
     }
 
     buildTypes {
