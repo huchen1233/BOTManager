@@ -349,8 +349,8 @@ public class DevicesActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void loginAgain() {
-        String name = getIntent().getStringExtra("name");
-        String pass = getIntent().getStringExtra("pass");
+        String name = getIntent().getStringExtra(CommonConstants.TYPE_EXTRA_NAME);
+        String pass = getIntent().getStringExtra(CommonConstants.TYPE_EXTRA_PASS);
         LogUtil.d(TAG, "name: "+name);
         if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(pass)) {
             if (Utils.isPhone(name)) {
