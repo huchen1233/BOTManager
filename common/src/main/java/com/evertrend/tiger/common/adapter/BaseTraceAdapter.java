@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.evertrend.tiger.common.R;
 import com.evertrend.tiger.common.bean.BaseTrace;
 import com.evertrend.tiger.common.bean.event.ChoiceBaseTraceEvent;
+import com.evertrend.tiger.common.bean.event.map.ChoiceMapPagesTracePathEvent;
 import com.evertrend.tiger.common.utils.general.CommonConstants;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnSelectListener;
@@ -52,17 +53,23 @@ public class BaseTraceAdapter extends  RecyclerView.Adapter<BaseTraceAdapter.Vie
             @Override
             public void onClick(View v) {
                 BaseTrace baseTrace = baseTraces.get(viewHolder.getAdapterPosition());
+                if (type == CommonConstants.TYPE_TRACE_PATH_OPERATION_SAVE_SPOT) {
+                    EventBus.getDefault().post(new ChoiceMapPagesTracePathEvent(baseTrace, type));
+                }
             }
         });
 
-        viewHolder.baseTraceViwe.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                BaseTrace baseTrace = baseTraces.get(viewHolder.getAdapterPosition());
-                showOperationPop(baseTrace, v);
-                return true;
-            }
-        });
+        if (type != CommonConstants.TYPE_TRACE_PATH_OPERATION_SAVE_SPOT) {
+            viewHolder.baseTraceViwe.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    BaseTrace baseTrace = baseTraces.get(viewHolder.getAdapterPosition());
+                    showOperationPop(baseTrace, v);
+                    return true;
+                }
+            });
+        }
+
         return viewHolder;
     }
 

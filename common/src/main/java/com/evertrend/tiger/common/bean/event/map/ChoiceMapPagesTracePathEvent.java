@@ -1,12 +1,13 @@
 package com.evertrend.tiger.common.bean.event.map;
 
+import com.evertrend.tiger.common.bean.BaseTrace;
 import com.evertrend.tiger.common.bean.TracePath;
 
 public class ChoiceMapPagesTracePathEvent {
-    private TracePath tracePath;
+    private BaseTrace baseTrace;
     private int mark;
-    public ChoiceMapPagesTracePathEvent(TracePath tracePath, int mark) {
-        this.tracePath = tracePath;
+    public ChoiceMapPagesTracePathEvent(BaseTrace baseTrace, int mark) {
+        this.baseTrace = baseTrace;
         this.mark = mark;
     }
 
@@ -14,7 +15,7 @@ public class ChoiceMapPagesTracePathEvent {
         return mark;
     }
 
-    public TracePath getTracePath() {
-        return tracePath;
+    public BaseTrace getBaseTrace() {
+        return baseTrace;
     }
 }

@@ -610,6 +610,7 @@ public class TaskUtils {
                             case CommonNetReq.CODE_SUCCESS:
                                 int newStatus = jsonObject.getIntValue(CommonNetReq.RESULT_DATA);
                                 LogUtil.d(TAG, "newStatus:" + newStatus);
+                                LogUtil.d(TAG, "Mark:" + mark);
                                 if ("rb_go_to_recharge".equals(mark)) {
                                     if (newStatus != 0) {
                                         EventBus.getDefault().post(new SetStatusSuccessEvent(mark, newStatus));

@@ -513,7 +513,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ChoiceMapPagesTracePathEvent event) {
-        tracePath = event.getTracePath();
+        tracePath = (TracePath) event.getBaseTrace();
         int type = event.getMark();
         tracePathChoiceDialog.dismiss();
         if (CommonConstants.TYPE_TRACE_PATH_OPERATION_SAVE_SPOT == type) {
@@ -1170,7 +1170,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         recyclerView.setLayoutManager(layoutManager);
         //添加Android自带的分割线
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        recyclerView.setAdapter(new BaseTraceAdapter(this, list));
+        recyclerView.setAdapter(new BaseTraceAdapter(this, list, CommonConstants.TYPE_TRACE_PATH_OPERATION_SAVE_SPOT));
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("添加循迹点列表到循迹路径");
         builder.setView(view);
