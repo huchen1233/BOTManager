@@ -49,6 +49,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation project(':common')
-    implementation 'com.azhon:appupdateX:2.8.0'
+    implementation 'com.azhon:appupdateX:2.9.0'
     implementation files('libs\\libphonenumber-8.12.2.jar')
 }

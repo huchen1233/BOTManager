@@ -34,6 +34,7 @@ import com.evertrend.tiger.common.utils.network.CommonNetReq;
 import com.evertrend.tiger.common.utils.network.OKHttpManager;
 import com.evertrend.tiger.device.R;
 import com.evertrend.tiger.common.bean.Device;
+import com.evertrend.tiger.device.activity.DevicesActivity;
 import com.evertrend.tiger.device.adapter.DevicesAdapter;
 import com.evertrend.tiger.device.bean.event.LoadDevicesEvent;
 import com.evertrend.tiger.device.utils.Constants;
@@ -65,7 +66,7 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
 
     private RecyclerView rlv_devices;
     private ImageButton ibtn_add_device;
-    private TextView tv_login_first;
+//    private TextView tv_login_first;
 
     private List<Device> deviceList;
     private DevicesAdapter devicesAdapter;
@@ -90,10 +91,20 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
         if (AppSharePreference.getAppSharedPreference().loadIsLogin()) {
             loadDevice();
         } else {
-            tv_login_first.setVisibility(View.VISIBLE);
+//            tv_login_first.setVisibility(View.VISIBLE);
             ibtn_add_device.setVisibility(View.GONE);
             rlv_devices.setVisibility(View.GONE);
         }
+        /*tv_login_first.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LogUtil.d(TAG, "send");
+                Intent intent = new Intent(getActivity(), DevicesActivity.class);
+                intent.putExtra(CommonConstants.TYPE_EXTRA_NAME, "18930572454");
+                intent.putExtra(CommonConstants.TYPE_EXTRA_PASS, "88888888");
+                startActivity(intent);
+            }
+        });*/
         return root;
     }
 
@@ -151,7 +162,7 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
          LogUtil.i(getContext(), TAG, "===SuccessEvent===");
         if (event.getType() == CommonConstants.TYPE_SUCCESS_EVENT_LOGIN) {
             loadDevice();
-            tv_login_first.setVisibility(View.GONE);
+//            tv_login_first.setVisibility(View.GONE);
             ibtn_add_device.setVisibility(View.VISIBLE);
             rlv_devices.setVisibility(View.VISIBLE);
         }
@@ -249,7 +260,7 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
     private void initView(View root) {
         rlv_devices = root.findViewById(R.id.rlv_devices);
         ibtn_add_device = root.findViewById(R.id.ibtn_add_device);
-        tv_login_first = root.findViewById(R.id.tv_login_first);
+//        tv_login_first = root.findViewById(R.id.tv_login_first);
         ibtn_add_device.setOnClickListener(this);
     }
 

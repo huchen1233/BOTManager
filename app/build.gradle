@@ -23,6 +23,7 @@ android {
             }
     }
     buildTypes {
+
         release {
             // 开启混淆
             minifyEnabled true
@@ -77,7 +78,7 @@ dependencies {
 //    implementation 'org.litepal.android:java:3.0.0'
 //    implementation 'com.lxj:xpopup:1.8.12'
     //user
-//    implementation 'com.azhon:appupdateX:2.8.0'
+//    implementation 'com.azhon:appupdateX:2.9.0'
     //device
 //    implementation 'com.github.hotchemi:permissionsdispatcher:3.1.0'
 //    annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:3.1.0'
