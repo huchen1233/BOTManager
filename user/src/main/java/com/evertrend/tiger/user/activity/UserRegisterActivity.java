@@ -2,12 +2,16 @@ package com.evertrend.tiger.user.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -73,6 +77,7 @@ public class UserRegisterActivity extends UserBaseActivity implements View.OnCli
             DialogUtil.showToast(this, R.string.yl_user_account_is_empty, Toast.LENGTH_SHORT);
         } else {
             if (Utils.isPhone(strAccount)) {
+                startGetCodeCount();
                 HashMap<String, String> map = new HashMap<>();
                 map.put(NetReq.MOBILE, strAccount);
                 map.put(NetReq.FLAG, String.valueOf(NetReq.FLAG_SIGNUP));
@@ -83,7 +88,11 @@ public class UserRegisterActivity extends UserBaseActivity implements View.OnCli
                             LogUtil.i(UserRegisterActivity.this, TAG, jsonObject.getString(CommonNetReq.RESULT_DESC));
                             switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)){
                                 case CommonNetReq.CODE_SUCCESS:
-                                    et_verification_code.setText(jsonObject.getString(CommonNetReq.RESULT_PIN));//临时调试用
+//                                    et_verification_code.setText(jsonObject.getString(CommonNetReq.RESULT_PIN));//临时调试用
+                                    break;
+                                case NetReq.CODE_FAIL_USER_EXIST:
+//                                case NetReq.ERR_CODE_SIGNUP_FAILURE:
+                                    DialogUtil.showToast(UserRegisterActivity.this, jsonObject.getString(CommonNetReq.RESULT_DESC), Toast.LENGTH_LONG);
                                     break;
                                 default:
                                     break;
@@ -100,6 +109,7 @@ public class UserRegisterActivity extends UserBaseActivity implements View.OnCli
                     }
                 });
             } else if (Utils.isEmail(strAccount)) {
+                startGetCodeCount();
                 HashMap<String, String> map = new HashMap<>();
                 map.put(NetReq.EMAIL, strAccount);
                 map.put(NetReq.FLAG, String.valueOf(NetReq.FLAG_SIGNUP));
@@ -130,6 +140,44 @@ public class UserRegisterActivity extends UserBaseActivity implements View.OnCli
                 DialogUtil.showToast(this, R.string.yl_user_account_format_error, Toast.LENGTH_SHORT);
             }
         }
+    }
+
+    private static final int UPDATE_TEXT = 1;
+    private static final int UPDATE_CLICK_ABLE = 2;
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case UPDATE_TEXT:
+                    btn_get_verification_code.setText(String.format(getResources().getString(R.string.yl_user_get_code_count), msg.arg1));
+                    btn_get_verification_code.setClickable(false);
+                    break;
+                case UPDATE_CLICK_ABLE:
+                    btn_get_verification_code.setText(R.string.yl_user_get_verification_code);
+                    btn_get_verification_code.setClickable(true);
+                    break;
+            }
+        }
+    };
+    private void startGetCodeCount() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 120; i >= 0; i--) {
+                    Message message = new Message();
+                    if (i == 0) {
+                        message.what = UPDATE_CLICK_ABLE;
+                        handler.sendMessage(message);
+                        break;
+                    } else {
+                        message.what = UPDATE_TEXT;
+                        message.arg1 = i;
+                        handler.sendMessage(message);
+                    }
+                    SystemClock.sleep(1000);
+                }
+            }
+        }).start();
     }
 
     private void startRefister() {

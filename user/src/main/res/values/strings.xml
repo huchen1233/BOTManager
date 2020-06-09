@@ -30,4 +30,5 @@
     <string name="yl_user_new_version_can_be_update">Found new version can be updated!</string>
     <string name="yl_user_phone_region_code">phone number region code</string>
     <string name="yl_user_pin_login">Verification code login</string>
+    <string name="yl_user_get_code_count">get again in %1$d seconds</string>
 </resources>

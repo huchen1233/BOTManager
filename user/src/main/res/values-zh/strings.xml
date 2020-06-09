@@ -30,4 +30,5 @@
     <string name="yl_user_new_version_can_be_update">发现新版本可以更新啦!</string>
     <string name="yl_user_phone_region_code">手机号地区码</string>
     <string name="yl_user_pin_login">验证码登录</string>
+    <string name="yl_user_get_code_count">%1$d 秒后重新获取</string>
 </resources>

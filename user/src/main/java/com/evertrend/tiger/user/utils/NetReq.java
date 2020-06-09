@@ -28,4 +28,5 @@ public class NetReq {
 
     public static final int CODE_FAIL_USER_NOT_EXIST = 5100;             //用户不存在
     public static final int CODE_FAIL_USER_EXIST = 5103;             //用户已存在
+    public static final int ERR_CODE_SIGNUP_FAILURE = 5111;             //注册失败
 }
