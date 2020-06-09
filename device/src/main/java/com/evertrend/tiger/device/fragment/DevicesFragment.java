@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
@@ -64,6 +65,7 @@ import permissions.dispatcher.RuntimePermissions;
 public class DevicesFragment extends BaseFragment implements View.OnClickListener {
     private static final String TAG = DevicesFragment.class.getSimpleName();
 
+    private SwipeRefreshLayout srl;
     private RecyclerView rlv_devices;
     private ImageButton ibtn_add_device;
 //    private TextView tv_login_first;
@@ -89,6 +91,7 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
         deviceList = new ArrayList<>();
         initDeviceShow();
         if (AppSharePreference.getAppSharedPreference().loadIsLogin()) {
+            DialogUtil.showProgressDialog(getActivity(), getResources().getString(R.string.yl_common_loading_devices), false, true);
             loadDevice();
         } else {
 //            tv_login_first.setVisibility(View.VISIBLE);
@@ -155,12 +158,14 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
         if (deviceList.size() > 0) {
             devicesAdapter.notifyDataSetChanged();
         }
+        srl.setRefreshing(false);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(SuccessEvent event) {
          LogUtil.i(getContext(), TAG, "===SuccessEvent===");
         if (event.getType() == CommonConstants.TYPE_SUCCESS_EVENT_LOGIN) {
+            DialogUtil.showProgressDialog(getActivity(), getResources().getString(R.string.yl_common_loading_devices), false, true);
             loadDevice();
 //            tv_login_first.setVisibility(View.GONE);
             ibtn_add_device.setVisibility(View.VISIBLE);
@@ -228,7 +233,6 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void loadDevice() {
-        DialogUtil.showProgressDialog(getActivity(), getResources().getString(R.string.yl_common_loading_devices), false, true);
         scheduledThreadGetAssociatedDevice = new ScheduledThreadPoolExecutor(4);
         scheduledThreadGetAssociatedDevice.scheduleAtFixedRate(new TaskUtils.TaskGetAssocitedDevice(),
                 0, 6, TimeUnit.SECONDS);
@@ -258,10 +262,22 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void initView(View root) {
+        srl = root.findViewById(R.id.srl);
         rlv_devices = root.findViewById(R.id.rlv_devices);
         ibtn_add_device = root.findViewById(R.id.ibtn_add_device);
 //        tv_login_first = root.findViewById(R.id.tv_login_first);
         ibtn_add_device.setOnClickListener(this);
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadDevice();
+                    }
+                }).start();
+            }
+        });
     }
 
     private void showInputNumberDialog() {
