@@ -20,6 +20,7 @@ import androidx.appcompat.app.ActionBar;
 
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
+import com.evertrend.tiger.common.utils.general.CommonConstants;
 import com.evertrend.tiger.common.utils.general.DialogUtil;
 import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.common.utils.general.Utils;
@@ -163,7 +164,7 @@ public class UserRegisterActivity extends UserBaseActivity implements View.OnCli
         new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i = 120; i >= 0; i--) {
+                for (int i = CommonConstants.GET_CODE_COUNT; i >= 0; i--) {
                     Message message = new Message();
                     if (i == 0) {
                         message.what = UPDATE_CLICK_ABLE;

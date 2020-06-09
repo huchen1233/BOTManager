@@ -1,6 +1,9 @@
 package com.evertrend.tiger.user.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
@@ -16,6 +19,7 @@ import androidx.appcompat.app.ActionBar;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.evertrend.tiger.common.utils.general.AppSharePreference;
+import com.evertrend.tiger.common.utils.general.CommonConstants;
 import com.evertrend.tiger.common.utils.general.DialogUtil;
 import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.common.utils.general.Utils;
@@ -80,6 +84,7 @@ public class UserPINLoginActivity extends UserBaseActivity implements View.OnCli
             DialogUtil.showToast(this, R.string.yl_user_account_is_empty, Toast.LENGTH_SHORT);
         } else {
             if (Utils.isPhone(strAccount)) {
+                startGetCodeCount();
                 HashMap<String, String> map = new HashMap<>();
                 map.put(NetReq.MOBILE, strAccount);
                 map.put(NetReq.FLAG, String.valueOf(NetReq.FLAG_LOGIN));
@@ -107,6 +112,7 @@ public class UserPINLoginActivity extends UserBaseActivity implements View.OnCli
                     }
                 });
             } else if (Utils.isEmail(strAccount)) {
+                startGetCodeCount();
                 HashMap<String, String> map = new HashMap<>();
                 map.put(NetReq.EMAIL, strAccount);
                 map.put(NetReq.FLAG, String.valueOf(NetReq.FLAG_LOGIN));
@@ -137,6 +143,44 @@ public class UserPINLoginActivity extends UserBaseActivity implements View.OnCli
                 DialogUtil.showToast(this, R.string.yl_user_account_format_error, Toast.LENGTH_SHORT);
             }
         }
+    }
+
+    private static final int UPDATE_TEXT = 1;
+    private static final int UPDATE_CLICK_ABLE = 2;
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case UPDATE_TEXT:
+                    btn_get_verification_code.setText(String.format(getResources().getString(R.string.yl_user_get_code_count), msg.arg1));
+                    btn_get_verification_code.setClickable(false);
+                    break;
+                case UPDATE_CLICK_ABLE:
+                    btn_get_verification_code.setText(R.string.yl_user_get_verification_code);
+                    btn_get_verification_code.setClickable(true);
+                    break;
+            }
+        }
+    };
+    private void startGetCodeCount() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = CommonConstants.GET_CODE_COUNT; i >= 0; i--) {
+                    Message message = new Message();
+                    if (i == 0) {
+                        message.what = UPDATE_CLICK_ABLE;
+                        handler.sendMessage(message);
+                        break;
+                    } else {
+                        message.what = UPDATE_TEXT;
+                        message.arg1 = i;
+                        handler.sendMessage(message);
+                    }
+                    SystemClock.sleep(1000);
+                }
+            }
+        }).start();
     }
 
     private void startLogin() {
