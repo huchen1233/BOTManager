@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.util.SparseBooleanArray;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -171,14 +172,15 @@ public class CleanTaskBottomPopupView extends BottomPopupView implements View.On
         stopGetMapPagesAllSpecialTaskSpotTimer();
         specialWorkSpotList = event.getRobotSpotList();
         taskSpecialWorkListViewAdapter = new TaskSpecialWorkListViewAdapter(specialWorkSpotList, context);
+        lv_special_work.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
         lv_special_work.setAdapter(taskSpecialWorkListViewAdapter);
         if (cleanTask != null) {//编辑任务初始化特别任务勾选
-            String[] sWorks = newCleanTask.getSpecialWorks().split(",");
+//            String[] sWorks = newCleanTask.getSpecialWorks().split(",");
+            String sWorks = newCleanTask.getSpecialWorks();
             for (int i = 0; i < specialWorkSpotList.size(); i++) {
-                for (String s : sWorks) {
-                    if (specialWorkSpotList.get(i).getId() == Integer.parseInt(s)) {
-                        lv_special_work.setItemChecked(i, true);
-                    }
+                if (specialWorkSpotList.get(i).getId() == Integer.parseInt(sWorks)) {
+                    lv_special_work.setItemChecked(i, true);
+                    break;
                 }
             }
         }
@@ -422,19 +424,20 @@ public class CleanTaskBottomPopupView extends BottomPopupView implements View.On
             }
         }
         LogUtil.i(context, TAG, "group : " + vTGroups.toString());
-        SparseBooleanArray specialWorkBooleanArray = lv_special_work.getCheckedItemPositions();
-        StringBuilder specialWorks = new StringBuilder();
-        for (int i = 0; i < specialWorkSpotList.size(); i++) {
-            if (specialWorkBooleanArray.get(i)) {
-                if (specialWorks.length() == 0) {
-                    specialWorks.append(specialWorkSpotList.get(i).getId());
-                } else {
-                    specialWorks.append("," + specialWorkSpotList.get(i).getId());
-                }
-            }
-        }
-        LogUtil.i(context, TAG, "special work : " + specialWorks.toString());
-        if (tracePaths.length() == 0 && vTGroups.length() == 0 && specialWorks.length() == 0) {
+//        SparseBooleanArray specialWorkBooleanArray = lv_special_work.getCheckedItemPositions();
+//        StringBuilder specialWorks = new StringBuilder();
+//        for (int i = 0; i < specialWorkSpotList.size(); i++) {
+//            if (specialWorkBooleanArray.get(i)) {
+//                if (specialWorks.length() == 0) {
+//                    specialWorks.append(specialWorkSpotList.get(i).getId());
+//                } else {
+//                    specialWorks.append("," + specialWorkSpotList.get(i).getId());
+//                }
+//            }
+//        }
+        String specialWork = specialWorkSpotList.get(lv_special_work.getCheckedItemPosition()).getId()+"";
+        LogUtil.i(context, TAG, "special work : " + specialWork);
+        if (tracePaths.length() == 0 && vTGroups.length() == 0 && TextUtils.isEmpty(specialWork)) {
             Toast.makeText(context, R.string.yl_device_task_choice_tips, Toast.LENGTH_LONG).show();
             return false;
         } else {
@@ -452,7 +455,7 @@ public class CleanTaskBottomPopupView extends BottomPopupView implements View.On
                 case Constants.TASK_TYPE_SPE_WORK:
                     newCleanTask.setTracePaths("");
                     newCleanTask.setVirtualTrackGroups("");
-                    newCleanTask.setSpecialWorks(specialWorks.toString());
+                    newCleanTask.setSpecialWorks(specialWork);
                     break;
             }
         }

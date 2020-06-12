@@ -38,7 +38,7 @@ public class TaskSpecialWorkListViewAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        convertView = layoutInflater.inflate(android.R.layout.simple_list_item_multiple_choice, null);
+        convertView = layoutInflater.inflate(android.R.layout.simple_list_item_single_choice, null);
         if (convertView != null) {
             final CheckedTextView tvName = convertView.findViewById(android.R.id.text1);
             tvName.setText(robotSpotList.get(position).getName());

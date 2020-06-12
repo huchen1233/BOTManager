@@ -7,6 +7,8 @@ public class CommonConstants {
     public static final String TYPE_EXTRA_NAME = "name";
     public static final String TYPE_EXTRA_PASS = "pass";
 
+    public static final int GET_CODE_COUNT = 60;
+
     public static final int TYPE_SUCCESS_EVENT_LOGIN = 1;
     public static final int TYPE_SUCCESS_EVENT_LOGOUT = 2;
     public static final int TYPE_SUCCESS_EVENT_DELETE_CLEANTASK = 3;
