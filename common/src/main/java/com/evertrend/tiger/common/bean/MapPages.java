@@ -46,4 +46,14 @@ public class MapPages implements Serializable {
     public void setDeviceId(int deviceId) {
         this.deviceId = deviceId;
     }
+
+    @Override
+    public String toString() {
+        return "MapPages{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", deviceId=" + deviceId +
+                '}';
+    }
 }

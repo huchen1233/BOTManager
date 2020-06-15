@@ -5,13 +5,6 @@
         <item>@string/yl_device_update_task</item>
     </string-array>
 
-    <string-array name="yl_device_map_page_operation">
-        <item>@string/yl_device_delete_mappage</item>
-        <item>@string/yl_device_edit_mappage</item>
-        <item>@string/yl_device_trace_path</item>
-        <item>@string/yl_device_virtual_track_group</item>
-    </string-array>
-
     <string-array name="yl_device_clean_task_detail_info">
         <item>name: </item>
         <item>desc: </item>

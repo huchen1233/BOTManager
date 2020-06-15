@@ -1,4 +1,4 @@
-package com.evertrend.tiger.device.adapter;
+package com.evertrend.tiger.common.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,11 +11,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.evertrend.tiger.common.R;
+import com.evertrend.tiger.common.bean.event.ChoiceMapPagesEvent;
 import com.evertrend.tiger.common.utils.general.CommonConstants;
-import com.evertrend.tiger.device.R;
 import com.evertrend.tiger.common.bean.MapPages;
-import com.evertrend.tiger.device.bean.event.ChoiceMapPagesEvent;
-import com.evertrend.tiger.device.utils.Constants;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnSelectListener;
 
@@ -47,7 +46,7 @@ public class MapPagesChoiceAdapter extends  RecyclerView.Adapter<MapPagesChoiceA
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.yl_device_fragment_map_page_choice, parent, false);
+                .inflate(R.layout.yl_common_fragment_map_page_choice, parent, false);
         final MapPagesChoiceAdapter.ViewHolder viewHolder = new MapPagesChoiceAdapter.ViewHolder(view);
 
         viewHolder.MapPagesViwe.setOnClickListener(new View.OnClickListener() {
@@ -55,28 +54,30 @@ public class MapPagesChoiceAdapter extends  RecyclerView.Adapter<MapPagesChoiceA
             public void onClick(View v) {
                 MapPages mapPages = mMapPagesList.get(viewHolder.getAdapterPosition());
                 Toast.makeText(mContext, mapPages.getName(), Toast.LENGTH_SHORT).show();
-                if (type == 0) {
-                    EventBus.getDefault().post(new ChoiceMapPagesEvent(mapPages, CommonConstants.TYPE_MAPPAGE_OPERATION_OPEN));
-                } else {
+//                if (type == 0) {
+//                    EventBus.getDefault().post(new ChoiceMapPagesEvent(mapPages, CommonConstants.TYPE_MAPPAGE_OPERATION_OPEN));
+//                } else {
                     EventBus.getDefault().post(new ChoiceMapPagesEvent(mapPages, type));
+//                }
+            }
+        });
+        if (CommonConstants.TYPE_MAPPAGE_OPERATION_ADD_COMMON_SPOT_CHOICE != type) {
+            viewHolder.MapPagesViwe.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    MapPages mapPages = mMapPagesList.get(viewHolder.getAdapterPosition());
+                    showOperationPop(mapPages, v);
+                    return true;
                 }
-            }
-        });
-        viewHolder.MapPagesViwe.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                MapPages mapPages = mMapPagesList.get(viewHolder.getAdapterPosition());
-                showOperationPop(mapPages, v);
-                return true;
-            }
-        });
+            });
+        }
         return viewHolder;
     }
 
     private void showOperationPop(final MapPages mapPages, View v) {
         new XPopup.Builder(mContext)
                 .atView(v)
-                .asAttachList(mContext.getResources().getStringArray(R.array.yl_device_map_page_operation),
+                .asAttachList(mContext.getResources().getStringArray(R.array.yl_common_map_page_operation),
                         new int[]{R.drawable.yl_common_ic_delete_red_24dp, R.drawable.yl_common_ic_edit_green_24dp,
                                 R.drawable.yl_common_ic_trace_path_orange_24dp, R.drawable.yl_common_ic_virtual_track_group_blue_24dp},
                         new OnSelectListener() {
@@ -106,7 +107,7 @@ public class MapPagesChoiceAdapter extends  RecyclerView.Adapter<MapPagesChoiceA
         MapPages MapPages = mMapPagesList.get(position);
         holder.MapPagesName.setText(MapPages.getName());
         holder.MapPagesDesc.setText(MapPages.getDescription());
-        holder.MapPagesImage.setImageResource(R.drawable.yl_device_ic_area_blue_36dp);
+        holder.MapPagesImage.setImageResource(R.drawable.yl_common_ic_area_blue_36dp);
     }
 
     @Override

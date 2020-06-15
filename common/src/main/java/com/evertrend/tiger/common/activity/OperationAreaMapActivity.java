@@ -36,11 +36,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.evertrend.tiger.common.R;
 import com.evertrend.tiger.common.adapter.BaseTraceAdapter;
+import com.evertrend.tiger.common.adapter.MapPagesChoiceAdapter;
 import com.evertrend.tiger.common.bean.Device;
 import com.evertrend.tiger.common.bean.MapPages;
 import com.evertrend.tiger.common.bean.RobotSpot;
 import com.evertrend.tiger.common.bean.TracePath;
 import com.evertrend.tiger.common.bean.VirtualTrackGroup;
+import com.evertrend.tiger.common.bean.event.ChoiceMapPagesEvent;
+import com.evertrend.tiger.common.bean.event.GetAllMapPagesSuccessEvent;
+import com.evertrend.tiger.common.bean.event.SaveTraceSpotFailEvent;
 import com.evertrend.tiger.common.bean.event.map.AddTrack;
 import com.evertrend.tiger.common.bean.event.map.AddVtracks;
 import com.evertrend.tiger.common.bean.event.map.AddVwalls;
@@ -87,6 +91,7 @@ import com.evertrend.tiger.common.utils.general.DBUtil;
 import com.evertrend.tiger.common.utils.general.DialogUtil;
 import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.common.utils.network.CommTaskUtils;
+import com.evertrend.tiger.common.utils.network.CommonNetReq;
 import com.evertrend.tiger.common.widget.LongClickImageView;
 import com.evertrend.tiger.common.widget.MapBottomPopupView;
 import com.lxj.xpopup.XPopup;
@@ -128,7 +133,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
     private TextView tv_device_speed;
     private RadioGroup rg_navigation_mode;
     private EditText et_rollback_trace_path_num;
-    private Button btn_set_recharge, btn_set_add_water, btn_set_garage, btn_set_empty_trash, btn_set_trace_spot;
+    private Button btn_set_recharge, btn_set_add_water, btn_set_garage, btn_set_empty_trash, btn_set_trace_spot, btn_set_common_spot;
     private ListView lv_spot_data;
     private Button btn_trace_path_spot_save;
     private Switch btn_auto_record_trace_spot;
@@ -159,6 +164,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
     private List<RobotSpot> mServerTraceRobotSpotList;
     private List<Line> addVwallsList;
     private List<Line> addVTracksList;
+    private List<MapPages> mapPagesList;
 
     private AlertDialog mDialogInputIp;
     private AlertDialog tracePathChoiceDialog;
@@ -473,10 +479,43 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(ChoiceMapPagesEvent event) {
+        if (CommonConstants.TYPE_MAPPAGE_OPERATION_ADD_COMMON_SPOT_CHOICE == event.getType()) {
+            LogUtil.d(TAG, "mappage : "+event.getMapPages().toString());
+            saveSpot(5, event.getMapPages().getId());
+            tracePathChoiceDialog.dismiss();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void onEventMainThread(GetAllMapPagesSuccessEvent event) {
+        mapPagesList = new ArrayList<>();
+        List<MapPages> tmpList = event.getMapPagesList();
+        for (MapPages m : tmpList) {
+            if (mapPages.getId() == m.getId()) {
+                continue;
+            } else {
+                mapPagesList.add(m);
+            }
+        }
+        LogUtil.d(TAG, "mapPagesList size:"+mapPagesList.size());
+        EventBus.getDefault().removeStickyEvent(event);
+        tmpList = null;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(SaveTraceSpotEvent messageEvent) {
         LogUtil.i(this, TAG, "===SaveTraceSpotEvent===");
         DialogUtil.hideProgressDialog();
         stopSaveTraceSpotTimer();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(SaveTraceSpotFailEvent messageEvent) {
+        LogUtil.i(this, TAG, "===SaveTraceSpotFailEvent===");
+        DialogUtil.hideProgressDialog();
+        stopSaveTraceSpotTimer();
+        DialogUtil.showToast(this, messageEvent.getJsonObject().getString(CommonNetReq.RESULT_DESC), Toast.LENGTH_LONG);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -509,6 +548,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         } else {
             mServerTraceRobotSpotList = new ArrayList<>();
         }
+        showTracePath();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -525,7 +565,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
             scheduledThreadGetTraceSpot = new ScheduledThreadPoolExecutor(6);
             scheduledThreadGetTraceSpot.scheduleAtFixedRate(new CommTaskUtils.TaskGetTraceSpot(device, tracePath, mMapView, true),
                     0, 8, TimeUnit.SECONDS);
-            showTracePath();
+//            showTracePath();
         }
     }
 
@@ -811,6 +851,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         btn_set_garage = findViewById(R.id.btn_set_garage);
         btn_set_empty_trash = findViewById(R.id.btn_set_empty_trash);
         btn_set_trace_spot = findViewById(R.id.btn_set_trace_spot);
+        btn_set_common_spot = findViewById(R.id.btn_set_common_spot);
         lv_spot_data = findViewById(R.id.lv_spot_data);
         ll_trace_path_spot = findViewById(R.id.ll_trace_path_spot);
         btn_trace_path_spot_save = findViewById(R.id.btn_trace_path_spot_save);
@@ -856,6 +897,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         btn_set_garage.setOnClickListener(this);
         btn_set_empty_trash.setOnClickListener(this);
         btn_set_trace_spot.setOnClickListener(this);
+        btn_set_common_spot.setOnClickListener(this);
         btn_trace_path_spot_save.setOnClickListener(this);
         btn_save_map.setOnClickListener(this);
         btn_relocation.setOnClickListener(this);
@@ -1002,13 +1044,13 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
                 ll_set_spot.setVisibility(View.GONE);
             }
         } else if (v.getId() == R.id.btn_set_recharge) {
-            saveSpot(1);
+            saveSpot(1, 0);
         } else if (v.getId() == R.id.btn_set_add_water) {
-            saveSpot(2);
+            saveSpot(2, 0);
         } else if (v.getId() == R.id.btn_set_empty_trash) {
-            saveSpot(3);
+            saveSpot(3, 0);
         } else if (v.getId() == R.id.btn_set_garage) {
-            saveSpot(4);
+            saveSpot(4, 0);
         } else if (v.getId() == R.id.btn_set_trace_spot) {
             if (currentPose.equals(lastPose)) {
                 Toast.makeText(OperationAreaMapActivity.this, "重复循迹点", Toast.LENGTH_SHORT).show();
@@ -1021,6 +1063,8 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
             }
         } else if (v.getId() == R.id.btn_trace_path_spot_save) {
             showTracePathChoice(tracePathList, CommonConstants.TYPE_TRACE_PATH_OPERATION_SAVE_SPOT);
+        } else if (v.getId() == R.id.btn_set_common_spot) {
+            showMapChoice();
         } else if (v.getId() == R.id.btn_save_map) {
             showEditDialog();
         } else if (v.getId() == R.id.btn_relocation) {
@@ -1036,7 +1080,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
                 scheduledThreadGetTraceSpot = new ScheduledThreadPoolExecutor(6);
                 scheduledThreadGetTraceSpot.scheduleAtFixedRate(new CommTaskUtils.TaskGetTraceSpot(device, tracePath, true),
                         0, 10, TimeUnit.SECONDS);
-                showTracePath();
+//                showTracePath();
             } else {
                 Toast.makeText(this, "请先创建循迹路径并添加循迹点", Toast.LENGTH_SHORT).show();
             }
@@ -1170,9 +1214,9 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         recyclerView.setLayoutManager(layoutManager);
         //添加Android自带的分割线
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        recyclerView.setAdapter(new BaseTraceAdapter(this, list, CommonConstants.TYPE_TRACE_PATH_OPERATION_SAVE_SPOT));
+        recyclerView.setAdapter(new BaseTraceAdapter(this, list, typeOperation));
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("添加循迹点列表到循迹路径");
+        builder.setTitle("选择循迹路径");
         builder.setView(view);
         if (typeOperation == CommonConstants.TYPE_TRACE_PATH_OPERATION_SAVE_SPOT) {
             builder.setNeutralButton(R.string.yl_common_create_new, new DialogInterface.OnClickListener() {
@@ -1190,8 +1234,24 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         tracePathChoiceDialog.show();
     }
 
+    private void showMapChoice() {
+        View view = LayoutInflater.from(this).inflate(R.layout.yl_common_dialog_list_choice, null);
+        RecyclerView recyclerView = view.findViewById(R.id.rl_list);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        //添加Android自带的分割线
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        recyclerView.setAdapter(new MapPagesChoiceAdapter(this, mapPagesList, CommonConstants.TYPE_MAPPAGE_OPERATION_ADD_COMMON_SPOT_CHOICE));
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("区域地图");
+        builder.setMessage("选择一个需要设置公共定位点的区域，方便设备进行地图切换");
+        builder.setView(view);
+        tracePathChoiceDialog = builder.create();
+        tracePathChoiceDialog.show();
+    }
+
     private void showTracePath() {
-        showTracePathLines = DBUtil.getTracePathLines(tracePath, mapPages);
+        showTracePathLines = DBUtil.getTracePathLines(mServerTraceRobotSpotList);
         if (showTracePathLines.size() > 0) {
             mMapView.setVTracePath(showTracePathLines);
             btn_trace_path_hide.setEnabled(true);
@@ -1225,11 +1285,11 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
 //        }
     }
 
-    private void saveSpot(int spotFlag) {
+    private void saveSpot(int spotFlag, int targetMapPageId) {
         if (!"0".equals(currentPose)) {
             DialogUtil.showProgressDialog(this, getResources().getString(R.string.yl_common_saving), false, false);
             scheduledThreadSaveTraceSpot = new ScheduledThreadPoolExecutor(4);
-            scheduledThreadSaveTraceSpot.scheduleAtFixedRate(new CommTaskUtils.TaskSaveTraceSpot(device, spotFlag, currentPose, mapPages.getId()),
+            scheduledThreadSaveTraceSpot.scheduleAtFixedRate(new CommTaskUtils.TaskSaveTraceSpot(device, spotFlag, currentPose, mapPages.getId(), targetMapPageId),
                     0, 5, TimeUnit.SECONDS);
         } else {
             Toast.makeText(this, "点位错误", Toast.LENGTH_SHORT).show();

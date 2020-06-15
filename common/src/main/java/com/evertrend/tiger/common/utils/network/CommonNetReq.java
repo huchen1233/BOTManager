@@ -1,8 +1,8 @@
 package com.evertrend.tiger.common.utils.network;
 
 public class CommonNetReq {
-//    public static final String REQ_HOST = "http://172.27.35.1/nalcol/frontend/web/index.php?r=";
-    public static final String REQ_HOST = "https://robot.360yongli.com?r=";
+    public static final String REQ_HOST = "http://172.27.35.1/nalcol/frontend/web/index.php?r=";
+//    public static final String REQ_HOST = "https://robot.360yongli.com?r=";
 
     public static final String NET_GET_CURRENT_MAP_PAGE_ALL_PATH = REQ_HOST + "api/remote/get-map-page-all-path";
     public static final String NET_GET_CURRENT_MAP_PAGE_ALL_VIRTUAL_TRACK_GROUP = REQ_HOST + "api/remote/get-map-page-all-virtual-track-group";
@@ -64,6 +64,7 @@ public class CommonNetReq {
 
     public static final String DEVICE_ID = "device_id";
     public static final String MAP_PAGE = "map_page";
+    public static final String TARGET_MAP_PAGE = "target_map_page";
     public static final String NAME = "name";
     public static final String DESCRIPTION = "description";
     public static final String ID = "id";
@@ -81,4 +82,6 @@ public class CommonNetReq {
     public static final String VIRTUAL_TRACK = "virtual_track";
 
     public static final int CODE_SUCCESS = 0;
+
+    public static final int ERR_CODE_ADD_SPOT_FAIL = 5206;
 }

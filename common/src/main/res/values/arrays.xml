@@ -4,4 +4,11 @@
         <item>@string/yl_common_delete</item>
         <item>@string/yl_common_update</item>
     </string-array>
+
+    <string-array name="yl_common_map_page_operation">
+        <item>@string/yl_common_delete_mappage</item>
+        <item>@string/yl_common_edit_mappage</item>
+        <item>@string/yl_common_trace_path</item>
+        <item>@string/yl_common_virtual_tracks_group</item>
+    </string-array>
 </resources>

@@ -66,10 +66,6 @@
     <string name="yl_device_config_battery_low_limit">低于该电量时自动回充(%):</string>
     <string name="yl_device_config_water_low_limit">低于该水位时自动回去加水(%):</string>
     <string name="yl_device_config_empty_trash_interval">倾倒垃圾间隔(分钟):</string>
-    <string name="yl_device_delete_mappage">删除地图</string>
-    <string name="yl_device_edit_mappage">编辑地图</string>
-    <string name="yl_device_trace_path">循迹路径</string>
-    <string name="yl_device_virtual_tracks">虚拟轨道组</string>
     <string name="yl_device_please_select_a_map">请选择一个地图</string>
     <string name="yl_device_task_name">任务名称</string>
     <string name="yl_device_task_desc">任务描述</string>

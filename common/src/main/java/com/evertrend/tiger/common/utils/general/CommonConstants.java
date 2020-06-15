@@ -34,6 +34,7 @@ public class CommonConstants {
     public static final int TYPE_MAPPAGE_OPERATION_TRACE_PATH = 3;
     public static final int TYPE_MAPPAGE_OPERATION_VIRTUAL_TRACK = 4;
     public static final int TYPE_MAPPAGE_OPERATION_CREATE_TASK_CHOICE = 5;
+    public static final int TYPE_MAPPAGE_OPERATION_ADD_COMMON_SPOT_CHOICE = 6;
 
     public static final int LIST_OPERATION_UPDATE = 1;
     public static final int LIST_OPERATION_CREATE = 2;

@@ -66,10 +66,6 @@
     <string name="yl_device_config_battery_low_limit">Low battery auto charging(%):</string>
     <string name="yl_device_config_water_low_limit">Low water auto addition(%):</string>
     <string name="yl_device_config_empty_trash_interval">Dumping interval (minutes):</string>
-    <string name="yl_device_delete_mappage">delete map</string>
-    <string name="yl_device_edit_mappage">edit map</string>
-    <string name="yl_device_trace_path">trace path</string>
-    <string name="yl_device_virtual_tracks">virtual tracks</string>
     <string name="yl_device_please_select_a_map">please select a map</string>
     <string name="yl_device_task_name">task name</string>
     <string name="yl_device_task_desc">task description</string>

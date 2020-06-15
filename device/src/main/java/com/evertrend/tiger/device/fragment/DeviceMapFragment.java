@@ -17,14 +17,14 @@ import com.evertrend.tiger.common.fragment.BaseFragment;
 import com.evertrend.tiger.common.utils.general.CommonConstants;
 import com.evertrend.tiger.common.utils.general.DialogUtil;
 import com.evertrend.tiger.device.R;
-import com.evertrend.tiger.device.adapter.MapPagesChoiceAdapter;
+import com.evertrend.tiger.common.adapter.MapPagesChoiceAdapter;
 import com.evertrend.tiger.common.bean.Device;
 import com.evertrend.tiger.common.bean.MapPages;
-import com.evertrend.tiger.device.bean.event.ChoiceMapPagesEvent;
+import com.evertrend.tiger.common.bean.event.ChoiceMapPagesEvent;
 import com.evertrend.tiger.device.bean.event.DeleteMapPageEvent;
 import com.evertrend.tiger.common.bean.event.SaveMapPageEvent;
 import com.evertrend.tiger.device.bean.event.DeviceMessageEvent;
-import com.evertrend.tiger.device.bean.event.GetAllMapPagesSuccessEvent;
+import com.evertrend.tiger.common.bean.event.GetAllMapPagesSuccessEvent;
 import com.evertrend.tiger.device.bean.event.SpinnerChoiceDeviceMessageEvent;
 import com.evertrend.tiger.device.utils.ScheduledThreadUtils;
 import com.evertrend.tiger.device.utils.TaskUtils;
@@ -95,7 +95,7 @@ public class DeviceMapFragment extends BaseFragment {
         ScheduledThreadUtils.ThreadGetAllMapPages(mDevice);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onEventMainThread(GetAllMapPagesSuccessEvent event) {
         ScheduledThreadUtils.stopGetAllMapPagesTimer();
         mapPagesList.removeAll(mapPagesList);

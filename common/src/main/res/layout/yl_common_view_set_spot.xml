@@ -38,12 +38,12 @@
             style="@style/yl_common_ButtonStyle"
             android:text="@string/yl_common_set_recharge_spot" />
 
-<!--        <Button-->
-<!--            android:id="@+id/btn_set_trace_spot"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            style="@style/yl_common_ButtonStyle"-->
-<!--            android:text="@string/yl_common_set_trace_spot" />-->
+        <Button
+            android:id="@+id/btn_set_common_spot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/yl_common_ButtonStyle"
+            android:text="@string/yl_common_set_common_spot" />
 
         <Switch
             android:id="@+id/btn_auto_record_trace_spot"

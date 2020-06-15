@@ -14,6 +14,7 @@ import com.evertrend.tiger.common.bean.VirtualTrackGroup;
 import com.evertrend.tiger.common.bean.event.CreateNewBaseTraceSuccessEvent;
 import com.evertrend.tiger.common.bean.event.DeleteBaseTraceEvent;
 import com.evertrend.tiger.common.bean.event.SaveMapPageEvent;
+import com.evertrend.tiger.common.bean.event.SaveTraceSpotFailEvent;
 import com.evertrend.tiger.common.bean.event.UpdateBaseTraceSuccessEvent;
 import com.evertrend.tiger.common.bean.event.map.DeleteOneTraceSpotListEvent;
 import com.evertrend.tiger.common.bean.event.map.DeleteTraceSpotListCompleteEvent;
@@ -188,7 +189,7 @@ public class CommTaskUtils {
         private void startSaveTraceSpotList() {
             int size = mTraceSpotList.size();
             LogUtil.d(TAG, "trace list size: "+size);
-            startSaveTraceSpot(device, mapPages.getId(), tracePath.getId(), 0, mTraceSpotList.get(0), false);
+            startSaveTraceSpot(device, mapPages.getId(), 0, tracePath.getId(), 0, mTraceSpotList.get(0), false);
             for (int i = 1; i <= size; ) {
                 if (i == size) {
                     LogUtil.d(TAG, "i = "+i);
@@ -200,7 +201,7 @@ public class CommTaskUtils {
                     break;
                 }
                 if (saveSpotFlag) {
-                    startSaveTraceSpot(device, mapPages.getId(), tracePath.getId(), 0, mTraceSpotList.get(i), false);
+                    startSaveTraceSpot(device, mapPages.getId(), 0, tracePath.getId(), 0, mTraceSpotList.get(i), false);
                     i++;
                     saveSpotFlag = false;
                 }
@@ -216,12 +217,13 @@ public class CommTaskUtils {
     /**
      * 保存当前标志点位姿数据到服务器
      */
-    private static void startSaveTraceSpot(final Device device, final int mapPageId, final int tracePathId, final int spotFlag, final String currentPose, final boolean isSingle) {
+    private static void startSaveTraceSpot(final Device device, final int mapPageId, int targetMapPageId, final int tracePathId, final int spotFlag, final String currentPose, final boolean isSingle) {
         LogUtil.d(TAG, "saveSpot spotFlag=" + spotFlag);
         HashMap<String, String> map = new HashMap<>();
         map.put(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
         map.put(CommonNetReq.DEVICE_ID, String.valueOf(device.getId()));
         map.put(CommonNetReq.MAP_PAGE, String.valueOf(mapPageId));
+        map.put(CommonNetReq.TARGET_MAP_PAGE, String.valueOf(targetMapPageId));
         map.put(CommonNetReq.SPOT_FLAG, String.valueOf(spotFlag));
         map.put(CommonNetReq.TRACE_PATH_ID, String.valueOf(tracePathId));//注意当前选择循迹路径为空的情况
         map.put(CommonNetReq.SPOT_FLAG_DATA, currentPose);
@@ -244,9 +246,13 @@ public class CommTaskUtils {
 //                                }
                             }
                             break;
-//                        case CommonNetReq.ERR_CODE_NOT_FOUND_DEVICE:
-//                            LogUtil.i(TAG, jsonObject.getString(NetReq.RESULT_DESC));
-//                            break;
+                        case CommonNetReq.ERR_CODE_ADD_SPOT_FAIL:
+                            if (spotFlag != 0) {
+                                EventBus.getDefault().post(new SaveTraceSpotFailEvent(jsonObject));
+                            }  else {
+                                EventBus.getDefault().post(new SaveTraceSpotListEvent(isSingle));
+                            }
+                            break;
                         default:
                             break;
                     }
@@ -619,20 +625,22 @@ public class CommTaskUtils {
 
     public static class TaskSaveTraceSpot implements Runnable {
         private Device device;
-        private int spotFlag;//标志该点类型，0：路径点，1: 充电点，2: 加水点，3: 倾倒垃圾点，4：车库点
+        private int spotFlag;//标志该点类型，0：路径点，1: 充电点，2: 加水点，3: 倾倒垃圾点，4：车库点，5：公共点
         private String currentPose;
         private int mapPageId;
+        private int targetMapPageId;
 
-        public TaskSaveTraceSpot(Device device, int flag, String pose, int mapPageId) {
+        public TaskSaveTraceSpot(Device device, int flag, String pose, int mapPageId, int targetMapPageId) {
             this.device = device;
             this.spotFlag = flag;
             this.currentPose = pose;
             this.mapPageId = mapPageId;
+            this.targetMapPageId = targetMapPageId;
         }
 
         @Override
         public void run() {
-            startSaveTraceSpot(device, mapPageId, device.getCurrent_trace_path_id(), spotFlag, currentPose, true);
+            startSaveTraceSpot(device, mapPageId, targetMapPageId, device.getCurrent_trace_path_id(), spotFlag, currentPose, true);
         }
     }
 

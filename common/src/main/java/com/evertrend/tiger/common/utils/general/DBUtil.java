@@ -37,6 +37,27 @@ public class DBUtil {
         }
     }
 
+    public static List<Line> getTracePathLines(List<RobotSpot> list) {
+//        List<RobotSpot> list = getTracePathSpotList(tracePath, mapPages);
+        List<Line> lines = new ArrayList<>();
+        if (list.size() > 0) {
+            if (list.size() == 1) {
+                PointF startF = new PointF(list.get(0).getX(), list.get(0).getY());
+                PointF endF = new PointF(list.get(0).getX(), list.get(0).getY());
+                Line line = new Line(0, startF, endF);
+                lines.add(line);
+            } else {
+                for (int i = 0; i < list.size() - 1; i++) {
+                    PointF startF = new PointF(list.get(i).getX(), list.get(i).getY());
+                    PointF endF = new PointF(list.get(i + 1).getX(), list.get(i + 1).getY());
+                    Line line = new Line(0, startF, endF);
+                    lines.add(line);
+                }
+            }
+        }
+        return lines;
+    }
+
     public static List<Line> getTracePathLines(TracePath tracePath, MapPages mapPages) {
         List<RobotSpot> list = getTracePathSpotList(tracePath, mapPages);
         List<Line> lines = new ArrayList<>();

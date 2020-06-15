@@ -16,11 +16,10 @@ import com.evertrend.tiger.common.bean.RobotSpot;
 import com.evertrend.tiger.common.bean.TracePath;
 import com.evertrend.tiger.common.bean.VirtualTrackGroup;
 import com.evertrend.tiger.device.bean.event.DeleteMapPageEvent;
-import com.evertrend.tiger.common.bean.event.SaveMapPageEvent;
 import com.evertrend.tiger.device.bean.event.DeleteCleanTaskEvent;
 import com.evertrend.tiger.device.bean.event.DeviceMessageEvent;
 import com.evertrend.tiger.device.bean.event.GetAllCleanTasksSuccessEvent;
-import com.evertrend.tiger.device.bean.event.GetAllMapPagesSuccessEvent;
+import com.evertrend.tiger.common.bean.event.GetAllMapPagesSuccessEvent;
 import com.evertrend.tiger.device.bean.event.GetAllSpecialTaskSpotSuccessEvent;
 import com.evertrend.tiger.device.bean.event.GetAllVirtualTrackGroupSuccessEvent;
 import com.evertrend.tiger.device.bean.event.GetMapPagesAllPathSuccessEvent;
@@ -148,7 +147,7 @@ public class TaskUtils {
                                         mapPagesList.add(mapPages);
                                     }
                                 }
-                                EventBus.getDefault().post(new GetAllMapPagesSuccessEvent(mapPagesList));
+                                EventBus.getDefault().postSticky(new GetAllMapPagesSuccessEvent(mapPagesList));
                                 break;
                             default:
                                 break;

@@ -53,9 +53,10 @@ public class BaseTraceAdapter extends  RecyclerView.Adapter<BaseTraceAdapter.Vie
             @Override
             public void onClick(View v) {
                 BaseTrace baseTrace = baseTraces.get(viewHolder.getAdapterPosition());
-                if (type == CommonConstants.TYPE_TRACE_PATH_OPERATION_SAVE_SPOT) {
-                    EventBus.getDefault().post(new ChoiceMapPagesTracePathEvent(baseTrace, type));
-                }
+                EventBus.getDefault().post(new ChoiceMapPagesTracePathEvent(baseTrace, type));
+//                if (type == CommonConstants.TYPE_TRACE_PATH_OPERATION_SAVE_SPOT) {
+//                    EventBus.getDefault().post(new ChoiceMapPagesTracePathEvent(baseTrace, type));
+//                }
             }
         });
 

@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/yl_common_button_background"
         android:layout_margin="5dp"
-        android:text="@string/yl_device_delete_mappage"/>
+        android:text="@string/yl_common_delete_mappage"/>
 
     <Button
         android:id="@+id/btn_map_page_edit"
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:background="@drawable/yl_common_button_background"
-        android:text="@string/yl_device_edit_mappage"/>
+        android:text="@string/yl_common_edit_mappage"/>
 
     <Button
         android:id="@+id/btn_map_page_trace_path"
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:background="@drawable/yl_common_button_background"
-        android:text="@string/yl_device_trace_path"/>
+        android:text="@string/yl_common_trace_path"/>
 
     <Button
         android:id="@+id/btn_map_page_virtual_track_group"
@@ -34,6 +34,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:background="@drawable/yl_common_button_background"
-        android:text="@string/yl_device_virtual_tracks"/>
+        android:text="@string/yl_common_virtual_tracks_group"/>
 
 </LinearLayout>
