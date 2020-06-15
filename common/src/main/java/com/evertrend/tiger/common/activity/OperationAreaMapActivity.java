@@ -121,7 +121,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
     private MapView mMapView;
     private LongClickImageView iv_action_forward, iv_action_left, iv_action_stop, iv_action_right, iv_action_backward;
     private ImageButton ibtn_back, ibtn_map_settings, ibtn_trace_path_close;
-    private TextView tv_location_pose;
+    private TextView tv_location_pose, tv_current_map;
     private ImageButton ibtn_map_set_centred;
     private Button btn_save_map, btn_relocation, btn_trace_path, btn_action, btn_set_spot, btn_edit;
     private Button btn_trace_path_show, btn_trace_path_hide, btn_trace_path_rollback;
@@ -236,6 +236,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         scheduledThreadGetMapPagesAllVirtualTrackGroup.scheduleAtFixedRate(new CommTaskUtils.TaskGetMapPagesAllVirtualTrackGroup(device, mapPages),
                 0, 10, TimeUnit.SECONDS);
         initView();
+        tv_current_map.setText(String.format(getResources().getString(R.string.yl_common_current_map), mapPages.getName()));
         mAgent = getSlamwareAgent();
         connectSlamware(device);
         EventBus.getDefault().register(this);
@@ -831,6 +832,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         iv_action_backward = findViewById(R.id.iv_action_backward);
         ibtn_back = findViewById(R.id.ibtn_back);
         tv_location_pose = findViewById(R.id.tv_location_pose);
+        tv_current_map = findViewById(R.id.tv_current_map);
         ibtn_map_set_centred = findViewById(R.id.ibtn_map_set_centred);
         ibtn_map_settings = findViewById(R.id.ibtn_map_settings);
         cl_area_map_view = findViewById(R.id.cl_area_map_view);

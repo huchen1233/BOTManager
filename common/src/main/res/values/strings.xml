@@ -59,4 +59,5 @@
     <string name="yl_common_delete_mappage">delete map</string>
     <string name="yl_common_edit_mappage">edit map</string>
     <string name="yl_common_virtual_tracks_group">virtual track group</string>
+    <string name="yl_common_current_map">Current Map: %1$s</string>
 </resources>

@@ -78,12 +78,20 @@
                 app:layout_constraintTop_toBottomOf="parent" />
 
             <TextView
+                android:id="@+id/tv_current_map"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00ffffff"
+                app:layout_constraintStart_toStartOf="@id/device_map_view"
+                app:layout_constraintTop_toTopOf="@+id/device_map_view"/>
+
+            <TextView
                 android:id="@+id/tv_location_pose"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="#00ffffff"
                 app:layout_constraintStart_toStartOf="@id/device_map_view"
-                app:layout_constraintTop_toTopOf="@+id/device_map_view"
+                app:layout_constraintTop_toBottomOf="@+id/tv_current_map"
                 android:text="0,0,0"/>
 
             <ImageButton
