@@ -30,6 +30,7 @@ import com.evertrend.tiger.common.utils.general.AppSharePreference;
 import com.evertrend.tiger.common.utils.general.CommonConstants;
 import com.evertrend.tiger.common.utils.general.DialogUtil;
 import com.evertrend.tiger.common.utils.general.LogUtil;
+import com.evertrend.tiger.common.utils.general.Utils;
 import com.evertrend.tiger.user.R;
 import com.evertrend.tiger.user.activity.AboutAppActivity;
 import com.evertrend.tiger.user.activity.UserLoginActivity;
@@ -169,7 +170,8 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         UpdateApp updateApp = event.getUpdateApp();
         LogUtil.i(getContext(), TAG, "isUpdate:" + updateApp.getIsUpdate());
         LogUtil.i(getContext(), TAG, "isUpdate:" + updateApp.getApkFileUrl());
-        if (updateApp.getIsUpdate() == 1) {
+        LogUtil.i(getContext(), TAG, "isUpdate:" + updateApp.getNewVersion());
+        if (updateApp.getIsUpdate() == 1 && !updateApp.getNewVersion().equals(Utils.getVersionName(getContext()))) {
             isNeedUpdate(updateApp);
         } else {
             DialogUtil.showToast(getContext(), R.string.yl_user_no_new_version, Toast.LENGTH_SHORT);
