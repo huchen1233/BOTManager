@@ -92,11 +92,13 @@ public class DeviceMapFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onMessageEvent(SpinnerChoiceDeviceMessageEvent messageEvent) {
         mDevice = messageEvent.getDevice();
+        DialogUtil.showProgressDialog(getContext(), getResources().getString(R.string.yl_common_getting), true, true);
         ScheduledThreadUtils.ThreadGetAllMapPages(mDevice);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onEventMainThread(GetAllMapPagesSuccessEvent event) {
+        DialogUtil.hideProgressDialog();
         ScheduledThreadUtils.stopGetAllMapPagesTimer();
         mapPagesList.removeAll(mapPagesList);
         mapPagesChoiceAdapter.notifyItemRangeRemoved(0, mapPagesList.size());
