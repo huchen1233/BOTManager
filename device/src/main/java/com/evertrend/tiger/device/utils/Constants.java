@@ -80,6 +80,7 @@ public class Constants {
     public static final String EST_CONSUME_TIME = "est_consume_time";
     public static final String RUN_ONCE = "run_once";
     public static final String TASK_TYPE = "task_type";
+    public static final String RUN_STATUS = "run_status";
 
     public static final String DEVICE_TYPE_EVBOT_SL = "1";//EVBOT-SL(服务机器人-SL)
     public static final String DEVICE_TYPE_SWBOT_SL = "2";//SWBOT-SL(扫地机器人-SL)

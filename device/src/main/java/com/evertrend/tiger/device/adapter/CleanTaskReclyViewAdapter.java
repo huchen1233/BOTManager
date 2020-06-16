@@ -93,8 +93,10 @@ public class CleanTaskReclyViewAdapter extends  RecyclerView.Adapter<CleanTaskRe
             holder.cleanTaskDesc.setText(cleanTask.getDesc());
             holder.cleanTaskDesc.setVisibility(View.VISIBLE);
         }
-        if (cleanTask.getId()%2 == 0) {
+        if (cleanTask.getRunStatus() == 2) {
             holder.cleanTaskExecStatus.setText(R.string.yl_device_in_progress);
+        } else if (cleanTask.getRunStatus() == 3) {
+            holder.cleanTaskExecStatus.setText(R.string.yl_device_complete);
         } else {
             holder.cleanTaskExecStatus.setText(R.string.yl_device_not_started_yet);
         }

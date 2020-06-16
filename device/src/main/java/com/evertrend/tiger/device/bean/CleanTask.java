@@ -21,6 +21,7 @@ public class CleanTask implements Serializable {
     private int device;
     private int mapPage;
     private int taskType;
+    private int runStatus;
 
     @Override
     public boolean equals(Object o) {
@@ -94,7 +95,16 @@ public class CleanTask implements Serializable {
                 ", device=" + device +
                 ", mapPage=" + mapPage +
                 ", taskType=" + taskType +
+                ", runStatus=" + runStatus +
                 '}';
+    }
+
+    public int getRunStatus() {
+        return runStatus;
+    }
+
+    public void setRunStatus(int runStatus) {
+        this.runStatus = runStatus;
     }
 
     public int getTaskType() {

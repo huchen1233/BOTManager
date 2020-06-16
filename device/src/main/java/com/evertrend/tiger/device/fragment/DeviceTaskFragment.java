@@ -264,9 +264,12 @@ public class DeviceTaskFragment extends BaseFragment implements View.OnClickList
         } else if (cleanTask.getTaskOption() == Constants.TYPE_EXEC_FLAG_INFINITE_CYCLE) {
             taskDetailInfo[2] = taskDetailInfo[2] + getResources().getString(R.string.yl_device_infinite_cycle);
         }
-        if (cleanTask.getId()%2 == 0) {
+        if (cleanTask.getRunStatus() == 2) {
             taskDetailInfo[3] = taskDetailInfo[3] + getResources().getString(R.string.yl_device_in_progress);
-            taskDetailInfo[4] = taskDetailInfo[4] + "80%";
+            taskDetailInfo[4] = taskDetailInfo[4] + "50%";
+        } else if (cleanTask.getRunStatus() == 3) {
+            taskDetailInfo[3] = taskDetailInfo[3] + getResources().getString(R.string.yl_device_complete);
+            taskDetailInfo[4] = taskDetailInfo[4] + "100%";
         } else {
             taskDetailInfo[3] = taskDetailInfo[3] + getResources().getString(R.string.yl_device_not_started_yet);
             taskDetailInfo[4] = taskDetailInfo[4] + "0%";
@@ -318,14 +321,14 @@ public class DeviceTaskFragment extends BaseFragment implements View.OnClickList
                 choiceMapPages = mapPages;
             }
         }
-        cleanTaskBottomPopupView = new CleanTaskBottomPopupView(getActivity(), device, choiceMapPages, cleanTask);
+        cleanTaskBottomPopupView = new CleanTaskBottomPopupView(getActivity(), device, choiceMapPages, cleanTask, cleanTaskList);
         new XPopup.Builder(getActivity())
                 .asCustom(cleanTaskBottomPopupView)
                 .show();
     }
 
     private void showCreateCleanTaskBottomDialog() {
-        cleanTaskBottomPopupView = new CleanTaskBottomPopupView(getActivity(), device, choiceMapPages);
+        cleanTaskBottomPopupView = new CleanTaskBottomPopupView(getActivity(), device, choiceMapPages, cleanTaskList);
         new XPopup.Builder(getActivity())
                 .autoOpenSoftInput(true)
                 .asCustom(cleanTaskBottomPopupView)

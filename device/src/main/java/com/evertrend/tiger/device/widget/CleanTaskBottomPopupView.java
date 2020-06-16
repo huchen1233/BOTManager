@@ -70,6 +70,7 @@ public class CleanTaskBottomPopupView extends BottomPopupView implements View.On
     private Context context;
     private Device device;
     private MapPages choiceMapPages;
+    private List<CleanTask> cleanTaskList;
     private TaskListViewAdapter taskTPListViewAdapter;
     private TaskListViewAdapter taskVTGListViewAdapter;
     private TaskSpecialWorkListViewAdapter taskSpecialWorkListViewAdapter;
@@ -85,19 +86,21 @@ public class CleanTaskBottomPopupView extends BottomPopupView implements View.On
     private ScheduledThreadPoolExecutor scheduledThreadGetMapPagesAllSpecialWorkSpot;
     private ScheduledThreadPoolExecutor scheduledThreadSaveCleanTask;
 
-    public CleanTaskBottomPopupView(Context context, Device device, MapPages choiceMapPages) {
+    public CleanTaskBottomPopupView(Context context, Device device, MapPages choiceMapPages, List<CleanTask> cleanTaskList) {
         super(context);
         this.context = context;
         this.device = device;
         this.choiceMapPages = choiceMapPages;
+        this.cleanTaskList = cleanTaskList;
         newCleanTask = new CleanTask();
     }
 
-    public CleanTaskBottomPopupView(Context context, Device device, MapPages choiceMapPages, CleanTask cleanTask) {
+    public CleanTaskBottomPopupView(Context context, Device device, MapPages choiceMapPages, CleanTask cleanTask, List<CleanTask> cleanTaskList) {
         super(context);
         this.context = context;
         this.device = device;
         this.choiceMapPages = choiceMapPages;
+        this.cleanTaskList = cleanTaskList;
         this.cleanTask = cleanTask;
         newCleanTask = new CleanTask();
     }
@@ -376,6 +379,12 @@ public class CleanTaskBottomPopupView extends BottomPopupView implements View.On
             Toast.makeText(context, "请输入任务名称", Toast.LENGTH_SHORT).show();
             return false;
         } else {
+            for (CleanTask c:cleanTaskList) {
+                if (newCleanTask.getName().equals(c.getName())) {
+                    Toast.makeText(context, "任务名称重复，请更换", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            }
             return checkWorkChoice();
         }
     }
@@ -435,8 +444,12 @@ public class CleanTaskBottomPopupView extends BottomPopupView implements View.On
 //                }
 //            }
 //        }
-        String specialWork = specialWorkSpotList.get(lv_special_work.getCheckedItemPosition()).getId()+"";
-        LogUtil.i(context, TAG, "special work : " + specialWork);
+        String specialWork = "";
+        if (lv_special_work.getCheckedItemPosition() != -1) {
+            specialWork = specialWorkSpotList.get(lv_special_work.getCheckedItemPosition()).getId()+"";
+            LogUtil.i(context, TAG, "special work : " + specialWork);
+        }
+
         if (tracePaths.length() == 0 && vTGroups.length() == 0 && TextUtils.isEmpty(specialWork)) {
             Toast.makeText(context, R.string.yl_device_task_choice_tips, Toast.LENGTH_LONG).show();
             return false;

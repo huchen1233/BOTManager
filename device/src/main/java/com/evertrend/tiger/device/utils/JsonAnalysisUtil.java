@@ -177,6 +177,7 @@ public class JsonAnalysisUtil {
                 cleanTask.setEst_consume_time(jsonArray.getJSONObject(i).getString(Constants.EST_CONSUME_TIME));
                 cleanTask.setRun_once(jsonArray.getJSONObject(i).getIntValue(Constants.RUN_ONCE));
                 cleanTask.setTaskType(jsonArray.getJSONObject(i).getIntValue(Constants.TASK_TYPE));
+                cleanTask.setRunStatus(jsonArray.getJSONObject(i).getIntValue(Constants.RUN_STATUS));
                 cleanTaskList.add(cleanTask);
             }
         }
