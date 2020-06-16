@@ -1221,16 +1221,16 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         builder.setTitle("选择循迹路径");
         builder.setView(view);
         if (typeOperation == CommonConstants.TYPE_TRACE_PATH_OPERATION_SAVE_SPOT) {
-            builder.setNeutralButton(R.string.yl_common_create_new, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Toast.makeText(OperationAreaMapActivity.this, "new", Toast.LENGTH_SHORT).show();
+//            builder.setNeutralButton(R.string.yl_common_create_new, new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+////                    Toast.makeText(OperationAreaMapActivity.this, "new", Toast.LENGTH_SHORT).show();
 //                    Intent intent = new Intent(OperationAreaMapActivity.this, CreateNewTracePathActivity.class);
 //                    intent.putExtra("device", device);
 //                    intent.putExtra("mappage", mapPages);
 //                    startActivityForResult(intent, CommonConstants.CREATE_TRACE_PATH_REQUEST_CODE);
-                }
-            });
+//                }
+//            });
         }
         tracePathChoiceDialog = builder.create();
         tracePathChoiceDialog.show();

@@ -312,7 +312,11 @@ public class CommTaskUtils {
                                     for (int i = 0; i < jsonArray.size(); i++) {
                                         RobotSpot robotSpot = new RobotSpot();
                                         robotSpot.setId(jsonArray.getJSONObject(i).getIntValue("id"));
-                                        String data = jsonArray.getJSONObject(i).getString("data");
+                                        String[] data = jsonArray.getJSONObject(i).getString("data").split(",");
+                                        robotSpot.setX(Float.parseFloat(data[0]));
+                                        robotSpot.setY(Float.parseFloat(data[1]));
+                                        robotSpot.setZ(Float.parseFloat(data[2]));
+                                        robotSpot.setYaw(Float.parseFloat(data[3]));
                                         serverTraceSpotList.add(robotSpot);
                                     }
                                 }

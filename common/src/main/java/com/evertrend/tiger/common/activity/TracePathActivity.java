@@ -97,7 +97,7 @@ public class TracePathActivity extends BaseActivity {
         stopGetMapPagesAllPathTimer();
         LogUtil.i(this, TAG, "size : "+event.getTracePathList().size());
         tracePathList = event.getTracePathList();
-//        showTracePath();
+        showTracePath();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
