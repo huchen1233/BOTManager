@@ -6,10 +6,36 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.text.TextUtils;
 
+import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Utils {
+
+    public static String formatDateToTimestamp(long intValue) {
+        Calendar beginC = Calendar.getInstance();
+        beginC.setTimeInMillis(intValue);
+        int year = beginC.get(Calendar.YEAR);
+        int month = beginC.get(Calendar.MONTH) + 1;
+        int day = beginC.get(Calendar.DAY_OF_MONTH);
+        int hour = beginC.get(Calendar.HOUR_OF_DAY);
+        int minute = beginC.get(Calendar.MINUTE);
+        StringBuffer date = new StringBuffer();
+        date.append(year+"-");
+        date.append(month+"-");
+        date.append(day+" ");
+        if (hour < 10) {
+            date.append("0" + hour);
+        } else {
+            date.append(hour);
+        }
+        if (minute < 10) {
+            date.append(":0" + minute);
+        } else {
+            date.append(":"+minute);
+        }
+        return date.toString();
+    }
 
     public static synchronized String getVersionName(Context context) {
         try {

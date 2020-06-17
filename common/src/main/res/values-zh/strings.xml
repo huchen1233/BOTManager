@@ -61,4 +61,9 @@
     <string name="yl_common_virtual_tracks_group">虚拟轨道组</string>
     <string name="yl_common_current_map">当前地图: %1$s</string>
     <string name="yl_common_getting">获取中......</string>
+    <string name="yl_common_run_log_level_debug">调试</string>
+    <string name="yl_common_run_log_level_info">提示</string>
+    <string name="yl_common_run_log_level_warning">警告</string>
+    <string name="yl_common_run_log_level_error">错误</string>
+    <string name="yl_common_run_log_level_critical">致命</string>
 </resources>

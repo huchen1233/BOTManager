@@ -11,4 +11,12 @@
         <item>@string/yl_common_trace_path</item>
         <item>@string/yl_common_virtual_tracks_group</item>
     </string-array>
+
+    <string-array name="yl_common_run_log_level">
+        <item>@string/yl_common_run_log_level_debug</item>
+        <item>@string/yl_common_run_log_level_info</item>
+        <item>@string/yl_common_run_log_level_warning</item>
+        <item>@string/yl_common_run_log_level_error</item>
+        <item>@string/yl_common_run_log_level_critical</item>
+    </string-array>
 </resources>

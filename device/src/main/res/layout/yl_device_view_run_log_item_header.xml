@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/yl_common_color_white"
+    android:weightSum="10">
+
+    <TextView
+        android:id="@+id/tv_level"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="级别"
+        android:layout_weight="1"
+        android:visibility="gone"
+        android:gravity="left"/>
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="名称"
+        android:layout_weight="3"
+        android:gravity="left"/>
+    <TextView
+        android:id="@+id/tv_desc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="描述"
+        android:layout_weight="4"
+        android:gravity="left"/>
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="时间"
+        android:layout_weight="3"
+        android:gravity="left"/>
+
+</LinearLayout>

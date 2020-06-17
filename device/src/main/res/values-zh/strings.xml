@@ -116,4 +116,5 @@
     <string name="yl_device_account_format_error">账号格式错误</string>
     <string name="yl_device_account_not_exist">账号不存在</string>
     <string name="yl_device_complete">已完成</string>
+    <string name="yl_device_run_log">日志</string>
 </resources>

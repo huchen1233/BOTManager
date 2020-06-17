@@ -61,4 +61,9 @@
     <string name="yl_common_virtual_tracks_group">virtual track group</string>
     <string name="yl_common_current_map">Current Map: %1$s</string>
     <string name="yl_common_getting">getting......</string>
+    <string name="yl_common_run_log_level_debug">debug</string>
+    <string name="yl_common_run_log_level_info">info</string>
+    <string name="yl_common_run_log_level_warning">warning</string>
+    <string name="yl_common_run_log_level_error">error</string>
+    <string name="yl_common_run_log_level_critical">critical</string>
 </resources>

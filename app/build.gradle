@@ -87,6 +87,7 @@ dependencies {
 //    implementation (name: 'user-release', ext: 'aar')
 //    implementation (name: 'common-release', ext: 'aar')
 //    implementation files('libs/slamware_sdk_android.jar')
+//    implementation 'com.liaoinstan.springview:library:1.7.0'//不用
 
 //开始时使用
     implementation project(':common')

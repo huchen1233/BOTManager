@@ -26,6 +26,7 @@ import com.evertrend.tiger.device.bean.event.DeviceListEvent;
 import com.evertrend.tiger.device.bean.event.SpinnerChoiceDeviceMessageEvent;
 import com.evertrend.tiger.device.fragment.DeviceMapFragment;
 import com.evertrend.tiger.device.fragment.DeviceOperationFragment;
+import com.evertrend.tiger.device.fragment.DeviceRunLogFragment;
 import com.evertrend.tiger.device.fragment.DeviceStatusFragment;
 import com.evertrend.tiger.device.fragment.DeviceTaskFragment;
 import com.evertrend.tiger.device.utils.Constants;
@@ -48,6 +49,7 @@ public class DeviceMainActivity extends AppCompatActivity {
     private int deviceTaskIndex = 1;
     private int deviceMapIndex = 2;
     private int deviceOperationIndex = 3;
+    private int deviceRunLogIndex = 4;
     private ViewPager2 viewPager2;
     private List<BaseFragment> fragments;
     private Toolbar tbMain;
@@ -202,6 +204,8 @@ public class DeviceMainActivity extends AppCompatActivity {
                     viewPager2.setCurrentItem(deviceMapIndex, false);
                 } else if (menuItem.getItemId() == R.id.action_devices_operation) {
                     viewPager2.setCurrentItem(deviceOperationIndex, false);
+                } else if (menuItem.getItemId() == R.id.action_devices_run_log) {
+                    viewPager2.setCurrentItem(deviceRunLogIndex, false);
                 }
                 return true;
             }
@@ -218,6 +222,8 @@ public class DeviceMainActivity extends AppCompatActivity {
         fragments.add(mapFragment);
         DeviceOperationFragment operationFragment = new DeviceOperationFragment();
         fragments.add(operationFragment);
+        DeviceRunLogFragment runLogFragment = new DeviceRunLogFragment();
+        fragments.add(runLogFragment);
         return fragments;
     }
 }

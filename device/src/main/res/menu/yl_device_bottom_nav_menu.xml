@@ -25,4 +25,10 @@
         android:icon="@drawable/yl_device_ic_operation_black_24dp"
         android:title="@string/yl_device_operation"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_devices_run_log"
+        android:enabled="true"
+        android:icon="@drawable/yl_device_ic_log_black_24dp"
+        android:title="@string/yl_device_run_log"
+        app:showAsAction="ifRoom" />
 </menu>

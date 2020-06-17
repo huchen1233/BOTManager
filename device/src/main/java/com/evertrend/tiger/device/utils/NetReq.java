@@ -11,6 +11,7 @@ public class NetReq {
     public static final String NET_REGISTER_DEVICE = CommonNetReq.REQ_HOST + "api/remote/register-device";
     public static final String NET_GET_DEVICE = CommonNetReq.REQ_HOST + "api/remote/get-device";
 
+    public static final String NET_GET_RUN_LOGS = CommonNetReq.REQ_HOST + "api/remote/get-run-logs";
     public static final String NET_GET_ALL_MAP_PAGES = CommonNetReq.REQ_HOST + "api/remote/get-map-pages";
     public static final String NET_GET_CLEAN_TASK = CommonNetReq.REQ_HOST + "api/remote/get-clean-task";
     public static final String NET_SAVE_BASIC_CONFIG = CommonNetReq.REQ_HOST + "api/remote/save-basic-config";
@@ -57,6 +58,7 @@ public class NetReq {
 
     public static final String REG_CODE = "reg_code";
     public static final String DEVICE_ID = "device_id";
+    public static final String PAGE = "page";
     public static final String PASS = "pass";
     public static final String DEVICE_TOKEN = "device_token";
     public static final String BEGIN_TIME = "begin_time";

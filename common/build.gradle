@@ -57,4 +57,9 @@ dependencies {
     api 'org.litepal.android:java:3.0.0'
     api 'com.lxj:xpopup:1.8.12'
     api files('libs/slamware_sdk_android.jar')
+//    api 'com.liaoinstan.springview:library:1.7.0'
+    // 注意：分包之后不会有默认的Header和Footer需要手动添加！还是原来的三种方法！
+    api  'com.scwang.smart:refresh-layout-kernel:2.0.1'      //核心必须依赖
+    api  'com.scwang.smart:refresh-header-classics:2.0.1'    //经典刷新头
+    api  'com.scwang.smart:refresh-footer-classics:2.0.1'    //经典加载
 }
