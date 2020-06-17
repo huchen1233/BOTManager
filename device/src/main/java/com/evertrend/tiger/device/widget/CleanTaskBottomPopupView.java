@@ -380,6 +380,11 @@ public class CleanTaskBottomPopupView extends BottomPopupView implements View.On
             return false;
         } else {
             for (CleanTask c:cleanTaskList) {
+                if (cleanTask != null) {
+                    if (newCleanTask.getName().equals(cleanTask.getName())) {
+                        break;
+                    }
+                }
                 if (newCleanTask.getName().equals(c.getName())) {
                     Toast.makeText(context, "任务名称重复，请更换", Toast.LENGTH_SHORT).show();
                     return false;
