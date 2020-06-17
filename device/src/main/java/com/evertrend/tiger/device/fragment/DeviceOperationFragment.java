@@ -57,14 +57,17 @@ public class DeviceOperationFragment extends BaseFragment implements RadioGroup.
         root = inflater.inflate(R.layout.yl_device_fragment_device_operation, container, false);
         initView(root);
         EventBus.getDefault().register(this);
-        setListener();
+//        setListener();
         return root;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onEventMainThread(DeviceMessageEvent event) {
         mDevice = event.getMessage();
+        setUnListener();
         updateStatus(mDevice);
+        EventBus.getDefault().removeStickyEvent(event);
+        setListener();
     }
 
     private void updateStatus(Device device) {
@@ -173,6 +176,23 @@ public class DeviceOperationFragment extends BaseFragment implements RadioGroup.
         sw_vibrating_dust.setOnCheckedChangeListener(this);
         sw_motor.setOnCheckedChangeListener(this);
         sw_emergency_stop.setOnCheckedChangeListener(this);
+    }
+
+    private void setUnListener() {
+        sw_device_run.setOnCheckedChangeListener(null);
+        rg_device_work_control.setOnCheckedChangeListener(null);
+        sw_main_sweep.setOnCheckedChangeListener(null);
+        sw_side_sweep.setOnCheckedChangeListener(null);
+        sw_sprinkling_water.setOnCheckedChangeListener(null);
+        sw_left_tail_light.setOnCheckedChangeListener(null);
+        sw_right_tail_light.setOnCheckedChangeListener(null);
+        sw_alarm_light.setOnCheckedChangeListener(null);
+        sw_front_light.setOnCheckedChangeListener(null);
+        sw_horn.setOnCheckedChangeListener(null);
+        sw_suck_fan.setOnCheckedChangeListener(null);
+        sw_vibrating_dust.setOnCheckedChangeListener(null);
+        sw_motor.setOnCheckedChangeListener(null);
+        sw_emergency_stop.setOnCheckedChangeListener(null);
     }
 
     private void initView(View root) {
