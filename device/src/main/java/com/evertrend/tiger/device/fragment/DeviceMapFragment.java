@@ -26,7 +26,7 @@ import com.evertrend.tiger.common.bean.event.SaveMapPageEvent;
 import com.evertrend.tiger.device.bean.event.DeviceMessageEvent;
 import com.evertrend.tiger.common.bean.event.GetAllMapPagesSuccessEvent;
 import com.evertrend.tiger.device.bean.event.SpinnerChoiceDeviceMessageEvent;
-import com.evertrend.tiger.device.utils.ScheduledThreadUtils;
+import com.evertrend.tiger.common.utils.general.ScheduledThreadUtils;
 import com.evertrend.tiger.device.utils.TaskUtils;
 import com.evertrend.tiger.common.widget.MapBottomPopupView;
 import com.lxj.xpopup.XPopup;

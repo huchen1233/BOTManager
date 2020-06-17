@@ -9,10 +9,13 @@ import com.evertrend.tiger.common.bean.BaseTrace;
 import com.evertrend.tiger.common.bean.Device;
 import com.evertrend.tiger.common.bean.MapPages;
 import com.evertrend.tiger.common.bean.RobotSpot;
+import com.evertrend.tiger.common.bean.RunLog;
 import com.evertrend.tiger.common.bean.TracePath;
 import com.evertrend.tiger.common.bean.VirtualTrackGroup;
 import com.evertrend.tiger.common.bean.event.CreateNewBaseTraceSuccessEvent;
 import com.evertrend.tiger.common.bean.event.DeleteBaseTraceEvent;
+import com.evertrend.tiger.common.bean.event.GetAllMapPagesSuccessEvent;
+import com.evertrend.tiger.common.bean.event.GetRunLogsSuccessEvent;
 import com.evertrend.tiger.common.bean.event.SaveMapPageEvent;
 import com.evertrend.tiger.common.bean.event.SaveTraceSpotFailEvent;
 import com.evertrend.tiger.common.bean.event.UpdateBaseTraceSuccessEvent;
@@ -824,6 +827,118 @@ public class CommTaskUtils {
                         switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
                             case CommonNetReq.CODE_SUCCESS:
                                 EventBus.getDefault().post(new DeleteBaseTraceEvent(baseTrace));
+                                break;
+                            default:
+                                break;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(TAG, "出错：解析数据失败");
+                    }
+                }
+            }, new OKHttpManager.FuncFailure() {
+                @Override
+                public void onFailure() {
+                    Log.e(TAG, "出错：请求网络失败");
+                }
+            });
+        }
+    }
+
+    public static class TaskGetAllMapPages implements Runnable {
+        private Device device;
+
+        public TaskGetAllMapPages(Device device) {
+            this.device = device;
+        }
+
+        @Override
+        public void run() {
+            startGetAllMappPages();
+        }
+
+        private void startGetAllMappPages() {
+            HashMap<String, String> map = new HashMap<>();
+            map.put(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
+            map.put(CommonNetReq.DEVICE_ID, String.valueOf(device.getId()));
+            OKHttpManager.getInstance().sendComplexForm(CommonNetReq.NET_GET_ALL_MAP_PAGES, map, new OKHttpManager.FuncJsonObj() {
+                @Override
+                public void onResponse(JSONObject jsonObject) throws JSONException {
+                    try {
+                        switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
+                            case CommonNetReq.CODE_SUCCESS:
+                                JSONArray jsonArray = jsonObject.getJSONArray(CommonNetReq.RESULT_DATA);
+                                List<MapPages> mapPagesList = new ArrayList<>();
+                                if (jsonArray.size() > 0) {
+                                    for (int i = 0; i < jsonArray.size(); i++) {
+                                        MapPages mapPages = new MapPages();
+                                        mapPages.setId(jsonArray.getJSONObject(i).getIntValue(CommonConstants.ID));
+                                        mapPages.setName(jsonArray.getJSONObject(i).getString(CommonConstants.NAME));
+                                        mapPages.setDescription(jsonArray.getJSONObject(i).getString(CommonConstants.DESCRIPTION));
+                                        mapPagesList.add(mapPages);
+                                    }
+                                }
+                                EventBus.getDefault().postSticky(new GetAllMapPagesSuccessEvent(mapPagesList));
+                                break;
+                            default:
+                                break;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(TAG, "出错：解析数据失败");
+                    }
+                }
+            }, new OKHttpManager.FuncFailure() {
+                @Override
+                public void onFailure() {
+                    Log.e(TAG, "出错：请求网络失败");
+                }
+            });
+        }
+    }
+
+    public static class TaskGetRunLogs implements Runnable {
+        private Device device;
+        private int page;
+
+        public TaskGetRunLogs(Device device, int page) {
+            this.device = device;
+            this.page = page;
+        }
+
+        @Override
+        public void run() {
+            startGetRunLogs();
+        }
+
+        private void startGetRunLogs() {
+            HashMap<String, String> map = new HashMap<>();
+            map.put(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
+            map.put(CommonNetReq.DEVICE_ID, String.valueOf(device.getId()));
+            map.put(CommonNetReq.PAGE, String.valueOf(page));
+            LogUtil.d(TAG, "page: "+page);
+            OKHttpManager.getInstance().sendComplexForm(CommonNetReq.NET_GET_RUN_LOGS, map, new OKHttpManager.FuncJsonObj() {
+                @Override
+                public void onResponse(JSONObject jsonObject) throws JSONException {
+                    try {
+                        switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
+                            case CommonNetReq.CODE_SUCCESS:
+                                JSONArray jsonArray = jsonObject.getJSONArray(CommonNetReq.RESULT_DATA);
+                                List<RunLog> runLogList = new ArrayList<>();
+                                if (jsonArray.size() > 0) {
+                                    for (int i = 0; i < jsonArray.size(); i++) {
+                                        RunLog runLog = new RunLog();
+                                        runLog.setId(jsonArray.getJSONObject(i).getIntValue(CommonConstants.ID));
+                                        runLog.setLevel(jsonArray.getJSONObject(i).getIntValue(CommonConstants.LEVEL));
+                                        runLog.setType_code(jsonArray.getJSONObject(i).getIntValue(CommonConstants.TYPE_CODE));
+                                        runLog.setName(jsonArray.getJSONObject(i).getString(CommonConstants.NAME));
+                                        runLog.setDescription(jsonArray.getJSONObject(i).getString(CommonConstants.DESCRIPTION));
+                                        runLog.setLog_time(jsonArray.getJSONObject(i).getLongValue(CommonConstants.LOG_TIME));
+                                        runLog.setDevice(jsonArray.getJSONObject(i).getIntValue(CommonConstants.DEVICE));
+                                        runLogList.add(runLog);
+                                    }
+                                }
+                                EventBus.getDefault().post(new GetRunLogsSuccessEvent(runLogList));
                                 break;
                             default:
                                 break;

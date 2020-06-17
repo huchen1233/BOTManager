@@ -55,6 +55,7 @@ public class CommonNetReq {
     public static final String NET_NEW_VT_GROUP = REQ_HOST + "api/remote/new-vtgroup";
     public static final String NET_UPDATE_VT_GROUP = REQ_HOST + "api/remote/update-vtgroup";
     public static final String NET_DELETE_MAP_PAGE_VTGROUP = REQ_HOST + "api/remote/delete-map-page-vtgroup";
+    public static final String NET_GET_RUN_LOGS = REQ_HOST + "api/remote/get-run-logs";
 
     public static final String TOKEN = "token";
     public static final String RESULT_CODE = "res_code";
@@ -80,6 +81,7 @@ public class CommonNetReq {
     public static final String PAGE_DESC = "page_desc";
     public static final String PAGE_DO_SAVE_MAP = "do_save_map";
     public static final String VIRTUAL_TRACK = "virtual_track";
+    public static final String PAGE = "page";
 
     public static final int CODE_SUCCESS = 0;
 

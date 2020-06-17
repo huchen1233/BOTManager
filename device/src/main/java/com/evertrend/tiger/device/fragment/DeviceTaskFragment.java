@@ -38,7 +38,7 @@ import com.evertrend.tiger.device.bean.event.SaveBasicConfigEvent;
 import com.evertrend.tiger.device.bean.event.SaveCleanTaskSuccessEvent;
 import com.evertrend.tiger.device.bean.event.SpinnerChoiceDeviceMessageEvent;
 import com.evertrend.tiger.device.utils.Constants;
-import com.evertrend.tiger.device.utils.ScheduledThreadUtils;
+import com.evertrend.tiger.common.utils.general.ScheduledThreadUtils;
 import com.evertrend.tiger.device.utils.TaskUtils;
 import com.evertrend.tiger.device.widget.BasicSettingBottomPopupView;
 import com.evertrend.tiger.device.widget.CleanTaskBottomPopupView;
