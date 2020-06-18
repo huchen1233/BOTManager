@@ -614,10 +614,10 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(DeleteOneTraceSpotListEvent event) {
-        RobotSpot localRobotSpot = event.getLocalRobotSpot();
-        LogUtil.i(this, TAG, "localRobotSpot: "+localRobotSpot.toString());
-        if (localRobotSpot != null) {
-            Location location = new Location(localRobotSpot.getX(), localRobotSpot.getY(), localRobotSpot.getZ());
+        RobotSpot robotSpot = event.getRobotSpot();
+        LogUtil.i(this, TAG, "robotSpot: "+robotSpot.toString());
+        if (robotSpot != null) {
+            Location location = new Location(robotSpot.getX(), robotSpot.getY(), robotSpot.getZ());
             mAgent.moveTo(location);
         }
     }
@@ -1271,11 +1271,12 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
     }
 
     private void rollBackTracePath() {
-        List<RobotSpot> localTracePathSpotList = DBUtil.getTracePathSpotList(tracePath, mapPages);
+//        List<RobotSpot> localTracePathSpotList = DBUtil.getTracePathSpotList(tracePath, mapPages);
         if (mServerTraceRobotSpotList != null && mServerTraceRobotSpotList.size() > 0) {
             DialogUtil.showProgressDialog(this, getResources().getString(R.string.yl_common_deleting), false, false);
             scheduledThreadDeleteTraceSpot = new ScheduledThreadPoolExecutor(8);
-            scheduledThreadDeleteTraceSpot.scheduleAtFixedRate(new CommTaskUtils.TaskDeleteTraceSpot(mServerTraceRobotSpotList, localTracePathSpotList),
+//            scheduledThreadDeleteTraceSpot.scheduleAtFixedRate(new CommTaskUtils.TaskDeleteTraceSpot(mServerTraceRobotSpotList, localTracePathSpotList),
+            scheduledThreadDeleteTraceSpot.scheduleAtFixedRate(new CommTaskUtils.TaskDeleteTraceSpot(mServerTraceRobotSpotList),
                     0, 20, TimeUnit.SECONDS);
         } else {
             Toast.makeText(this, "当前没有循迹路径", Toast.LENGTH_SHORT).show();

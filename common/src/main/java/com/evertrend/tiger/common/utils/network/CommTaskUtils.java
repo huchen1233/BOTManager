@@ -554,6 +554,10 @@ public class CommTaskUtils {
             this.robotSpot = robotSpot;
         }
 
+        public TaskDeleteTraceSpot(List<RobotSpot> mTraceRobotSpotList) {
+            this.mRobotSpotList = mTraceRobotSpotList;
+        }
+
         public TaskDeleteTraceSpot(List<RobotSpot> mTraceRobotSpotList, List<RobotSpot> localTracePathSpotList) {
             this.mRobotSpotList = mTraceRobotSpotList;
             this.localTracePathSpotList = localTracePathSpotList;
@@ -577,6 +581,8 @@ public class CommTaskUtils {
             int rollbackNum = AppSharePreference.getAppSharedPreference().loadTracePathRollbackNum();
             LogUtil.d(TAG, "rollbackNum: "+rollbackNum);
             for (int i = size - 1; i >= -1; ) {
+                LogUtil.d(TAG, "i:"+i);
+                LogUtil.d(TAG, "deleteSpotFlag:"+deleteSpotFlag);
                 if (i == -1 || i == size - rollbackNum) {
                     EventBus.getDefault().postSticky(new DeleteTraceSpotListCompleteEvent(mRobotSpotList));
                     if (EventBus.getDefault().isRegistered(this)) {
@@ -585,7 +591,8 @@ public class CommTaskUtils {
                     break;
                 }
                 if (deleteSpotFlag) {
-                    startDeleteTraceSpot(mRobotSpotList.get(i), localTracePathSpotList.get(i));
+//                    startDeleteTraceSpot(mRobotSpotList.get(i), localTracePathSpotList.get(i));
+                    startDeleteTraceSpot(mRobotSpotList.get(i));
                     mRobotSpotList.remove(i);
                     i--;
                     deleteSpotFlag = false;
@@ -599,7 +606,8 @@ public class CommTaskUtils {
         }
     }
 
-    private static void startDeleteTraceSpot(final RobotSpot robotSpot, final RobotSpot localRobotSpot) {
+//    private static void startDeleteTraceSpot(final RobotSpot robotSpot, final RobotSpot localRobotSpot) {
+    private static void startDeleteTraceSpot(final RobotSpot robotSpot) {
         HashMap<String, String> map = new HashMap<>();
         map.put(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
         map.put(CommonNetReq.ID, String.valueOf(robotSpot.getId()));
@@ -610,9 +618,10 @@ public class CommTaskUtils {
                     LogUtil.d(TAG, jsonObject.getString(CommonNetReq.RESULT_DESC));
                     switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
                         case CommonNetReq.CODE_SUCCESS:
-                            int delete = LitePal.delete(RobotSpot.class, localRobotSpot.getId());
-                            LogUtil.d(TAG, "delete: " + delete);
-                            EventBus.getDefault().post(new DeleteOneTraceSpotListEvent(robotSpot, localRobotSpot));
+//                            int delete = LitePal.delete(RobotSpot.class, localRobotSpot.getId());
+//                            LogUtil.d(TAG, "delete: " + delete);
+//                            EventBus.getDefault().post(new DeleteOneTraceSpotListEvent(robotSpot, localRobotSpot));
+                            EventBus.getDefault().post(new DeleteOneTraceSpotListEvent(robotSpot));
                             break;
                         default:
                             break;

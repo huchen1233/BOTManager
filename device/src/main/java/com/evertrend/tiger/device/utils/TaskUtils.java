@@ -547,6 +547,7 @@ public class TaskUtils {
             map.put(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
             map.put(NetReq.DEVICE_ID, String.valueOf(device.getId()));
             map.put(NetReq.WHAT_STATUS, mark);
+            LogUtil.d(TAG, "Mark:" + mark);
             OKHttpManager.getInstance().sendComplexForm(NetReq.NET_READ_CONTROL_STATUS, map, new OKHttpManager.FuncJsonObj() {
                 @Override
                 public void onResponse(JSONObject jsonObject) throws JSONException {
@@ -556,7 +557,6 @@ public class TaskUtils {
                             case CommonNetReq.CODE_SUCCESS:
                                 int newStatus = jsonObject.getIntValue(CommonNetReq.RESULT_DATA);
                                 LogUtil.d(TAG, "newStatus:" + newStatus);
-                                LogUtil.d(TAG, "Mark:" + mark);
                                 if ("rb_go_to_recharge".equals(mark)) {
                                     if (newStatus != 0) {
                                         EventBus.getDefault().post(new SetStatusSuccessEvent(mark, newStatus));
