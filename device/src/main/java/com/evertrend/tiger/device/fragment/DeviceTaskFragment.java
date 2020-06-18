@@ -264,15 +264,47 @@ public class DeviceTaskFragment extends BaseFragment implements View.OnClickList
         } else if (cleanTask.getTaskOption() == Constants.TYPE_EXEC_FLAG_INFINITE_CYCLE) {
             taskDetailInfo[2] = taskDetailInfo[2] + getResources().getString(R.string.yl_device_infinite_cycle);
         }
-        if (cleanTask.getRunStatus() == 2) {
-            taskDetailInfo[3] = taskDetailInfo[3] + getResources().getString(R.string.yl_device_in_progress);
-            taskDetailInfo[4] = taskDetailInfo[4] + "50%";
-        } else if (cleanTask.getRunStatus() == 3) {
-            taskDetailInfo[3] = taskDetailInfo[3] + getResources().getString(R.string.yl_device_complete);
-            taskDetailInfo[4] = taskDetailInfo[4] + "100%";
-        } else {
-            taskDetailInfo[3] = taskDetailInfo[3] + getResources().getString(R.string.yl_device_not_started_yet);
-            taskDetailInfo[4] = taskDetailInfo[4] + "0%";
+        switch (cleanTask.getRunStatus()) {
+            case CleanTask.TASK_STATUS_NO:
+                taskDetailInfo[3] = taskDetailInfo[3] + getResources().getString(R.string.yl_device_not_started_yet);
+                taskDetailInfo[4] = taskDetailInfo[4] + "0%";
+                break;
+            case CleanTask.TASK_STATUS_ING:
+                taskDetailInfo[3] = taskDetailInfo[3] + getResources().getString(R.string.yl_device_in_progress);
+                taskDetailInfo[4] = taskDetailInfo[4] + "50%";
+                break;
+            case CleanTask.TASK_STATUS_AT_SPOT:
+                taskDetailInfo[3] = taskDetailInfo[3] + getResources().getString(R.string.yl_device_at_spot);
+                taskDetailInfo[4] = taskDetailInfo[4] + "0%";
+                break;
+            case CleanTask.TASK_STAUS_NO_SPOT:
+                taskDetailInfo[3] = taskDetailInfo[3] + getResources().getString(R.string.yl_device_no_spot);
+                taskDetailInfo[4] = taskDetailInfo[4] + "0%";
+                break;
+            case CleanTask.TASK_STATUS_ON_THE_WAY:
+                taskDetailInfo[3] = taskDetailInfo[3] + getResources().getString(R.string.yl_device_on_the_way);
+                taskDetailInfo[4] = taskDetailInfo[4] + "0%";
+                break;
+            case CleanTask.TASK_STATUS_PAUSE:
+                taskDetailInfo[3] = taskDetailInfo[3] + getResources().getString(R.string.yl_device_pause);
+                taskDetailInfo[4] = taskDetailInfo[4] + "0%";
+                break;
+            case CleanTask.TASK_STATUS_STOP:
+                taskDetailInfo[3] = taskDetailInfo[3] + getResources().getString(R.string.yl_device_stop);
+                taskDetailInfo[4] = taskDetailInfo[4] + "0%";
+                break;
+            case CleanTask.TASK_STATUS_ERROR:
+                taskDetailInfo[3] = taskDetailInfo[3] + getResources().getString(R.string.yl_device_error);
+                taskDetailInfo[4] = taskDetailInfo[4] + "0%";
+                break;
+            case CleanTask.TASK_STATUS_ACCOMPLISH:
+                taskDetailInfo[3] = taskDetailInfo[3] + getResources().getString(R.string.yl_device_complete);
+                taskDetailInfo[4] = taskDetailInfo[4] + "100%";
+                break;
+            default:
+                taskDetailInfo[3] = taskDetailInfo[3] + getResources().getString(R.string.yl_device_not_started_yet);
+                taskDetailInfo[4] = taskDetailInfo[4] + "0%";
+                break;
         }
         taskDetailInfo[5] = taskDetailInfo[5] + cleanTask.getStartTime();
         new XPopup.Builder(getActivity())

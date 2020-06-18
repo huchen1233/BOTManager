@@ -93,12 +93,37 @@ public class CleanTaskReclyViewAdapter extends  RecyclerView.Adapter<CleanTaskRe
             holder.cleanTaskDesc.setText(cleanTask.getDesc());
             holder.cleanTaskDesc.setVisibility(View.VISIBLE);
         }
-        if (cleanTask.getRunStatus() == 2) {
-            holder.cleanTaskExecStatus.setText(R.string.yl_device_in_progress);
-        } else if (cleanTask.getRunStatus() == 3) {
-            holder.cleanTaskExecStatus.setText(R.string.yl_device_complete);
-        } else {
-            holder.cleanTaskExecStatus.setText(R.string.yl_device_not_started_yet);
+        switch (cleanTask.getRunStatus()) {
+            case CleanTask.TASK_STATUS_NO:
+                holder.cleanTaskExecStatus.setText(R.string.yl_device_not_started_yet);
+                break;
+            case CleanTask.TASK_STATUS_ING:
+                holder.cleanTaskExecStatus.setText(R.string.yl_device_in_progress);
+                break;
+            case CleanTask.TASK_STATUS_AT_SPOT:
+                holder.cleanTaskExecStatus.setText(R.string.yl_device_at_spot);
+                break;
+            case CleanTask.TASK_STAUS_NO_SPOT:
+                holder.cleanTaskExecStatus.setText(R.string.yl_device_no_spot);
+                break;
+            case CleanTask.TASK_STATUS_ON_THE_WAY:
+                holder.cleanTaskExecStatus.setText(R.string.yl_device_on_the_way);
+                break;
+            case CleanTask.TASK_STATUS_PAUSE:
+                holder.cleanTaskExecStatus.setText(R.string.yl_device_pause);
+                break;
+            case CleanTask.TASK_STATUS_STOP:
+                holder.cleanTaskExecStatus.setText(R.string.yl_device_stop);
+                break;
+            case CleanTask.TASK_STATUS_ERROR:
+                holder.cleanTaskExecStatus.setText(R.string.yl_device_error);
+                break;
+            case CleanTask.TASK_STATUS_ACCOMPLISH:
+                holder.cleanTaskExecStatus.setText(R.string.yl_device_complete);
+                break;
+            default:
+                holder.cleanTaskExecStatus.setText(R.string.yl_device_not_started_yet);
+                break;
         }
         switch (cleanTask.getTaskType()) {
             case Constants.TASK_TYPE_TRACE_PATH:

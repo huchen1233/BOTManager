@@ -3,6 +3,16 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class CleanTask implements Serializable {
+    public static final int TASK_STATUS_NO = 0;//无状态或未知状态或未开始
+    public static final int TASK_STATUS_ING = 1;//正在进行中
+    public static final int TASK_STATUS_AT_SPOT = 2;//正在任务点上；如充电，在充电点上；如加水，在加水点上
+    public static final int TASK_STAUS_NO_SPOT = 3;//未找到任务点
+    public static final int TASK_STATUS_ON_THE_WAY = 4;//正在去执行任务的路上
+    public static final int TASK_STATUS_PAUSE = 5;//任务暂停
+    public static final int TASK_STATUS_STOP = 6;//任务停止
+    public static final int TASK_STATUS_ERROR = 7;//任务出错
+    public static final int TASK_STATUS_ACCOMPLISH = 8;//任务成功完成
+
     private int id;
     private String name;
     private String desc;

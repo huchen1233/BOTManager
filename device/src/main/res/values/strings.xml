@@ -89,7 +89,7 @@
     <string name="yl_device_execute">execute</string>
     <string name="yl_device_delete_task">delete task</string>
     <string name="yl_device_update_task">update task</string>
-    <string name="yl_device_in_progress">in progress...</string>
+    <string name="yl_device_in_progress">In progress...</string>
     <string name="yl_device_not_started_yet">Not started</string>
     <string name="yl_device_delete_task_confirm">Are you sure you want to delete the task(%1$s)?</string>
     <string name="yl_device_task_detail_info">task detail info</string>
@@ -117,4 +117,10 @@
     <string name="yl_device_account_not_exist">account not exist</string>
     <string name="yl_device_complete">Completed</string>
     <string name="yl_device_run_log">log</string>
+    <string name="yl_device_at_spot">On task target spot</string>
+    <string name="yl_device_no_spot">Not find task target spot</string>
+    <string name="yl_device_on_the_way">On the way to the task</string>
+    <string name="yl_device_pause">Task pause</string>
+    <string name="yl_device_stop">Task stop</string>
+    <string name="yl_device_error">Task error</string>
 </resources>
