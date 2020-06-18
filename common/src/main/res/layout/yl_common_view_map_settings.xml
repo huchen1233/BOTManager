@@ -217,10 +217,10 @@
             android:id="@+id/et_rollback_trace_path_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:digits="56789"
+            android:digits="23456789"
             android:inputType="number"
             android:maxLength="1"
-            android:hint="5-9"/>
+            android:hint="2-9"/>
     </LinearLayout>
 
 </LinearLayout>

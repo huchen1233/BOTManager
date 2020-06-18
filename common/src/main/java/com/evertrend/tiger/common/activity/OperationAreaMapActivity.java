@@ -601,9 +601,11 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         stopDeleteTraceSpotTimer();
         DialogUtil.hideProgressDialog();
         mServerTraceRobotSpotList = messageEvent.getmRobotSpotList();
-        List<RobotSpot> list = DBUtil.getTracePathSpotList(tracePath, mapPages);
-        if (list.size() > 0) {
-             RobotSpot localRobotSpot = list.get(list.size() - 1);
+        LogUtil.i(this, TAG, "DeleteTraceSpotListCompleteEvent: "+mServerTraceRobotSpotList.size());
+//        List<RobotSpot> list = DBUtil.getTracePathSpotList(tracePath, mapPages);
+        if (mServerTraceRobotSpotList.size() > 0) {
+             RobotSpot localRobotSpot = mServerTraceRobotSpotList.get(mServerTraceRobotSpotList.size() - 1);
+            LogUtil.i(this, TAG, "localRobotSpot: "+localRobotSpot.toString());
             if (localRobotSpot != null) {
                 Location location = new Location(localRobotSpot.getX(), localRobotSpot.getY(), localRobotSpot.getZ());
                 mAgent.moveTo(location);
@@ -613,13 +615,14 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(DeleteOneTraceSpotListEvent event) {
+    public void onEventMainThread(DeleteOneTraceSpotListEvent event) {//收不到消息！！
         RobotSpot robotSpot = event.getRobotSpot();
         LogUtil.i(this, TAG, "robotSpot: "+robotSpot.toString());
         if (robotSpot != null) {
             Location location = new Location(robotSpot.getX(), robotSpot.getY(), robotSpot.getZ());
             mAgent.moveTo(location);
         }
+        EventBus.getDefault().removeStickyEvent(event);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -584,7 +584,7 @@ public class CommTaskUtils {
                 LogUtil.d(TAG, "i:"+i);
                 LogUtil.d(TAG, "deleteSpotFlag:"+deleteSpotFlag);
                 if (i == -1 || i == size - rollbackNum) {
-                    EventBus.getDefault().postSticky(new DeleteTraceSpotListCompleteEvent(mRobotSpotList));
+                    EventBus.getDefault().post(new DeleteTraceSpotListCompleteEvent(mRobotSpotList));
                     if (EventBus.getDefault().isRegistered(this)) {
                         EventBus.getDefault().unregister(this);
                     }
