@@ -50,7 +50,7 @@ public class TaskUtils {
                                 switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
                                     case CommonNetReq.CODE_SUCCESS:
                                         List<Device> deviceList = JsonAnalysisUtil.loadAllDevice(jsonObject.getJSONArray(CommonNetReq.RESULT_DATA));
-                                        EventBus.getDefault().post(new LoadDevicesEvent(deviceList));
+                                        EventBus.getDefault().postSticky(new LoadDevicesEvent(deviceList));
                                         break;
                                     default:
                                         break;

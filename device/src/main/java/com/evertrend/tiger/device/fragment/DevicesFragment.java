@@ -148,7 +148,7 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
         stopGetAssociatedDeviceTimer();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onMessageEvent(LoadDevicesEvent event) {
          LogUtil.i(getContext(), TAG, "===LoadDevicesEvent===");
         stopGetAssociatedDeviceTimer();

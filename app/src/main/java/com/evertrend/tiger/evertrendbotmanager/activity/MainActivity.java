@@ -14,6 +14,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.evertrend.tiger.common.fragment.BaseFragment;
 import com.evertrend.tiger.device.fragment.DevicesFragment;
+import com.evertrend.tiger.device.fragment.LocationFragment;
 import com.evertrend.tiger.evertrendbotmanager.R;
 import com.evertrend.tiger.user.fragment.MeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -25,7 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private int devicesTabIndex = 0;
-    private int meTabIndex = 1;
+    private int locationTabIndex = 1;
+    private int meTabIndex = 2;
     private ViewPager2 viewPager2;
     private BottomNavigationView bottomNavigationView;
     private List<BaseFragment> fragments;
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private void initView() {
         viewPager2 = findViewById(R.id.viewPager2);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        viewPager2.setUserInputEnabled(false);
         viewPager2.setAdapter(new FragmentStateAdapter(this) {
             @NonNull
             @Override
@@ -82,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.action_devices:
                         viewPager2.setCurrentItem(devicesTabIndex, false);
                         break;
+                    case R.id.action_location:
+                        viewPager2.setCurrentItem(locationTabIndex, false);
+                        break;
                     case R.id.action_me:
                         viewPager2.setCurrentItem(meTabIndex, false);
                         break;
@@ -92,9 +98,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private List<BaseFragment> getFragments() {
-        List<BaseFragment> fragments = new ArrayList<BaseFragment>(2);
+        List<BaseFragment> fragments = new ArrayList<BaseFragment>(3);
         DevicesFragment devicesFragment = new DevicesFragment();
         fragments.add(devicesFragment);
+        LocationFragment locationFragment = new LocationFragment();
+        fragments.add(locationFragment);
         MeFragment meFragment = new MeFragment();
         fragments.add(meFragment);
         return fragments;

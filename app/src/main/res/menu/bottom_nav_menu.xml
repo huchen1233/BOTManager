@@ -8,6 +8,12 @@
         android:title="@string/yl_common_devices"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/action_location"
+        android:enabled="true"
+        android:icon="@drawable/yl_device_ic_location_black_24dp"
+        android:title="@string/yl_common_location"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/action_me"
         android:enabled="true"
         android:icon="@drawable/yl_user_ic_me_black_24dp"

@@ -130,7 +130,7 @@ public class DevicesActivity extends AppCompatActivity implements View.OnClickLi
         stopGetAssociatedDeviceTimer();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onMessageEvent(LoadDevicesEvent event) {
          LogUtil.i(this, TAG, "===LoadDevicesEvent===");
         stopGetAssociatedDeviceTimer();

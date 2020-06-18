@@ -47,7 +47,11 @@ android {
             }
         }
     }
-
+    sourceSets {
+        main {
+            jniLibs.srcDir 'libs'
+        }
+    }
     resourcePrefix "yl_device_"
 }
 
@@ -66,5 +70,7 @@ dependencies {
 
     implementation project(':common')
     implementation 'com.github.hotchemi:permissionsdispatcher:3.1.0'
+    api files('libs/BaiduLBS_Android.jar')
+    api fileTree(dir: 'libs', include: ['*.aar', '*.jar'], exclude: [])
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:3.1.0'
 }
