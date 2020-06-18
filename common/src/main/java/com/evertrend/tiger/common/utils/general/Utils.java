@@ -20,6 +20,7 @@ public class Utils {
         int day = beginC.get(Calendar.DAY_OF_MONTH);
         int hour = beginC.get(Calendar.HOUR_OF_DAY);
         int minute = beginC.get(Calendar.MINUTE);
+        int second = beginC.get(Calendar.SECOND);
         StringBuffer date = new StringBuffer();
         date.append(year+"-");
         date.append(month+"-");
@@ -33,6 +34,11 @@ public class Utils {
             date.append(":0" + minute);
         } else {
             date.append(":"+minute);
+        }
+        if (second < 10) {
+            date.append(":0" + second);
+        } else {
+            date.append(":"+second);
         }
         return date.toString();
     }
