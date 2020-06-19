@@ -66,4 +66,5 @@
     <string name="yl_common_run_log_level_warning">warning</string>
     <string name="yl_common_run_log_level_error">error</string>
     <string name="yl_common_run_log_level_critical">critical</string>
+    <string name="yl_common_clear_map">clear map</string>
 </resources>

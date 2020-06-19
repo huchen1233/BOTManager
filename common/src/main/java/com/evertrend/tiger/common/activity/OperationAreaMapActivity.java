@@ -137,7 +137,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
     private ListView lv_spot_data;
     private Button btn_trace_path_spot_save;
     private Switch btn_auto_record_trace_spot;
-    private Button btn_virtual_walls, btn_virtual_tracks;
+    private Button btn_virtual_walls, btn_virtual_tracks, btn_clear_map;
     private LinearLayout ll_top, ll_bottom;
     private ConstraintLayout ll_map_virtual_walls, ll_map_virtual_tracks;
     private LinearLayout ll_add_virtual_wall_line, ll_add_virtual_wall_all_delete, ll_virtual_wall_delete;
@@ -870,6 +870,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         btn_auto_record_trace_spot = findViewById(R.id.btn_auto_record_trace_spot);
         btn_virtual_walls = findViewById(R.id.btn_virtual_walls);
         btn_virtual_tracks = findViewById(R.id.btn_virtual_tracks);
+        btn_clear_map = findViewById(R.id.btn_clear_map);
         ll_top = findViewById(R.id.ll_top);
         ll_bottom = findViewById(R.id.ll_bottom);
         ll_map_virtual_walls = findViewById(R.id.ll_map_virtual_walls);
@@ -917,6 +918,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         ibtn_map_set_centred.setOnClickListener(this);
         btn_virtual_walls.setOnClickListener(this);
         btn_virtual_tracks.setOnClickListener(this);
+        btn_clear_map.setOnClickListener(this);
         ll_add_virtual_wall_line.setOnClickListener(this);
         ibtn_add_virtual_wall_ok.setOnClickListener(this);
         ibtn_add_virtual_wall_cancel.setOnClickListener(this);
@@ -1101,6 +1103,8 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
             setVWalls();
         } else if (v.getId() == R.id.btn_virtual_tracks) {
             setVTracks();
+        }  else if (v.getId() == R.id.btn_clear_map) {
+            mAgent.clearMap();
         } else if (v.getId() == R.id.ll_add_virtual_wall_line) {
             addVirtualWall();
         } else if (v.getId() == R.id.ibtn_add_virtual_wall_ok) {

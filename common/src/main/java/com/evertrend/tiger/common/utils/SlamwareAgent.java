@@ -866,7 +866,8 @@ public class SlamwareAgent {
 
             try {
                 mRobotPlatform.clearMap();
-                EventBus.getDefault().post(new ClearMapSuccessEvent());
+                mRobotPlatform.setPose(new Pose(0, 0, 0, 0, 0, 0));
+//                EventBus.getDefault().post(new ClearMapSuccessEvent());
             } catch (Exception e) {
                 e.printStackTrace();
             }

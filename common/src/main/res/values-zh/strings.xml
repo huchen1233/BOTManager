@@ -66,4 +66,5 @@
     <string name="yl_common_run_log_level_warning">警告</string>
     <string name="yl_common_run_log_level_error">错误</string>
     <string name="yl_common_run_log_level_critical">致命</string>
+    <string name="yl_common_clear_map">清除地图</string>
 </resources>
