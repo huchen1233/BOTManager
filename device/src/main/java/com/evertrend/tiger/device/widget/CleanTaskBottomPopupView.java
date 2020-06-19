@@ -25,7 +25,7 @@ import com.evertrend.tiger.device.R;
 import com.evertrend.tiger.device.adapter.TaskListViewAdapter;
 import com.evertrend.tiger.device.adapter.TaskSpecialWorkListViewAdapter;
 import com.evertrend.tiger.common.bean.BaseTrace;
-import com.evertrend.tiger.device.bean.CleanTask;
+import com.evertrend.tiger.common.bean.CleanTask;
 import com.evertrend.tiger.common.bean.Device;
 import com.evertrend.tiger.common.bean.MapPages;
 import com.evertrend.tiger.common.bean.RobotSpot;

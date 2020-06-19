@@ -1,6 +1,6 @@
 package com.evertrend.tiger.device.bean.event;
 
-import com.evertrend.tiger.device.bean.CleanTask;
+import com.evertrend.tiger.common.bean.CleanTask;
 
 public class DeleteCleanTaskEvent {
     private CleanTask cleanTask;

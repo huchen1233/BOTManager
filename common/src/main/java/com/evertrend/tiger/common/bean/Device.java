@@ -57,6 +57,15 @@ public class Device implements Serializable {
     private int enable_auto_recharge;
     private int enable_auto_add_water;
     private int enable_auto_empty_trash;
+    private String alarm_info;//报警信息
+
+    public String getAlarm_info() {
+        return alarm_info;
+    }
+
+    public void setAlarm_info(String alarm_info) {
+        this.alarm_info = alarm_info;
+    }
 
     public int getEnable_auto_recharge() {
         return enable_auto_recharge;
@@ -576,6 +585,7 @@ public class Device implements Serializable {
                 ", enable_auto_recharge=" + enable_auto_recharge +
                 ", enable_auto_add_water=" + enable_auto_add_water +
                 ", enable_auto_empty_trash=" + enable_auto_empty_trash +
+                ", alarm_info=" + alarm_info +
                 '}';
     }
 }

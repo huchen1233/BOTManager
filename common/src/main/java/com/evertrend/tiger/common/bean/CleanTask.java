@@ -1,4 +1,4 @@
-package com.evertrend.tiger.device.bean;
+package com.evertrend.tiger.common.bean;
 import java.io.Serializable;
 import java.util.Objects;
 

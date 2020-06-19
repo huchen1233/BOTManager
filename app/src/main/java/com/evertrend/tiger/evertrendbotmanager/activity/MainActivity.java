@@ -1,6 +1,7 @@
 package com.evertrend.tiger.evertrendbotmanager.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -15,6 +16,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.evertrend.tiger.common.fragment.BaseFragment;
 import com.evertrend.tiger.device.fragment.DevicesFragment;
 import com.evertrend.tiger.device.fragment.DeviceLocationFragment;
+import com.evertrend.tiger.device.service.DeviceCommunicationService;
 import com.evertrend.tiger.evertrendbotmanager.R;
 import com.evertrend.tiger.user.fragment.MeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -40,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         fragments = getFragments();
         initView();
+        Intent intent = new Intent(this, DeviceCommunicationService.class);
+        startService(intent);
     }
 
     private void initView() {

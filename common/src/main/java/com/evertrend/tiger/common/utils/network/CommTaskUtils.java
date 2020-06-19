@@ -14,6 +14,7 @@ import com.evertrend.tiger.common.bean.TracePath;
 import com.evertrend.tiger.common.bean.VirtualTrackGroup;
 import com.evertrend.tiger.common.bean.event.CreateNewBaseTraceSuccessEvent;
 import com.evertrend.tiger.common.bean.event.DeleteBaseTraceEvent;
+import com.evertrend.tiger.common.bean.event.DeviceExceptionEvent;
 import com.evertrend.tiger.common.bean.event.GetAllMapPagesSuccessEvent;
 import com.evertrend.tiger.common.bean.event.GetRunLogsSuccessEvent;
 import com.evertrend.tiger.common.bean.event.SaveMapPageEvent;
@@ -952,6 +953,31 @@ public class CommTaskUtils {
                             default:
                                 break;
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(TAG, "出错：解析数据失败");
+                    }
+                }
+            }, new OKHttpManager.FuncFailure() {
+                @Override
+                public void onFailure() {
+                    Log.e(TAG, "出错：请求网络失败");
+                }
+            });
+        }
+    }
+
+    public static class TaskGetDeviceException implements Runnable {
+        @Override
+        public void run() {
+            HashMap<String, String> map = new HashMap<>();
+            map.put(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
+            OKHttpManager.getInstance().sendComplexForm(CommonNetReq.NET_GET_DEVICE_EXCEPTION, map, new OKHttpManager.FuncJsonObj() {
+                @Override
+                public void onResponse(JSONObject jsonObject) throws JSONException {
+                    try {
+                        LogUtil.d(TAG, jsonObject.getString(CommonNetReq.RESULT_DESC));
+                        EventBus.getDefault().post(new DeviceExceptionEvent(jsonObject));
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.e(TAG, "出错：解析数据失败");

@@ -57,6 +57,7 @@ public class CommonConstants {
     public static final String ENABLE_AUTO_RECHARGE = "enable_auto_recharge";
     public static final String ENABLE_AUTO_ADD_WATER = "enable_auto_add_water";
     public static final String ENABLE_AUTO_EMPTY_TRASH = "enable_auto_empty_trash";
+    public static final String ALARM_INFO = "alarm_info";
     public static final String NAME = "name";
     public static final String DESC = "desc";
     public static final String DEVICE = "device";
@@ -86,6 +87,7 @@ public class CommonConstants {
     public static final String TYPE_EXTRA_PASS = "pass";
 
     public static final int GET_CODE_COUNT = 60;
+    public static final int GET_DEVICE_EXCEPTION_TIME = 5;//分钟
 
     public static final int TYPE_SUCCESS_EVENT_LOGIN = 1;
     public static final int TYPE_SUCCESS_EVENT_LOGOUT = 2;

@@ -1,12 +1,10 @@
 package com.evertrend.tiger.device.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.evertrend.tiger.device.R;
-import com.evertrend.tiger.device.bean.CleanTask;
+import com.evertrend.tiger.common.bean.CleanTask;
 import com.evertrend.tiger.device.bean.event.ChoiceCleanTaskEvent;
 import com.evertrend.tiger.device.utils.Constants;
 import com.lxj.xpopup.XPopup;
