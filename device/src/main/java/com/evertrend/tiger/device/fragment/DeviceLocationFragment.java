@@ -62,12 +62,6 @@ public class DeviceLocationFragment extends BaseFragment {
 
     private List<Device> deviceList;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        DeviceLocationFragmentPermissionsDispatcher.mulPermissionWithPermissionCheck(DeviceLocationFragment.this);
-    }
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.yl_device_fragment_location, container, false);
@@ -78,6 +72,7 @@ public class DeviceLocationFragment extends BaseFragment {
         //注册监听函数
         initView();
         EventBus.getDefault().register(this);
+        DeviceLocationFragmentPermissionsDispatcher.mulPermissionWithPermissionCheck(DeviceLocationFragment.this);
         return root;
     }
 

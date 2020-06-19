@@ -111,7 +111,7 @@
     <string name="yl_device_horn">horn</string>
     <string name="yl_device_suck_fan">suck fan</string>
     <string name="yl_device_vibrating_dust">vibrating dust</string>
-    <string name="yl_device_motor">motor</string>
+    <string name="yl_device_motor">motor free</string>
     <string name="yl_device_emergency_stop">emergency stop</string>
     <string name="yl_device_account_format_error">account format error</string>
     <string name="yl_device_account_not_exist">account not exist</string>

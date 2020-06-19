@@ -24,6 +24,8 @@ import com.evertrend.tiger.device.bean.event.DeviceMessageEvent;
 import com.evertrend.tiger.device.bean.event.OperationStopEvent;
 import com.evertrend.tiger.device.bean.event.SetStatusCompleteEvent;
 import com.evertrend.tiger.device.bean.event.SetStatusSuccessEvent;
+import com.evertrend.tiger.device.bean.event.SpinnerChoiceDeviceMessageEvent;
+import com.evertrend.tiger.device.utils.Constants;
 import com.evertrend.tiger.device.utils.TaskUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -66,8 +68,144 @@ public class DeviceOperationFragment extends BaseFragment implements RadioGroup.
         mDevice = event.getMessage();
         setUnListener();
         updateStatus(mDevice);
+        showDeviceParts(mDevice);
         EventBus.getDefault().removeStickyEvent(event);
         setListener();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void onMessageEvent(SpinnerChoiceDeviceMessageEvent event) {
+        mDevice = event.getDevice();
+        setUnListener();
+        updateStatus(mDevice);
+        showDeviceParts(mDevice);
+        EventBus.getDefault().removeStickyEvent(event);
+        setListener();
+    }
+
+    private void showDeviceParts(Device device) {
+        switch (device.getDevice_type()) {
+            case Constants.DEVICE_TYPE_EVBOT_SL:
+                rb_go_to_idle.setVisibility(View.VISIBLE);
+                rb_go_to_garage.setVisibility(View.GONE);
+                rb_go_to_recharge.setVisibility(View.VISIBLE);
+                rb_go_to_add_water.setVisibility(View.GONE);
+                rb_go_to_empty_trash.setVisibility(View.GONE);
+                rb_go_to_work.setVisibility(View.VISIBLE);
+                sw_main_sweep.setVisibility(View.GONE);
+                sw_side_sweep.setVisibility(View.GONE);
+                sw_sprinkling_water.setVisibility(View.GONE);
+                sw_left_tail_light.setVisibility(View.GONE);
+                sw_right_tail_light.setVisibility(View.GONE);
+                sw_alarm_light.setVisibility(View.GONE);
+                sw_front_light.setVisibility(View.GONE);
+                sw_horn.setVisibility(View.GONE);
+                sw_suck_fan.setVisibility(View.GONE);
+                sw_vibrating_dust.setVisibility(View.GONE);
+                sw_motor.setVisibility(View.GONE);
+                sw_emergency_stop.setVisibility(View.GONE);
+                break;
+            case Constants.DEVICE_TYPE_SWBOT_SL:
+                rb_go_to_idle.setVisibility(View.VISIBLE);
+                rb_go_to_garage.setVisibility(View.VISIBLE);
+                rb_go_to_recharge.setVisibility(View.VISIBLE);
+                rb_go_to_add_water.setVisibility(View.VISIBLE);
+                rb_go_to_empty_trash.setVisibility(View.VISIBLE);
+                rb_go_to_work.setVisibility(View.VISIBLE);
+                sw_main_sweep.setVisibility(View.VISIBLE);
+                sw_side_sweep.setVisibility(View.VISIBLE);
+                sw_sprinkling_water.setVisibility(View.VISIBLE);
+                sw_left_tail_light.setVisibility(View.VISIBLE);
+                sw_right_tail_light.setVisibility(View.VISIBLE);
+                sw_alarm_light.setVisibility(View.VISIBLE);
+                sw_front_light.setVisibility(View.VISIBLE);
+                sw_horn.setVisibility(View.VISIBLE);
+                sw_suck_fan.setVisibility(View.VISIBLE);
+                sw_vibrating_dust.setVisibility(View.VISIBLE);
+                sw_motor.setVisibility(View.VISIBLE);
+                sw_emergency_stop.setVisibility(View.VISIBLE);
+                break;
+            case Constants.DEVICE_TYPE_MFBOT_SL:
+                rb_go_to_idle.setVisibility(View.VISIBLE);
+                rb_go_to_garage.setVisibility(View.VISIBLE);
+                rb_go_to_recharge.setVisibility(View.VISIBLE);
+                rb_go_to_add_water.setVisibility(View.VISIBLE);
+                rb_go_to_empty_trash.setVisibility(View.VISIBLE);
+                rb_go_to_work.setVisibility(View.VISIBLE);
+                sw_main_sweep.setVisibility(View.VISIBLE);
+                sw_side_sweep.setVisibility(View.VISIBLE);
+                sw_sprinkling_water.setVisibility(View.VISIBLE);
+                sw_left_tail_light.setVisibility(View.VISIBLE);
+                sw_right_tail_light.setVisibility(View.VISIBLE);
+                sw_alarm_light.setVisibility(View.VISIBLE);
+                sw_front_light.setVisibility(View.VISIBLE);
+                sw_horn.setVisibility(View.VISIBLE);
+                sw_suck_fan.setVisibility(View.VISIBLE);
+                sw_vibrating_dust.setVisibility(View.VISIBLE);
+                sw_motor.setVisibility(View.VISIBLE);
+                sw_emergency_stop.setVisibility(View.VISIBLE);
+                break;
+            case Constants.DEVICE_TYPE_SWBOT_AP:
+                rb_go_to_idle.setVisibility(View.VISIBLE);
+                rb_go_to_garage.setVisibility(View.VISIBLE);
+                rb_go_to_recharge.setVisibility(View.VISIBLE);
+                rb_go_to_add_water.setVisibility(View.VISIBLE);
+                rb_go_to_empty_trash.setVisibility(View.VISIBLE);
+                rb_go_to_work.setVisibility(View.VISIBLE);
+                sw_main_sweep.setVisibility(View.VISIBLE);
+                sw_side_sweep.setVisibility(View.VISIBLE);
+                sw_sprinkling_water.setVisibility(View.VISIBLE);
+                sw_left_tail_light.setVisibility(View.VISIBLE);
+                sw_right_tail_light.setVisibility(View.VISIBLE);
+                sw_alarm_light.setVisibility(View.VISIBLE);
+                sw_front_light.setVisibility(View.VISIBLE);
+                sw_horn.setVisibility(View.VISIBLE);
+                sw_suck_fan.setVisibility(View.VISIBLE);
+                sw_vibrating_dust.setVisibility(View.VISIBLE);
+                sw_motor.setVisibility(View.VISIBLE);
+                sw_emergency_stop.setVisibility(View.VISIBLE);
+                break;
+            case Constants.DEVICE_TYPE_SWBOT_MINI:
+                rb_go_to_idle.setVisibility(View.VISIBLE);
+                rb_go_to_garage.setVisibility(View.VISIBLE);
+                rb_go_to_recharge.setVisibility(View.VISIBLE);
+                rb_go_to_add_water.setVisibility(View.GONE);
+                rb_go_to_empty_trash.setVisibility(View.VISIBLE);
+                rb_go_to_work.setVisibility(View.VISIBLE);
+                sw_main_sweep.setVisibility(View.VISIBLE);
+                sw_side_sweep.setVisibility(View.VISIBLE);
+                sw_sprinkling_water.setVisibility(View.GONE);
+                sw_left_tail_light.setVisibility(View.GONE);
+                sw_right_tail_light.setVisibility(View.GONE);
+                sw_alarm_light.setVisibility(View.VISIBLE);
+                sw_front_light.setVisibility(View.GONE);
+                sw_horn.setVisibility(View.VISIBLE);
+                sw_suck_fan.setVisibility(View.GONE);
+                sw_vibrating_dust.setVisibility(View.GONE);
+                sw_motor.setVisibility(View.VISIBLE);
+                sw_emergency_stop.setVisibility(View.VISIBLE);
+                break;
+            default:
+                rb_go_to_idle.setVisibility(View.VISIBLE);
+                rb_go_to_garage.setVisibility(View.VISIBLE);
+                rb_go_to_recharge.setVisibility(View.VISIBLE);
+                rb_go_to_add_water.setVisibility(View.VISIBLE);
+                rb_go_to_empty_trash.setVisibility(View.VISIBLE);
+                rb_go_to_work.setVisibility(View.VISIBLE);
+                sw_main_sweep.setVisibility(View.VISIBLE);
+                sw_side_sweep.setVisibility(View.VISIBLE);
+                sw_sprinkling_water.setVisibility(View.VISIBLE);
+                sw_left_tail_light.setVisibility(View.VISIBLE);
+                sw_right_tail_light.setVisibility(View.VISIBLE);
+                sw_alarm_light.setVisibility(View.VISIBLE);
+                sw_front_light.setVisibility(View.VISIBLE);
+                sw_horn.setVisibility(View.VISIBLE);
+                sw_suck_fan.setVisibility(View.VISIBLE);
+                sw_vibrating_dust.setVisibility(View.VISIBLE);
+                sw_motor.setVisibility(View.VISIBLE);
+                sw_emergency_stop.setVisibility(View.VISIBLE);
+                break;
+        }
     }
 
     private void updateStatus(Device device) {
