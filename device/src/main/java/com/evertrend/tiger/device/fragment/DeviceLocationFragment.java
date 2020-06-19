@@ -1,5 +1,6 @@
 package com.evertrend.tiger.device.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,14 +15,16 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
+import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.evertrend.tiger.common.bean.Device;
 import com.evertrend.tiger.common.bean.event.SuccessEvent;
 import com.evertrend.tiger.common.fragment.BaseFragment;
-import com.evertrend.tiger.common.utils.general.CommonConstants;
-import com.evertrend.tiger.common.utils.general.DialogUtil;
 import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.device.R;
+import com.evertrend.tiger.device.activity.DeviceMainActivity;
+import com.evertrend.tiger.device.bean.event.DeviceListEvent;
+import com.evertrend.tiger.device.bean.event.DeviceMessageEvent;
 import com.evertrend.tiger.device.bean.event.LoadDevicesEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -31,8 +34,8 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocationFragment extends BaseFragment {
-    public static final String TAG = LocationFragment.class.getSimpleName();
+public class DeviceLocationFragment extends BaseFragment {
+    public static final String TAG = DeviceLocationFragment.class.getSimpleName();
 
     private View root;
     private MapView mMapView = null;
@@ -102,7 +105,14 @@ public class LocationFragment extends BaseFragment {
         mBaiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-//                showCarDetailInfo();
+                Bundle bundle = marker.getExtraInfo();
+                Device device = (Device) bundle.getSerializable("device");
+                LogUtil.d(TAG, "device: "+device.getDescription());
+                Intent intent = new Intent(getContext(), DeviceMainActivity.class);
+                intent.putExtra("device", device);
+                getContext().startActivity(intent);
+                EventBus.getDefault().postSticky(new DeviceMessageEvent(device));
+                EventBus.getDefault().postSticky(new DeviceListEvent(deviceList));
                 return true;
             }
         });
@@ -114,11 +124,16 @@ public class LocationFragment extends BaseFragment {
         if (deviceList.size() > 0) {
             for (Device device : deviceList) {
                 LatLng ll = null;
-                LogUtil.d(TAG, "device.getLatitude()=" + device.getLatitude());
-                LogUtil.d(TAG, "device.getLongitude()=" + device.getLongitude());
+//                LogUtil.d(TAG, "device.getLatitude()=" + device.getLatitude());
+//                LogUtil.d(TAG, "device.getLongitude()=" + device.getLongitude());
                 ll = new LatLng(device.getLatitude(), device.getLongitude());
-                mBaiduMap.addOverlay(new MarkerOptions().position(ll)
-                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
+                Bundle mbundle = new Bundle();
+                mbundle.putSerializable("device", device);
+                OverlayOptions overlayOptions = new MarkerOptions()
+                        .position(ll)
+                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher))
+                        .extraInfo(mbundle);
+                mBaiduMap.addOverlay(overlayOptions);
                 MapStatus.Builder builder = new MapStatus.Builder();
                 builder.target(ll).zoom(18.0f);
                 mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
