@@ -56,6 +56,8 @@ public class CommonNetReq {
     public static final String NET_UPDATE_VT_GROUP = REQ_HOST + "api/remote/update-vtgroup";
     public static final String NET_DELETE_MAP_PAGE_VTGROUP = REQ_HOST + "api/remote/delete-map-page-vtgroup";
     public static final String NET_GET_RUN_LOGS = REQ_HOST + "api/remote/get-run-logs";
+    public static final String NET_GET_DEVICE_EXCEPTION = REQ_HOST + "api/remote/get-device-exception";
+    public static final String NET_GET_DEVICE_CRITICAL = REQ_HOST + "api/remote/get-device-critical";
 
     public static final String TOKEN = "token";
     public static final String RESULT_CODE = "res_code";
