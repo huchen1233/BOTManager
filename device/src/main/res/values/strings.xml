@@ -123,4 +123,7 @@
     <string name="yl_device_pause">Task pause</string>
     <string name="yl_device_stop">Task stop</string>
     <string name="yl_device_error">Task error</string>
+    <string name="yl_device_permission_location">To display the device location, you need to obtain the location information permission. Please allow</string>
+    <string name="yl_device_permission_location_denied">Location information permission denied, you will not be able to display personal location information</string>
+    <string name="yl_device_permission_location_neverask">You have denied permission to allow the program to use location information. If you need it, please open it in settings</string>
 </resources>

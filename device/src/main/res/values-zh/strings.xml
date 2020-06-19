@@ -123,4 +123,7 @@
     <string name="yl_device_pause">任务暂停</string>
     <string name="yl_device_stop">任务停止</string>
     <string name="yl_device_error">任务出错</string>
+    <string name="yl_device_permission_location">显示设备位置需要获取位置信息权限，请您允许</string>
+    <string name="yl_device_permission_location_denied">位置信息权限被拒绝，您将无法显示个人位置信息</string>
+    <string name="yl_device_permission_location_neverask">您已经拒绝允许程序使用位置信息权限，如您需要，请在设置中自行打开</string>
 </resources>

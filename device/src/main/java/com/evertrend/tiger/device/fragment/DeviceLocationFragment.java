@@ -1,12 +1,17 @@
 package com.evertrend.tiger.device.fragment;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
@@ -38,6 +43,14 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnNeverAskAgain;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.OnShowRationale;
+import permissions.dispatcher.PermissionRequest;
+import permissions.dispatcher.RuntimePermissions;
+
+@RuntimePermissions
 public class DeviceLocationFragment extends BaseFragment {
     public static final String TAG = DeviceLocationFragment.class.getSimpleName();
 
@@ -48,6 +61,12 @@ public class DeviceLocationFragment extends BaseFragment {
     private MyLocationListener myListener = new MyLocationListener();
 
     private List<Device> deviceList;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        DeviceLocationFragmentPermissionsDispatcher.mulPermissionWithPermissionCheck(DeviceLocationFragment.this);
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -168,6 +187,7 @@ public class DeviceLocationFragment extends BaseFragment {
         mBaiduMap.clear();
         LogUtil.d(TAG, "size : " + deviceList.size());
         if (deviceList.size() > 0) {
+            mLocationClient.stop();
             for (Device device : deviceList) {
                 LatLng ll = null;
 //                LogUtil.d(TAG, "device.getLatitude()=" + device.getLatitude());
@@ -230,5 +250,40 @@ public class DeviceLocationFragment extends BaseFragment {
             builder.target(ll).zoom(18.0f);
             mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
         }
+    }
+
+    @NeedsPermission({Manifest.permission.ACCESS_COARSE_LOCATION})
+    void mulPermission() {
+        if (deviceList.size() > 0) {
+            mLocationClient.stop();
+        } else {
+            mLocationClient.start();
+        }
+    }
+
+    @OnShowRationale({Manifest.permission.ACCESS_COARSE_LOCATION})
+    void showRationaleForMulPermission(final PermissionRequest request) {
+        new AlertDialog.Builder(getActivity())
+                .setMessage(R.string.yl_device_permission_location)
+                .setPositiveButton(android.R.string.yes, (dialog, button) -> request.proceed())
+                .setNegativeButton(android.R.string.no, (dialog, button) -> request.cancel())
+                .show();
+    }
+
+    @OnPermissionDenied(Manifest.permission.ACCESS_COARSE_LOCATION)
+    void showDeniedForLocation() {
+        Toast.makeText(getActivity(), R.string.yl_device_permission_location_denied, Toast.LENGTH_LONG).show();
+    }
+
+    @OnNeverAskAgain(Manifest.permission.ACCESS_COARSE_LOCATION)
+    void showNeverAskForLocation() {
+        Toast.makeText(getActivity(), R.string.yl_device_permission_location_neverask, Toast.LENGTH_LONG).show();
+    }
+
+    @SuppressLint("NeedOnRequestPermissionsResult")
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        DeviceLocationFragmentPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 }
