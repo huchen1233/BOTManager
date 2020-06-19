@@ -81,6 +81,9 @@
 -keep class com.evertrend.tiger.user.bean.** { *; }
 
 #第三方包
+#思岚
+-keep class com.slamtec.slamware.** {*;}
+
 #百度地图
 -keep class com.baidu.** {*;}
 -keep class mapsdkvi.com.** {*;}
