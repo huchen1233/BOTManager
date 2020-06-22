@@ -51,6 +51,7 @@ public class CommonNetReq {
     public static final String NET_DELETE_MAP_PAGE = REQ_HOST + "api/remote/delete-map-page";
     public static final String NET_CREATE_NEW_MAP_APGE = REQ_HOST + "api/remote/create-new-map-page";
     public static final String NET_RELOCATION_MAP_APGE = REQ_HOST + "api/remote/relocation-map-page";
+    public static final String NET_SET_CURRENT_MAP = REQ_HOST + "api/remote/set-current-map";
     public static final String NET_SAVE_VIRTUAL_TRACK = REQ_HOST + "api/remote/save-virtual-track";
     public static final String NET_NEW_VT_GROUP = REQ_HOST + "api/remote/new-vtgroup";
     public static final String NET_UPDATE_VT_GROUP = REQ_HOST + "api/remote/update-vtgroup";

@@ -67,7 +67,7 @@ import com.evertrend.tiger.common.bean.event.map.GetSaveMapFlagEvent;
 import com.evertrend.tiger.common.bean.event.map.GetTraceSpotEvent;
 import com.evertrend.tiger.common.bean.event.map.MoveOneVtrackEvent;
 import com.evertrend.tiger.common.bean.event.map.MoveOneVwallEvent;
-import com.evertrend.tiger.common.bean.event.map.RelocationMapPageEvent;
+import com.evertrend.tiger.common.bean.event.map.RelocationOrSetCurrentMapEvent;
 import com.evertrend.tiger.common.bean.event.map.SaveTraceSpotEvent;
 import com.evertrend.tiger.common.bean.event.map.SaveTraceSpotListCompleteEvent;
 import com.evertrend.tiger.common.bean.event.map.SaveVirtualTrackEvent;
@@ -165,7 +165,6 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
     private List<Line> addVwallsList;
     private List<Line> addVTracksList;
     private List<MapPages> mapPagesList;
-    private boolean firstContected = true;
 
     private AlertDialog mDialogInputIp;
     private AlertDialog tracePathChoiceDialog;
@@ -241,6 +240,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         mAgent = getSlamwareAgent();
         connectSlamware(device);
         EventBus.getDefault().register(this);
+        startRelocationOrSetCurrentMap(CommonConstants.TYPE_SET_CURRENT_MAP);
     }
 
     @Override
@@ -391,10 +391,6 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         btn_relocation.setEnabled(true);
         btn_trace_path.setEnabled(true);
         mMapView.setCentred();
-        if (firstContected) {
-            startRelocation();
-            firstContected = false;
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
@@ -594,8 +590,8 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(RelocationMapPageEvent messageEvent) {
-        LogUtil.i(this, TAG, "===RelocationMapPageEvent===");
+    public void onMessageEvent(RelocationOrSetCurrentMapEvent messageEvent) {
+        LogUtil.i(this, TAG, "===RelocationOrSetCurrentMapEvent===");
         stopRelocationMapPagesTimer();
         DialogUtil.hideProgressDialog();
         Toast.makeText(this, "success", Toast.LENGTH_SHORT).show();
@@ -1080,7 +1076,9 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         } else if (v.getId() == R.id.btn_save_map) {
             showEditDialog();
         } else if (v.getId() == R.id.btn_relocation) {
-            startRelocation();
+            mAgent.clearMap();
+            DialogUtil.showProgressDialog(this, getResources().getString(R.string.yl_common_reloading), false, false);
+            startRelocationOrSetCurrentMap(CommonConstants.TYPE_RELOCATION);
         } else if (v.getId() == R.id.btn_trace_path) {
             ll_trace_path_operation.setVisibility(View.VISIBLE);
             ll_trace_path_operation.animate().translationY(200).setDuration(1000).start();
@@ -1196,11 +1194,9 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         ll_map_virtual_tracks.setVisibility(View.VISIBLE);
     }
 
-    private void startRelocation() {
-        mAgent.clearMap();
-        DialogUtil.showProgressDialog(this, getResources().getString(R.string.yl_common_reloading), false, false);
+    private void startRelocationOrSetCurrentMap(int type) {
         scheduledThreadRelocationMapPages = new ScheduledThreadPoolExecutor(4);
-        scheduledThreadRelocationMapPages.scheduleAtFixedRate(new CommTaskUtils.TaskRelocationMapPages(device, mapPages),
+        scheduledThreadRelocationMapPages.scheduleAtFixedRate(new CommTaskUtils.TaskRelocationOrSetCurrentMap(device, mapPages, type),
                 0, 5, TimeUnit.SECONDS);
     }
 

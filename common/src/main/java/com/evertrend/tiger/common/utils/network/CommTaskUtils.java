@@ -26,7 +26,7 @@ import com.evertrend.tiger.common.bean.event.map.GetAllVirtualTrackGroupSuccessE
 import com.evertrend.tiger.common.bean.event.map.GetMapPagesAllPathSuccessEvent;
 import com.evertrend.tiger.common.bean.event.map.GetSaveMapFlagEvent;
 import com.evertrend.tiger.common.bean.event.map.GetTraceSpotEvent;
-import com.evertrend.tiger.common.bean.event.map.RelocationMapPageEvent;
+import com.evertrend.tiger.common.bean.event.map.RelocationOrSetCurrentMapEvent;
 import com.evertrend.tiger.common.bean.event.map.SaveTraceSpotEvent;
 import com.evertrend.tiger.common.bean.event.map.SaveTraceSpotListCompleteEvent;
 import com.evertrend.tiger.common.bean.event.map.SaveTraceSpotListEvent;
@@ -390,12 +390,14 @@ public class CommTaskUtils {
         }
     }
 
-    public static class TaskRelocationMapPages implements Runnable {
+    public static class TaskRelocationOrSetCurrentMap implements Runnable {
         private Device device;
         private MapPages mapPages;
-        public TaskRelocationMapPages(Device device, MapPages mapPages) {
+        private int type;
+        public TaskRelocationOrSetCurrentMap(Device device, MapPages mapPages, int type) {
             this.device = device;
             this.mapPages = mapPages;
+            this.type = type;
         }
 
         @Override
@@ -408,14 +410,22 @@ public class CommTaskUtils {
             map.put(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
             map.put(CommonNetReq.DEVICE_ID, String.valueOf(device.getId()));
             map.put(CommonNetReq.MAP_PAGE, String.valueOf(mapPages.getId()));
-            OKHttpManager.getInstance().sendComplexForm(CommonNetReq.NET_RELOCATION_MAP_APGE, map, new OKHttpManager.FuncJsonObj() {
+            String net = null;
+            if (type == CommonConstants.TYPE_SET_CURRENT_MAP) {
+                net = CommonNetReq.NET_SET_CURRENT_MAP;
+            } else if (type == CommonConstants.TYPE_RELOCATION) {
+                net = CommonNetReq.NET_RELOCATION_MAP_APGE;
+            }
+            OKHttpManager.getInstance().sendComplexForm(net, map, new OKHttpManager.FuncJsonObj() {
                 @Override
                 public void onResponse(JSONObject jsonObject) throws JSONException {
                     try {
                         LogUtil.d(TAG, jsonObject.getString(CommonNetReq.RESULT_DESC));
                         switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
                             case CommonNetReq.CODE_SUCCESS:
-                                EventBus.getDefault().post(new RelocationMapPageEvent());
+                                LogUtil.d(TAG, "type:"+type);
+                                LogUtil.d(TAG, "mapPages:"+mapPages);
+                                EventBus.getDefault().post(new RelocationOrSetCurrentMapEvent(type));
                                 break;
                             default:
                                 break;
