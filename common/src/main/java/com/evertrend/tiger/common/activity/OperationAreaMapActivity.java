@@ -165,6 +165,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
     private List<Line> addVwallsList;
     private List<Line> addVTracksList;
     private List<MapPages> mapPagesList;
+    private boolean firstContected = true;
 
     private AlertDialog mDialogInputIp;
     private AlertDialog tracePathChoiceDialog;
@@ -390,6 +391,10 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         btn_relocation.setEnabled(true);
         btn_trace_path.setEnabled(true);
         mMapView.setCentred();
+        if (firstContected) {
+            startRelocation();
+            firstContected = false;
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)

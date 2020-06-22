@@ -14,6 +14,7 @@ import com.evertrend.tiger.common.bean.event.SaveMapPageEvent;
 import com.evertrend.tiger.common.utils.general.DialogUtil;
 import com.evertrend.tiger.common.bean.Device;
 import com.evertrend.tiger.common.bean.MapPages;
+import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.common.utils.network.CommTaskUtils;
 import com.lxj.xpopup.core.BottomPopupView;
 import com.lxj.xpopup.util.XPopupUtils;
@@ -86,6 +87,7 @@ public class MapBottomPopupView extends BottomPopupView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(SaveMapPageEvent event) {
+        LogUtil.d(TAG, "SaveMapPageEvent ok");
         dismiss();
         DialogUtil.hideProgressDialog();
     }
