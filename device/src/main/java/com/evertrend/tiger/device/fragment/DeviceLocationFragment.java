@@ -185,19 +185,22 @@ public class DeviceLocationFragment extends BaseFragment {
             mLocationClient.stop();
             for (Device device : deviceList) {
                 LatLng ll = null;
-//                LogUtil.d(TAG, "device.getLatitude()=" + device.getLatitude());
-//                LogUtil.d(TAG, "device.getLongitude()=" + device.getLongitude());
-                ll = new LatLng(device.getLatitude(), device.getLongitude());
-                Bundle mbundle = new Bundle();
-                mbundle.putSerializable("device", device);
-                OverlayOptions overlayOptions = new MarkerOptions()
-                        .position(ll)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_device))
-                        .extraInfo(mbundle);
-                mBaiduMap.addOverlay(overlayOptions);
-                MapStatus.Builder builder = new MapStatus.Builder();
-                builder.target(ll).zoom(18.0f);
-                mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
+                LogUtil.d(TAG, "lat=" + device.getLatitude());
+                LogUtil.d(TAG, "lng=" + device.getLongitude());
+                if (device.getLongitude() != 0.0 && device.getLatitude() != 0.0) {
+                    LogUtil.d(TAG, "desc=" + device.getDescription());
+                    ll = new LatLng(device.getLatitude(), device.getLongitude());
+                    Bundle mbundle = new Bundle();
+                    mbundle.putSerializable("device", device);
+                    OverlayOptions overlayOptions = new MarkerOptions()
+                            .position(ll)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_device))
+                            .extraInfo(mbundle);
+                    mBaiduMap.addOverlay(overlayOptions);
+                    MapStatus.Builder builder = new MapStatus.Builder();
+                    builder.target(ll).zoom(18.0f);
+                    mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
+                }
             }
             mBaiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
                 @Override
