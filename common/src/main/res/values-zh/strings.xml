@@ -67,4 +67,6 @@
     <string name="yl_common_run_log_level_error">错误</string>
     <string name="yl_common_run_log_level_critical">致命</string>
     <string name="yl_common_clear_map">清除地图</string>
+    <string name="yl_common_question">问题: %1$s</string>
+    <string name="yl_common_answer">方法: %1$s</string>
 </resources>

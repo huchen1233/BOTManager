@@ -65,6 +65,7 @@ public class CommonNetReq {
     public static final String RESULT_CODE = "res_code";
     public static final String RESULT_DESC = "res_desc";
     public static final String RESULT_DATA = "res_data";
+    public static final String RESULT_EXTRA = "res_extra";
     public static final String RESULT_PIN = "pin";
 
     public static final String DEVICE_ID = "device_id";

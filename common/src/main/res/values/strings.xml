@@ -67,4 +67,6 @@
     <string name="yl_common_run_log_level_error">error</string>
     <string name="yl_common_run_log_level_critical">critical</string>
     <string name="yl_common_clear_map">clear map</string>
+    <string name="yl_common_question">question: %1s$</string>
+    <string name="yl_common_answer">answer: %1$s</string>
 </resources>

@@ -126,6 +126,8 @@
     <string name="yl_device_permission_location">显示设备位置需要获取位置信息权限，请您允许</string>
     <string name="yl_device_permission_location_denied">位置信息权限被拒绝，您将无法显示个人位置信息</string>
     <string name="yl_device_permission_location_neverask">您已经拒绝允许程序使用位置信息权限，如您需要，请在设置中自行打开</string>
-    <string name="yl_device_exception_notice_title">设备异常通知</string>
-    <string name="yl_device_exception_notice_text">设备(%1$s)异常: %2$s, 请检查</string>
+    <string name="yl_device_exception_notice_title">扫地机故障通知</string>
+    <string name="yl_device_exception_notice_text">故障信息: %1$s, 点击查看检查方法</string>
+    <string name="yl_device_fault_check">故障检查</string>
+    <string name="yl_device_exception_device_text">故障设备: %1$s</string>
 </resources>

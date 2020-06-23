@@ -1,8 +1,10 @@
 package com.evertrend.tiger.common.bean;
 
+import org.litepal.crud.LitePalSupport;
+
 import java.io.Serializable;
 
-public class Device implements Serializable {
+public class Device extends LitePalSupport implements Serializable {
     private int id;
     private String device_type;
     private String device_id;

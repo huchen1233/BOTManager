@@ -126,6 +126,8 @@
     <string name="yl_device_permission_location">To display the device location, you need to obtain the location information permission. Please allow</string>
     <string name="yl_device_permission_location_denied">Location information permission denied, you will not be able to display personal location information</string>
     <string name="yl_device_permission_location_neverask">You have denied permission to allow the program to use location information. If you need it, please open it in settings</string>
-    <string name="yl_device_exception_notice_title">device exception notice</string>
-    <string name="yl_device_exception_notice_text">Device(%1$s) is exception: %2$s, please check</string>
+    <string name="yl_device_exception_notice_title">sweeper fault notice</string>
+    <string name="yl_device_exception_notice_text">Fault info: %1$s, Click to view the inspection method</string>
+    <string name="yl_device_fault_check">Fault check</string>
+    <string name="yl_device_exception_device_text">Fault device: %1$s</string>
 </resources>
