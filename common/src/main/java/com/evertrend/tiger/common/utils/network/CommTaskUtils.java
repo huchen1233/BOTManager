@@ -197,7 +197,8 @@ public class CommTaskUtils {
             for (int i = 1; i <= size; ) {
                 if (i == size) {
                     LogUtil.d(TAG, "i = "+i);
-                    DBUtil.saveSpotListToLocal(device, mapPages, tracePath, mTraceSpotList);
+//                    DBUtil.saveSpotListToLocal(device, mapPages, tracePath, mTraceSpotList);
+                    startSaveTraceSpotComplete(device);
                     EventBus.getDefault().post(new SaveTraceSpotListCompleteEvent());
                     if (EventBus.getDefault().isRegistered(this)) {
                         EventBus.getDefault().unregister(this);
@@ -216,6 +217,35 @@ public class CommTaskUtils {
                 }
             }
         }
+    }
+
+    //保存循迹路径点完成，设置标志位，等待工控机从服务器读取
+    private static void startSaveTraceSpotComplete(Device device) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
+        map.put(CommonNetReq.DEVICE_ID, String.valueOf(device.getId()));
+        OKHttpManager.getInstance().sendComplexForm(CommonNetReq.NET_ADD_SPOT_COMPLETE, map, new OKHttpManager.FuncJsonObj() {
+            @Override
+            public void onResponse(JSONObject jsonObject) throws JSONException {
+                try {
+                    LogUtil.d(TAG, "startSaveTraceSpotComplete:"+jsonObject.getString(CommonNetReq.RESULT_DESC));
+                    switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
+                        case CommonNetReq.CODE_SUCCESS:
+                            break;
+                        default:
+                            break;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(TAG, "出错：解析数据失败");
+                }
+            }
+        }, new OKHttpManager.FuncFailure() {
+            @Override
+            public void onFailure() {
+                Log.e(TAG, "出错：请求网络失败");
+            }
+        });
     }
 
     /**
