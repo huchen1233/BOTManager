@@ -13,14 +13,15 @@
         android:text="级别"
         android:layout_weight="1"
         android:visibility="gone"
-        android:gravity="left"/>
+        android:gravity="left" />
     <TextView
         android:id="@+id/tv_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="名称"
         android:layout_weight="3"
-        android:gravity="left"/>
+        android:gravity="left"
+        android:paddingStart="@dimen/yl_common_padding_5"/>
     <TextView
         android:id="@+id/tv_desc"
         android:layout_width="0dp"
