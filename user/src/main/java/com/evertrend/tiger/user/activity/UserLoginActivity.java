@@ -132,6 +132,7 @@ public class UserLoginActivity extends UserBaseActivity implements CompoundButto
     }
 
     private void loginEmailPwd(final String strAccount, String strPwd) {
+        DialogUtil.showProgressDialog(this, getResources().getString(R.string.yl_user_logining), false, false);
         saveAccountAndPass(strAccount, strPwd);
         HashMap<String, String> map = new HashMap<>();
         map.put(NetReq.EMAIL, strAccount);
@@ -165,6 +166,7 @@ public class UserLoginActivity extends UserBaseActivity implements CompoundButto
     }
 
     private void loginPhonePwd(final String strAccount, String strPwd) {
+        DialogUtil.showProgressDialog(this, getResources().getString(R.string.yl_user_logining), false, false);
         saveAccountAndPass(strAccount, strPwd);
         HashMap<String, String> map = new HashMap<>();
         map.put(NetReq.MOBILE, strAccount);
@@ -198,6 +200,7 @@ public class UserLoginActivity extends UserBaseActivity implements CompoundButto
     }
 
     private void loginSuccess(String strToken, String account) {
+        DialogUtil.hideProgressDialog();
         AppSharePreference.getAppSharedPreference().saveIsLogin(true);
         AppSharePreference.getAppSharedPreference().saveUserToken(strToken);
         User user = new User();

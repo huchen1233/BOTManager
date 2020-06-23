@@ -204,6 +204,7 @@ public class UserPINLoginActivity extends UserBaseActivity implements View.OnCli
     }
 
     private void loginEmailPin(final String strAccount, String strPin) {
+        DialogUtil.showProgressDialog(this, getResources().getString(R.string.yl_user_logining), false, false);
         HashMap<String, String> map = new HashMap<>();
         map.put(NetReq.EMAIL, strAccount);
         map.put(NetReq.VERI_CODE, strPin);
@@ -236,6 +237,7 @@ public class UserPINLoginActivity extends UserBaseActivity implements View.OnCli
     }
 
     private void loginPhonePin(final String strAccount, String strPin) {
+        DialogUtil.showProgressDialog(this, getResources().getString(R.string.yl_user_logining), false, false);
         HashMap<String, String> map = new HashMap<>();
         map.put(NetReq.MOBILE, strAccount);
         map.put(NetReq.VERI_CODE, strPin);
@@ -268,6 +270,7 @@ public class UserPINLoginActivity extends UserBaseActivity implements View.OnCli
     }
 
     private void loginSuccess(String strToken, String account) {
+        DialogUtil.hideProgressDialog();
         AppSharePreference.getAppSharedPreference().saveIsLogin(true);
         AppSharePreference.getAppSharedPreference().saveUserToken(strToken);
         User user = new User();
