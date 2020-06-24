@@ -48,6 +48,20 @@ public class DialogUtil {
         choiceDialog.show();
     }
 
+    public static void showMessageDialog(Context context, int messageId, final int type) {
+        choiceDialog = new AlertDialog.Builder(context)
+                .setMessage(messageId)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        EventBus.getDefault().post(new DialogChoiceEvent(type));
+                        choiceDialog.dismiss();
+                    }
+                })
+                .create();
+        choiceDialog.show();
+    }
+
     public static void showProgressDialog(final Context context, String message, boolean cancelable, boolean canceledOnTouchOutside) {
         progressDialog = new ProgressDialog(context);
         progressDialog.setMessage(message);

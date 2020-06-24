@@ -95,6 +95,7 @@ public class CommonConstants {
 
     public static final int TYPE_DELETE_ALL_VIRTUAL_WALL = 0;
     public static final int TYPE_DELETE_ALL_VIRTUAL_TRACK = 1;
+    public static final int TYPE_CONNECTED_LOST = 2;
 
     public static final int TYPE_ADD_VIRTUAL_WALL = 0;
     public static final int TYPE_DELETE_VIRTUAL_WALL = 1;

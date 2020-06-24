@@ -43,6 +43,7 @@ import com.evertrend.tiger.common.bean.RobotSpot;
 import com.evertrend.tiger.common.bean.TracePath;
 import com.evertrend.tiger.common.bean.VirtualTrackGroup;
 import com.evertrend.tiger.common.bean.event.ChoiceMapPagesEvent;
+import com.evertrend.tiger.common.bean.event.DialogChoiceEvent;
 import com.evertrend.tiger.common.bean.event.GetAllMapPagesSuccessEvent;
 import com.evertrend.tiger.common.bean.event.SaveTraceSpotFailEvent;
 import com.evertrend.tiger.common.bean.event.map.AddTrack;
@@ -165,6 +166,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
     private List<Line> addVwallsList;
     private List<Line> addVTracksList;
     private List<MapPages> mapPagesList;
+    private int connectionLostCount = 0;
 
     private AlertDialog mDialogInputIp;
     private AlertDialog tracePathChoiceDialog;
@@ -398,7 +400,13 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         DialogUtil.hideProgressDialog();
 //        Toast.makeText(OperationAreaMapActivity.this, "连接失败，请检查网络、设备、IP", Toast.LENGTH_SHORT).show();
         LogUtil.i(this, TAG, "===ConnectionLostEvent===");
-        mAgent.connectTo(device.getLocal_chassis_ip());
+        if (connectionLostCount == 5) {
+            connectionLostCount = 0;
+            DialogUtil.showMessageDialog(this, R.string.yl_common_connection_lost, CommonConstants.TYPE_CONNECTED_LOST);
+        } else {
+            DialogUtil.showProgressDialog(this, getResources().getString(R.string.yl_common_connecting), false, true);
+            mAgent.connectTo(device.getLocal_chassis_ip());
+        }
         ibtn_map_settings.setEnabled(false);
         btn_set_spot.setEnabled(false);
         btn_action.setEnabled(false);
@@ -406,6 +414,12 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         btn_save_map.setEnabled(false);
         btn_relocation.setEnabled(false);
         btn_trace_path.setEnabled(false);
+        connectionLostCount++;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(DialogChoiceEvent event) {
+        finish();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -783,8 +797,8 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         if (TextUtils.isEmpty(device.getLocal_chassis_ip()) || device.getLocal_chassis_ip() == null) {
             inputConnectIPDialog();
         } else {
-            mAgent.connectTo(device.getLocal_chassis_ip());
             DialogUtil.showProgressDialog(this, getResources().getString(R.string.yl_common_connecting), false, true);
+            mAgent.connectTo(device.getLocal_chassis_ip());
         }
     }
 
