@@ -4,7 +4,11 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
+import android.os.PowerManager;
 import android.text.TextUtils;
+
+import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -13,6 +17,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Utils {
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public static boolean isIgnoringBatteryOptimizations(Context context) {
+        boolean isIgnoring = false;
+        PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        if (powerManager != null) {
+            isIgnoring = powerManager.isIgnoringBatteryOptimizations(context.getPackageName());
+        }
+        return isIgnoring;
+    }
 
     public static List<String> getAlarmInfoDescription(String alarmInfo) {
         List<String> stringList = new ArrayList<>();

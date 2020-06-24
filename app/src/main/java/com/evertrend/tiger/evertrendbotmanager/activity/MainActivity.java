@@ -3,7 +3,10 @@ package com.evertrend.tiger.evertrendbotmanager.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -14,6 +17,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.evertrend.tiger.common.fragment.BaseFragment;
+import com.evertrend.tiger.common.utils.general.LogUtil;
+import com.evertrend.tiger.common.utils.general.Utils;
 import com.evertrend.tiger.device.fragment.DevicesFragment;
 import com.evertrend.tiger.device.fragment.DeviceLocationFragment;
 import com.evertrend.tiger.device.service.DeviceCommunicationService;
@@ -44,6 +49,31 @@ public class MainActivity extends AppCompatActivity {
         initView();
         Intent intent = new Intent(this, DeviceCommunicationService.class);
         startService(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Utils.isIgnoringBatteryOptimizations(this)) {
+                requestIgnoreBatteryOptimizations();
+            }
+        }
+    }
+
+    public void requestIgnoreBatteryOptimizations() {
+        try {
+            Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+            intent.setData(Uri.parse("package:" + this.getPackageName()));
+            //跳转之前判断intent是否存在，否则有的机型会报找不到activity
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            } else {
+                LogUtil.i(this, TAG, "no IgnoreBatteryOptimizations");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void initView() {
