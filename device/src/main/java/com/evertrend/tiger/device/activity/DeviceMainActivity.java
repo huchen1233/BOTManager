@@ -137,6 +137,7 @@ public class DeviceMainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 device = deviceList.get(position);
+                LogUtil.d(TAG, "send SpinnerChoiceDeviceMessageEvent");
                 stopGetDeviceInfoTimer();
                 EventBus.getDefault().postSticky(new SpinnerChoiceDeviceMessageEvent(device));
                 startGetDeviceInfoTimer();

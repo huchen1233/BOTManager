@@ -18,6 +18,7 @@ import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.device.R;
 import com.evertrend.tiger.device.adapter.RunLogAdapter;
 import com.evertrend.tiger.common.bean.event.GetRunLogsSuccessEvent;
+import com.evertrend.tiger.device.bean.event.DeviceMessageEvent;
 import com.evertrend.tiger.device.bean.event.SpinnerChoiceDeviceMessageEvent;
 import com.evertrend.tiger.common.utils.general.ScheduledThreadUtils;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
@@ -63,8 +64,13 @@ public class DeviceRunLogFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onMessageEvent(SpinnerChoiceDeviceMessageEvent messageEvent) {
+        LogUtil.d(TAG, "==SpinnerChoiceDeviceMessageEvent==");
+        ScheduledThreadUtils.stopGetRunLogsTimer();
         device = messageEvent.getDevice();
 //        DialogUtil.showProgressDialog(getContext(), getResources().getString(R.string.yl_common_getting), true, true);
+        runLogList.removeAll(runLogList);
+        runLogAdapter.notifyDataSetChanged();
+        page = 1;
         ScheduledThreadUtils.ThreadGetRunLogs(device, page);
     }
 

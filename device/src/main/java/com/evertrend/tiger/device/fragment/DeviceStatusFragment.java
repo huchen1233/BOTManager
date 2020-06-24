@@ -128,7 +128,6 @@ public class DeviceStatusFragment extends BaseFragment {
         }
         List<String> alarmInfoList = Utils.parseAlarmInfo(device.getAlarm_info());
         List<String> alarmInfoDescList = Utils.getAlarmInfoDescription(device.getAlarm_info());
-        LogUtil.d(TAG, "alarmInfoList size:"+alarmInfoList.size());
         if (alarmInfoList.size() > 0) {
             ll_device_fault_info.setVisibility(View.VISIBLE);
         } else {
