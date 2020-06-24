@@ -30,6 +30,9 @@ public class Utils {
 
     public static List<String> getAlarmInfoDescription(String alarmInfo) {
         List<String> stringList = new ArrayList<>();
+        if (alarmInfo == null) {
+            return stringList;
+        }
         if (alarmInfo.length() != 12) {
             return stringList;
         }
@@ -91,6 +94,9 @@ public class Utils {
 
     public static List<String> parseAlarmInfo(String alarmInfo) {
         List<String> stringList = new ArrayList<>();
+        if (alarmInfo == null) {
+            return stringList;
+        }
         if (alarmInfo.length() != 12) {
             return stringList;
         }

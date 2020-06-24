@@ -130,4 +130,5 @@
     <string name="yl_device_exception_notice_text">故障信息: %1$s, 点击查看检查方法</string>
     <string name="yl_device_fault_check">故障检查</string>
     <string name="yl_device_exception_device_text">故障设备: %1$s</string>
+    <string name="yl_device_fault_info">故障信息</string>
 </resources>
