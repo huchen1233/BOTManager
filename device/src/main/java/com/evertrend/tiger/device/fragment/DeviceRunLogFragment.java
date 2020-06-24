@@ -65,7 +65,7 @@ public class DeviceRunLogFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onMessageEvent(SpinnerChoiceDeviceMessageEvent messageEvent) {
         LogUtil.d(TAG, "==SpinnerChoiceDeviceMessageEvent==");
-        ScheduledThreadUtils.stopGetRunLogsTimer();
+//        ScheduledThreadUtils.stopGetRunLogsTimer();
         device = messageEvent.getDevice();
 //        DialogUtil.showProgressDialog(getContext(), getResources().getString(R.string.yl_common_getting), true, true);
         runLogList.removeAll(runLogList);
