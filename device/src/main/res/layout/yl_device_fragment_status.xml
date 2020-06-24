@@ -25,6 +25,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/yl_common_size_20"
             android:text="@string/yl_device_detail_info" />
 
         <LinearLayout
@@ -57,6 +58,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/yl_common_size_20"
             android:text="@string/yl_device_running_info" />
 
         <LinearLayout
@@ -89,6 +91,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/yl_common_size_20"
             android:text="@string/yl_device_fault_info" />
 
         <LinearLayout
