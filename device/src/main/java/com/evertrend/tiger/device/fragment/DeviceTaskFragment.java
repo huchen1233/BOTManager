@@ -86,6 +86,20 @@ public class DeviceTaskFragment extends BaseFragment implements View.OnClickList
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (device != null) {
+            ScheduledThreadUtils.ThreadGetAllMapPages(device);
+            if (device.getDevice_type().equals(Constants.DEVICE_TYPE_EVBOT_SL)) {
+                cl_show_clean_task.setVisibility(View.GONE);
+            } else {
+                cl_show_clean_task.setVisibility(View.VISIBLE);
+                startGetAllCleanTasks(device);
+            }
+        }
+    }
+
+    @Override
     public void onDestroy() {
         exit();
         super.onDestroy();

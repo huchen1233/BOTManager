@@ -20,7 +20,7 @@
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="VMka1LlcKZWX80k0L3o0Y26jz8GSdiGm" />
+            android:value="aE0vuWH5pNa2hy0tDKEZCyU9mgntcIsh" />
 
         <activity android:name=".activity.DeviceExceptionPageActivity"
             android:label="@string/yl_device_fault_check"></activity>
