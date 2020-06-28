@@ -88,27 +88,57 @@ public class DeviceCommunicationService extends Service {
         List<Device> exceptionDeviceList = JsonAnalysisUtil.loadAllDevice(jsonObject.getJSONArray(CommonNetReq.RESULT_DATA));
         List<Device> deviceList = JsonAnalysisUtil.loadAllDevice(jsonObject.getJSONArray(CommonNetReq.RESULT_EXTRA));
         LogUtil.d(TAG, "deviceList size: "+deviceList.size());
-        LogUtil.d(TAG, "toast notice: "+exceptionDeviceList.size());
+        LogUtil.d(TAG, "fault notice: "+exceptionDeviceList.size());
         if (exceptionDeviceList.size() > 0) {
             for (Device device: exceptionDeviceList) {
                 List<Device> devices = LitePal.where("device_id = ?", device.getDevice_id()).find(Device.class);
                 if (devices.size() > 0) {
                     if (device.getAlarm_info().equals(devices.get(0).getAlarm_info())) {
                         LogUtil.d(TAG, "alarm info same");
-//                        popupNotice(device);
+//                        popupFaultNotice(device);
                     } else {
                         device.save();
-                        popupNotice(device);
+                        popupFaultNotice(device);
                     }
                 } else {
                     device.save();
-                    popupNotice(device);
+                    popupFaultNotice(device);
+                }
+            }
+        }
+        if (deviceList.size() > 0) {
+            for (Device device: deviceList) {
+//                LogUtil.d(TAG, "device.getBattery_level():"+device.getBattery_level());
+                if (CommonConstants.LOW_BATTERY_NOTICE_VALUE_20.equals(device.getBattery_level())) {
+                    popupLowBatteryNotice(device);
+                } else if (CommonConstants.LOW_BATTERY_NOTICE_VALUE_15.equals(device.getBattery_level())) {
+                    popupLowBatteryNotice(device);
                 }
             }
         }
     }
 
-    private void popupNotice(Device device) {
+    private void popupLowBatteryNotice(Device device) {
+        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+//        Intent intent = new Intent(this, DeviceExceptionPageActivity.class);
+//        intent.putExtra("device", device);
+//        PendingIntent pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Notification notification = new Notification.Builder(this)
+                .setContentTitle(getResources().getString(R.string.yl_device_low_battery_notice_title))
+                .setContentText(String.format(getResources().getString(R.string.yl_device_low_battery_device_text),
+                        device.getDescription(), device.getBattery_level()))
+                .setWhen(System.currentTimeMillis())
+                .setSmallIcon(R.drawable.ic_danger)
+                .setColor(Color.RED)
+//                .setContentIntent(pi)
+                .setAutoCancel(true)//读后删除
+                .setDefaults(Notification.DEFAULT_ALL)//震动、铃声、LED灯使用系统默认
+                .setPriority(Notification.PRIORITY_MAX)
+                .build();
+        manager.notify(device.getId(), notification);
+    }
+
+    private void popupFaultNotice(Device device) {
         List<String> stringList = Utils.parseAlarmInfo(device.getAlarm_info());
         if (stringList.size() > 0) {
             NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -130,7 +160,7 @@ public class DeviceCommunicationService extends Service {
                     .setDefaults(Notification.DEFAULT_ALL)//震动、铃声、LED灯使用系统默认
                     .setPriority(Notification.PRIORITY_MAX)
                     .build();
-            manager.notify(0, notification);
+            manager.notify(device.getId(), notification);
         }
     }
 

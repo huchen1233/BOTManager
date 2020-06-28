@@ -86,6 +86,9 @@ public class CommonConstants {
     public static final String TYPE_EXTRA_NAME = "name";
     public static final String TYPE_EXTRA_PASS = "pass";
 
+    public static final String LOW_BATTERY_NOTICE_VALUE_20 = "20%";
+    public static final String LOW_BATTERY_NOTICE_VALUE_15 = "15%";
+
     public static final int GET_CODE_COUNT = 60;
     public static final int GET_DEVICE_EXCEPTION_TIME = 5;//分钟
 
