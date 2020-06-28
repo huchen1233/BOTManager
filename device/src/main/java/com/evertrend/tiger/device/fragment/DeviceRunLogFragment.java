@@ -82,7 +82,7 @@ public class DeviceRunLogFragment extends BaseFragment {
         LogUtil.d(TAG, "runLogs size:"+runLogs.size());
         runLogList.addAll(runLogs);
         runLogAdapter.notifyDataSetChanged();
-        if (runLogs.size() < 20) {
+        if (runLogs.size() < 10) {
             loadMoreType = false;
         }
         EventBus.getDefault().removeStickyEvent(messageEvent);
