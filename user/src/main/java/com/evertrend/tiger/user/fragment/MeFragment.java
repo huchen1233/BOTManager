@@ -225,6 +225,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                     @Override
                     public void start() {
                         btn_download.setText(R.string.yl_user_updateing);
+                        btn_download.setVisibility(View.GONE);
                     }
 
                     @Override
