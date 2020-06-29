@@ -3,10 +3,12 @@ package com.evertrend.tiger.device.fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -194,7 +196,8 @@ public class DeviceLocationFragment extends BaseFragment {
                     mbundle.putSerializable("device", device);
                     OverlayOptions overlayOptions = new MarkerOptions()
                             .position(ll)
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_device))
+//                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_device))
+                            .icon(BitmapDescriptorFactory.fromBitmap(getViewBitmap(device.getDescription())))
                             .extraInfo(mbundle);
                     mBaiduMap.addOverlay(overlayOptions);
                     MapStatus.Builder builder = new MapStatus.Builder();
@@ -283,5 +286,24 @@ public class DeviceLocationFragment extends BaseFragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         DeviceLocationFragmentPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    private Bitmap getViewBitmap(String text) {
+        View addViewContent = LayoutInflater.from(getActivity()).inflate(R.layout.yl_common_view_map_point, null);
+        TextView textView = addViewContent.findViewById(R.id.tv_name);
+        textView.setText(text);
+        addViewContent.setDrawingCacheEnabled(true);
+        addViewContent.measure(
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+        addViewContent.layout(0, 0,
+                addViewContent.getMeasuredWidth(),
+                addViewContent.getMeasuredHeight());
+        addViewContent.buildDrawingCache();
+
+        Bitmap cacheBitmap = addViewContent.getDrawingCache();
+        Bitmap bitmap = Bitmap.createBitmap(cacheBitmap);
+
+        return bitmap;
     }
 }
