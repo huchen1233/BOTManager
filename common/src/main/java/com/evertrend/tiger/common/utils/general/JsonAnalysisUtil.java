@@ -93,6 +93,7 @@ public class JsonAnalysisUtil {
                 device.setEnable_auto_add_water(devices.getJSONObject(i).getIntValue(CommonConstants.ENABLE_AUTO_ADD_WATER));
                 device.setEnable_auto_empty_trash(devices.getJSONObject(i).getIntValue(CommonConstants.ENABLE_AUTO_EMPTY_TRASH));
                 device.setAlarm_info(devices.getJSONObject(i).getString(CommonConstants.ALARM_INFO));
+                device.setGrant_flag(devices.getJSONObject(i).getIntValue(CommonConstants.GRANT_FLAG));
                 deviceLists.add(device);
             }
         }
@@ -155,6 +156,7 @@ public class JsonAnalysisUtil {
         device.setEnable_auto_add_water(jsonObject.getIntValue(CommonConstants.ENABLE_AUTO_ADD_WATER));
         device.setEnable_auto_empty_trash(jsonObject.getIntValue(CommonConstants.ENABLE_AUTO_EMPTY_TRASH));
         device.setAlarm_info(jsonObject.getString(CommonConstants.ALARM_INFO));
+        device.setGrant_flag(jsonObject.getIntValue(CommonConstants.GRANT_FLAG));
         return device;
     }
 

@@ -7,19 +7,25 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.evertrend.tiger.common.bean.BaseTrace;
 import com.evertrend.tiger.common.bean.Device;
+import com.evertrend.tiger.common.bean.DeviceGrant;
 import com.evertrend.tiger.common.bean.MapPages;
 import com.evertrend.tiger.common.bean.RobotSpot;
 import com.evertrend.tiger.common.bean.RunLog;
 import com.evertrend.tiger.common.bean.TracePath;
 import com.evertrend.tiger.common.bean.VirtualTrackGroup;
 import com.evertrend.tiger.common.bean.event.CreateNewBaseTraceSuccessEvent;
+import com.evertrend.tiger.common.bean.event.CreateNewDeviceGrantFailEvent;
+import com.evertrend.tiger.common.bean.event.CreateNewDeviceGrantSuccessEvent;
 import com.evertrend.tiger.common.bean.event.DeleteBaseTraceEvent;
+import com.evertrend.tiger.common.bean.event.DeleteDeviceGrantEvent;
 import com.evertrend.tiger.common.bean.event.DeviceExceptionEvent;
 import com.evertrend.tiger.common.bean.event.GetAllMapPagesSuccessEvent;
+import com.evertrend.tiger.common.bean.event.GetDeviceAllGrantsSuccessEvent;
 import com.evertrend.tiger.common.bean.event.GetRunLogsSuccessEvent;
 import com.evertrend.tiger.common.bean.event.SaveMapPageEvent;
 import com.evertrend.tiger.common.bean.event.SaveTraceSpotFailEvent;
 import com.evertrend.tiger.common.bean.event.UpdateBaseTraceSuccessEvent;
+import com.evertrend.tiger.common.bean.event.UpdateDeviceGrantSuccessEvent;
 import com.evertrend.tiger.common.bean.event.map.DeleteOneTraceSpotListEvent;
 import com.evertrend.tiger.common.bean.event.map.DeleteTraceSpotListCompleteEvent;
 import com.evertrend.tiger.common.bean.event.map.GetAllVirtualTrackGroupSuccessEvent;
@@ -1018,6 +1024,211 @@ public class CommTaskUtils {
                     try {
                         LogUtil.d(TAG, jsonObject.getString(CommonNetReq.RESULT_DESC));
                         EventBus.getDefault().post(new DeviceExceptionEvent(jsonObject));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(TAG, "出错：解析数据失败");
+                    }
+                }
+            }, new OKHttpManager.FuncFailure() {
+                @Override
+                public void onFailure() {
+                    Log.e(TAG, "出错：请求网络失败");
+                }
+            });
+        }
+    }
+
+    public static class TaskGetDeviceAllGrants implements Runnable {
+        private Device device;
+        public TaskGetDeviceAllGrants(Device device) {
+            this.device = device;
+        }
+
+        @Override
+        public void run() {
+            startGetDeviceAllGrants();
+        }
+
+        private void startGetDeviceAllGrants() {
+            HashMap<String, String> map = new HashMap<>();
+            map.put(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
+            map.put(CommonNetReq.DEVICE_ID, String.valueOf(device.getId()));
+            OKHttpManager.getInstance().sendComplexForm(CommonNetReq.NET_GET_DEVICE_ALL_GRANTS, map, new OKHttpManager.FuncJsonObj() {
+                @Override
+                public void onResponse(JSONObject jsonObject) throws JSONException {
+                    try {
+                        switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
+                            case CommonNetReq.CODE_SUCCESS:
+                                JSONArray jsonArray = jsonObject.getJSONArray(CommonNetReq.RESULT_DATA);
+                                List<DeviceGrant> deviceGrantList = new ArrayList<>();
+                                if (jsonArray.size() > 0) {
+                                    for (int i = 0; i < jsonArray.size(); i++) {
+                                        DeviceGrant deviceGrant = new DeviceGrant();
+                                        deviceGrant.setId(jsonArray.getJSONObject(i).getIntValue(CommonNetReq.ID));
+                                        deviceGrant.setUser(jsonArray.getJSONObject(i).getString(CommonNetReq.USER_GRANTED));
+                                        deviceGrant.setAuthorization_item(jsonArray.getJSONObject(i).getString(CommonNetReq.AUTHORIZATION_ITEM));
+                                        deviceGrant.setDevice(jsonArray.getJSONObject(i).getIntValue(CommonNetReq.DEVICE));
+                                        deviceGrant.setUser_flag(jsonArray.getJSONObject(i).getIntValue(CommonNetReq.USER_FLAG));
+                                        deviceGrantList.add(deviceGrant);
+                                    }
+                                }
+                                EventBus.getDefault().post(new GetDeviceAllGrantsSuccessEvent(deviceGrantList));
+                                break;
+                            default:
+                                break;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(TAG, "出错：解析数据失败");
+                    }
+                }
+            }, new OKHttpManager.FuncFailure() {
+                @Override
+                public void onFailure() {
+                    Log.e(TAG, "出错：请求网络失败");
+                }
+            });
+        }
+    }
+
+    public static class TaskSaveDeviceGrant implements Runnable {
+        private DeviceGrant deviceGrant;
+        public TaskSaveDeviceGrant(DeviceGrant deviceGrant) {
+            this.deviceGrant = deviceGrant;
+        }
+
+        @Override
+        public void run() {
+            startSaveDeviceGrant();
+        }
+
+        private void startSaveDeviceGrant() {
+            HashMap<String, String> map = new HashMap<>();
+            map.put(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
+            map.put(CommonNetReq.DEVICE_ID, String.valueOf(deviceGrant.getDevice()));
+            map.put(CommonNetReq.USER_GRANTED, deviceGrant.getUser());
+            map.put(CommonNetReq.AUTHORIZATION_ITEM, deviceGrant.getAuthorization_item());
+            map.put(CommonNetReq.USER_FLAG, String.valueOf(deviceGrant.getUser_flag()));
+            OKHttpManager.getInstance().sendComplexForm(CommonNetReq.NET_NEW_DEVICE_GRANT, map, new OKHttpManager.FuncJsonObj() {
+                @Override
+                public void onResponse(JSONObject jsonObject) throws JSONException {
+                    try {
+                        LogUtil.d(TAG, "startSaveDeviceGrant:" + jsonObject.getString(CommonNetReq.RESULT_DESC));
+                        switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
+                            case CommonNetReq.CODE_SUCCESS:
+                                JSONObject jsonObject1 = jsonObject.getJSONObject(CommonNetReq.RESULT_DATA);
+                                DeviceGrant deviceGrant = new DeviceGrant();
+                                deviceGrant.setId(jsonObject1.getIntValue(CommonNetReq.ID));
+                                deviceGrant.setUser(jsonObject1.getString(CommonNetReq.USER_GRANTED));
+                                deviceGrant.setAuthorization_item(jsonObject1.getString(CommonNetReq.AUTHORIZATION_ITEM));
+                                deviceGrant.setDevice(jsonObject1.getIntValue(CommonNetReq.DEVICE));
+                                deviceGrant.setUser_flag(jsonObject1.getIntValue(CommonNetReq.USER_FLAG));
+                                EventBus.getDefault().post(new CreateNewDeviceGrantSuccessEvent(deviceGrant));
+                                break;
+                            case CommonNetReq.ERR_CODE_GRANTED_USER_NON_EXISTENT:
+                            case CommonNetReq.ERR_CODE_DUPLICATE_AUTHORIZATION:
+                            case CommonNetReq.ERR_CODE_CANNOT_AUTHORIZE_TOYOURSELF:
+                            case CommonNetReq.ERR_CODE_SAVE_FAIL:
+                                EventBus.getDefault().post(new CreateNewDeviceGrantFailEvent(jsonObject.getIntValue(CommonNetReq.RESULT_CODE)));
+                                break;
+                            default:
+                                break;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(TAG, "出错：解析数据失败");
+                    }
+                }
+            }, new OKHttpManager.FuncFailure() {
+                @Override
+                public void onFailure() {
+                    Log.e(TAG, "出错：请求网络失败");
+                }
+            });
+        }
+    }
+
+    public static class TaskUpdateDeviceGrant implements Runnable {
+        private DeviceGrant deviceGrant;
+        public TaskUpdateDeviceGrant(DeviceGrant deviceGrant) {
+            this.deviceGrant = deviceGrant;
+        }
+
+        @Override
+        public void run() {
+            startUpdateDeviceGrant();
+        }
+
+        private void startUpdateDeviceGrant() {
+            HashMap<String, String> map = new HashMap<>();
+            map.put(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
+            map.put(CommonNetReq.ID, String.valueOf(deviceGrant.getId()));
+            map.put(CommonNetReq.DEVICE_ID, String.valueOf(deviceGrant.getDevice()));
+            map.put(CommonNetReq.USER_GRANTED, deviceGrant.getUser());
+            map.put(CommonNetReq.AUTHORIZATION_ITEM, deviceGrant.getAuthorization_item());
+//            map.put(CommonNetReq.USER_FLAG, String.valueOf(deviceGrant.getUser_flag()));
+            OKHttpManager.getInstance().sendComplexForm(CommonNetReq.NET_UPDATE_DEVICE_GRANT, map, new OKHttpManager.FuncJsonObj() {
+                @Override
+                public void onResponse(JSONObject jsonObject) throws JSONException {
+                    try {
+                        LogUtil.d(TAG, "startUpdateDeviceGrant:" + jsonObject.getString(CommonNetReq.RESULT_DESC));
+                        switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
+                            case CommonNetReq.CODE_SUCCESS:
+                                JSONObject jsonObject1 = jsonObject.getJSONObject(CommonNetReq.RESULT_DATA);
+                                DeviceGrant deviceGrant = new DeviceGrant();
+                                deviceGrant.setId(jsonObject1.getIntValue(CommonNetReq.ID));
+                                deviceGrant.setUser(jsonObject1.getString(CommonNetReq.USER_GRANTED));
+                                deviceGrant.setAuthorization_item(jsonObject1.getString(CommonNetReq.AUTHORIZATION_ITEM));
+                                deviceGrant.setDevice(jsonObject1.getIntValue(CommonNetReq.DEVICE));
+                                deviceGrant.setUser_flag(jsonObject1.getIntValue(CommonNetReq.USER_FLAG));
+                                EventBus.getDefault().post(new UpdateDeviceGrantSuccessEvent(deviceGrant));
+                                break;
+                            default:
+                                break;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(TAG, "出错：解析数据失败");
+                    }
+                }
+            }, new OKHttpManager.FuncFailure() {
+                @Override
+                public void onFailure() {
+                    Log.e(TAG, "出错：请求网络失败");
+                }
+            });
+        }
+    }
+
+    public static class TaskDeleteDeviceGrant implements Runnable {
+        private DeviceGrant deviceGrant;
+        public TaskDeleteDeviceGrant(DeviceGrant deviceGrant) {
+            this.deviceGrant = deviceGrant;
+        }
+
+        @Override
+        public void run() {
+            startDeleteDeviceGrant();
+        }
+
+        private void startDeleteDeviceGrant() {
+            HashMap<String, String> map = new HashMap<>();
+            map.put(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
+            map.put(CommonNetReq.DEVICE_ID, String.valueOf(deviceGrant.getDevice()));
+            map.put(CommonNetReq.ID, String.valueOf(deviceGrant.getId()));
+            OKHttpManager.getInstance().sendComplexForm(CommonNetReq.NET_DELETE_DEVICE_GRANT, map, new OKHttpManager.FuncJsonObj() {
+                @Override
+                public void onResponse(JSONObject jsonObject) throws JSONException {
+                    try {
+                        LogUtil.d(TAG, "deleteDeviceGrant: "+jsonObject.getString(CommonNetReq.RESULT_DESC));
+                        switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
+                            case CommonNetReq.CODE_SUCCESS:
+                            case CommonNetReq.ERR_CODE_DELETE_GRANT_DEVICE_NON_EXISTENT:
+                                EventBus.getDefault().post(new DeleteDeviceGrantEvent(deviceGrant));
+                                break;
+                            default:
+                                break;
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.e(TAG, "出错：解析数据失败");

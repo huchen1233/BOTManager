@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string-array name="yl_device_devices_operation">
+        <item>@string/yl_device_grant</item>
+    </string-array>
+
     <string-array name="yl_device_clean_task_operation">
         <item>@string/yl_device_delete_task</item>
         <item>@string/yl_device_update_task</item>

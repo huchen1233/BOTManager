@@ -70,4 +70,14 @@
     <string name="yl_common_question">Fault: %1s$</string>
     <string name="yl_common_answer">Fault description or solution: %1$s</string>
     <string name="yl_common_connection_lost">Connection failed. Please check whether the network connection is normal and whether the device is powered on</string>
+    <string name="yl_common_create_map">create map</string>
+    <string name="yl_common_authorized_items">Authorized items</string>
+    <string name="yl_common_edit_path">edit path</string>
+    <string name="yl_common_authorized_user">Authorized user</string>
+    <string name="yl_common_delete_grant_confirm">Are you sure you want to delete the authorization for %1$s?</string>
+    <string name="yl_common_granted_user_non_existent">granted user non existent</string>
+    <string name="yl_common_duplicate_authorization">duplicate authorization</string>
+    <string name="yl_common_cannot_authorize_to_yourself">cannot authorize to yourself</string>
+    <string name="yl_common_authorization_fail">authorization fail</string>
+    <string name="yl_common_no_authorization_items">No authorization items</string>
 </resources>

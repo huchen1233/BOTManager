@@ -70,4 +70,14 @@
     <string name="yl_common_question">故障: %1$s</string>
     <string name="yl_common_answer">故障描述或解决方法: %1$s</string>
     <string name="yl_common_connection_lost">连接失败，请检查网络连接是否正常、设备是否开启</string>
+    <string name="yl_common_create_map">建图</string>
+    <string name="yl_common_authorized_items">授权项</string>
+    <string name="yl_common_edit_path">编辑路径</string>
+    <string name="yl_common_authorized_user">被授权用户</string>
+    <string name="yl_common_delete_grant_confirm">您确定要删除对%1$s的授权吗？</string>
+    <string name="yl_common_granted_user_non_existent">授权用户不存在</string>
+    <string name="yl_common_duplicate_authorization">不能对同一设备，同一用户重复授权</string>
+    <string name="yl_common_cannot_authorize_to_yourself">不能对自己的设备给自己授权</string>
+    <string name="yl_common_authorization_fail">授权失败，请重试</string>
+    <string name="yl_common_no_authorization_items">没有授权项</string>
 </resources>

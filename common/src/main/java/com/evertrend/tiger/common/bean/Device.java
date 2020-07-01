@@ -60,6 +60,15 @@ public class Device extends LitePalSupport implements Serializable {
     private int enable_auto_add_water;
     private int enable_auto_empty_trash;
     private String alarm_info;//报警信息
+    private int grant_flag;//是否为授权设备，1是
+
+    public int getGrant_flag() {
+        return grant_flag;
+    }
+
+    public void setGrant_flag(int grant_flag) {
+        this.grant_flag = grant_flag;
+    }
 
     public String getAlarm_info() {
         return alarm_info;
@@ -588,6 +597,7 @@ public class Device extends LitePalSupport implements Serializable {
                 ", enable_auto_add_water=" + enable_auto_add_water +
                 ", enable_auto_empty_trash=" + enable_auto_empty_trash +
                 ", alarm_info=" + alarm_info +
+                ", grant_flag=" + grant_flag +
                 '}';
     }
 }

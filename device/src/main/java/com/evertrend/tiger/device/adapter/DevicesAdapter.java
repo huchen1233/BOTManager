@@ -13,12 +13,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.evertrend.tiger.common.bean.CleanTask;
+import com.evertrend.tiger.common.bean.event.ChoiceDeviceEvent;
+import com.evertrend.tiger.common.utils.general.CommonConstants;
 import com.evertrend.tiger.device.R;
 import com.evertrend.tiger.device.activity.DeviceMainActivity;
 import com.evertrend.tiger.common.bean.Device;
+import com.evertrend.tiger.device.bean.event.ChoiceCleanTaskEvent;
 import com.evertrend.tiger.device.bean.event.DeviceListEvent;
 import com.evertrend.tiger.device.bean.event.DeviceMessageEvent;
 import com.evertrend.tiger.device.utils.Constants;
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.interfaces.OnSelectListener;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -56,7 +62,38 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.ViewHold
                 EventBus.getDefault().postSticky(new DeviceListEvent(mDeviceList));
             }
         });
+
+        viewHolder.deviceViwe.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Device device = mDeviceList.get(viewHolder.getAdapterPosition());
+                showOperationPop(device, v);
+                return true;
+            }
+        });
         return viewHolder;
+    }
+
+    private void showOperationPop(final Device device, View v) {
+        new XPopup.Builder(mContext)
+                .atView(v)
+                .asAttachList(mContext.getResources().getStringArray(R.array.yl_device_devices_operation),
+                        new int[]{R.drawable.yl_common_ic_grant_green_24dp},
+                        new OnSelectListener() {
+                            @Override
+                            public void onSelect(int position, String text) {
+                                switch (position) {
+                                    case 0:
+                                        if (device.getGrant_flag() == 1) {
+                                            EventBus.getDefault().post(new ChoiceDeviceEvent(device, CommonConstants.TYPE_DEVICE_OPERATION_CANOT_GRANT));
+                                        } else {
+                                            EventBus.getDefault().post(new ChoiceDeviceEvent(device, CommonConstants.TYPE_DEVICE_OPERATION_GRANT));
+                                        }
+                                        break;
+                                }
+                            }
+                        })
+                .show();
     }
 
     @Override
@@ -97,6 +134,12 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.ViewHold
                 holder.deviceStatus.setTextColor(Color.GRAY);
                 break;
         }
+        if (device.getGrant_flag() == 1) {
+            holder.tv_device_grant_flag.setVisibility(View.VISIBLE);
+            holder.tv_device_grant_flag.setText(R.string.yl_device_grant_device);
+        } else {
+            holder.tv_device_grant_flag.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -107,6 +150,7 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.ViewHold
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView deviceDescription;
         TextView deviceStatus;
+        TextView tv_device_grant_flag;
         ImageView deviceType;
         View deviceViwe;
 
@@ -115,6 +159,7 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.ViewHold
             deviceViwe = itemView;
             deviceDescription = itemView.findViewById(R.id.tv_device_description);
             deviceStatus = itemView.findViewById(R.id.tv_device_status);
+            tv_device_grant_flag = itemView.findViewById(R.id.tv_device_grant_flag);
             deviceType = itemView.findViewById(R.id.iv_device_type);
         }
     }

@@ -82,6 +82,7 @@ public class CommonConstants {
     public static final String LEVEL = "level";
     public static final String TYPE_CODE = "type_code";
     public static final String LOG_TIME = "log_time";
+    public static final String GRANT_FLAG = "grant_flag";
 
     public static final String TYPE_EXTRA_NAME = "name";
     public static final String TYPE_EXTRA_PASS = "pass";
@@ -119,6 +120,9 @@ public class CommonConstants {
     public static final int TYPE_MAPPAGE_OPERATION_VIRTUAL_TRACK = 4;
     public static final int TYPE_MAPPAGE_OPERATION_CREATE_TASK_CHOICE = 5;
     public static final int TYPE_MAPPAGE_OPERATION_ADD_COMMON_SPOT_CHOICE = 6;
+
+    public static final int TYPE_DEVICE_OPERATION_GRANT = 0;
+    public static final int TYPE_DEVICE_OPERATION_CANOT_GRANT = 1;
 
     public static final int LIST_OPERATION_UPDATE = 1;
     public static final int LIST_OPERATION_CREATE = 2;

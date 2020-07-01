@@ -133,4 +133,7 @@
     <string name="yl_device_fault_info">故障信息</string>
     <string name="yl_device_low_battery_notice_title">扫地机低电量通知</string>
     <string name="yl_device_low_battery_device_text">设备(%1$s)电量：%2$s，请及时充电！</string>
+    <string name="yl_device_grant_device">授权设备</string>
+    <string name="yl_device_grant">设备授权</string>
+    <string name="yl_device_cannot_grant">此设备不可授权</string>
 </resources>

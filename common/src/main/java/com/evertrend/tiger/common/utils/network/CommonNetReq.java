@@ -1,10 +1,11 @@
 package com.evertrend.tiger.common.utils.network;
 
 public class CommonNetReq {
-//    public static final String REQ_HOST = "http://172.27.35.1/nalcol/frontend/web/index.php?r=";
-    public static final String REQ_HOST = "https://robot.360yongli.com?r=";
+    public static final String REQ_HOST = "http://172.27.35.1/nalcol/frontend/web/index.php?r=";
+//    public static final String REQ_HOST = "https://robot.360yongli.com?r=";
 
     public static final String NET_GET_CURRENT_MAP_PAGE_ALL_PATH = REQ_HOST + "api/remote/get-map-page-all-path";
+    public static final String NET_GET_DEVICE_ALL_GRANTS = REQ_HOST + "api/remote/get-device-all-grants";
     public static final String NET_GET_CURRENT_MAP_PAGE_ALL_VIRTUAL_TRACK_GROUP = REQ_HOST + "api/remote/get-map-page-all-virtual-track-group";
     public static final String NET_GET_CURRENT_MAP_PAGE_ALL_SPECIAL_TASK_SPOT = REQ_HOST + "api/remote/get-map-page-all-special-task-spot";
     public static final String NET_GET_TRACE_SPOT_LIST = REQ_HOST + "api/remote/get-trace-spot-list";
@@ -60,6 +61,9 @@ public class CommonNetReq {
     public static final String NET_GET_RUN_LOGS = REQ_HOST + "api/remote/get-run-logs";
     public static final String NET_GET_DEVICE_EXCEPTION = REQ_HOST + "api/remote/get-device-exception";
     public static final String NET_GET_DEVICE_CRITICAL = REQ_HOST + "api/remote/get-device-critical";
+    public static final String NET_NEW_DEVICE_GRANT = REQ_HOST + "api/remote/new-device-grant";
+    public static final String NET_UPDATE_DEVICE_GRANT = REQ_HOST + "api/remote/update-device-grant";
+    public static final String NET_DELETE_DEVICE_GRANT = REQ_HOST + "api/remote/delete-device-grant";
 
     public static final String TOKEN = "token";
     public static final String RESULT_CODE = "res_code";
@@ -87,8 +91,17 @@ public class CommonNetReq {
     public static final String PAGE_DO_SAVE_MAP = "do_save_map";
     public static final String VIRTUAL_TRACK = "virtual_track";
     public static final String PAGE = "page";
+    public static final String AUTHORIZATION_ITEM = "authorization_item";
+    public static final String USER_GRANTED = "user_granted";
+    public static final String USER_FLAG = "user_flag";
 
     public static final int CODE_SUCCESS = 0;
 
     public static final int ERR_CODE_ADD_SPOT_FAIL = 5206;
+    public static final int ERR_CODE_SAVE_CREATE_MAP_FAIL = 5207;
+    public static final int ERR_CODE_GRANTED_USER_NON_EXISTENT = 5208;
+    public static final int ERR_CODE_DUPLICATE_AUTHORIZATION = 5209;
+    public static final int ERR_CODE_CANNOT_AUTHORIZE_TOYOURSELF = 5210;
+    public static final int ERR_CODE_SAVE_FAIL = 5211;
+    public static final int ERR_CODE_DELETE_GRANT_DEVICE_NON_EXISTENT = 5212;
 }

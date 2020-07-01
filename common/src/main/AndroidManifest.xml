@@ -20,7 +20,8 @@
         <activity android:name=".activity.LogConfigActivity"></activity>
         <activity
             android:name=".activity.OperationAreaMapActivity"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.OperationAreaMapActivity" />
 

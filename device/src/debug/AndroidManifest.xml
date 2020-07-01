@@ -22,6 +22,13 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="VMka1LlcKZWX80k0L3o0Y26jz8GSdiGm" />
 
+        <activity android:name=".activity.DeviceGrantActivity"
+            android:label="@string/yl_device_grant">
+            <intent-filter>
+                <action android:name="android.intent.action.DeviceGrantActivity"></action>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name=".activity.DeviceExceptionPageActivity"
             android:label="@string/yl_device_fault_check"></activity>
         <activity android:name=".activity.DeviceMainActivity" />

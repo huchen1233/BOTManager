@@ -24,6 +24,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
+import com.evertrend.tiger.common.bean.event.ChoiceDeviceEvent;
+import com.evertrend.tiger.common.bean.event.ChoiceMapPagesEvent;
 import com.evertrend.tiger.common.bean.event.ProgressStopEvent;
 import com.evertrend.tiger.common.bean.event.SuccessEvent;
 import com.evertrend.tiger.common.fragment.BaseFragment;
@@ -139,6 +141,19 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
         if (v.getId() == R.id.ibtn_add_device) {
              LogUtil.i(getContext(), TAG, "btn_add_device_by_number");
             showInputNumberDialog();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(ChoiceDeviceEvent event) {
+        Device device = event.getDevice();
+        Intent intent = new Intent();
+        intent.putExtra("device", device);
+        if (CommonConstants.TYPE_DEVICE_OPERATION_GRANT == event.getOperation()) {
+            intent.setAction("android.intent.action.DeviceGrantActivity");
+            startActivity(intent);
+        } else if (CommonConstants.TYPE_DEVICE_OPERATION_CANOT_GRANT == event.getOperation()) {
+            DialogUtil.showToast(getActivity(), R.string.yl_device_cannot_grant, Toast.LENGTH_LONG);
         }
     }
 
