@@ -88,8 +88,9 @@ public final class SlamMapView extends View {
 
         mTileWidth = numX;
         mTileHeight = numY;
+        int size = mTileWidth * mTileHeight;
         synchronized (mTiles) {
-            mTiles = new ArrayList<>(mTileWidth * mTileHeight);
+            mTiles = new ArrayList<>(size);
 
             for (int i = 0; i < mTileWidth; i++) {
                 int left = TILE_PIXEL_SIZE * i;
@@ -107,7 +108,9 @@ public final class SlamMapView extends View {
                     byte[] buffer = new byte[tile.area.width() * tile.area.height()];
                     mMapDataCache.fetch(tile.area, buffer);
                     tile.bitmap = ImageUtil.createImage(buffer, tile.area.width(), tile.area.height());
-                    mTiles.add(tile);
+                    if (mTiles.size() <= size) {
+                        mTiles.add(tile);
+                    }
                 }
             }
         }
