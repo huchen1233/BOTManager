@@ -1,7 +1,23 @@
 package com.evertrend.tiger.common.utils;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Environment;
+import android.os.SystemClock;
+import android.util.Log;
+import android.view.View;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
+import com.evertrend.tiger.common.bean.RobotSpot;
+import com.evertrend.tiger.common.bean.TracePath;
 import com.evertrend.tiger.common.bean.event.map.AddTrack;
 import com.evertrend.tiger.common.bean.event.map.AddVtracks;
 import com.evertrend.tiger.common.bean.event.map.AddVwalls;
@@ -11,6 +27,7 @@ import com.evertrend.tiger.common.bean.event.map.ClearAllVwalls;
 import com.evertrend.tiger.common.bean.event.map.ClearMapSuccessEvent;
 import com.evertrend.tiger.common.bean.event.map.DeleteOneVtrackCompleteEvent;
 import com.evertrend.tiger.common.bean.event.map.DeleteOneVwallCompleteEvent;
+import com.evertrend.tiger.common.bean.event.map.GetTraceSpotEvent;
 import com.evertrend.tiger.common.bean.event.slamtec.ActionStatusGetEvent;
 import com.evertrend.tiger.common.bean.event.slamtec.ConnectedEvent;
 import com.evertrend.tiger.common.bean.event.slamtec.ConnectionLostEvent;
@@ -26,7 +43,15 @@ import com.evertrend.tiger.common.bean.event.slamtec.RobotInfoEvent;
 import com.evertrend.tiger.common.bean.event.slamtec.RobotPoseGetEvent;
 import com.evertrend.tiger.common.bean.event.slamtec.TrackGetEvent;
 import com.evertrend.tiger.common.bean.event.slamtec.WallGetEvent;
+import com.evertrend.tiger.common.bean.event.uploadPathPicFailEvent;
+import com.evertrend.tiger.common.bean.event.uploadPathPicSuccessEvent;
+import com.evertrend.tiger.common.bean.mapview.MapView;
 import com.evertrend.tiger.common.utils.general.AppSharePreference;
+import com.evertrend.tiger.common.utils.general.DBUtil;
+import com.evertrend.tiger.common.utils.general.LogUtil;
+import com.evertrend.tiger.common.utils.general.Utils;
+import com.evertrend.tiger.common.utils.network.CommonNetReq;
+import com.evertrend.tiger.common.utils.network.OKHttpManager;
 import com.slamtec.slamware.AbstractSlamwarePlatform;
 import com.slamtec.slamware.action.ActionStatus;
 import com.slamtec.slamware.action.IMoveAction;
@@ -34,6 +59,7 @@ import com.slamtec.slamware.action.MoveDirection;
 import com.slamtec.slamware.action.Path;
 import com.slamtec.slamware.discovery.DeviceManager;
 import com.slamtec.slamware.geometry.Line;
+import com.slamtec.slamware.geometry.PointF;
 import com.slamtec.slamware.robot.CompositeMap;
 import com.slamtec.slamware.robot.HealthInfo;
 import com.slamtec.slamware.robot.LaserScan;
@@ -45,10 +71,13 @@ import com.slamtec.slamware.robot.Pose;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
+import static android.graphics.Bitmap.Config.ARGB_8888;
 import static com.slamtec.slamware.action.ActionStatus.FINISHED;
 import static com.slamtec.slamware.robot.ArtifactUsage.ArtifactUsageVirtualTrack;
 import static com.slamtec.slamware.robot.MapType.BITMAP_8BIT;
@@ -96,6 +125,7 @@ public class SlamwareAgent {
     private static TaskClearAllVtracks sTaskClearAllVtracks;
     private static TaskRemoveOneVwalls sTaskRemoveOneVwalls;
     private static TaskRemoveOneVtracks sTaskRemoveOneVtracks;
+    private static TaskSaveTracePathPic sTaskSaveTracePathPic;
 
     public SlamwareAgent() {
         mManager = ThreadManager.getInstance();
@@ -129,6 +159,7 @@ public class SlamwareAgent {
         sTaskClearAllVtracks = new TaskClearAllVtracks();
         sTaskRemoveOneVwalls = new TaskRemoveOneVwalls();
         sTaskRemoveOneVtracks = new TaskRemoveOneVtracks();
+        sTaskSaveTracePathPic = new TaskSaveTracePathPic();
 
         mNavigationMode = NAVIGATION_MODE_FREE;
     }
@@ -267,6 +298,14 @@ public class SlamwareAgent {
         sTaskRemoveOneVtracks.setLine(line);
         sTaskRemoveOneVtracks.setType(moveType);
         pushTask(sTaskRemoveOneVtracks);
+    }
+
+    public void saveTracePathPic(Context context, MapView mapView, List<RobotSpot> serverTraceRobotSpotList, TracePath tracePath) {
+        sTaskSaveTracePathPic.setContext(context);
+        sTaskSaveTracePathPic.setMapView(mapView);
+        sTaskSaveTracePathPic.setTraceRobotSpotList(serverTraceRobotSpotList);
+        sTaskSaveTracePathPic.setTracePath(tracePath);
+        pushTask(sTaskSaveTracePathPic);
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private synchronized void pushTask(Runnable Task) {
@@ -1105,6 +1144,147 @@ public class SlamwareAgent {
                 e.printStackTrace();
             }
             EventBus.getDefault().post(new DeleteOneVtrackCompleteEvent(line, type));
+        }
+    }
+
+    private class TaskSaveTracePathPic implements Runnable {
+        private Context context;
+        private MapView mapView;
+        private List<RobotSpot> serverTraceRobotSpotList;
+        private TracePath tracePath;
+        public TaskSaveTracePathPic() {
+        }
+
+        public void setContext(Context context) {
+            this.context = context;
+        }
+
+        public void setMapView(MapView mapView) {
+            this.mapView = mapView;
+        }
+
+        public void setTraceRobotSpotList(List<RobotSpot> serverTraceRobotSpotList) {
+            this.serverTraceRobotSpotList = serverTraceRobotSpotList;
+        }
+
+        public void setTracePath(TracePath tracePath) {
+            this.tracePath = tracePath;
+        }
+
+        @Override
+        public void run() {
+            AbstractSlamwarePlatform platform;
+
+            synchronized (this) {
+                platform = mRobotPlatform;
+            }
+
+            if (platform == null) {
+                return;
+            }
+
+            Map map = null;
+            int mapWidth =0;
+            int mapHeight = 0;
+
+            try {
+
+                RectF area = platform.getKnownArea(BITMAP_8BIT, MapKind.EXPLORE_MAP);
+                map = platform.getMap(BITMAP_8BIT, MapKind.EXPLORE_MAP, area);
+                mapWidth = map.getDimension().getWidth();
+                mapHeight = map.getDimension().getHeight();
+                LogUtil.d(TAG, "mapWidth:"+mapWidth);
+                LogUtil.d(TAG, "mapHeight:"+mapHeight);
+                Bitmap bitmap = Bitmap.createBitmap(mapWidth, mapHeight, ARGB_8888);
+                for (int posY = 0; posY < mapHeight; ++posY) {
+                    for (int posX = 0; posX < mapWidth; ++posX) {
+                        // get map pixel
+                        byte[] data = map.getData();
+                        // (-128, 127) to (0, 255)
+                        int rawColor = data[posX + posY * mapWidth];
+                        rawColor += 128;
+                        // fill the bitmap data, by data of B/G/R/A
+                        bitmap.setPixel(posX, posY, rawColor | rawColor<<8 | rawColor<<16 | 0xC0<<24);
+                    }
+                }
+
+                List<Line> showTracePathLines = DBUtil.getTracePathLines(serverTraceRobotSpotList);
+                Canvas canvas = new Canvas(bitmap);
+                Paint paint = new Paint();
+                paint.setAntiAlias(true);
+                paint.setDither(true);
+                paint.setStyle(Paint.Style.STROKE);
+                paint.setColor(Color.GREEN);
+                paint.setStrokeWidth(4);
+                Paint mCirclePaint = new Paint();
+                mCirclePaint.setAntiAlias(true);
+                mCirclePaint.setDither(true);
+                mCirclePaint.setStyle(Paint.Style.FILL);
+                mCirclePaint.setColor(Color.GREEN);
+                mCirclePaint.setStrokeWidth(5);
+                for (int i = 0; i < showTracePathLines.size(); i++) {
+                    Point startW = mapView.mapCoordinateToWidghtCoordinate(showTracePathLines.get(i).getStartPoint());
+                    Point endW = mapView.mapCoordinateToWidghtCoordinate(showTracePathLines.get(i).getEndPoint());
+                    Point startM = mapView.widgetCoordinateToMapPixelCoordinate(startW.x, startW.y);
+                    Point endM = mapView.widgetCoordinateToMapPixelCoordinate(endW.x, endW.y);
+//                    LogUtil.d(TAG, "X:"+startM.x);
+//                    LogUtil.d(TAG, "Y:"+startM.y);
+//                    LogUtil.d(TAG, "X:"+endM.x);
+//                    LogUtil.d(TAG, "Y:"+endM.y);
+                    canvas.drawCircle(startM.x, mapHeight - startM.y, 5, mCirclePaint);
+                    canvas.drawLine(startM.x, mapHeight - startM.y, endM.x, mapHeight - endM.y, paint);
+                    canvas.drawCircle(endM.x, mapHeight - endM.y, 5, mCirclePaint);
+                }
+
+//                platform.disconnect();
+//                mapView.setDrawingCacheEnabled(true);
+//                mapView.buildDrawingCache();
+//                Bitmap bitmap = mapView.getDrawingCache();
+                LogUtil.d(TAG, "path: "+ context.getFilesDir());
+                boolean saveStatus = Utils.saveBitmap(bitmap, String.valueOf(context.getFilesDir()), tracePath.getName()+"_"+tracePath.getId()+".png");
+                LogUtil.d(TAG, "saveStatus: "+saveStatus);
+                if (saveStatus) {
+                    uploadPathPic();
+                } else {
+                    EventBus.getDefault().post(new uploadPathPicFailEvent());
+                }
+            } catch (Exception e) {
+                onRequestError(e);
+                return;
+            }
+        }
+
+        private void uploadPathPic() {
+            HashMap<String, String> map = new HashMap<>();
+            map.put(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
+            map.put(CommonNetReq.TRACE_PATH_ID, String.valueOf(tracePath.getId()));
+            File file = new File(context.getFilesDir() + "/"+tracePath.getName()+"_"+tracePath.getId()+".png");
+            OKHttpManager.getInstance().sendFileForm(OKHttpManager.MEDIA_TYE_PNG, CommonNetReq.NET_UPLOAD_TRACE_PATH_PIC, map, file, new OKHttpManager.FuncJsonObj() {
+                @Override
+                public void onResponse(JSONObject jsonObject) throws JSONException {
+                    try {
+                        LogUtil.d(TAG, "uploadPathPic:"+jsonObject.getString(CommonNetReq.RESULT_DESC));
+                        switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
+                            case CommonNetReq.CODE_SUCCESS:
+                                EventBus.getDefault().post(new uploadPathPicSuccessEvent());
+                                break;
+                            case CommonNetReq.ERR_CODE_SAVE_FAIL:
+                                EventBus.getDefault().post(new uploadPathPicFailEvent());
+                                break;
+                            default:
+                                break;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(TAG, "出错：解析数据失败");
+                    }
+                }
+            }, new OKHttpManager.FuncFailure() {
+                @Override
+                public void onFailure() {
+                    Log.e(TAG, "出错：请求网络失败");
+                }
+            });
         }
     }
 }

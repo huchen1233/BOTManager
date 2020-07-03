@@ -6,6 +6,7 @@ import android.os.Looper;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -15,6 +16,7 @@ import okhttp3.Callback;
 import okhttp3.ConnectionPool;
 import okhttp3.FormBody;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -31,6 +33,8 @@ public class OKHttpManager {
     private static final MediaType JSON = MediaType.parse("application/json;charset=utf-8");
     //提交字符串
     private static final MediaType MEDIA_TYE_MARKDOWN = MediaType.parse("text/x-markdown;charset=utf-8");
+    //提交png图片
+    public static final MediaType MEDIA_TYE_PNG = MediaType.parse("image/png;charset=utf-8");
 
     private OKHttpManager(){
         getClient();
@@ -76,6 +80,39 @@ public class OKHttpManager {
 
         RequestBody request_body = form_builder.build();
         Request request = new Request.Builder().url(url).post(request_body).build();  //采用post方式提交
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //LogUtil.i(TAG, "onFailure");
+                onFailureMethod(callFailure);
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if(response != null && response.isSuccessful()){
+                    onSuccessJsonObjectMethod(response.body().string(), callBack);
+                } else {
+                    onFailureMethod(callFailure);
+                }
+            }
+        });
+    }
+
+    public void sendFileForm(MediaType type, String url, Map<String, String> params, File file, final FuncJsonObj callBack, final FuncFailure callFailure){
+        // 设置文件以及文件上传类型封装
+        RequestBody requestBody = RequestBody.create(type, file);
+        // 文件上传的请求体封装
+        MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder();
+        multipartBodyBuilder.setType(MultipartBody.FORM);
+        multipartBodyBuilder.addFormDataPart("file", file.getName(), requestBody);
+        if(params != null && !params.isEmpty()){
+            for(Map.Entry<String, String> entry : params.entrySet()){
+                multipartBodyBuilder.addFormDataPart(entry.getKey(), entry.getValue());
+            }
+        }
+
+        Request request = new Request.Builder().url(url).post(multipartBodyBuilder.build()).build();
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {

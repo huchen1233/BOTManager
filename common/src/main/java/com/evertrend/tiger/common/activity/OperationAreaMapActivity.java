@@ -43,6 +43,7 @@ import com.evertrend.tiger.common.bean.RobotSpot;
 import com.evertrend.tiger.common.bean.TracePath;
 import com.evertrend.tiger.common.bean.VirtualTrackGroup;
 import com.evertrend.tiger.common.bean.event.ChoiceMapPagesEvent;
+import com.evertrend.tiger.common.bean.event.CreateNewBaseTraceSuccessEvent;
 import com.evertrend.tiger.common.bean.event.DialogChoiceEvent;
 import com.evertrend.tiger.common.bean.event.GetAllMapPagesSuccessEvent;
 import com.evertrend.tiger.common.bean.event.SaveTraceSpotFailEvent;
@@ -83,6 +84,7 @@ import com.evertrend.tiger.common.bean.event.slamtec.RemainingPathGetEvent;
 import com.evertrend.tiger.common.bean.event.slamtec.RobotPoseGetEvent;
 import com.evertrend.tiger.common.bean.event.slamtec.TrackGetEvent;
 import com.evertrend.tiger.common.bean.event.slamtec.WallGetEvent;
+import com.evertrend.tiger.common.bean.event.uploadPathPicFailEvent;
 import com.evertrend.tiger.common.bean.mapview.MapView;
 import com.evertrend.tiger.common.bean.mapview.utils.RadianUtil;
 import com.evertrend.tiger.common.utils.SlamwareAgent;
@@ -93,6 +95,7 @@ import com.evertrend.tiger.common.utils.general.DialogUtil;
 import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.common.utils.network.CommTaskUtils;
 import com.evertrend.tiger.common.utils.network.CommonNetReq;
+import com.evertrend.tiger.common.widget.BaseTraceBottomPopupView;
 import com.evertrend.tiger.common.widget.LongClickImageView;
 import com.evertrend.tiger.common.widget.MapBottomPopupView;
 import com.lxj.xpopup.XPopup;
@@ -136,7 +139,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
     private EditText et_rollback_trace_path_num;
     private Button btn_set_recharge, btn_set_add_water, btn_set_garage, btn_set_empty_trash, btn_set_trace_spot, btn_set_common_spot;
     private ListView lv_spot_data;
-    private Button btn_trace_path_spot_save;
+    private Button btn_trace_path_spot_save, btn_trace_path_spot_not_save;
     private Switch btn_auto_record_trace_spot;
     private Button btn_virtual_walls, btn_virtual_tracks, btn_clear_map;
     private LinearLayout ll_top, ll_bottom;
@@ -564,7 +567,13 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         } else {
             mServerTraceRobotSpotList = new ArrayList<>();
         }
+        saveTracePathPic();
         showTracePath();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(uploadPathPicFailEvent messageEvent) {
+        saveTracePathPic();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -741,6 +750,16 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         stopSaveVirtualTrackTimer();
         Toast.makeText(this, "success", Toast.LENGTH_SHORT).show();
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(CreateNewBaseTraceSuccessEvent event) {
+        tracePath = (TracePath) event.getBaseTrace();
+        tracePathChoiceDialog.dismiss();
+        DialogUtil.showProgressDialog(this, getResources().getString(R.string.yl_common_saving), false, false);
+        scheduledThreadSaveTraceSpotList = new ScheduledThreadPoolExecutor(5);
+        scheduledThreadSaveTraceSpotList.scheduleAtFixedRate(new CommTaskUtils.TaskSaveTraceSpotList(device, mTraceSpotList, mapPages, tracePath),
+                0, 30, TimeUnit.SECONDS);
+    }
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private void virtualWallsComplete() {
@@ -875,6 +894,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         lv_spot_data = findViewById(R.id.lv_spot_data);
         ll_trace_path_spot = findViewById(R.id.ll_trace_path_spot);
         btn_trace_path_spot_save = findViewById(R.id.btn_trace_path_spot_save);
+        btn_trace_path_spot_not_save = findViewById(R.id.btn_trace_path_spot_not_save);
         btn_save_map = findViewById(R.id.btn_save_map);
         btn_relocation = findViewById(R.id.btn_relocation);
         btn_trace_path = findViewById(R.id.btn_trace_path);
@@ -920,6 +940,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         btn_set_trace_spot.setOnClickListener(this);
         btn_set_common_spot.setOnClickListener(this);
         btn_trace_path_spot_save.setOnClickListener(this);
+        btn_trace_path_spot_not_save.setOnClickListener(this);
         btn_save_map.setOnClickListener(this);
         btn_relocation.setOnClickListener(this);
         btn_trace_path.setOnClickListener(this);
@@ -1085,6 +1106,11 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
             }
         } else if (v.getId() == R.id.btn_trace_path_spot_save) {
             showTracePathChoice(tracePathList, CommonConstants.TYPE_TRACE_PATH_OPERATION_SAVE_SPOT);
+        } else if (v.getId() == R.id.btn_trace_path_spot_not_save) {
+            mTraceSpotList.clear();
+            traceSpotAdapter.notifyDataSetChanged();
+            ll_trace_path_spot.setVisibility(View.GONE);
+            lastPose = "0";
         } else if (v.getId() == R.id.btn_set_common_spot) {
             showMapChoice();
         } else if (v.getId() == R.id.btn_save_map) {
@@ -1145,6 +1171,10 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         } else if (v.getId() == R.id.save_virtual_track) {
             showVirtualTrackChoice(virtualTrackGroupList);
         }
+    }
+
+    private void saveTracePathPic() {
+        mAgent.saveTracePathPic(this, mMapView, mServerTraceRobotSpotList, tracePath);
     }
 
     private void showVirtualTrackChoice(final List<VirtualTrackGroup> virtualTrackGroupList) {
@@ -1243,16 +1273,16 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         builder.setTitle("选择循迹路径");
         builder.setView(view);
         if (typeOperation == CommonConstants.TYPE_TRACE_PATH_OPERATION_SAVE_SPOT) {
-//            builder.setNeutralButton(R.string.yl_common_create_new, new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-////                    Toast.makeText(OperationAreaMapActivity.this, "new", Toast.LENGTH_SHORT).show();
-//                    Intent intent = new Intent(OperationAreaMapActivity.this, CreateNewTracePathActivity.class);
-//                    intent.putExtra("device", device);
-//                    intent.putExtra("mappage", mapPages);
-//                    startActivityForResult(intent, CommonConstants.CREATE_TRACE_PATH_REQUEST_CODE);
-//                }
-//            });
+            builder.setNeutralButton(R.string.yl_common_create_new, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    BaseTraceBottomPopupView traceBottomPopupView = new BaseTraceBottomPopupView(OperationAreaMapActivity.this, device, mapPages, CommonConstants.TYPE_MAPPAGE_OPERATION_TRACE_PATH);
+                    new XPopup.Builder(OperationAreaMapActivity.this)
+                            .autoOpenSoftInput(true)
+                            .asCustom(traceBottomPopupView)
+                            .show();
+                }
+            });
         }
         tracePathChoiceDialog = builder.create();
         tracePathChoiceDialog.show();

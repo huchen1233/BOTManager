@@ -4,12 +4,17 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.PowerManager;
 import android.text.TextUtils;
 
 import androidx.annotation.RequiresApi;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -17,6 +22,35 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Utils {
+
+    public static boolean saveBitmap(Bitmap bitmap, String path, String filename) throws IOException
+    {
+        boolean saveStatus = false;
+        File file = new File(path + "/" + filename);
+        if(file.exists()){
+            file.delete();
+        }
+        FileOutputStream out;
+        try{
+            out = new FileOutputStream(file);
+            if(bitmap.compress(Bitmap.CompressFormat.PNG, 100, out))
+            {
+                out.flush();
+                out.close();
+                saveStatus = true;
+            }
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        } finally {
+            return saveStatus;
+        }
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public static boolean isIgnoringBatteryOptimizations(Context context) {
