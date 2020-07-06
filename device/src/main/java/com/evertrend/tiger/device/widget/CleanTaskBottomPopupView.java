@@ -7,6 +7,7 @@ import android.util.SparseBooleanArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -138,36 +139,37 @@ public class CleanTaskBottomPopupView extends BottomPopupView implements View.On
     public void onMainEvent(GetMapPagesAllPathSuccessEvent event) {
         stopGetMapPagesAllPathTimer();
         tracePathList = event.getTracePathList();
-        taskTPListViewAdapter = new TaskListViewAdapter(tracePathList, context);
+        taskTPListViewAdapter = new TaskListViewAdapter(tracePathList, context, newCleanTask);
         lv_trace_path.setAdapter(taskTPListViewAdapter);
-        if (cleanTask != null) {//编辑任务初始化循迹路径勾选
-            String[] tracePaths = newCleanTask.getTracePaths().split(",");
-            for (int i = 0; i < tracePathList.size(); i++) {
-                for (String s : tracePaths) {
-                    if (tracePathList.get(i).getId() == Integer.parseInt(s)) {
-                        lv_trace_path.setItemChecked(i, true);
-                    }
-                }
-            }
-        }
+//        if (cleanTask != null) {//编辑任务初始化循迹路径勾选
+//            String[] tracePaths = newCleanTask.getTracePaths().split(",");
+//            for (int i = 0; i < tracePathList.size(); i++) {
+//                for (String s : tracePaths) {
+//                    if (tracePathList.get(i).getId() == Integer.parseInt(s)) {
+//                        LogUtil.d(TAG, "i: "+i);
+//                        lv_trace_path.setItemChecked(i, true);
+//                    }
+//                }
+//            }
+//        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMainEvent(GetAllVirtualTrackGroupSuccessEvent event) {
         stopGetMapPagesAllVirtualTrackGroupTimer();
         virtualTrackGroupList = event.getVirtualTrackGroups();
-        taskVTGListViewAdapter = new TaskListViewAdapter(virtualTrackGroupList, context);
+        taskVTGListViewAdapter = new TaskListViewAdapter(virtualTrackGroupList, context, newCleanTask);
         lv_virtual_track_group.setAdapter(taskVTGListViewAdapter);
-        if (cleanTask != null) {//编辑任务初始化虚拟轨道组勾选
-            String[] vTGroups = newCleanTask.getVirtualTrackGroups().split(",");
-            for (int i = 0; i < virtualTrackGroupList.size(); i++) {
-                for (String s : vTGroups) {
-                    if (virtualTrackGroupList.get(i).getId() == Integer.parseInt(s)) {
-                        lv_virtual_track_group.setItemChecked(i, true);
-                    }
-                }
-            }
-        }
+//        if (cleanTask != null) {//编辑任务初始化虚拟轨道组勾选
+//            String[] vTGroups = newCleanTask.getVirtualTrackGroups().split(",");
+//            for (int i = 0; i < virtualTrackGroupList.size(); i++) {
+//                for (String s : vTGroups) {
+//                    if (virtualTrackGroupList.get(i).getId() == Integer.parseInt(s)) {
+//                        lv_virtual_track_group.setItemChecked(i, true);
+//                    }
+//                }
+//            }
+//        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -181,7 +183,7 @@ public class CleanTaskBottomPopupView extends BottomPopupView implements View.On
 //            String[] sWorks = newCleanTask.getSpecialWorks().split(",");
             String sWorks = newCleanTask.getSpecialWorks();
             for (int i = 0; i < specialWorkSpotList.size(); i++) {
-                if (specialWorkSpotList.get(i).getId() == Integer.parseInt(sWorks)) {
+                if (sWorks.equals(String.valueOf(specialWorkSpotList.get(i).getId()))) {
                     lv_special_work.setItemChecked(i, true);
                     break;
                 }
@@ -414,7 +416,8 @@ public class CleanTaskBottomPopupView extends BottomPopupView implements View.On
     }
 
     private boolean checkWorkChoice() {
-        SparseBooleanArray pathBooleanArray = lv_trace_path.getCheckedItemPositions();
+//        SparseBooleanArray pathBooleanArray = lv_trace_path.getCheckedItemPositions();
+        SparseBooleanArray pathBooleanArray = taskTPListViewAdapter.getCheckedItemPositions();
         StringBuilder tracePaths = new StringBuilder();
         for (int i = 0; i < tracePathList.size(); i++) {
             if (pathBooleanArray.get(i)) {
@@ -426,7 +429,8 @@ public class CleanTaskBottomPopupView extends BottomPopupView implements View.On
             }
         }
         LogUtil.i(context, TAG, "trace path: " + tracePaths.toString());
-        SparseBooleanArray groupBooleanArray = lv_virtual_track_group.getCheckedItemPositions();
+//        SparseBooleanArray groupBooleanArray = lv_virtual_track_group.getCheckedItemPositions();
+        SparseBooleanArray groupBooleanArray = taskVTGListViewAdapter.getCheckedItemPositions();
         StringBuilder vTGroups = new StringBuilder();
         for (int i = 0; i < virtualTrackGroupList.size(); i++) {
             if (groupBooleanArray.get(i)) {
@@ -551,4 +555,19 @@ public class CleanTaskBottomPopupView extends BottomPopupView implements View.On
         params.setMargins(10, 0, 10, 0);
         np.setLayoutParams(params);
     }
+
+//    @Override
+//    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//        if (parent.getId() == R.id.lv_trace_path) {
+//            LogUtil.d(TAG, "lv_trace_path");
+//            TaskListViewAdapter.ViewHolder viewHolder = (TaskListViewAdapter.ViewHolder) view.getTag();
+////            viewHolder.tvName.toggle();
+//            viewHolder.cv_item.toggle();
+//        } else if (parent.getId() == R.id.lv_virtual_track_group) {
+//            LogUtil.d(TAG, "lv_virtual_track_group");
+//            TaskListViewAdapter.ViewHolder viewHolder = (TaskListViewAdapter.ViewHolder) view.getTag();
+////            viewHolder.tvName.toggle();
+//            viewHolder.cv_item.toggle();
+//        }
+//    }
 }

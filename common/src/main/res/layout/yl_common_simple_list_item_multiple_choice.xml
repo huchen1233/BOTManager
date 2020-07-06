@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/iv_pic"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="@dimen/yl_common_padding_5"/>
+
+<!--    <CheckedTextView-->
+<!--        android:id="@+id/ctv_item_name"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="?android:attr/listPreferredItemHeightSmall"-->
+<!--        android:textAppearance="?android:attr/textAppearanceListItemSmall"-->
+<!--        android:paddingStart="?android:attr/listPreferredItemPaddingStart"-->
+<!--        android:gravity="center_vertical"-->
+<!--        android:checkMark="?android:attr/listChoiceIndicatorMultiple"-->
+<!--        app:layout_constraintStart_toEndOf="@id/iv_pic"-->
+<!--        app:layout_constraintTop_toTopOf="@id/iv_pic"-->
+<!--        app:layout_constraintBottom_toBottomOf="@id/iv_pic"-->
+<!--        android:text="@string/app_name"/>-->
+
+    <TextView
+        android:id="@+id/tv_item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+        android:gravity="center_vertical"
+        app:layout_constraintStart_toEndOf="@id/iv_pic"
+        app:layout_constraintTop_toTopOf="@id/iv_pic"
+        app:layout_constraintBottom_toBottomOf="@id/iv_pic"
+        android:text="@string/app_name"/>
+    <CheckBox
+        android:id="@+id/cv_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+        android:gravity="center_vertical"
+        app:layout_constraintStart_toEndOf="@id/tv_item_name"
+        app:layout_constraintTop_toTopOf="@id/iv_pic"
+        app:layout_constraintBottom_toBottomOf="@id/iv_pic"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
