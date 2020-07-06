@@ -115,11 +115,25 @@
                 android:layout_marginEnd="10dp"
                 android:text=":" />
 
-            <com.evertrend.tiger.device.widget.NestListView
-                android:id="@+id/lv_trace_path"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:choiceMode="multipleChoice"/>
+                android:orientation="vertical">
+
+                <com.evertrend.tiger.device.widget.NestListView
+                    android:id="@+id/lv_trace_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:choiceMode="multipleChoice"/>
+
+                <Button
+                    android:id="@+id/btn_create_path"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/yl_common_btn_bg_round_click"
+                    android:textColor="@drawable/yl_common_btn_click_text_color"
+                    android:text="@string/yl_common_create_new"/>
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -148,11 +162,25 @@
                 android:layout_marginEnd="10dp"
                 android:text=":" />
 
-            <com.evertrend.tiger.device.widget.NestListView
-                android:id="@+id/lv_virtual_track_group"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:choiceMode="multipleChoice"/>
+                android:orientation="vertical">
+
+                <com.evertrend.tiger.device.widget.NestListView
+                    android:id="@+id/lv_virtual_track_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:choiceMode="multipleChoice"/>
+
+                <Button
+                    android:id="@+id/btn_create_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/yl_common_btn_bg_round_click"
+                    android:textColor="@drawable/yl_common_btn_click_text_color"
+                    android:text="@string/yl_common_create_new"/>
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -181,11 +209,25 @@
                 android:layout_marginEnd="10dp"
                 android:text=":" />
 
-            <com.evertrend.tiger.device.widget.NestListView
-                android:id="@+id/lv_special_work"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:choiceMode="multipleChoice"/>
+                android:orientation="vertical">
+
+                <com.evertrend.tiger.device.widget.NestListView
+                    android:id="@+id/lv_special_work"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:choiceMode="singleChoice"/>
+
+                <Button
+                    android:id="@+id/btn_create_special_work"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/yl_common_btn_bg_round_click"
+                    android:textColor="@drawable/yl_common_btn_click_text_color"
+                    android:text="@string/yl_common_create_new"/>
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -216,8 +258,8 @@
                 android:id="@+id/et_task_priority"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:digits="123456789"
-                android:text="1"
+                android:digits="0123456789"
+                android:text="0"
                 android:inputType="number"/>
         </LinearLayout>
 

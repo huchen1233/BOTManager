@@ -1,6 +1,7 @@
 package com.evertrend.tiger.device.widget;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.SparseBooleanArray;
@@ -19,6 +20,7 @@ import android.widget.RadioGroup;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.evertrend.tiger.common.activity.OperationAreaMapActivity;
 import com.evertrend.tiger.common.utils.general.DialogUtil;
 import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.common.utils.general.Utils;
@@ -63,7 +65,7 @@ public class CleanTaskBottomPopupView extends BottomPopupView implements View.On
     private TimePicker tp_start_time;
     private RadioGroup rig_task_option;
     private RadioButton rib_only_once, rib_everyday, rib_infinite_cycle;
-    private Button btn_task_submit;
+    private Button btn_create_path, btn_create_group, btn_create_special_work, btn_task_submit;
     private RadioGroup rig_task_type;
     private RadioButton rib_trace_path, rib_virtual_track_group, rib_special_work;
     private LinearLayout ll_trace_path, ll_virtual_track_group, ll_special_work;
@@ -277,6 +279,12 @@ public class CleanTaskBottomPopupView extends BottomPopupView implements View.On
         tp_start_time.setIs24HourView(true);
         resizePikcer(tp_start_time);
         btn_task_submit = findViewById(R.id.btn_task_submit);
+        btn_create_path = findViewById(R.id.btn_create_path);
+        btn_create_group = findViewById(R.id.btn_create_group);
+        btn_create_special_work = findViewById(R.id.btn_create_special_work);
+        btn_create_path.setOnClickListener(this);
+        btn_create_group.setOnClickListener(this);
+        btn_create_special_work.setOnClickListener(this);
 
         tp_start_time.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
@@ -361,6 +369,12 @@ public class CleanTaskBottomPopupView extends BottomPopupView implements View.On
                     startSubmitCleanTask();
                 }
             }
+        } else if (v.getId() == R.id.btn_create_path || v.getId() == R.id.btn_create_group || v.getId() == R.id.btn_create_special_work) {
+            Intent intent = new Intent(context, OperationAreaMapActivity.class);
+            intent.putExtra("device", device);
+            intent.putExtra("mappage", choiceMapPages);
+            context.startActivity(intent);
+            dismiss();
         }
     }
 
