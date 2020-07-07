@@ -92,7 +92,7 @@ public class BaseTraceBottomPopupView extends BottomPopupView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(CreateNewBaseTraceSuccessEvent event) {
         Toast.makeText(context, "create success", Toast.LENGTH_SHORT).show();
-        DialogUtil.hideProgressDialog();
+//        DialogUtil.hideProgressDialog();
         stopSaveBaseTraceTimer();
         dismiss();
     }
@@ -143,7 +143,7 @@ public class BaseTraceBottomPopupView extends BottomPopupView {
     }
 
     private void initViewData() {
-        LogUtil.i(context, TAG, "clean tack : " + newBaseTrace.toString());
+        LogUtil.i(context, TAG, "newBaseTrace : " + newBaseTrace.toString());
         et_name.setText(newBaseTrace.getName());
         et_name.setSelection(newBaseTrace.getName().length());
         et_desc.setText(newBaseTrace.getDesc());
@@ -151,7 +151,7 @@ public class BaseTraceBottomPopupView extends BottomPopupView {
     }
 
     private void startSaveBaseTrace() {
-        DialogUtil.showProgressDialog(context, getResources().getString(R.string.yl_common_saving), false, false);
+//        DialogUtil.showProgressDialog(context, getResources().getString(R.string.yl_common_saving), false, false);
         scheduledThreadSaveBaseTrace = new ScheduledThreadPoolExecutor(5);
         scheduledThreadSaveBaseTrace.scheduleAtFixedRate(new CommTaskUtils.TaskSaveBaseTrace(newBaseTrace, type),
                 0, 8, TimeUnit.SECONDS);

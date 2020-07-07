@@ -560,6 +560,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
     public void onMessageEvent(SaveTraceSpotListCompleteEvent messageEvent) {
         LogUtil.i(this, TAG, "===SaveTraceSpotListCompleteEvent===");
         stopSaveTraceSpotListTimer();
+        DialogUtil.hideProgressDialog();
         scheduledThreadGetTraceSpot = new ScheduledThreadPoolExecutor(6);
         scheduledThreadGetTraceSpot.scheduleAtFixedRate(new CommTaskUtils.TaskGetTraceSpot(device, tracePath, mMapView, true),
                 0, 8, TimeUnit.SECONDS);
