@@ -376,7 +376,6 @@ public class DeviceTaskFragment extends BaseFragment implements View.OnClickList
     private void showCreateCleanTaskBottomDialog() {
         cleanTaskBottomPopupView = new CleanTaskBottomPopupView(getActivity(), device, choiceMapPages, cleanTaskList);
         new XPopup.Builder(getActivity())
-                .autoOpenSoftInput(true)
                 .asCustom(cleanTaskBottomPopupView)
                 .show();
     }
