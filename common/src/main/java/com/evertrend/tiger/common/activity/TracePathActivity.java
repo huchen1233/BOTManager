@@ -1,5 +1,6 @@
 package com.evertrend.tiger.common.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.evertrend.tiger.common.bean.event.CreateNewBaseTraceSuccessEvent;
 import com.evertrend.tiger.common.bean.event.DeleteBaseTraceEvent;
 import com.evertrend.tiger.common.bean.event.DialogChoiceEvent;
 import com.evertrend.tiger.common.bean.event.UpdateBaseTraceSuccessEvent;
+import com.evertrend.tiger.common.bean.event.map.ChoiceMapPagesTracePathEvent;
 import com.evertrend.tiger.common.bean.event.map.GetMapPagesAllPathSuccessEvent;
 import com.evertrend.tiger.common.utils.general.CommonConstants;
 import com.evertrend.tiger.common.utils.general.DialogUtil;
@@ -136,6 +138,16 @@ public class TracePathActivity extends BaseActivity {
                     CommonConstants.TYPE_MAPPAGE_OPERATION_TRACE_PATH, baseTrace);
             showBottomPopup(traceBottomPopupView);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(ChoiceMapPagesTracePathEvent event) {
+        baseTrace = event.getBaseTrace();
+        Intent intent = new Intent(TracePathActivity.this, OperationAreaMapActivity.class);
+        intent.putExtra("device", device);
+        intent.putExtra("mappage", mapPages);
+        startActivity(intent);
+        finish();
     }
 
     private void refreshTracePathList(TracePath tracePath, int operation) {
