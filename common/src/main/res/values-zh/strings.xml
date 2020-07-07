@@ -18,7 +18,7 @@
     <string name="yl_common_deleting">正在删除...</string>
     <string name="yl_common_save_map">保存地图</string>
     <string name="yl_common_reload_location">重定位</string>
-    <string name="yl_common_trace_path">循迹路径</string>
+    <string name="yl_common_trace_path">清扫路径</string>
     <string name="yl_common_spot">点位</string>
     <string name="yl_common_action">动作</string>
     <string name="yl_common_edit">编辑</string>
@@ -36,7 +36,7 @@
     <string name="yl_common_free_navigation">自由导航</string>
     <string name="yl_common_track_navigation">轨道导航</string>
     <string name="yl_common_track_first">轨道优先</string>
-    <string name="yl_common_rollback_trace_spot_num">回滚循迹点个数</string>
+    <string name="yl_common_rollback_trace_spot_num">回滚清扫路径点个数</string>
     <string name="yl_common_connecting">正在连接...</string>
     <string name="yl_common_name">名称</string>
     <string name="yl_common_description">描述</string>
