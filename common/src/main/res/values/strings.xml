@@ -27,7 +27,7 @@
     <string name="yl_common_set_add_water_spot">set add water spot</string>
     <string name="yl_common_set_recharge_spot">set recharge spot</string>
     <string name="yl_common_set_trace_spot">set trace spot</string>
-    <string name="yl_common_auto_record_trace_spot">auto record trace spot</string>
+    <string name="yl_common_auto_record_trace_spot">auto record clean path spot</string>
     <string name="yl_common_virtual_walls">virtual wall</string>
     <string name="yl_common_virtual_tracks">virtual tracks</string>
     <string name="yl_common_back">back</string>

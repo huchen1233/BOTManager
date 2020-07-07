@@ -98,7 +98,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="循迹点添加模式:"
+            android:text="清扫路径点添加模式:"
             android:textSize="16sp" />
 
         <RadioGroup
@@ -154,52 +154,6 @@
                 android:text="时间优先" />
         </RadioGroup>
     </LinearLayout>
-    <LinearLayout
-        android:id="@+id/ll_auto_mode_config"
-        android:layout_height="40dp"
-        android:layout_width="match_parent"
-        android:visibility="gone"
-        android:gravity="center_vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="距离: "
-            android:textSize="16sp" />
-        <EditText
-            android:id="@+id/et_auto_mode_config_distance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:digits="12345"
-            android:inputType="number"
-            android:maxLength="1"
-            android:hint="1-5"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="米"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="    "/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="时间间隔: "
-            android:textSize="16sp" />
-        <EditText
-            android:id="@+id/et_auto_mode_config_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:digits="2345678"
-            android:inputType="number"
-            android:maxLength="1"
-            android:hint="2-8"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="秒"/>
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_rollback_trace_path_config"
@@ -221,6 +175,55 @@
             android:inputType="number"
             android:maxLength="1"
             android:hint="2-9"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:visibility="visible"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/yl_common_auto_record_trace_spot"
+            android:textSize="16sp" />
+
+        <Switch
+            android:id="@+id/btn_auto_record_trace_spot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:showText="true"
+            android:textOn="@string/yl_common_on"
+            android:textOff="@string/yl_common_off"
+            android:switchPadding="5dp"
+            style="@style/yl_common_ButtonStyle" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_auto_mode_config"
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:visibility="visible"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="自动添加清扫路径点间隔距离"
+            android:textSize="16sp" />
+        <EditText
+            android:id="@+id/et_auto_mode_config_distance"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:digits="2345678"
+            android:inputType="number"
+            android:maxLength="1"
+            android:hint="2-8"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="米"/>
     </LinearLayout>
 
 </LinearLayout>

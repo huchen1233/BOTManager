@@ -23,6 +23,8 @@ public class AppSharePreference {
     public static final String DEVICE_SPEED = "DEVICE_SPEED";
     public static final String DEVICE_TRACE_SPOT_LAST_POSE = "DEVICE_TRACE_SPOT_LAST_POSE";//最后一点
     public static final String DEVICE_TRACE_PATH_ROLLBACK_NUM = "DEVICE_TRACE_PATH_ROLLBACK_NUM";//循迹路径回滚个数
+    public static final String DEVICE_TRACE_PATH_AUTO_RECORD = "DEVICE_TRACE_PATH_AUTO_RECORD";//自动记录清扫路径点
+    public static final String DEVICE_TRACE_PATH_AUTO_RECORD_DISTANCE = "DEVICE_TRACE_PATH_AUTO_RECORD_DISTANCE";//自动记录清扫路径点间隔距离
 
     //初始化保存的环境
     public static void initSharedPreference(Context context) {
@@ -37,6 +39,25 @@ public class AppSharePreference {
             appSP = new AppSharePreference();
         }
         return appSP;
+    }
+
+    public void saveAutoRecordPathDistance(int distance) {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt(DEVICE_TRACE_PATH_AUTO_RECORD_DISTANCE, distance);
+        editor.apply();
+    }
+
+    public int loadAutoRecordPathDistance() {
+        return sp.getInt(DEVICE_TRACE_PATH_AUTO_RECORD_DISTANCE, 3);
+    }
+
+    public void saveAutoRecordPath(boolean autoRecordPath) {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean(DEVICE_TRACE_PATH_AUTO_RECORD, autoRecordPath);
+        editor.apply();
+    }
+    public boolean loadAutoRecordPath() {
+        return sp.getBoolean(DEVICE_TRACE_PATH_AUTO_RECORD, true);
     }
 
     public void saveTracePathRollbackNum(int num) {

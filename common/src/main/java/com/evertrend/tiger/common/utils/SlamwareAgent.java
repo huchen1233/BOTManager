@@ -9,6 +9,7 @@ import android.graphics.Point;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +19,8 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.evertrend.tiger.common.bean.RobotSpot;
 import com.evertrend.tiger.common.bean.TracePath;
+import com.evertrend.tiger.common.bean.event.AutoRecordPathDistanceFailEvent;
+import com.evertrend.tiger.common.bean.event.AutoRecordPathDistanceOKEvent;
 import com.evertrend.tiger.common.bean.event.map.AddTrack;
 import com.evertrend.tiger.common.bean.event.map.AddVtracks;
 import com.evertrend.tiger.common.bean.event.map.AddVwalls;
@@ -126,6 +129,7 @@ public class SlamwareAgent {
     private static TaskRemoveOneVwalls sTaskRemoveOneVwalls;
     private static TaskRemoveOneVtracks sTaskRemoveOneVtracks;
     private static TaskSaveTracePathPic sTaskSaveTracePathPic;
+    private static TaskCalculateDistance sTaskCalculateDistance;
 
     public SlamwareAgent() {
         mManager = ThreadManager.getInstance();
@@ -160,6 +164,7 @@ public class SlamwareAgent {
         sTaskRemoveOneVwalls = new TaskRemoveOneVwalls();
         sTaskRemoveOneVtracks = new TaskRemoveOneVtracks();
         sTaskSaveTracePathPic = new TaskSaveTracePathPic();
+        sTaskCalculateDistance = new TaskCalculateDistance();
 
         mNavigationMode = NAVIGATION_MODE_FREE;
     }
@@ -306,6 +311,14 @@ public class SlamwareAgent {
         sTaskSaveTracePathPic.setTraceRobotSpotList(serverTraceRobotSpotList);
         sTaskSaveTracePathPic.setTracePath(tracePath);
         pushTask(sTaskSaveTracePathPic);
+    }
+
+    public void calculateDistance(Context context, MapView mapView, String startPose, String endPose) {
+        sTaskCalculateDistance.setContext(context);
+        sTaskCalculateDistance.setMapView(mapView);
+        sTaskCalculateDistance.setStartPose(startPose);
+        sTaskCalculateDistance.setEndPose(endPose);
+        pushTask(sTaskCalculateDistance);
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private synchronized void pushTask(Runnable Task) {
@@ -1285,6 +1298,85 @@ public class SlamwareAgent {
                     Log.e(TAG, "出错：请求网络失败");
                 }
             });
+        }
+    }
+    private class TaskCalculateDistance implements Runnable {
+        private Context context;
+        private MapView mapView;
+        private String startPose;
+        private String endPose;
+        public TaskCalculateDistance() {
+        }
+
+        public void setContext(Context context) {
+            this.context = context;
+        }
+        public void setMapView(MapView mapView) {
+            this.mapView = mapView;
+        }
+        public void setStartPose(String startPose) {
+            this.startPose = startPose;
+        }
+        public void setEndPose(String endPose) {
+            this.endPose = endPose;
+        }
+
+        @Override
+        public void run() {
+            AbstractSlamwarePlatform platform;
+
+            synchronized (this) {
+                platform = mRobotPlatform;
+            }
+
+            if (platform == null) {
+                return;
+            }
+
+            Map map = null;
+            float mapResolutionX = 0;
+            float mapResolutionY = 0;
+            double distance = 0;
+
+            try {
+                RectF area = platform.getKnownArea(BITMAP_8BIT, MapKind.EXPLORE_MAP);
+                map = platform.getMap(BITMAP_8BIT, MapKind.EXPLORE_MAP, area);
+                mapResolutionX = map.getResolution().getX();
+                mapResolutionY = map.getResolution().getY();
+//                LogUtil.d(TAG, "mapResolutionX:"+mapResolutionX);
+//                LogUtil.d(TAG, "mapResolutionY:"+mapResolutionY);
+
+                String[] startStr = startPose.split(",");//格式pose:0.155982,0.240952,0.000000,89.087952
+                String[] endStr = endPose.split(",");
+
+                Point startW = mapView.mapCoordinateToWidghtCoordinate(new PointF(Float.valueOf(startStr[0]), Float.valueOf(startStr[1])));
+                Point endW = mapView.mapCoordinateToWidghtCoordinate(new PointF(Float.valueOf(endStr[0]), Float.valueOf(endStr[1])));
+                Point startM = mapView.widgetCoordinateToMapPixelCoordinate(startW.x, startW.y);
+                Point endM = mapView.widgetCoordinateToMapPixelCoordinate(endW.x, endW.y);
+//                canvas.drawLine(startM.x, mapHeight - startM.y, endM.x, mapHeight - endM.y, paint);
+//                LogUtil.d(TAG, "startM X:"+startM.x);
+//                LogUtil.d(TAG, "startM Y:"+startM.y);
+//                LogUtil.d(TAG, "endM X:"+endM.x);
+//                LogUtil.d(TAG, "endM Y:"+endM.y);
+
+                double disX = (endM.x - startM.x) * mapResolutionX;
+                double disY = (endM.y - startM.y) * mapResolutionY;
+//                LogUtil.d(TAG, "disX:"+disX);
+//                LogUtil.d(TAG, "disY:"+disY);
+
+                distance = Math.sqrt(disX*disX+disY*disY);
+                LogUtil.d(TAG, "distance:"+distance);
+
+                if (distance > AppSharePreference.getAppSharedPreference().loadAutoRecordPathDistance()) {
+                    EventBus.getDefault().post(new AutoRecordPathDistanceOKEvent());
+                } else {
+                    EventBus.getDefault().post(new AutoRecordPathDistanceFailEvent());
+                }
+
+            } catch (Exception e) {
+                onRequestError(e);
+                return;
+            }
         }
     }
 }

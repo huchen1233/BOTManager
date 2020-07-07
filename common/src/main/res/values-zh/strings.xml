@@ -27,7 +27,7 @@
     <string name="yl_common_set_add_water_spot">设为加水点</string>
     <string name="yl_common_set_recharge_spot">设为充电点</string>
     <string name="yl_common_set_trace_spot">设为循迹点</string>
-    <string name="yl_common_auto_record_trace_spot">自动记录点位</string>
+    <string name="yl_common_auto_record_trace_spot">自动记录清扫路径点</string>
     <string name="yl_common_virtual_walls">虚拟墙</string>
     <string name="yl_common_virtual_tracks">虚拟轨道</string>
     <string name="yl_common_back">返回</string>

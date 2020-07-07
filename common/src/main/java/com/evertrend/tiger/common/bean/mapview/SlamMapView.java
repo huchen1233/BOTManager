@@ -88,8 +88,8 @@ public final class SlamMapView extends View {
 
         mTileWidth = numX;
         mTileHeight = numY;
-        int size = mTileWidth * mTileHeight;
         synchronized (mTiles) {
+            int size = mTileWidth * mTileHeight;
             mTiles = new ArrayList<>(size);
 
             for (int i = 0; i < mTileWidth; i++) {

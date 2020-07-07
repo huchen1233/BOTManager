@@ -44,17 +44,6 @@
             android:layout_height="wrap_content"
             style="@style/yl_common_ButtonStyle"
             android:text="@string/yl_common_set_common_spot" />
-
-        <Switch
-            android:id="@+id/btn_auto_record_trace_spot"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:showText="true"
-            android:textOn="@string/yl_common_on"
-            android:textOff="@string/yl_common_off"
-            android:switchPadding="5dp"
-            style="@style/yl_common_ButtonStyle"
-            android:text="@string/yl_common_auto_record_trace_spot" />
     </LinearLayout>
 
 </LinearLayout>

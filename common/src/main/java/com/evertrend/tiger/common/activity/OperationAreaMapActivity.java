@@ -42,6 +42,7 @@ import com.evertrend.tiger.common.bean.MapPages;
 import com.evertrend.tiger.common.bean.RobotSpot;
 import com.evertrend.tiger.common.bean.TracePath;
 import com.evertrend.tiger.common.bean.VirtualTrackGroup;
+import com.evertrend.tiger.common.bean.event.AutoRecordPathDistanceOKEvent;
 import com.evertrend.tiger.common.bean.event.ChoiceMapPagesEvent;
 import com.evertrend.tiger.common.bean.event.CreateNewBaseTraceSuccessEvent;
 import com.evertrend.tiger.common.bean.event.DialogChoiceEvent;
@@ -150,7 +151,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
     private ImageButton ibtn_add_virtual_track_ok, ibtn_add_virtual_track_cancel;
     private TextView save_virtual_track;
 //    private RadioGroup rg_trace_spot_add_mode, rg_trace_spot_auto_mode_chioce;
-//    private EditText et_auto_mode_config_distance, et_auto_mode_config_time;
+    private EditText et_auto_mode_config_distance; //et_auto_mode_config_time;
     private MapBottomPopupView mapBottomPopupView;
 
     private Device device;
@@ -170,6 +171,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
     private List<Line> addVTracksList;
     private List<MapPages> mapPagesList;
     private int connectionLostCount = 0;
+    private boolean isAutoRecordSpot = false;
 
     private AlertDialog mDialogInputIp;
     private AlertDialog tracePathChoiceDialog;
@@ -396,6 +398,16 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         btn_relocation.setEnabled(true);
         btn_trace_path.setEnabled(true);
         mMapView.setCentred();
+
+        isAutoRecordSpot = AppSharePreference.getAppSharedPreference().loadAutoRecordPath();
+        if (isAutoRecordSpot) {
+            ll_trace_path_spot.setVisibility(View.VISIBLE);
+            if (!mRecordSpotThread.isAlive()) {
+                mRecordSpotThread.start();
+            }
+        } else {
+            stopRecordSpot();
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
@@ -403,7 +415,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         DialogUtil.hideProgressDialog();
 //        Toast.makeText(OperationAreaMapActivity.this, "连接失败，请检查网络、设备、IP", Toast.LENGTH_SHORT).show();
         LogUtil.i(this, TAG, "===ConnectionLostEvent===");
-        if (connectionLostCount == 5) {
+        if (connectionLostCount == 10) {
             connectionLostCount = 0;
             DialogUtil.showMessageDialog(this, R.string.yl_common_connection_lost, CommonConstants.TYPE_CONNECTED_LOST);
         } else {
@@ -760,6 +772,11 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         scheduledThreadSaveTraceSpotList.scheduleAtFixedRate(new CommTaskUtils.TaskSaveTraceSpotList(device, mTraceSpotList, mapPages, tracePath),
                 0, 30, TimeUnit.SECONDS);
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(AutoRecordPathDistanceOKEvent event) {
+        addSpotToList();
+    }
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private void virtualWallsComplete() {
@@ -793,6 +810,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         stopGetMapPagesAllVirtualTrackGroupTimer();
         stopSaveVirtualTrackTimer();
         stopUpdate();
+        stopRecordSpot();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
@@ -885,6 +903,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         tv_device_speed = findViewById(R.id.tv_device_speed);
         rg_navigation_mode = findViewById(R.id.rg_navigation_mode);
         et_rollback_trace_path_num = findViewById(R.id.et_rollback_trace_path_num);
+        et_auto_mode_config_distance = findViewById(R.id.et_auto_mode_config_distance);
         btn_set_recharge = findViewById(R.id.btn_set_recharge);
         btn_set_add_water = findViewById(R.id.btn_set_add_water);
         btn_set_garage = findViewById(R.id.btn_set_garage);
@@ -1023,6 +1042,27 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
                 }
             }
         });
+        et_auto_mode_config_distance.setText(AppSharePreference.getAppSharedPreference().loadAutoRecordPathDistance()+"");
+        et_auto_mode_config_distance.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String distance = s.toString();
+                LogUtil.i(OperationAreaMapActivity.this, TAG, "distance : "+distance);
+                if (!TextUtils.isEmpty(distance)) {
+                    AppSharePreference.getAppSharedPreference().saveAutoRecordPathDistance(Integer.parseInt(distance));
+                }
+            }
+        });
     }
 
     @Override
@@ -1053,6 +1093,8 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
             sb_device_speed.setProgress(dSpeed);
             et_rollback_trace_path_num.setText(AppSharePreference.getAppSharedPreference().loadTracePathRollbackNum()+"");
             et_rollback_trace_path_num.setSelection(1);
+            btn_auto_record_trace_spot.setChecked(AppSharePreference.getAppSharedPreference().loadAutoRecordPath());
+            et_rollback_trace_path_num.setText(AppSharePreference.getAppSharedPreference().loadAutoRecordPathDistance()+"");
         } else if (v.getId() == R.id.iv_settings_back) {
             cl_area_map_view.setVisibility(View.VISIBLE);
             ll_map_settings.setVisibility(View.GONE);
@@ -1098,11 +1140,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
             if (currentPose.equals(lastPose)) {
                 Toast.makeText(OperationAreaMapActivity.this, "重复循迹点", Toast.LENGTH_SHORT).show();
             } else {
-                mTraceSpotList.add(currentPose);
-                traceSpotAdapter.notifyDataSetChanged();
-                ll_trace_path_spot.setVisibility(View.VISIBLE);
-                lastPose = currentPose;
-                Toast.makeText(OperationAreaMapActivity.this, "已添加循迹点到列表", Toast.LENGTH_SHORT).show();
+                addSpotToList();
             }
         } else if (v.getId() == R.id.btn_trace_path_spot_save) {
             showTracePathChoice(tracePathList, CommonConstants.TYPE_TRACE_PATH_OPERATION_SAVE_SPOT);
@@ -1362,33 +1400,53 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         }
     }
 
-    private boolean isAutoRecordSpot = false;
-
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(@NonNull Message msg) {
             if (msg.what == 1) {
                 if (currentPose.equals(lastPose)) {
-                    Toast.makeText(OperationAreaMapActivity.this, "重复循迹点", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OperationAreaMapActivity.this, "重复路径点", Toast.LENGTH_SHORT).show();
                 } else {
-                    mTraceSpotList.add(currentPose);
-                    traceSpotAdapter.notifyDataSetChanged();
-                    ll_trace_path_spot.setVisibility(View.VISIBLE);
-                    lastPose = currentPose;
-                    Toast.makeText(OperationAreaMapActivity.this, "已添加循迹点到列表", Toast.LENGTH_SHORT).show();
+                    if (!"0".equals(currentPose)) {
+                        LogUtil.d(TAG, "lastPose:"+lastPose);
+                        LogUtil.d(TAG, "currentPose:"+currentPose);
+                        if (TextUtils.isEmpty(lastPose) || "0".equals(lastPose)) {
+                            addSpotToList();
+                        } else {
+                            if (!lastPose.equals(currentPose)) {
+                                mAgent.calculateDistance(OperationAreaMapActivity.this, mMapView, lastPose, currentPose);
+                            }
+                        }
+                    }
                 }
             }
         }
     };
+
+    private void addSpotToList() {
+        mTraceSpotList.add(currentPose);
+        traceSpotAdapter.notifyDataSetChanged();
+        ll_trace_path_spot.setVisibility(View.VISIBLE);
+        lastPose = currentPose;
+        Toast.makeText(OperationAreaMapActivity.this, "已添加路径点到列表", Toast.LENGTH_SHORT).show();
+    }
+
     private Runnable mRecordSpotRunnable = new Runnable() {
 
         @Override
         public void run() {
-            while (isAutoRecordSpot) {
-                Message msg = new Message();
-                msg.what = 1;
-                handler.sendMessage(msg);
-                SystemClock.sleep(5000);
+            try {
+                while (isAutoRecordSpot) {
+                    if (mRecordSpotThread.isInterrupted()) {
+                        throw new InterruptedException();
+                    }
+                    Message msg = new Message();
+                    msg.what = 1;
+                    handler.sendMessage(msg);
+                    SystemClock.sleep(5000);
+                }
+            } catch (InterruptedException e) {
+                LogUtil.d(TAG, "mRecordSpotRunnable stop");
             }
         }
     };
@@ -1403,10 +1461,13 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (buttonView.getId() == R.id.btn_auto_record_trace_spot) {
             LogUtil.i(this, TAG, "isChecked: "+isChecked);
+            AppSharePreference.getAppSharedPreference().saveAutoRecordPath(isChecked);
             isAutoRecordSpot = isChecked;
             if (isChecked) {
                 ll_trace_path_spot.setVisibility(View.VISIBLE);
-                mRecordSpotThread.start();
+                if (!mRecordSpotThread.isAlive()) {
+                    mRecordSpotThread.start();
+                }
             } else {
                 stopRecordSpot();
             }
