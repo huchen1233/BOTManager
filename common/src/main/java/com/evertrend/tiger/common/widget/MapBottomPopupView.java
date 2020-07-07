@@ -118,20 +118,21 @@ public class MapBottomPopupView extends BottomPopupView {
                 if (TextUtils.isEmpty(editName)) {
                     Toast.makeText(context, "请输入区域名称", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (TextUtils.isEmpty(editDesc)) {
-                        Toast.makeText(context, "请输入区域描述", Toast.LENGTH_SHORT).show();
-                    } else {
-                        newMapPages.setName(editName);
-                        newMapPages.setDescription(editDesc);
-                        DialogUtil.showProgressDialog(context, getResources().getString(R.string.yl_common_saving), false, false);
-                        scheduledThreadSaveMapPages = new ScheduledThreadPoolExecutor(4);
-                        if (mapPages == null) {
-                            scheduledThreadSaveMapPages.scheduleAtFixedRate(new CommTaskUtils.TaskSaveMapPages(device, newMapPages,0, false),
-                                    0, 5, TimeUnit.SECONDS);
+                    newMapPages.setName(editName);
+                    newMapPages.setDescription(editDesc);
+                    scheduledThreadSaveMapPages = new ScheduledThreadPoolExecutor(4);
+                    if (mapPages != null) {
+                        if (mapPages.getName().equals(newMapPages.getName()) && mapPages.getDescription().equals(newMapPages.getDescription())) {
+                            Toast.makeText(context, "请修改名称或描述", Toast.LENGTH_SHORT).show();
                         } else {
+                            DialogUtil.showProgressDialog(context, getResources().getString(R.string.yl_common_saving), false, false);
                             scheduledThreadSaveMapPages.scheduleAtFixedRate(new CommTaskUtils.TaskSaveMapPages(device, newMapPages, 1, true),
                                     0, 5, TimeUnit.SECONDS);
                         }
+                    } else {
+                        DialogUtil.showProgressDialog(context, getResources().getString(R.string.yl_common_saving), false, false);
+                        scheduledThreadSaveMapPages.scheduleAtFixedRate(new CommTaskUtils.TaskSaveMapPages(device, newMapPages,0, false),
+                                0, 5, TimeUnit.SECONDS);
                     }
                 }
             }
