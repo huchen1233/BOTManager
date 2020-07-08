@@ -65,6 +65,7 @@ public class CommonNetReq {
     public static final String NET_UPDATE_DEVICE_GRANT = REQ_HOST + "api/remote/update-device-grant";
     public static final String NET_DELETE_DEVICE_GRANT = REQ_HOST + "api/remote/delete-device-grant";
     public static final String NET_UPLOAD_TRACE_PATH_PIC = REQ_HOST + "api/remote/upload-trace-path-pic";
+    public static final String NET_UPLOAD_MAP_PIC = REQ_HOST + "api/remote/upload-map-pic";
 
     public static final String TOKEN = "token";
     public static final String RESULT_CODE = "res_code";

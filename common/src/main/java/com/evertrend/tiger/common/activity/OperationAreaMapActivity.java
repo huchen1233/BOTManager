@@ -47,6 +47,7 @@ import com.evertrend.tiger.common.bean.event.ChoiceMapPagesEvent;
 import com.evertrend.tiger.common.bean.event.CreateNewBaseTraceSuccessEvent;
 import com.evertrend.tiger.common.bean.event.DialogChoiceEvent;
 import com.evertrend.tiger.common.bean.event.GetAllMapPagesSuccessEvent;
+import com.evertrend.tiger.common.bean.event.SaveMapPageEvent;
 import com.evertrend.tiger.common.bean.event.SaveTraceSpotFailEvent;
 import com.evertrend.tiger.common.bean.event.map.AddTrack;
 import com.evertrend.tiger.common.bean.event.map.AddVtracks;
@@ -778,6 +779,12 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
     public void onEventMainThread(AutoRecordPathDistanceOKEvent event) {
         addSpotToList();
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(SaveMapPageEvent event) {
+        mapPages = event.getMapPages();
+        saveMapPic();
+    }
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private void virtualWallsComplete() {
@@ -1214,6 +1221,10 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
 
     private void saveTracePathPic() {
         mAgent.saveTracePathPic(this, mMapView, mServerTraceRobotSpotList, tracePath);
+    }
+
+    private void saveMapPic() {
+        mAgent.saveMapPic(this, mMapView, mapPages);
     }
 
     private void showVirtualTrackChoice(final List<VirtualTrackGroup> virtualTrackGroupList) {

@@ -17,6 +17,7 @@ import android.view.View;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
+import com.evertrend.tiger.common.bean.MapPages;
 import com.evertrend.tiger.common.bean.RobotSpot;
 import com.evertrend.tiger.common.bean.TracePath;
 import com.evertrend.tiger.common.bean.event.AutoRecordPathDistanceFailEvent;
@@ -129,6 +130,7 @@ public class SlamwareAgent {
     private static TaskRemoveOneVwalls sTaskRemoveOneVwalls;
     private static TaskRemoveOneVtracks sTaskRemoveOneVtracks;
     private static TaskSaveTracePathPic sTaskSaveTracePathPic;
+    private static TaskSaveMapPic sTaskSaveMapPic;
     private static TaskCalculateDistance sTaskCalculateDistance;
 
     public SlamwareAgent() {
@@ -164,6 +166,7 @@ public class SlamwareAgent {
         sTaskRemoveOneVwalls = new TaskRemoveOneVwalls();
         sTaskRemoveOneVtracks = new TaskRemoveOneVtracks();
         sTaskSaveTracePathPic = new TaskSaveTracePathPic();
+        sTaskSaveMapPic = new TaskSaveMapPic();
         sTaskCalculateDistance = new TaskCalculateDistance();
 
         mNavigationMode = NAVIGATION_MODE_FREE;
@@ -311,6 +314,13 @@ public class SlamwareAgent {
         sTaskSaveTracePathPic.setTraceRobotSpotList(serverTraceRobotSpotList);
         sTaskSaveTracePathPic.setTracePath(tracePath);
         pushTask(sTaskSaveTracePathPic);
+    }
+
+    public void saveMapPic(Context context, MapView mapView, MapPages mapPages) {
+        sTaskSaveMapPic.setContext(context);
+        sTaskSaveMapPic.setMapView(mapView);
+        sTaskSaveMapPic.setMapPages(mapPages);
+        pushTask(sTaskSaveMapPic);
     }
 
     public void calculateDistance(Context context, MapView mapView, String startPose, String endPose) {
@@ -1300,6 +1310,111 @@ public class SlamwareAgent {
             });
         }
     }
+
+    private class TaskSaveMapPic implements Runnable {
+        private Context context;
+        private MapView mapView;
+        private MapPages mapPages;
+        public TaskSaveMapPic() {
+        }
+
+        public void setContext(Context context) {
+            this.context = context;
+        }
+
+        public void setMapView(MapView mapView) {
+            this.mapView = mapView;
+        }
+
+        public void setMapPages(MapPages mapPages) {
+            this.mapPages = mapPages;
+        }
+
+        @Override
+        public void run() {
+            AbstractSlamwarePlatform platform;
+
+            synchronized (this) {
+                platform = mRobotPlatform;
+            }
+
+            if (platform == null) {
+                return;
+            }
+
+            Map map = null;
+            int mapWidth =0;
+            int mapHeight = 0;
+
+            try {
+
+                RectF area = platform.getKnownArea(BITMAP_8BIT, MapKind.EXPLORE_MAP);
+                map = platform.getMap(BITMAP_8BIT, MapKind.EXPLORE_MAP, area);
+                mapWidth = map.getDimension().getWidth();
+                mapHeight = map.getDimension().getHeight();
+                LogUtil.d(TAG, "mapWidth:"+mapWidth);
+                LogUtil.d(TAG, "mapHeight:"+mapHeight);
+                Bitmap bitmap = Bitmap.createBitmap(mapWidth, mapHeight, ARGB_8888);
+                for (int posY = 0; posY < mapHeight; ++posY) {
+                    for (int posX = 0; posX < mapWidth; ++posX) {
+                        // get map pixel
+                        byte[] data = map.getData();
+                        // (-128, 127) to (0, 255)
+                        int rawColor = data[posX + posY * mapWidth];
+                        rawColor += 128;
+                        // fill the bitmap data, by data of B/G/R/A
+                        bitmap.setPixel(posX, posY, rawColor | rawColor<<8 | rawColor<<16 | 0xC0<<24);
+                    }
+                }
+
+                LogUtil.d(TAG, "path: "+ context.getFilesDir());
+                boolean saveStatus = Utils.saveBitmap(bitmap, String.valueOf(context.getFilesDir()), mapPages.getName()+"_"+mapPages.getId()+".png");
+                LogUtil.d(TAG, "saveStatus: "+saveStatus);
+                if (saveStatus) {
+                    uploadMapPic();
+                } else {
+                    EventBus.getDefault().post(new uploadPathPicFailEvent());
+                }
+            } catch (Exception e) {
+                onRequestError(e);
+                return;
+            }
+        }
+
+        private void uploadMapPic() {
+            HashMap<String, String> map = new HashMap<>();
+            map.put(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
+            map.put(CommonNetReq.MAP_PAGE, String.valueOf(mapPages.getId()));
+            File file = new File(context.getFilesDir() + "/"+mapPages.getName()+"_"+mapPages.getId()+".png");
+            OKHttpManager.getInstance().sendFileForm(OKHttpManager.MEDIA_TYE_PNG, CommonNetReq.NET_UPLOAD_MAP_PIC, map, file, new OKHttpManager.FuncJsonObj() {
+                @Override
+                public void onResponse(JSONObject jsonObject) throws JSONException {
+                    try {
+                        LogUtil.d(TAG, "uploadMapPic:"+jsonObject.getString(CommonNetReq.RESULT_DESC));
+                        switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
+                            case CommonNetReq.CODE_SUCCESS:
+                                EventBus.getDefault().post(new uploadPathPicSuccessEvent());
+                                break;
+                            case CommonNetReq.ERR_CODE_SAVE_FAIL:
+                                EventBus.getDefault().post(new uploadPathPicFailEvent());
+                                break;
+                            default:
+                                break;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(TAG, "出错：解析数据失败");
+                    }
+                }
+            }, new OKHttpManager.FuncFailure() {
+                @Override
+                public void onFailure() {
+                    Log.e(TAG, "出错：请求网络失败");
+                }
+            });
+        }
+    }
+
     private class TaskCalculateDistance implements Runnable {
         private Context context;
         private MapView mapView;
