@@ -133,7 +133,7 @@ public class MapPagesChoiceAdapter extends  RecyclerView.Adapter<MapPagesChoiceA
         holder.MapPagesName.setText(MapPages.getName());
         holder.MapPagesDesc.setText(MapPages.getDescription());
 //        holder.MapPagesImage.setImageResource(R.drawable.yl_common_ic_area_blue_36dp);
-        String imagePath = mContext.getFilesDir()+"/"+mMapPagesList.get(position).getName()+"_"+mMapPagesList.get(position).getId()+".png";
+        String imagePath = mContext.getFilesDir()+"/"+MapPages.getName()+"_"+MapPages.getId()+".png";
         File imgFile = new File(imagePath);
         if (imgFile.exists()) {
             holder.MapPagesImage.setImageURI(Uri.fromFile(imgFile));

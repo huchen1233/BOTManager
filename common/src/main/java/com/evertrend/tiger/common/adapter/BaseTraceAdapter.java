@@ -1,6 +1,8 @@
 package com.evertrend.tiger.common.adapter;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +17,13 @@ import com.evertrend.tiger.common.bean.BaseTrace;
 import com.evertrend.tiger.common.bean.event.ChoiceBaseTraceEvent;
 import com.evertrend.tiger.common.bean.event.map.ChoiceMapPagesTracePathEvent;
 import com.evertrend.tiger.common.utils.general.CommonConstants;
+import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnSelectListener;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
 import java.util.List;
 
 public class BaseTraceAdapter extends  RecyclerView.Adapter<BaseTraceAdapter.ViewHolder>{
@@ -71,6 +75,26 @@ public class BaseTraceAdapter extends  RecyclerView.Adapter<BaseTraceAdapter.Vie
             });
         }
 
+        viewHolder.iv_base_trace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LogUtil.d("chenhu", baseTraces.get(viewHolder.getAdapterPosition()).getName());
+                final Dialog dialog = new Dialog(mContext);
+                LayoutInflater inflater = LayoutInflater.from(mContext);
+                View imgEntryView = inflater.inflate(R.layout.yl_common_dialog_large_image, null);
+                ImageView imageView = imgEntryView.findViewById(R.id.large_image);
+                imageView.setImageDrawable(viewHolder.iv_base_trace.getDrawable());
+                dialog.setContentView(imgEntryView);
+                dialog.show();
+                //大图的点击事件（点击让他消失）
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
         return viewHolder;
     }
 
@@ -101,7 +125,14 @@ public class BaseTraceAdapter extends  RecyclerView.Adapter<BaseTraceAdapter.Vie
         holder.tv_name.setText(baseTrace.getName());
         holder.tv_desc.setText(baseTrace.getDesc());
         if (type == CommonConstants.TYPE_MAPPAGE_OPERATION_TRACE_PATH) {
-            holder.iv_base_trace.setImageResource(R.drawable.yl_common_ic_trace_path_orange_36dp);
+//            holder.iv_base_trace.setImageResource(R.drawable.yl_common_ic_trace_path_orange_36dp);
+            String imagePath = mContext.getFilesDir()+"/"+baseTrace.getName()+"_"+baseTrace.getId()+".png";
+            File imgFile = new File(imagePath);
+            if (imgFile.exists()) {
+                holder.iv_base_trace.setImageURI(Uri.fromFile(imgFile));
+            } else {
+                holder.iv_base_trace.setImageResource(R.drawable.path_empty);
+            }
         } else if (type == CommonConstants.TYPE_MAPPAGE_OPERATION_VIRTUAL_TRACK) {
             holder.iv_base_trace.setImageResource(R.drawable.yl_common_ic_virtual_track_group_blue_36dp);
         }
