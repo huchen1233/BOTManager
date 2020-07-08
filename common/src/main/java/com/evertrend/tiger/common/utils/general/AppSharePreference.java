@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Base64;
 
+import java.util.Set;
+
 public class AppSharePreference {
     public static final String SHARED_PREFERENCE_NAME = "evertrend_botmanager_pre";
     private static AppSharePreference appSP;
@@ -25,6 +27,7 @@ public class AppSharePreference {
     public static final String DEVICE_TRACE_PATH_ROLLBACK_NUM = "DEVICE_TRACE_PATH_ROLLBACK_NUM";//循迹路径回滚个数
     public static final String DEVICE_TRACE_PATH_AUTO_RECORD = "DEVICE_TRACE_PATH_AUTO_RECORD";//自动记录清扫路径点
     public static final String DEVICE_TRACE_PATH_AUTO_RECORD_DISTANCE = "DEVICE_TRACE_PATH_AUTO_RECORD_DISTANCE";//自动记录清扫路径点间隔距离
+//    public static final String DEVICE_TMP_TRACE_PATH = "DEVICE_TMP_TRACE_PATH";
 
     //初始化保存的环境
     public static void initSharedPreference(Context context) {
@@ -41,6 +44,17 @@ public class AppSharePreference {
         return appSP;
     }
 
+    //自动记录清扫路径点临时保存集合，防止用户在建图时，不小心返回而没有保存路径点问题
+    public void saveTmpPath(String key, Set<String> paths) {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putStringSet(key, paths);
+        editor.apply();
+    }
+
+    public Set<String> loadTmpPath(String key) {
+        return sp.getStringSet(key, null);
+    }
+
     public void saveAutoRecordPathDistance(int distance) {
         SharedPreferences.Editor editor = sp.edit();
         editor.putInt(DEVICE_TRACE_PATH_AUTO_RECORD_DISTANCE, distance);
@@ -48,7 +62,7 @@ public class AppSharePreference {
     }
 
     public int loadAutoRecordPathDistance() {
-        return sp.getInt(DEVICE_TRACE_PATH_AUTO_RECORD_DISTANCE, 3);
+        return sp.getInt(DEVICE_TRACE_PATH_AUTO_RECORD_DISTANCE, CommonConstants.DEVICE_TRACE_PATH_AUTO_RECORD_DISTANCE);
     }
 
     public void saveAutoRecordPath(boolean autoRecordPath) {

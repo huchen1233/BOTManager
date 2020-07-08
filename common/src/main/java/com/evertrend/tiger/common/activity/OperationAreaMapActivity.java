@@ -117,7 +117,10 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -237,6 +240,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         lastPose = AppSharePreference.getAppSharedPreference().loadTraceSpotAutoModeLastPose();
         mTraceSpotList = new ArrayList<>();
         tracePathList = new ArrayList<>();
+        loadTraceSpotList();
         scheduledThreadGetMapPagesAllPath = new ScheduledThreadPoolExecutor(3);
         scheduledThreadGetMapPagesAllPath.scheduleAtFixedRate(new CommTaskUtils.TaskGetMapPagesAllPath(device, mapPages),
                 0, 6, TimeUnit.SECONDS);
@@ -822,7 +826,29 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+        saveTmpPath();
         finish();
+    }
+
+    private void saveTmpPath() {
+        if (mTraceSpotList.size() > 1) {
+            Set<String> tmpPaths = new LinkedHashSet<>(mTraceSpotList.size());
+            for (String s : mTraceSpotList) {
+                tmpPaths.add(s);
+            }
+            AppSharePreference.getAppSharedPreference().saveTmpPath(mapPages.getName()+mapPages.getId(), tmpPaths);
+        } else {
+            AppSharePreference.getAppSharedPreference().saveTmpPath(mapPages.getName()+mapPages.getId(), null);
+        }
+    }
+
+    private void loadTraceSpotList() {
+        Set<String> tmpPaths = AppSharePreference.getAppSharedPreference().loadTmpPath(mapPages.getName()+mapPages.getId());
+        if (tmpPaths != null) {
+            for (String s : tmpPaths) {
+                mTraceSpotList.add(s);
+            }
+        }
     }
 
     private void startUpdate() {
