@@ -84,13 +84,14 @@ public class TaskListViewAdapter extends BaseAdapter {
                 LayoutInflater inflater = LayoutInflater.from(context);
                 View imgEntryView = inflater.inflate(R.layout.yl_common_dialog_large_image, null);
                 ImageView imageView = imgEntryView.findViewById(R.id.large_image);
-                if (imgFile.exists()) {
-//                    imageView = getImageView(imgFile);
-                    imageView.setImageURI(Uri.fromFile(imgFile));
-                } else {
-//                    imageView = getImageView();
-                    imageView.setImageResource(R.drawable.path_empty);
-                }
+                imageView.setImageDrawable(holder.iv_pic.getDrawable());
+//                if (imgFile.exists()) {
+////                    imageView = getImageView(imgFile);
+//                    imageView.setImageURI(Uri.fromFile(imgFile));
+//                } else {
+////                    imageView = getImageView();
+//                    imageView.setImageResource(R.drawable.path_empty);
+//                }
                 dialog.setContentView(imgEntryView);
                 dialog.show();
                 //大图的点击事件（点击让他消失）
