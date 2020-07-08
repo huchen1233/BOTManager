@@ -122,13 +122,13 @@ public class MapBottomPopupView extends BottomPopupView {
                     newMapPages.setDescription(editDesc);
                     scheduledThreadSaveMapPages = new ScheduledThreadPoolExecutor(4);
                     if (mapPages != null) {
-                        if (mapPages.getName().equals(newMapPages.getName()) && mapPages.getDescription().equals(newMapPages.getDescription())) {
-                            Toast.makeText(context, "请修改名称或描述", Toast.LENGTH_SHORT).show();
-                        } else {
+//                        if (mapPages.getName().equals(newMapPages.getName()) && mapPages.getDescription().equals(newMapPages.getDescription())) {
+//                            Toast.makeText(context, "请修改名称或描述", Toast.LENGTH_SHORT).show();
+//                        } else {
                             DialogUtil.showProgressDialog(context, getResources().getString(R.string.yl_common_saving), false, false);
                             scheduledThreadSaveMapPages.scheduleAtFixedRate(new CommTaskUtils.TaskSaveMapPages(device, newMapPages, 1, true),
                                     0, 5, TimeUnit.SECONDS);
-                        }
+//                        }
                     } else {
                         DialogUtil.showProgressDialog(context, getResources().getString(R.string.yl_common_saving), false, false);
                         scheduledThreadSaveMapPages.scheduleAtFixedRate(new CommTaskUtils.TaskSaveMapPages(device, newMapPages,0, false),
