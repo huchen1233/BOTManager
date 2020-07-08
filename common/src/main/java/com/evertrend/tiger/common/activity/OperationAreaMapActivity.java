@@ -1163,6 +1163,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
             showEditDialog();
         } else if (v.getId() == R.id.btn_relocation) {
             mAgent.clearMap();
+            clearTraceSpotList();
             DialogUtil.showProgressDialog(this, getResources().getString(R.string.yl_common_reloading), false, false);
             startRelocationOrSetCurrentMap(CommonConstants.TYPE_RELOCATION);
         } else if (v.getId() == R.id.btn_trace_path) {
@@ -1194,6 +1195,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
             setVTracks();
         }  else if (v.getId() == R.id.btn_clear_map) {
             mAgent.clearMap();
+            clearTraceSpotList();
         } else if (v.getId() == R.id.ll_add_virtual_wall_line) {
             addVirtualWall();
         } else if (v.getId() == R.id.ibtn_add_virtual_wall_ok) {
@@ -1441,6 +1443,12 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         ll_trace_path_spot.setVisibility(View.VISIBLE);
         lastPose = currentPose;
         Toast.makeText(OperationAreaMapActivity.this, "已添加路径点到列表", Toast.LENGTH_SHORT).show();
+    }
+
+    private void clearTraceSpotList() {
+        mTraceSpotList.clear();
+        traceSpotAdapter.notifyDataSetChanged();
+        currentPose = "0";
     }
 
     private Runnable mRecordSpotRunnable = new Runnable() {
