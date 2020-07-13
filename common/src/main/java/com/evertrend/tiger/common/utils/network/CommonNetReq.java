@@ -15,6 +15,7 @@ public class CommonNetReq {
     public static final String NET_ADD_SPOT = REQ_HOST + "api/remote/add-spot";
     public static final String NET_ADD_SPOT_COMPLETE = REQ_HOST + "api/remote/add-spot-complete";
     public static final String NET_DELETE_TRACE_SPOT = REQ_HOST + "api/remote/delete-trace-spot";
+    public static final String NET_DELETE_TRACE_SPOT_COMPLETE = REQ_HOST + "api/remote/delete-trace-spot-complete";
     public static final String NET_SAVE_BATTERY = REQ_HOST + "api/remote/save-battery";
     public static final String NET_SAVE_WATER = REQ_HOST + "api/remote/save-water";
     public static final String NET_SAVE_TRASH_INTERVAL = REQ_HOST + "api/remote/save-trash-interval";

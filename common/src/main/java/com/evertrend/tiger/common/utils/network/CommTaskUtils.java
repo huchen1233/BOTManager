@@ -204,7 +204,7 @@ public class CommTaskUtils {
                 if (i == size) {
                     LogUtil.d(TAG, "i = "+i);
 //                    DBUtil.saveSpotListToLocal(device, mapPages, tracePath, mTraceSpotList);
-                    startSaveTraceSpotComplete(device);
+                    startSaveTraceSpotComplete(device, tracePath.getId());
                     EventBus.getDefault().post(new SaveTraceSpotListCompleteEvent());
                     if (EventBus.getDefault().isRegistered(this)) {
                         EventBus.getDefault().unregister(this);
@@ -226,10 +226,11 @@ public class CommTaskUtils {
     }
 
     //保存循迹路径点完成，设置标志位，等待工控机从服务器读取
-    private static void startSaveTraceSpotComplete(Device device) {
+    private static void startSaveTraceSpotComplete(Device device, int tracePathId) {
         HashMap<String, String> map = new HashMap<>();
         map.put(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
         map.put(CommonNetReq.DEVICE_ID, String.valueOf(device.getId()));
+        map.put(CommonNetReq.TRACE_PATH_ID, String.valueOf(tracePathId));//注意当前选择循迹路径为空的情况
         OKHttpManager.getInstance().sendComplexForm(CommonNetReq.NET_ADD_SPOT_COMPLETE, map, new OKHttpManager.FuncJsonObj() {
             @Override
             public void onResponse(JSONObject jsonObject) throws JSONException {
@@ -631,7 +632,8 @@ public class CommTaskUtils {
                 LogUtil.d(TAG, "i:"+i);
                 LogUtil.d(TAG, "deleteSpotFlag:"+deleteSpotFlag);
                 if (i == -1 || i == size - rollbackNum) {
-                    EventBus.getDefault().post(new DeleteTraceSpotListCompleteEvent(mRobotSpotList));
+//                    EventBus.getDefault().post(new DeleteTraceSpotListCompleteEvent(mRobotSpotList));
+                    startDeleteTraceSpotComplete(mRobotSpotList);
                     if (EventBus.getDefault().isRegistered(this)) {
                         EventBus.getDefault().unregister(this);
                     }
@@ -669,6 +671,35 @@ public class CommTaskUtils {
 //                            LogUtil.d(TAG, "delete: " + delete);
 //                            EventBus.getDefault().post(new DeleteOneTraceSpotListEvent(robotSpot, localRobotSpot));
                             EventBus.getDefault().post(new DeleteOneTraceSpotListEvent(robotSpot));
+                            break;
+                        default:
+                            break;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(TAG, "出错：解析数据失败");
+                }
+            }
+        }, new OKHttpManager.FuncFailure() {
+            @Override
+            public void onFailure() {
+                Log.e(TAG, "出错：请求网络失败");
+            }
+        });
+    }
+
+    private static void startDeleteTraceSpotComplete(final List<RobotSpot> mRobotSpotList) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
+        map.put(CommonNetReq.ID, String.valueOf(mRobotSpotList.get(0).getId()));
+        OKHttpManager.getInstance().sendComplexForm(CommonNetReq.NET_DELETE_TRACE_SPOT_COMPLETE, map, new OKHttpManager.FuncJsonObj() {
+            @Override
+            public void onResponse(JSONObject jsonObject) throws JSONException {
+                try {
+                    LogUtil.d(TAG, "startDeleteTraceSpotComplete:"+jsonObject.getString(CommonNetReq.RESULT_DESC));
+                    switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
+                        case CommonNetReq.CODE_SUCCESS:
+                            EventBus.getDefault().post(new DeleteTraceSpotListCompleteEvent(mRobotSpotList));
                             break;
                         default:
                             break;
