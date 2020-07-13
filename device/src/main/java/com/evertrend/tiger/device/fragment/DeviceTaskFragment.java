@@ -189,6 +189,7 @@ public class DeviceTaskFragment extends BaseFragment implements View.OnClickList
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(SaveCleanTaskSuccessEvent messageEvent) {
         DialogUtil.hideProgressDialog();
+        stopExecuteCleanTaskTimer();
         if (messageEvent.isUpdate()) {
             refreshCleanTaskList(messageEvent.getCleanTask(), "update");
         } else {

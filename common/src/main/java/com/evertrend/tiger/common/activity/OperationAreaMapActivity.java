@@ -2,6 +2,7 @@ package com.evertrend.tiger.common.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -38,6 +39,7 @@ import com.evertrend.tiger.common.R;
 import com.evertrend.tiger.common.adapter.BaseTraceAdapter;
 import com.evertrend.tiger.common.adapter.MapPagesChoiceAdapter;
 import com.evertrend.tiger.common.bean.Device;
+import com.evertrend.tiger.common.bean.DeviceGrant;
 import com.evertrend.tiger.common.bean.MapPages;
 import com.evertrend.tiger.common.bean.RobotSpot;
 import com.evertrend.tiger.common.bean.TracePath;
@@ -47,6 +49,7 @@ import com.evertrend.tiger.common.bean.event.ChoiceMapPagesEvent;
 import com.evertrend.tiger.common.bean.event.CreateNewBaseTraceSuccessEvent;
 import com.evertrend.tiger.common.bean.event.DialogChoiceEvent;
 import com.evertrend.tiger.common.bean.event.GetAllMapPagesSuccessEvent;
+import com.evertrend.tiger.common.bean.event.GetDeviceGrantSuccessEvent;
 import com.evertrend.tiger.common.bean.event.SaveMapPageEvent;
 import com.evertrend.tiger.common.bean.event.SaveTraceSpotFailEvent;
 import com.evertrend.tiger.common.bean.event.map.AddTrack;
@@ -160,6 +163,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
 
     private Device device;
     private MapPages mapPages;
+    private DeviceGrant deviceGrant;
     private SlamwareAgent mAgent;
     private String currentPose = "0";
     private String lastPose;
@@ -192,6 +196,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
     private ScheduledThreadPoolExecutor scheduledThreadGetTraceSpot;
     private ScheduledThreadPoolExecutor scheduledThreadGetMapPagesAllVirtualTrackGroup;
     private ScheduledThreadPoolExecutor scheduledThreadSaveVirtualTrack;
+    private ScheduledThreadPoolExecutor scheduledThreadGetDeviceGrant;
 
     private Runnable mRobotStateUpdateRunnable = new Runnable() {
         int cnt;
@@ -240,13 +245,19 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         lastPose = AppSharePreference.getAppSharedPreference().loadTraceSpotAutoModeLastPose();
         mTraceSpotList = new ArrayList<>();
         tracePathList = new ArrayList<>();
+        deviceGrant = new DeviceGrant();
         loadTraceSpotList();
         scheduledThreadGetMapPagesAllPath = new ScheduledThreadPoolExecutor(3);
         scheduledThreadGetMapPagesAllPath.scheduleAtFixedRate(new CommTaskUtils.TaskGetMapPagesAllPath(device, mapPages),
                 0, 6, TimeUnit.SECONDS);
-        scheduledThreadGetMapPagesAllVirtualTrackGroup = new ScheduledThreadPoolExecutor(5);
+        scheduledThreadGetMapPagesAllVirtualTrackGroup = new ScheduledThreadPoolExecutor(4);
         scheduledThreadGetMapPagesAllVirtualTrackGroup.scheduleAtFixedRate(new CommTaskUtils.TaskGetMapPagesAllVirtualTrackGroup(device, mapPages),
                 0, 10, TimeUnit.SECONDS);
+        if (device.getGrant_flag() == 1) {
+            scheduledThreadGetDeviceGrant = new ScheduledThreadPoolExecutor(3);
+            scheduledThreadGetDeviceGrant.scheduleAtFixedRate(new CommTaskUtils.TaskGetDeviceGrant(device),
+                    0, 6, TimeUnit.SECONDS);
+        }
         initView();
         tv_current_map.setText(String.format(getResources().getString(R.string.yl_common_current_map), mapPages.getName()));
         mAgent = getSlamwareAgent();
@@ -386,6 +397,13 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
             scheduledThreadSaveVirtualTrack = null;
         }
     }
+
+    private void stopGetDeviceGrantTimer() {
+        if (scheduledThreadGetDeviceGrant != null) {
+            scheduledThreadGetDeviceGrant.shutdownNow();
+            scheduledThreadGetDeviceGrant = null;
+        }
+    }
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onEventMainThread(ConnectedEvent event) {
@@ -399,20 +417,29 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         btn_set_spot.setEnabled(true);
         btn_action.setEnabled(true);
         btn_edit.setEnabled(true);
-        btn_save_map.setEnabled(true);
+        if (deviceGrant.getAuthorization_item().contains("1")) {
+            btn_save_map.setEnabled(true);
+        } else {
+            btn_save_map.setEnabled(false);
+        }
+        if (deviceGrant.getAuthorization_item().contains("2")) {
+            btn_set_trace_spot.setVisibility(View.VISIBLE);
+            isAutoRecordSpot = AppSharePreference.getAppSharedPreference().loadAutoRecordPath();
+            if (isAutoRecordSpot) {
+                ll_trace_path_spot.setVisibility(View.VISIBLE);
+                if (!mRecordSpotThread.isAlive()) {
+                    mRecordSpotThread.start();
+                }
+            } else {
+                stopRecordSpot();
+            }
+        } else {
+            btn_set_trace_spot.setVisibility(View.GONE);
+            ll_trace_path_spot.setVisibility(View.GONE);
+        }
         btn_relocation.setEnabled(true);
         btn_trace_path.setEnabled(true);
         mMapView.setCentred();
-
-        isAutoRecordSpot = AppSharePreference.getAppSharedPreference().loadAutoRecordPath();
-        if (isAutoRecordSpot) {
-            ll_trace_path_spot.setVisibility(View.VISIBLE);
-            if (!mRecordSpotThread.isAlive()) {
-                mRecordSpotThread.start();
-            }
-        } else {
-            stopRecordSpot();
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
@@ -789,6 +816,12 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         mapPages = event.getMapPages();
         saveMapPic();
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(GetDeviceGrantSuccessEvent event) {
+        stopGetDeviceGrantTimer();
+        deviceGrant = event.getDeviceGrant();
+    }
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private void virtualWallsComplete() {
@@ -821,6 +854,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         stopGetTraceSpotTimer();
         stopGetMapPagesAllVirtualTrackGroupTimer();
         stopSaveVirtualTrackTimer();
+        stopGetDeviceGrantTimer();
         stopUpdate();
         stopRecordSpot();
         if (EventBus.getDefault().isRegistered(this)) {

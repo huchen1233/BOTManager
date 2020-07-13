@@ -21,6 +21,7 @@ import com.evertrend.tiger.common.bean.event.DeleteDeviceGrantEvent;
 import com.evertrend.tiger.common.bean.event.DeviceExceptionEvent;
 import com.evertrend.tiger.common.bean.event.GetAllMapPagesSuccessEvent;
 import com.evertrend.tiger.common.bean.event.GetDeviceAllGrantsSuccessEvent;
+import com.evertrend.tiger.common.bean.event.GetDeviceGrantSuccessEvent;
 import com.evertrend.tiger.common.bean.event.GetRunLogsSuccessEvent;
 import com.evertrend.tiger.common.bean.event.SaveMapPageEvent;
 import com.evertrend.tiger.common.bean.event.SaveTraceSpotFailEvent;
@@ -1104,6 +1105,53 @@ public class CommTaskUtils {
                                     }
                                 }
                                 EventBus.getDefault().post(new GetDeviceAllGrantsSuccessEvent(deviceGrantList));
+                                break;
+                            default:
+                                break;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(TAG, "出错：解析数据失败");
+                    }
+                }
+            }, new OKHttpManager.FuncFailure() {
+                @Override
+                public void onFailure() {
+                    Log.e(TAG, "出错：请求网络失败");
+                }
+            });
+        }
+    }
+
+    public static class TaskGetDeviceGrant implements Runnable {
+        private Device device;
+        public TaskGetDeviceGrant(Device device) {
+            this.device = device;
+        }
+
+        @Override
+        public void run() {
+            startGetDeviceGrant();
+        }
+
+        private void startGetDeviceGrant() {
+            HashMap<String, String> map = new HashMap<>();
+            map.put(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
+            map.put(CommonNetReq.DEVICE_ID, String.valueOf(device.getId()));
+            OKHttpManager.getInstance().sendComplexForm(CommonNetReq.NET_GET_DEVICE_GRANT, map, new OKHttpManager.FuncJsonObj() {
+                @Override
+                public void onResponse(JSONObject jsonObject) throws JSONException {
+                    try {
+                        switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
+                            case CommonNetReq.CODE_SUCCESS:
+                                JSONObject object = jsonObject.getJSONObject(CommonNetReq.RESULT_DATA);
+                                DeviceGrant deviceGrant = new DeviceGrant();
+                                deviceGrant.setId(object.getIntValue(CommonNetReq.ID));
+                                deviceGrant.setUser(object.getString(CommonNetReq.USER_GRANTED));
+                                deviceGrant.setAuthorization_item(object.getString(CommonNetReq.AUTHORIZATION_ITEM));
+                                deviceGrant.setDevice(object.getIntValue(CommonNetReq.DEVICE));
+                                deviceGrant.setUser_flag(object.getIntValue(CommonNetReq.USER_FLAG));
+                                EventBus.getDefault().post(new GetDeviceGrantSuccessEvent(deviceGrant));
                                 break;
                             default:
                                 break;
