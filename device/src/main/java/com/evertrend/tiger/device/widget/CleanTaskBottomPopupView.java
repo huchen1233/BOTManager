@@ -196,7 +196,6 @@ public class CleanTaskBottomPopupView extends BottomPopupView implements View.On
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(SaveCleanTaskSuccessEvent messageEvent) {
         stopSaveCleanTaskTimer();
-        DialogUtil.hideProgressDialog();
 //        EventBus.getDefault().post(new SaveCleanTaskSuccessEvent(messageEvent.getCleanTask()));
         Toast.makeText(context, "success", Toast.LENGTH_SHORT).show();
         dismiss();

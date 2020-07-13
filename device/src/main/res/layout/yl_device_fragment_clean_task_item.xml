@@ -31,7 +31,7 @@
 
         <TextView
             android:id="@+id/tv_clean_task_description"
-            android:layout_width="200dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:visibility="gone"
             android:ellipsize="marquee"
@@ -138,8 +138,10 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginEnd="5dp"
-        android:background="@drawable/yl_common_button_background"
-        android:visibility="gone"
+        style="@style/yl_common_ButtonStyle"
+        android:background="@drawable/yl_common_btn_bg_round_click"
+        android:textColor="@drawable/yl_common_btn_click_text_color"
+        android:visibility="visible"
         android:text="@string/yl_device_execute"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

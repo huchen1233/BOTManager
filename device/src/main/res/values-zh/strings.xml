@@ -86,7 +86,7 @@
     <string name="yl_device_start_time">开始时间+</string>
     <string name="yl_device_task_status">任务状态</string>
     <string name="yl_device_task_progress">任务进度</string>
-    <string name="yl_device_execute">执行</string>
+    <string name="yl_device_execute">马上执行</string>
     <string name="yl_device_delete_task">删除任务</string>
     <string name="yl_device_update_task">更新任务</string>
     <string name="yl_device_in_progress">进行中...</string>

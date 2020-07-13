@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -48,6 +49,14 @@ public class CleanTaskReclyViewAdapter extends  RecyclerView.Adapter<CleanTaskRe
             public void onClick(View v) {
                 CleanTask cleanTask = mCleanTaskList.get(viewHolder.getAdapterPosition());
                 EventBus.getDefault().post(new ChoiceCleanTaskEvent(cleanTask, "detail"));
+            }
+        });
+
+        viewHolder.btn_execute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CleanTask cleanTask = mCleanTaskList.get(viewHolder.getAdapterPosition());
+                EventBus.getDefault().post(new ChoiceCleanTaskEvent(cleanTask, "execute"));
             }
         });
 
@@ -150,7 +159,7 @@ public class CleanTaskReclyViewAdapter extends  RecyclerView.Adapter<CleanTaskRe
         TextView cleanTaskExecStatus;
         LinearLayout ll_task_progress;
         TextView cleanTaskProgress;
-//        Button btn_execute;
+        Button btn_execute;
 
         ImageView cleanTaskImage;
         View cleanTaskViwe;
@@ -165,7 +174,7 @@ public class CleanTaskReclyViewAdapter extends  RecyclerView.Adapter<CleanTaskRe
             cleanTaskExecStatus = itemView.findViewById(R.id.tv_clean_task_exec_status);
             ll_task_progress = itemView.findViewById(R.id.ll_task_progress);
             cleanTaskProgress = itemView.findViewById(R.id.tv_clean_task_progress);
-//            btn_execute = itemView.findViewById(R.id.btn_execute);
+            btn_execute = itemView.findViewById(R.id.btn_execute);
             cleanTaskImage = itemView.findViewById(R.id.iv_clean_task_image);
         }
     }

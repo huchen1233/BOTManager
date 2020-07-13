@@ -22,6 +22,7 @@ public class NetReq {
     public static final String NET_ADD_CLEAN_TASK = CommonNetReq.REQ_HOST + "api/remote/add-clean-task";
     public static final String NET_UPDATE_CLEAN_TASK = CommonNetReq.REQ_HOST + "api/remote/update-clean-task";
     public static final String NET_DELETE_CLEAN_TASK = CommonNetReq.REQ_HOST + "api/remote/delete-clean-task";
+    public static final String NET_EXECUTE_CLEAN_TASK = CommonNetReq.REQ_HOST + "api/remote/execute-clean-task";
 
     public static final String NET_UPDATE_MAP_PAGE = CommonNetReq.REQ_HOST + "api/remote/update-map-page";
     public static final String NET_DELETE_MAP_PAGE = CommonNetReq.REQ_HOST + "api/remote/delete-map-page";

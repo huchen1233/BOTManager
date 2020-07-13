@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.evertrend.tiger.common.utils.general.AppSharePreference;
+import com.evertrend.tiger.common.utils.general.CommonConstants;
 import com.evertrend.tiger.common.utils.general.JsonAnalysisUtil;
 import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.common.utils.network.CommonNetReq;
@@ -466,6 +467,50 @@ public class TaskUtils {
                         switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
                             case CommonNetReq.CODE_SUCCESS:
                                 EventBus.getDefault().post(new DeleteCleanTaskEvent(cleanTask));
+                                break;
+                            default:
+                                break;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(TAG, "出错：解析数据失败");
+                    }
+                }
+            }, new OKHttpManager.FuncFailure() {
+                @Override
+                public void onFailure() {
+                    Log.e(TAG, "出错：请求网络失败");
+                }
+            });
+        }
+    }
+
+    public static class TaskExecuteCleanTask implements Runnable {
+        private Device device;
+        private CleanTask cleanTask;
+        public TaskExecuteCleanTask(Device device, CleanTask cleanTask) {
+            this.device = device;
+            this.cleanTask = cleanTask;
+        }
+
+        @Override
+        public void run() {
+            startExecuteCleanTask();
+        }
+
+        private void startExecuteCleanTask() {
+            HashMap<String, String> map = new HashMap<>();
+            map.put(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
+            map.put(NetReq.DEVICE_ID, String.valueOf(device.getId()));
+            map.put(NetReq.ID, String.valueOf(cleanTask.getId()));
+            OKHttpManager.getInstance().sendComplexForm(NetReq.NET_EXECUTE_CLEAN_TASK, map, new OKHttpManager.FuncJsonObj() {
+                @Override
+                public void onResponse(JSONObject jsonObject) throws JSONException {
+                    try {
+                        switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
+                            case CommonNetReq.CODE_SUCCESS:
+                                cleanTask = JsonAnalysisUtil.getCleanTask(jsonObject.getJSONObject(CommonNetReq.RESULT_DATA));
+                                EventBus.getDefault().post(new SaveCleanTaskSuccessEvent(cleanTask, true));
                                 break;
                             default:
                                 break;

@@ -74,6 +74,7 @@ public class DeviceTaskFragment extends BaseFragment implements View.OnClickList
 
     private ScheduledThreadPoolExecutor scheduledThreadGetAllCleanTasks;
     private ScheduledThreadPoolExecutor scheduledThreadDeleteCleanTask;
+    private ScheduledThreadPoolExecutor scheduledThreadExecuteCleanTask;
 
     @Nullable
     @Override
@@ -158,7 +159,7 @@ public class DeviceTaskFragment extends BaseFragment implements View.OnClickList
     public void onEventMainThread(ChoiceCleanTaskEvent event) {
         cleanTask = event.getCleanTask();
         if (event.getMark().equals("execute")) {
-//            executeCleanTask();
+            executeCleanTask();
         } else if (event.getMark().equals("delete")) {
             String deleteConfirm = getResources().getString(R.string.yl_device_delete_task_confirm);
             DialogUtil.showChoiceDialog(getActivity(), String.format(deleteConfirm, cleanTask.getName()), CommonConstants.TYPE_SUCCESS_EVENT_DELETE_CLEANTASK);
@@ -187,6 +188,7 @@ public class DeviceTaskFragment extends BaseFragment implements View.OnClickList
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(SaveCleanTaskSuccessEvent messageEvent) {
+        DialogUtil.hideProgressDialog();
         if (messageEvent.isUpdate()) {
             refreshCleanTaskList(messageEvent.getCleanTask(), "update");
         } else {
@@ -199,6 +201,7 @@ public class DeviceTaskFragment extends BaseFragment implements View.OnClickList
         ScheduledThreadUtils.stopGetAllMapPagesTimer();
         stopGetAllCleanTasksTimer();
         stopDeleteCleanTaskTimer();
+        stopExecuteCleanTaskTimer();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
@@ -236,6 +239,13 @@ public class DeviceTaskFragment extends BaseFragment implements View.OnClickList
         }
     }
 
+    private void stopExecuteCleanTaskTimer() {
+        if (scheduledThreadExecuteCleanTask != null) {
+            scheduledThreadExecuteCleanTask.shutdownNow();
+            scheduledThreadExecuteCleanTask = null;
+        }
+    }
+
     private void initView(View root) {
         btn_basic_setting = root.findViewById(R.id.btn_basic_setting);
         rlv_clean_task = root.findViewById(R.id.rlv_clean_task);
@@ -246,6 +256,7 @@ public class DeviceTaskFragment extends BaseFragment implements View.OnClickList
     }
 
     private void refreshCleanTaskList(CleanTask cleanTask, String operation) {
+        LogUtil.i(getActivity(), TAG, "refreshCleanTaskList : "+cleanTask.toString());
         if (operation.equals("create")) {
             cleanTaskList.add(cleanTask);
             cleanTaskReclyViewAdapter.notifyDataSetChanged();
@@ -267,7 +278,6 @@ public class DeviceTaskFragment extends BaseFragment implements View.OnClickList
     }
 
     private void showDetailCleanTask() {
-        LogUtil.i(getActivity(), TAG, "showDetailCleanTask : "+cleanTask.getName());
         String[] taskDetailInfo = getResources().getStringArray(R.array.yl_device_clean_task_detail_info);
         taskDetailInfo[0] = taskDetailInfo[0] + cleanTask.getName();
         taskDetailInfo[1] = taskDetailInfo[1] + cleanTask.getDesc();
@@ -330,6 +340,13 @@ public class DeviceTaskFragment extends BaseFragment implements View.OnClickList
         DialogUtil.showProgressDialog(getActivity(), getResources().getString(R.string.yl_common_deleting), false, false);
         scheduledThreadDeleteCleanTask = new ScheduledThreadPoolExecutor(4);
         scheduledThreadDeleteCleanTask.scheduleAtFixedRate(new TaskUtils.TaskDeleteCleanTask(device, cleanTask),
+                0, 5, TimeUnit.SECONDS);
+    }
+
+    private void executeCleanTask() {
+        DialogUtil.showProgressDialog(getActivity(), getResources().getString(R.string.yl_common_saving), false, false);
+        scheduledThreadExecuteCleanTask = new ScheduledThreadPoolExecutor(4);
+        scheduledThreadExecuteCleanTask.scheduleAtFixedRate(new TaskUtils.TaskExecuteCleanTask(device, cleanTask),
                 0, 5, TimeUnit.SECONDS);
     }
 

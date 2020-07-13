@@ -190,7 +190,7 @@ public class JsonAnalysisUtil {
         return cleanTaskList;
     }
 
-    private static String formatStartTime(long intValue) {
+    public static String formatStartTime(long intValue) {
         Calendar beginC = Calendar.getInstance();
         beginC.setTimeInMillis(intValue*1000);
         int hourB = beginC.get(Calendar.HOUR_OF_DAY);
