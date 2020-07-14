@@ -418,6 +418,10 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         btn_relocation.setEnabled(true);
         btn_trace_path.setEnabled(true);
         mMapView.setCentred();
+        if (device.getCurrent_map_page() != mapPages.getId()) {//当前地图与要加载地图不一致时，先清空当前地图
+            mAgent.clearMap();
+        }
+
         isAutoRecordSpot = AppSharePreference.getAppSharedPreference().loadAutoRecordPath();
         if (device.getGrant_flag() != 1) {
             btn_save_map.setEnabled(true);
