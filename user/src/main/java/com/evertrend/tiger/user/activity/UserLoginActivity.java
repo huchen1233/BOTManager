@@ -175,10 +175,14 @@ public class UserLoginActivity extends UserBaseActivity implements CompoundButto
                     @Override
                     public void onResponse(JSONObject jsonObject) throws JSONException {
                         try {
-                            LogUtil.i(UserLoginActivity.this, TAG, jsonObject.getString(CommonNetReq.RESULT_DESC));
+                            LogUtil.d(TAG, jsonObject.getString(CommonNetReq.RESULT_DESC));
                             switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
                                 case CommonNetReq.CODE_SUCCESS:
                                     loginSuccess(jsonObject.getString(NetReq.RESULT_TOKEN), strAccount);
+                                    break;
+                                case CommonNetReq.ERR_CODE_INVALID_LOGIN:
+                                    DialogUtil.hideProgressDialog();
+                                    DialogUtil.showToast(UserLoginActivity.this, jsonObject.getString(CommonNetReq.RESULT_DESC), Toast.LENGTH_LONG);
                                     break;
                                 case NetReq.CODE_FAIL_USER_NOT_EXIST:
                                     DialogUtil.showToast(UserLoginActivity.this, R.string.yl_user_account_not_exist, Toast.LENGTH_SHORT);
