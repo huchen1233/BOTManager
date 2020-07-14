@@ -338,7 +338,7 @@ public class DeviceTaskFragment extends BaseFragment implements View.OnClickList
         taskDetailInfo[9] = taskDetailInfo[9] + cleanTask.getActual_distance();
         taskDetailInfo[10] = taskDetailInfo[10] + cleanTask.getActual_time();
         new XPopup.Builder(getActivity())
-                .asCenterList(getResources().getString(R.string.yl_device_task_detail_info),taskDetailInfo, null)
+                .asBottomList(getResources().getString(R.string.yl_device_task_detail_info),taskDetailInfo, null)
                 .show();
     }
 
