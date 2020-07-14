@@ -31,6 +31,12 @@ public class JsonAnalysisUtil {
         cleanTask.setEst_consume_time(jsonObject.getString(CommonConstants.EST_CONSUME_TIME));
         cleanTask.setRun_once(jsonObject.getIntValue(CommonConstants.RUN_ONCE));
         cleanTask.setTaskType(jsonObject.getIntValue(CommonConstants.TASK_TYPE));
+        cleanTask.setRunStatus(jsonObject.getIntValue(CommonConstants.RUN_STATUS));
+        cleanTask.setPoints_num(jsonObject.getIntValue(CommonConstants.POINTS_NUM));
+        cleanTask.setDistance(jsonObject.getDoubleValue(CommonConstants.DISTANCE));
+        cleanTask.setEstimated_time(jsonObject.getIntValue(CommonConstants.ESTIMATED_TIME));
+        cleanTask.setActual_distance(jsonObject.getDoubleValue(CommonConstants.ACTUAL_DISTANCE));
+        cleanTask.setActual_time(jsonObject.getIntValue(CommonConstants.ACTUAL_TIME));
         return cleanTask;
     }
 
@@ -184,6 +190,11 @@ public class JsonAnalysisUtil {
                 cleanTask.setRun_once(jsonArray.getJSONObject(i).getIntValue(CommonConstants.RUN_ONCE));
                 cleanTask.setTaskType(jsonArray.getJSONObject(i).getIntValue(CommonConstants.TASK_TYPE));
                 cleanTask.setRunStatus(jsonArray.getJSONObject(i).getIntValue(CommonConstants.RUN_STATUS));
+                cleanTask.setPoints_num(jsonArray.getJSONObject(i).getIntValue(CommonConstants.POINTS_NUM));
+                cleanTask.setDistance(jsonArray.getJSONObject(i).getDoubleValue(CommonConstants.DISTANCE));
+                cleanTask.setEstimated_time(jsonArray.getJSONObject(i).getIntValue(CommonConstants.ESTIMATED_TIME));
+                cleanTask.setActual_distance(jsonArray.getJSONObject(i).getDoubleValue(CommonConstants.ACTUAL_DISTANCE));
+                cleanTask.setActual_time(jsonArray.getJSONObject(i).getIntValue(CommonConstants.ACTUAL_TIME));
                 cleanTaskList.add(cleanTask);
             }
         }

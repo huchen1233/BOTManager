@@ -79,6 +79,11 @@ public class CommonConstants {
     public static final String RUN_ONCE = "run_once";
     public static final String TASK_TYPE = "task_type";
     public static final String RUN_STATUS = "run_status";
+    public static final String POINTS_NUM = "points_num";
+    public static final String DISTANCE = "distance";
+    public static final String ESTIMATED_TIME = "estimated_time";
+    public static final String ACTUAL_DISTANCE = "actual_distance";
+    public static final String ACTUAL_TIME = "actual_time";
     public static final String LEVEL = "level";
     public static final String TYPE_CODE = "type_code";
     public static final String LOG_TIME = "log_time";

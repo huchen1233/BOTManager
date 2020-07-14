@@ -32,6 +32,11 @@ public class CleanTask implements Serializable {
     private int mapPage;
     private int taskType;
     private int runStatus;
+    private int points_num;
+    private double distance;
+    private int estimated_time;
+    private double actual_distance;
+    private int actual_time;
 
     @Override
     public boolean equals(Object o) {
@@ -48,6 +53,12 @@ public class CleanTask implements Serializable {
                 device == cleanTask.device &&
                 mapPage == cleanTask.mapPage &&
                 taskType == cleanTask.taskType &&
+                runStatus == cleanTask.runStatus &&
+                points_num == cleanTask.points_num &&
+                Double.compare(cleanTask.distance, distance) == 0 &&
+                estimated_time == cleanTask.estimated_time &&
+                Double.compare(cleanTask.actual_distance, actual_distance) == 0 &&
+                actual_time == cleanTask.actual_time &&
                 Objects.equals(name, cleanTask.name) &&
                 Objects.equals(desc, cleanTask.desc) &&
                 Objects.equals(tracePaths, cleanTask.tracePaths) &&
@@ -60,7 +71,7 @@ public class CleanTask implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, desc, tracePaths, virtualTrackGroups, specialWorks, taskPriority, tracePathsPriority, virtualTrackGroupsPriority, specialWorksPriority, startTime, est_end_time, est_consume_time, taskOption, run_once, device, mapPage, taskType);
+        return Objects.hash(id, name, desc, tracePaths, virtualTrackGroups, specialWorks, taskPriority, tracePathsPriority, virtualTrackGroupsPriority, specialWorksPriority, startTime, est_end_time, est_consume_time, taskOption, run_once, device, mapPage, taskType, runStatus, points_num, distance, estimated_time, actual_distance, actual_time);
     }
 
     public void setCleanTask(CleanTask cleanTask) {
@@ -82,6 +93,12 @@ public class CleanTask implements Serializable {
         this.device = cleanTask.getDevice();
         this.mapPage = cleanTask.getMapPage();
         this.taskType = cleanTask.getTaskType();
+        this.runStatus = cleanTask.getTaskType();
+        this.points_num = cleanTask.getPoints_num();
+        this.distance = cleanTask.getDistance();
+        this.estimated_time = cleanTask.getEstimated_time();
+        this.actual_distance = cleanTask.getActual_distance();
+        this.actual_time = cleanTask.getActual_time();
     }
 
     @Override
@@ -106,7 +123,52 @@ public class CleanTask implements Serializable {
                 ", mapPage=" + mapPage +
                 ", taskType=" + taskType +
                 ", runStatus=" + runStatus +
+                ", points_num=" + points_num +
+                ", distance=" + distance +
+                ", estimated_time=" + estimated_time +
+                ", actual_distance=" + actual_distance +
+                ", actual_time=" + actual_time +
                 '}';
+    }
+
+    public int getPoints_num() {
+        return points_num;
+    }
+
+    public void setPoints_num(int points_num) {
+        this.points_num = points_num;
+    }
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
+
+    public int getEstimated_time() {
+        return estimated_time;
+    }
+
+    public void setEstimated_time(int estimated_time) {
+        this.estimated_time = estimated_time;
+    }
+
+    public double getActual_distance() {
+        return actual_distance;
+    }
+
+    public void setActual_distance(double actual_distance) {
+        this.actual_distance = actual_distance;
+    }
+
+    public int getActual_time() {
+        return actual_time;
+    }
+
+    public void setActual_time(int actual_time) {
+        this.actual_time = actual_time;
     }
 
     public int getRunStatus() {

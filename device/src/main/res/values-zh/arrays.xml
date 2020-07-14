@@ -7,6 +7,11 @@
         <item>状态: </item>
         <item>进度: </item>
         <item>开始时间: </item>
+        <item>点位数量: </item>
+        <item>最短路径(m): </item>
+        <item>最小耗时(s): </item>
+        <item>实际路径(m): </item>
+        <item>实际耗时(s): </item>
     </string-array>
 
     <string-array name="yl_device_type_evbot_sl_detail_info_name">

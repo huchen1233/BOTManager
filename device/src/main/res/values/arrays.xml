@@ -16,6 +16,11 @@
         <item>status: </item>
         <item>progress: </item>
         <item>start time: </item>
+        <item>points num: </item>
+        <item>distance(m): </item>
+        <item>estimated time(s): </item>
+        <item>actual distance(m): </item>
+        <item>actual time(s): </item>
     </string-array>
 
     <string-array name="yl_device_type_evbot_sl_detail_info_name">
