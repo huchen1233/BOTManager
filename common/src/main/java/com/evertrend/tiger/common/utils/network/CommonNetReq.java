@@ -102,6 +102,7 @@ public class CommonNetReq {
     public static final String STATUS = "status";
 
     public static final int CODE_SUCCESS = 0;
+    public static final int ERR_CODE_INVALID_LOGIN = 5102;
 
     public static final int ERR_CODE_ADD_SPOT_FAIL = 5206;
     public static final int ERR_CODE_SAVE_CREATE_MAP_FAIL = 5207;
