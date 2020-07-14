@@ -93,11 +93,13 @@ public class DeviceCommunicationService extends Service {
             for (Device device: exceptionDeviceList) {
                 List<Device> devices = LitePal.where("device_id = ?", device.getDevice_id()).find(Device.class);
                 if (devices.size() > 0) {
+//                    LogUtil.d(TAG, "info: "+device.getAlarm_info());
+//                    LogUtil.d(TAG, "local info: "+devices.get(0).getAlarm_info());
                     if (device.getAlarm_info().equals(devices.get(0).getAlarm_info())) {
                         LogUtil.d(TAG, "alarm info same");
 //                        popupFaultNotice(device);
                     } else {
-                        device.save();
+                        device.update(devices.get(0).getId());
                         popupFaultNotice(device);
                     }
                 } else {
