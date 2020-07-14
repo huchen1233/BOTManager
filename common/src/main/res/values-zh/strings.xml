@@ -80,4 +80,5 @@
     <string name="yl_common_cannot_authorize_to_yourself">不能对自己的设备给自己授权</string>
     <string name="yl_common_authorization_fail">授权失败，请重试</string>
     <string name="yl_common_no_authorization_items">没有授权项</string>
+    <string name="yl_common_distanceAndTime">点位数: %1$d，路径长度(m): %2$.3f，估计耗时(s):%3$d</string>
 </resources>

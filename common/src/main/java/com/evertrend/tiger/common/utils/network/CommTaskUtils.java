@@ -42,6 +42,7 @@ import com.evertrend.tiger.common.bean.mapview.MapView;
 import com.evertrend.tiger.common.utils.general.AppSharePreference;
 import com.evertrend.tiger.common.utils.general.CommonConstants;
 import com.evertrend.tiger.common.utils.general.DBUtil;
+import com.evertrend.tiger.common.utils.general.JsonAnalysisUtil;
 import com.evertrend.tiger.common.utils.general.LogUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -82,19 +83,7 @@ public class CommTaskUtils {
                         switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
                             case CommonNetReq.CODE_SUCCESS:
                                 JSONArray jsonArray = jsonObject.getJSONArray(CommonNetReq.RESULT_DATA);
-                                List<TracePath> tracePathList = new ArrayList<>();
-                                if (jsonArray.size() > 0) {
-                                    for (int i = 0; i < jsonArray.size(); i++) {
-                                        TracePath tracePath = new TracePath();
-                                        tracePath.setId(jsonArray.getJSONObject(i).getIntValue(CommonNetReq.ID));
-                                        tracePath.setName(jsonArray.getJSONObject(i).getString(CommonNetReq.NAME));
-                                        tracePath.setDesc(jsonArray.getJSONObject(i).getString(CommonNetReq.DESC));
-                                        tracePath.setDeviceId(jsonArray.getJSONObject(i).getIntValue(CommonNetReq.DEVICE));
-                                        tracePath.setFlag(jsonArray.getJSONObject(i).getIntValue(CommonNetReq.FLAG));
-                                        tracePath.setMapPage(jsonArray.getJSONObject(i).getIntValue(CommonNetReq.MAP_PAGE));
-                                        tracePathList.add(tracePath);
-                                    }
-                                }
+                                List<TracePath> tracePathList = JsonAnalysisUtil.loadAllPath(jsonArray);
                                 EventBus.getDefault().post(new GetMapPagesAllPathSuccessEvent(tracePathList));
                                 break;
                             default:

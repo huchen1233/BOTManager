@@ -4,12 +4,34 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.evertrend.tiger.common.bean.CleanTask;
 import com.evertrend.tiger.common.bean.Device;
+import com.evertrend.tiger.common.bean.TracePath;
+import com.evertrend.tiger.common.utils.network.CommonNetReq;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 public class JsonAnalysisUtil {
+
+    public static List<TracePath> loadAllPath(JSONArray paths) {
+        List<TracePath> tracePathList = new ArrayList<>();
+        if (paths != null) {
+            for (int i = 0; i < paths.size(); i++) {
+                TracePath tracePath = new TracePath();
+                tracePath.setId(paths.getJSONObject(i).getIntValue(CommonConstants.ID));
+                tracePath.setName(paths.getJSONObject(i).getString(CommonConstants.NAME));
+                tracePath.setDesc(paths.getJSONObject(i).getString(CommonConstants.DESC));
+                tracePath.setDeviceId(paths.getJSONObject(i).getIntValue(CommonConstants.DEVICE));
+                tracePath.setFlag(paths.getJSONObject(i).getIntValue(CommonConstants.FLAG));
+                tracePath.setMapPage(paths.getJSONObject(i).getIntValue(CommonConstants.MAP_PAGE));
+                tracePath.setPoints_num(paths.getJSONObject(i).getIntValue(CommonConstants.POINTS_NUM));
+                tracePath.setDistance(paths.getJSONObject(i).getDoubleValue(CommonConstants.DISTANCE));
+                tracePath.setEstimated_time(paths.getJSONObject(i).getIntValue(CommonConstants.ESTIMATED_TIME));
+                tracePathList.add(tracePath);
+            }
+        }
+        return  tracePathList;
+    }
 
     public static CleanTask getCleanTask(JSONObject jsonObject) {
         CleanTask cleanTask = new CleanTask();

@@ -126,6 +126,8 @@ public class BaseTraceAdapter extends  RecyclerView.Adapter<BaseTraceAdapter.Vie
         holder.tv_desc.setText(baseTrace.getDesc());
         if (type == CommonConstants.TYPE_MAPPAGE_OPERATION_TRACE_PATH) {
 //            holder.iv_base_trace.setImageResource(R.drawable.yl_common_ic_trace_path_orange_36dp);
+            holder.tv_dAndTime.setVisibility(View.VISIBLE);
+            holder.tv_dAndTime.setText(String.format(mContext.getString(R.string.yl_common_distanceAndTime), baseTrace.getPoints_num(), baseTrace.getDistance(), baseTrace.getEstimated_time()));
             String imagePath = mContext.getFilesDir()+"/"+baseTrace.getName()+"_"+baseTrace.getId()+".png";
             File imgFile = new File(imagePath);
             if (imgFile.exists()) {
@@ -134,6 +136,7 @@ public class BaseTraceAdapter extends  RecyclerView.Adapter<BaseTraceAdapter.Vie
                 holder.iv_base_trace.setImageResource(R.drawable.path_empty);
             }
         } else if (type == CommonConstants.TYPE_MAPPAGE_OPERATION_VIRTUAL_TRACK) {
+            holder.tv_dAndTime.setVisibility(View.GONE);
             holder.iv_base_trace.setImageResource(R.drawable.yl_common_ic_virtual_track_group_blue_36dp);
         }
     }
@@ -146,6 +149,7 @@ public class BaseTraceAdapter extends  RecyclerView.Adapter<BaseTraceAdapter.Vie
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tv_name;
         TextView tv_desc;
+        TextView tv_dAndTime;
         ImageView iv_base_trace;
         View baseTraceViwe;
 
@@ -154,6 +158,7 @@ public class BaseTraceAdapter extends  RecyclerView.Adapter<BaseTraceAdapter.Vie
             baseTraceViwe = itemView;
             tv_name = itemView.findViewById(R.id.tv_name);
             tv_desc = itemView.findViewById(R.id.tv_desc);
+            tv_dAndTime = itemView.findViewById(R.id.tv_dAndTime);
             iv_base_trace = itemView.findViewById(R.id.iv_base_trace);
         }
     }

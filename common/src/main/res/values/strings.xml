@@ -80,4 +80,5 @@
     <string name="yl_common_cannot_authorize_to_yourself">cannot authorize to yourself</string>
     <string name="yl_common_authorization_fail">authorization fail</string>
     <string name="yl_common_no_authorization_items">No authorization items</string>
+    <string name="yl_common_distanceAndTime">point num: %1$d，distance(m): %2$.3f，time:%3$d</string>
 </resources>

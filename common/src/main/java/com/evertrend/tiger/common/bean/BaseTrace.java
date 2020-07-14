@@ -8,6 +8,9 @@ public class BaseTrace implements Serializable {
     private String desc;
     private int deviceId;
     private int mapPage;
+    private int points_num;
+    private double distance;
+    private int estimated_time;
 
     public void setBaseTrace(BaseTrace baseTrace) {
         this.id = baseTrace.getId();
@@ -15,6 +18,30 @@ public class BaseTrace implements Serializable {
         this.desc = baseTrace.getDesc();
         this.deviceId = baseTrace.getDeviceId();
         this.mapPage = baseTrace.getMapPage();
+    }
+
+    public int getPoints_num() {
+        return points_num;
+    }
+
+    public void setPoints_num(int points_num) {
+        this.points_num = points_num;
+    }
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
+
+    public int getEstimated_time() {
+        return estimated_time;
+    }
+
+    public void setEstimated_time(int estimated_time) {
+        this.estimated_time = estimated_time;
     }
 
     public int getId() {
@@ -65,6 +92,9 @@ public class BaseTrace implements Serializable {
                 ", desc='" + desc + '\'' +
                 ", deviceId=" + deviceId +
                 ", mapPage=" + mapPage +
+                ", points_num=" + points_num +
+                ", distance=" + distance +
+                ", estimated_time=" + estimated_time +
                 '}';
     }
 }
