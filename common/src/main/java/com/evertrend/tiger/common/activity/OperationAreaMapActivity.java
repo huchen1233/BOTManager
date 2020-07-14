@@ -2,7 +2,6 @@ package com.evertrend.tiger.common.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -120,7 +119,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -263,7 +261,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         mAgent = getSlamwareAgent();
         connectSlamware(device);
         EventBus.getDefault().register(this);
-        startRelocationOrSetCurrentMap(CommonConstants.TYPE_SET_CURRENT_MAP);
+        startRelocationOrSetCurrentMapOrAutoRecordPath(CommonConstants.TYPE_SET_CURRENT_MAP, 1);
     }
 
     @Override
@@ -417,29 +415,37 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         btn_set_spot.setEnabled(true);
         btn_action.setEnabled(true);
         btn_edit.setEnabled(true);
-        if (deviceGrant.getAuthorization_item().contains("1")) {
-            btn_save_map.setEnabled(true);
-        } else {
-            btn_save_map.setEnabled(false);
-        }
-        if (deviceGrant.getAuthorization_item().contains("2")) {
-            btn_set_trace_spot.setVisibility(View.VISIBLE);
-            isAutoRecordSpot = AppSharePreference.getAppSharedPreference().loadAutoRecordPath();
-            if (isAutoRecordSpot) {
-                ll_trace_path_spot.setVisibility(View.VISIBLE);
-                if (!mRecordSpotThread.isAlive()) {
-                    mRecordSpotThread.start();
-                }
-            } else {
-                stopRecordSpot();
-            }
-        } else {
-            btn_set_trace_spot.setVisibility(View.GONE);
-            ll_trace_path_spot.setVisibility(View.GONE);
-        }
         btn_relocation.setEnabled(true);
         btn_trace_path.setEnabled(true);
         mMapView.setCentred();
+        isAutoRecordSpot = AppSharePreference.getAppSharedPreference().loadAutoRecordPath();
+        if (device.getGrant_flag() != 1) {
+            btn_save_map.setEnabled(true);
+            switchAutoRecordSpot();
+        } else {
+            if (deviceGrant.getAuthorization_item().contains("1")) {//建图
+                btn_save_map.setEnabled(true);
+            } else {
+                btn_save_map.setEnabled(false);
+            }
+            if (deviceGrant.getAuthorization_item().contains("2")) {//循迹路径
+                switchAutoRecordSpot();
+            } else {
+                startRelocationOrSetCurrentMapOrAutoRecordPath(CommonConstants.TYPE_AUTO_RECORD_PATH, 0);
+                btn_set_trace_spot.setVisibility(View.GONE);
+                ll_trace_path_spot.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    private void switchAutoRecordSpot() {
+        btn_set_trace_spot.setVisibility(View.VISIBLE);
+        if (isAutoRecordSpot) {
+            ll_trace_path_spot.setVisibility(View.GONE);
+            startRelocationOrSetCurrentMapOrAutoRecordPath(CommonConstants.TYPE_AUTO_RECORD_PATH, 1);
+        } else {
+            startRelocationOrSetCurrentMapOrAutoRecordPath(CommonConstants.TYPE_AUTO_RECORD_PATH, 0);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
@@ -662,7 +668,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         LogUtil.i(this, TAG, "===RelocationOrSetCurrentMapEvent===");
         stopRelocationMapPagesTimer();
         DialogUtil.hideProgressDialog();
-        Toast.makeText(this, "success", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "success", Toast.LENGTH_SHORT).show();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -1225,7 +1231,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
             mAgent.clearMap();
             clearTraceSpotList();
             DialogUtil.showProgressDialog(this, getResources().getString(R.string.yl_common_reloading), false, false);
-            startRelocationOrSetCurrentMap(CommonConstants.TYPE_RELOCATION);
+            startRelocationOrSetCurrentMapOrAutoRecordPath(CommonConstants.TYPE_RELOCATION, 1);
         } else if (v.getId() == R.id.btn_trace_path) {
             ll_trace_path_operation.setVisibility(View.VISIBLE);
             ll_trace_path_operation.animate().translationY(200).setDuration(1000).start();
@@ -1350,9 +1356,9 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         ll_map_virtual_tracks.setVisibility(View.VISIBLE);
     }
 
-    private void startRelocationOrSetCurrentMap(int type) {
-        scheduledThreadRelocationMapPages = new ScheduledThreadPoolExecutor(4);
-        scheduledThreadRelocationMapPages.scheduleAtFixedRate(new CommTaskUtils.TaskRelocationOrSetCurrentMap(device, mapPages, type),
+    private void startRelocationOrSetCurrentMapOrAutoRecordPath(int type, int status) {
+        if (scheduledThreadRelocationMapPages == null) scheduledThreadRelocationMapPages = new ScheduledThreadPoolExecutor(4);
+        scheduledThreadRelocationMapPages.scheduleAtFixedRate(new CommTaskUtils.TaskRelocationOrSetCurrentMap(device, mapPages, type, status),
                 0, 5, TimeUnit.SECONDS);
     }
 
@@ -1544,12 +1550,14 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
             AppSharePreference.getAppSharedPreference().saveAutoRecordPath(isChecked);
             isAutoRecordSpot = isChecked;
             if (isChecked) {
-                ll_trace_path_spot.setVisibility(View.VISIBLE);
-                if (!mRecordSpotThread.isAlive()) {
-                    mRecordSpotThread.start();
-                }
+                startRelocationOrSetCurrentMapOrAutoRecordPath(CommonConstants.TYPE_AUTO_RECORD_PATH, 1);
+//                ll_trace_path_spot.setVisibility(View.VISIBLE);
+//                if (!mRecordSpotThread.isAlive()) {
+//                    mRecordSpotThread.start();
+//                }
             } else {
-                stopRecordSpot();
+                startRelocationOrSetCurrentMapOrAutoRecordPath(CommonConstants.TYPE_AUTO_RECORD_PATH, 0);
+//                stopRecordSpot();
             }
         }
     }

@@ -55,6 +55,7 @@ public class CommonNetReq {
     public static final String NET_CREATE_NEW_MAP_APGE = REQ_HOST + "api/remote/create-new-map-page";
     public static final String NET_RELOCATION_MAP_APGE = REQ_HOST + "api/remote/relocation-map-page";
     public static final String NET_SET_CURRENT_MAP = REQ_HOST + "api/remote/set-current-map";
+    public static final String NET_AUTO_RECORD_PATH = REQ_HOST + "api/remote/auto-record-path";
     public static final String NET_SAVE_VIRTUAL_TRACK = REQ_HOST + "api/remote/save-virtual-track";
     public static final String NET_NEW_VT_GROUP = REQ_HOST + "api/remote/new-vtgroup";
     public static final String NET_UPDATE_VT_GROUP = REQ_HOST + "api/remote/update-vtgroup";
@@ -98,6 +99,7 @@ public class CommonNetReq {
     public static final String AUTHORIZATION_ITEM = "authorization_item";
     public static final String USER_GRANTED = "user_granted";
     public static final String USER_FLAG = "user_flag";
+    public static final String STATUS = "status";
 
     public static final int CODE_SUCCESS = 0;
 

@@ -71,7 +71,7 @@ public class AppSharePreference {
         editor.apply();
     }
     public boolean loadAutoRecordPath() {
-        return sp.getBoolean(DEVICE_TRACE_PATH_AUTO_RECORD, true);
+        return sp.getBoolean(DEVICE_TRACE_PATH_AUTO_RECORD, false);
     }
 
     public void saveTracePathRollbackNum(int num) {

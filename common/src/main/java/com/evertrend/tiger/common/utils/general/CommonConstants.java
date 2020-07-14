@@ -134,6 +134,7 @@ public class CommonConstants {
 
     public static final int TYPE_RELOCATION = 0;
     public static final int TYPE_SET_CURRENT_MAP = 1;
+    public static final int TYPE_AUTO_RECORD_PATH = 2;
 
     public static final int CREATE_TRACE_SPOT_REQUEST_CODE = 104;
     public static final int CREATE_TRACE_PATH_REQUEST_CODE = 105;

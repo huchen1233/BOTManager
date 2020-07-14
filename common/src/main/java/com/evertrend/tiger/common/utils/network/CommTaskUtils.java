@@ -432,10 +432,12 @@ public class CommTaskUtils {
         private Device device;
         private MapPages mapPages;
         private int type;
-        public TaskRelocationOrSetCurrentMap(Device device, MapPages mapPages, int type) {
+        private int status;
+        public TaskRelocationOrSetCurrentMap(Device device, MapPages mapPages, int type, int status) {
             this.device = device;
             this.mapPages = mapPages;
             this.type = type;
+            this.status = status;
         }
 
         @Override
@@ -453,6 +455,9 @@ public class CommTaskUtils {
                 net = CommonNetReq.NET_SET_CURRENT_MAP;
             } else if (type == CommonConstants.TYPE_RELOCATION) {
                 net = CommonNetReq.NET_RELOCATION_MAP_APGE;
+            } else if (type == CommonConstants.TYPE_AUTO_RECORD_PATH) {
+                map.put(CommonNetReq.STATUS, String.valueOf(status));
+                net = CommonNetReq.NET_AUTO_RECORD_PATH;
             }
             OKHttpManager.getInstance().sendComplexForm(net, map, new OKHttpManager.FuncJsonObj() {
                 @Override
@@ -462,7 +467,7 @@ public class CommTaskUtils {
                         switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
                             case CommonNetReq.CODE_SUCCESS:
                                 LogUtil.d(TAG, "type:"+type);
-                                LogUtil.d(TAG, "mapPages:"+mapPages);
+//                                LogUtil.d(TAG, "mapPages:"+mapPages);
                                 EventBus.getDefault().post(new RelocationOrSetCurrentMapEvent(type));
                                 break;
                             default:
