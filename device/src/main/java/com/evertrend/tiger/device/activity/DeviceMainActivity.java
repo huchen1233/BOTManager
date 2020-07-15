@@ -162,6 +162,7 @@ public class DeviceMainActivity extends AppCompatActivity {
         });
         viewPager2 = findViewById(R.id.viewPager2);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        viewPager2.setUserInputEnabled(false);
         viewPager2.setAdapter(new FragmentStateAdapter(this) {
             @NonNull
             @Override
