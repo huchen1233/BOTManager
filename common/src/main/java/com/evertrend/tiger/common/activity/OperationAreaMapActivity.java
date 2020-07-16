@@ -178,6 +178,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
     private List<MapPages> mapPagesList;
     private int connectionLostCount = 0;
     private boolean isAutoRecordSpot = false;
+    private boolean isFirstClearMap = false;
 
     private AlertDialog mDialogInputIp;
     private AlertDialog tracePathChoiceDialog;
@@ -244,6 +245,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         mTraceSpotList = new ArrayList<>();
         tracePathList = new ArrayList<>();
         deviceGrant = new DeviceGrant();
+        isFirstClearMap = true;
         loadTraceSpotList();
         scheduledThreadGetMapPagesAllPath = new ScheduledThreadPoolExecutor(3);
         scheduledThreadGetMapPagesAllPath.scheduleAtFixedRate(new CommTaskUtils.TaskGetMapPagesAllPath(device, mapPages),
@@ -407,7 +409,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
     public void onEventMainThread(ConnectedEvent event) {
         DialogUtil.hideProgressDialog();
         hideInputIpDialog();
-        Toast.makeText(OperationAreaMapActivity.this, "连接成功", Toast.LENGTH_SHORT).show();
+        LogUtil.i(this, TAG, "===ConnectedEvent===");
         mAgent.getMapUpdata();
         mAgent.getWalls(-1);
         mAgent.getTracks(-1);
@@ -418,8 +420,10 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         btn_relocation.setEnabled(true);
         btn_trace_path.setEnabled(true);
         mMapView.setCentred();
-        if (device.getCurrent_map_page() != mapPages.getId()) {//当前地图与要加载地图不一致时，先清空当前地图
+        if (device.getCurrent_map_page() != mapPages.getId() && isFirstClearMap) {//当前地图与要加载地图不一致时，先清空当前地图
+            LogUtil.d(TAG, "map diff="+device.getCurrent_map_page()+":"+mapPages.getId());
             mAgent.clearMap();
+            isFirstClearMap = false;
         }
 
         isAutoRecordSpot = AppSharePreference.getAppSharedPreference().loadAutoRecordPath();
