@@ -25,6 +25,7 @@ import com.evertrend.tiger.common.bean.event.GetDeviceGrantSuccessEvent;
 import com.evertrend.tiger.common.bean.event.GetRunLogsSuccessEvent;
 import com.evertrend.tiger.common.bean.event.SaveMapPageEvent;
 import com.evertrend.tiger.common.bean.event.SaveTraceSpotFailEvent;
+import com.evertrend.tiger.common.bean.event.SetStatusCompleteEvent;
 import com.evertrend.tiger.common.bean.event.UpdateBaseTraceSuccessEvent;
 import com.evertrend.tiger.common.bean.event.UpdateDeviceGrantSuccessEvent;
 import com.evertrend.tiger.common.bean.event.map.DeleteOneTraceSpotListEvent;
@@ -1298,6 +1299,115 @@ public class CommTaskUtils {
                             case CommonNetReq.CODE_SUCCESS:
                             case CommonNetReq.ERR_CODE_DELETE_GRANT_DEVICE_NON_EXISTENT:
                                 EventBus.getDefault().post(new DeleteDeviceGrantEvent(deviceGrant));
+                                break;
+                            default:
+                                break;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(TAG, "出错：解析数据失败");
+                    }
+                }
+            }, new OKHttpManager.FuncFailure() {
+                @Override
+                public void onFailure() {
+                    Log.e(TAG, "出错：请求网络失败");
+                }
+            });
+        }
+    }
+
+    public static class TaskControlStatus implements Runnable {
+        private Device device;
+        private int status;
+        private String mark;
+
+        public TaskControlStatus(Device mDevice, int status, String mark) {
+            this.device = mDevice;
+            this.status = status;
+            this.mark = mark;
+        }
+
+        @Override
+        public void run() {
+            startControlStatus();
+        }
+
+        private void startControlStatus() {
+            LogUtil.d(TAG, "mark: "+mark);
+            LogUtil.d(TAG, "status: "+status);
+            HashMap<String, String> map = new HashMap<>();
+            map.put(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
+            map.put(CommonNetReq.DEVICE_ID, String.valueOf(device.getId()));
+            map.put(CommonNetReq.STATUS, String.valueOf(status));
+            String request = "";
+            switch (mark) {
+                case "sw_device_run":
+                    request = CommonNetReq.NET_SET_DEVICE_STATUS;
+                    break;
+                case "sw_main_sweep":
+                    request = CommonNetReq.NET_SET_MAIN_SWEEP;
+                    break;
+                case "sw_side_sweep":
+                    request = CommonNetReq.NET_SET_SIDE_SWEEP;
+                    break;
+                case "sw_sprinkling_water":
+                    request = CommonNetReq.NET_SET_SPRINKLING_WATER;
+                    break;
+                case "sw_left_tail_light":
+                    request = CommonNetReq.NET_SET_LEFT_TAIL_LIGHT;
+                    break;
+                case "sw_right_tail_light":
+                    request = CommonNetReq.NET_SET_RIGHT_TAIL_LIGHT;
+                    break;
+                case "sw_alarm_light":
+                    request = CommonNetReq.NET_SET_ALARM_LIGHT;
+                    break;
+                case "sw_front_light":
+                    request = CommonNetReq.NET_SET_FRONT_LIGHT;
+                    break;
+                case "sw_horn":
+                    request = CommonNetReq.NET_SET_HORN;
+                    break;
+                case "sw_suck_fan":
+                    request = CommonNetReq.NET_SET_SUCK_FUN;
+                    break;
+                case "sw_vibrating_dust":
+                    request = CommonNetReq.NET_SET_VIBRATING_DUST;
+                    break;
+                case "sw_motor":
+                    request = CommonNetReq.NET_SET_MOTOR;
+                    break;
+                case "sw_emergency_stop":
+                    request = CommonNetReq.NET_SET_EMERGENCY_STOP;
+                    break;
+                case "rb_go_to_recharge":
+                    request = CommonNetReq.NET_GO_TO_RECHARGE;
+                    break;
+                case "rb_go_to_add_water":
+                    request = CommonNetReq.NET_GO_TO_ADD_WATER;
+                    break;
+                case "rb_go_to_empty_trash":
+                    request = CommonNetReq.NET_GO_TO_EMPTY_TRASH;
+                    break;
+                case "rb_go_to_garage":
+                    request = CommonNetReq.NET_GO_TO_GARAGE;
+                    break;
+                case "rb_go_to_work":
+                    request = CommonNetReq.NET_GO_TO_WORK;
+                    break;
+                case "rb_go_to_idle":
+                    request = CommonNetReq.NET_GO_TO_IDEL;
+                    break;
+            }
+            OKHttpManager.getInstance().sendComplexForm(request, map, new OKHttpManager.FuncJsonObj() {
+                @Override
+                public void onResponse(JSONObject jsonObject) throws JSONException {
+                    try {
+                        LogUtil.d(TAG, jsonObject.getString(CommonNetReq.RESULT_DESC));
+                        switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
+                            case CommonNetReq.CODE_SUCCESS:
+                                EventBus.getDefault().post(new SetStatusCompleteEvent(status, mark));
                                 break;
                             default:
                                 break;

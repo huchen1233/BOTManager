@@ -5,8 +5,8 @@ import android.util.Log;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
+import com.evertrend.tiger.common.bean.event.ExecuteCleanTaskSuccessEvent;
 import com.evertrend.tiger.common.utils.general.AppSharePreference;
-import com.evertrend.tiger.common.utils.general.CommonConstants;
 import com.evertrend.tiger.common.utils.general.JsonAnalysisUtil;
 import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.common.utils.network.CommonNetReq;
@@ -27,7 +27,6 @@ import com.evertrend.tiger.device.bean.event.GetMapPagesAllPathSuccessEvent;
 import com.evertrend.tiger.device.bean.event.LoadDevicesEvent;
 import com.evertrend.tiger.device.bean.event.SaveBasicConfigEvent;
 import com.evertrend.tiger.device.bean.event.SaveCleanTaskSuccessEvent;
-import com.evertrend.tiger.device.bean.event.SetStatusCompleteEvent;
 import com.evertrend.tiger.device.bean.event.SetStatusSuccessEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -510,7 +509,7 @@ public class TaskUtils {
                         switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
                             case CommonNetReq.CODE_SUCCESS:
                                 cleanTask = JsonAnalysisUtil.getCleanTask(jsonObject.getJSONObject(CommonNetReq.RESULT_DATA));
-                                EventBus.getDefault().post(new SaveCleanTaskSuccessEvent(cleanTask, true));
+                                EventBus.getDefault().post(new ExecuteCleanTaskSuccessEvent(cleanTask));
                                 break;
                             default:
                                 break;
@@ -636,115 +635,6 @@ public class TaskUtils {
                                         EventBus.getDefault().post(new SetStatusSuccessEvent(mark, newStatus));
                                     }
                                 }
-                                break;
-                            default:
-                                break;
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(TAG, "出错：解析数据失败");
-                    }
-                }
-            }, new OKHttpManager.FuncFailure() {
-                @Override
-                public void onFailure() {
-                    Log.e(TAG, "出错：请求网络失败");
-                }
-            });
-        }
-    }
-
-    public static class TaskControlStatus implements Runnable {
-        private Device device;
-        private int status;
-        private String mark;
-
-        public TaskControlStatus(Device mDevice, int status, String mark) {
-            this.device = mDevice;
-            this.status = status;
-            this.mark = mark;
-        }
-
-        @Override
-        public void run() {
-            startControlStatus();
-        }
-
-        private void startControlStatus() {
-            LogUtil.d(TAG, "mark: "+mark);
-            LogUtil.d(TAG, "status: "+status);
-            HashMap<String, String> map = new HashMap<>();
-            map.put(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
-            map.put(NetReq.DEVICE_ID, String.valueOf(device.getId()));
-            map.put(NetReq.STATUS, String.valueOf(status));
-            String request = "";
-            switch (mark) {
-                case "sw_device_run":
-                    request = NetReq.NET_SET_DEVICE_STATUS;
-                    break;
-                case "sw_main_sweep":
-                    request = NetReq.NET_SET_MAIN_SWEEP;
-                    break;
-                case "sw_side_sweep":
-                    request = NetReq.NET_SET_SIDE_SWEEP;
-                    break;
-                case "sw_sprinkling_water":
-                    request = NetReq.NET_SET_SPRINKLING_WATER;
-                    break;
-                case "sw_left_tail_light":
-                    request = NetReq.NET_SET_LEFT_TAIL_LIGHT;
-                    break;
-                case "sw_right_tail_light":
-                    request = NetReq.NET_SET_RIGHT_TAIL_LIGHT;
-                    break;
-                case "sw_alarm_light":
-                    request = NetReq.NET_SET_ALARM_LIGHT;
-                    break;
-                case "sw_front_light":
-                    request = NetReq.NET_SET_FRONT_LIGHT;
-                    break;
-                case "sw_horn":
-                    request = NetReq.NET_SET_HORN;
-                    break;
-                case "sw_suck_fan":
-                    request = NetReq.NET_SET_SUCK_FUN;
-                    break;
-                case "sw_vibrating_dust":
-                    request = NetReq.NET_SET_VIBRATING_DUST;
-                    break;
-                case "sw_motor":
-                    request = NetReq.NET_SET_MOTOR;
-                    break;
-                case "sw_emergency_stop":
-                    request = NetReq.NET_SET_EMERGENCY_STOP;
-                    break;
-                case "rb_go_to_recharge":
-                    request = NetReq.NET_GO_TO_RECHARGE;
-                    break;
-                case "rb_go_to_add_water":
-                    request = NetReq.NET_GO_TO_ADD_WATER;
-                    break;
-                case "rb_go_to_empty_trash":
-                    request = NetReq.NET_GO_TO_EMPTY_TRASH;
-                    break;
-                case "rb_go_to_garage":
-                    request = NetReq.NET_GO_TO_GARAGE;
-                    break;
-                case "rb_go_to_work":
-                    request = NetReq.NET_GO_TO_WORK;
-                    break;
-                case "rb_go_to_idle":
-                    request = NetReq.NET_GO_TO_IDEL;
-                    break;
-            }
-            OKHttpManager.getInstance().sendComplexForm(request, map, new OKHttpManager.FuncJsonObj() {
-                @Override
-                public void onResponse(JSONObject jsonObject) throws JSONException {
-                    try {
-                        LogUtil.d(TAG, jsonObject.getString(CommonNetReq.RESULT_DESC));
-                        switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
-                            case CommonNetReq.CODE_SUCCESS:
-                                EventBus.getDefault().post(new SetStatusCompleteEvent(status, mark));
                                 break;
                             default:
                                 break;

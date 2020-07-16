@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.evertrend.tiger.common.bean.event.DialogChoiceEvent;
+import com.evertrend.tiger.common.bean.event.ExecuteCleanTaskSuccessEvent;
+import com.evertrend.tiger.common.bean.event.SetStatusCompleteEvent;
 import com.evertrend.tiger.common.fragment.BaseFragment;
 import com.evertrend.tiger.common.utils.general.CommonConstants;
 import com.evertrend.tiger.common.utils.general.DialogUtil;
@@ -189,7 +191,6 @@ public class DeviceTaskFragment extends BaseFragment implements View.OnClickList
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(SaveCleanTaskSuccessEvent messageEvent) {
         DialogUtil.hideProgressDialog();
-        stopExecuteCleanTaskTimer();
         if (messageEvent.isUpdate()) {
             refreshCleanTaskList(messageEvent.getCleanTask(), "update");
         } else {
@@ -197,12 +198,25 @@ public class DeviceTaskFragment extends BaseFragment implements View.OnClickList
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(ExecuteCleanTaskSuccessEvent messageEvent) {
+        DialogUtil.hideProgressDialog();
+        stopExecuteCleanTaskTimer();
+        ScheduledThreadUtils.startControlTimer(device,5, "rb_go_to_work", 5);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(SetStatusCompleteEvent messageEvent) {
+        ScheduledThreadUtils.stopControlTimer();
+//        startReadControlStatusTimer(messageEvent.getStatus(), messageEvent.getMark());
+    }
 
     private void exit() {
         ScheduledThreadUtils.stopGetAllMapPagesTimer();
         stopGetAllCleanTasksTimer();
         stopDeleteCleanTaskTimer();
         stopExecuteCleanTaskTimer();
+        ScheduledThreadUtils.stopControlTimer();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }

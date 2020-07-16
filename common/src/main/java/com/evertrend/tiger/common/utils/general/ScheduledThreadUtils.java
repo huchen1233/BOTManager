@@ -9,6 +9,14 @@ import java.util.concurrent.TimeUnit;
 public class ScheduledThreadUtils {
     private static ScheduledThreadPoolExecutor scheduledThreadGetAllMapPages;
     private static ScheduledThreadPoolExecutor scheduledThreadGetRunLogs;
+    private static ScheduledThreadPoolExecutor scheduledThreadControl;
+
+    public static void startControlTimer(Device device, int status, String mark, int delayTime) {
+//        DialogUtil.showProgressDialog(getActivity(), getResources().getString(R.string.yl_common_saving), false, false);
+        scheduledThreadControl = new ScheduledThreadPoolExecutor(6);
+        scheduledThreadControl.scheduleAtFixedRate(new CommTaskUtils.TaskControlStatus(device, status, mark),
+                delayTime, 5, TimeUnit.SECONDS);
+    }
 
     public static void ThreadGetAllMapPages(Device device) {
         if (scheduledThreadGetAllMapPages == null) scheduledThreadGetAllMapPages = new ScheduledThreadPoolExecutor(4);
@@ -32,6 +40,12 @@ public class ScheduledThreadUtils {
         if (scheduledThreadGetRunLogs != null) {
             scheduledThreadGetRunLogs.shutdownNow();
             scheduledThreadGetRunLogs = null;
+        }
+    }
+    public static void stopControlTimer() {
+        if (scheduledThreadControl != null) {
+            scheduledThreadControl.shutdownNow();
+            scheduledThreadControl = null;
         }
     }
 }

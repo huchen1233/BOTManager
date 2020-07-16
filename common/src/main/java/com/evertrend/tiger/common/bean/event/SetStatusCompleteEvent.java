@@ -1,4 +1,4 @@
-package com.evertrend.tiger.device.bean.event;
+package com.evertrend.tiger.common.bean.event;
 
 public class SetStatusCompleteEvent {
     private String mark;

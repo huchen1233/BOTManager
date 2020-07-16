@@ -3,10 +3,8 @@ package com.evertrend.tiger.device.fragment;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -19,10 +17,11 @@ import androidx.annotation.Nullable;
 import com.evertrend.tiger.common.bean.Device;
 import com.evertrend.tiger.common.fragment.BaseFragment;
 import com.evertrend.tiger.common.utils.general.DialogUtil;
+import com.evertrend.tiger.common.utils.general.ScheduledThreadUtils;
 import com.evertrend.tiger.device.R;
 import com.evertrend.tiger.device.bean.event.DeviceMessageEvent;
 import com.evertrend.tiger.device.bean.event.OperationStopEvent;
-import com.evertrend.tiger.device.bean.event.SetStatusCompleteEvent;
+import com.evertrend.tiger.common.bean.event.SetStatusCompleteEvent;
 import com.evertrend.tiger.device.bean.event.SetStatusSuccessEvent;
 import com.evertrend.tiger.device.bean.event.SpinnerChoiceDeviceMessageEvent;
 import com.evertrend.tiger.device.utils.Constants;
@@ -50,7 +49,6 @@ public class DeviceOperationFragment extends BaseFragment implements RadioGroup.
     private Device mDevice;
     private ProgressDialog mDialogOperation;
 
-    private ScheduledThreadPoolExecutor scheduledThreadControl;
     private ScheduledThreadPoolExecutor scheduledThreadReadControlStatus;
 
     @Nullable
@@ -359,17 +357,17 @@ public class DeviceOperationFragment extends BaseFragment implements RadioGroup.
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         if (group.getCheckedRadioButtonId() == R.id.rb_go_to_idle) {
-            startControlTimer(0, "rb_go_to_idle");
+            ScheduledThreadUtils.startControlTimer(mDevice,0, "rb_go_to_idle", 0);
         } else if (group.getCheckedRadioButtonId() == R.id.rb_go_to_garage) {
-            startControlTimer(1, "rb_go_to_garage");
+            ScheduledThreadUtils.startControlTimer(mDevice,1, "rb_go_to_garage", 0);
         } else if (group.getCheckedRadioButtonId() == R.id.rb_go_to_recharge) {
-            startControlTimer(2, "rb_go_to_recharge");
+            ScheduledThreadUtils.startControlTimer(mDevice,2, "rb_go_to_recharge", 0);
         } else if (group.getCheckedRadioButtonId() == R.id.rb_go_to_add_water) {
-            startControlTimer(3, "rb_go_to_add_water");
+            ScheduledThreadUtils.startControlTimer(mDevice,3, "rb_go_to_add_water", 0);
         } else if (group.getCheckedRadioButtonId() == R.id.rb_go_to_empty_trash) {
-            startControlTimer(4, "rb_go_to_empty_trash");
+            ScheduledThreadUtils.startControlTimer(mDevice,4, "rb_go_to_empty_trash", 0);
         } else if (group.getCheckedRadioButtonId() == R.id.rb_go_to_work) {
-            startControlTimer(5, "rb_go_to_work");
+            ScheduledThreadUtils.startControlTimer(mDevice,5, "rb_go_to_work", 0);
         }
     }
 
@@ -377,59 +375,59 @@ public class DeviceOperationFragment extends BaseFragment implements RadioGroup.
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
             if (buttonView.getId() == R.id.sw_device_run) {
-                startControlTimer(1, "sw_device_run");
+                ScheduledThreadUtils.startControlTimer(mDevice,1, "sw_device_run", 0);
             } else if (buttonView.getId() == R.id.sw_main_sweep) {
-                startControlTimer(1, "sw_main_sweep");
+                ScheduledThreadUtils.startControlTimer(mDevice,1, "sw_main_sweep", 0);
             } else if (buttonView.getId() == R.id.sw_side_sweep) {
-                startControlTimer(1, "sw_side_sweep");
+                ScheduledThreadUtils.startControlTimer(mDevice,1, "sw_side_sweep", 0);
             } else if (buttonView.getId() == R.id.sw_sprinkling_water) {
-                startControlTimer(1, "sw_sprinkling_water");
+                ScheduledThreadUtils.startControlTimer(mDevice,1, "sw_sprinkling_water", 0);
             } else if (buttonView.getId() == R.id.sw_left_tail_light) {
-                startControlTimer(1, "sw_left_tail_light");
+                ScheduledThreadUtils.startControlTimer(mDevice,1, "sw_left_tail_light", 0);
             } else if (buttonView.getId() == R.id.sw_right_tail_light) {
-                startControlTimer(1, "sw_right_tail_light");
+                ScheduledThreadUtils.startControlTimer(mDevice,1, "sw_right_tail_light", 0);
             } else if (buttonView.getId() == R.id.sw_alarm_light) {
-                startControlTimer(1, "sw_alarm_light");
+                ScheduledThreadUtils.startControlTimer(mDevice,1, "sw_alarm_light", 0);
             } else if (buttonView.getId() == R.id.sw_front_light) {
-                startControlTimer(1, "sw_front_light");
+                ScheduledThreadUtils.startControlTimer(mDevice,1, "sw_front_light", 0);
             } else if (buttonView.getId() == R.id.sw_horn) {
-                startControlTimer(1, "sw_horn");
+                ScheduledThreadUtils.startControlTimer(mDevice,1, "sw_horn", 0);
             } else if (buttonView.getId() == R.id.sw_suck_fan) {
-                startControlTimer(1, "sw_suck_fan");
+                ScheduledThreadUtils.startControlTimer(mDevice,1, "sw_suck_fan", 0);
             } else if (buttonView.getId() == R.id.sw_vibrating_dust) {
-                startControlTimer(1, "sw_vibrating_dust");
+                ScheduledThreadUtils.startControlTimer(mDevice,1, "sw_vibrating_dust", 0);
             } else if (buttonView.getId() == R.id.sw_motor) {
-                startControlTimer(1, "sw_motor");
+                ScheduledThreadUtils.startControlTimer(mDevice,1, "sw_motor", 0);
             } else if (buttonView.getId() == R.id.sw_emergency_stop) {
-                startControlTimer(1, "sw_emergency_stop");
+                ScheduledThreadUtils.startControlTimer(mDevice,1, "sw_emergency_stop", 0);
             }
         } else {
             if (buttonView.getId() == R.id.sw_device_run) {
-                startControlTimer(0, "sw_device_run");
+                ScheduledThreadUtils.startControlTimer(mDevice,0, "sw_device_run", 0);
             } else if (buttonView.getId() == R.id.sw_main_sweep) {
-                startControlTimer(0, "sw_main_sweep");
+                ScheduledThreadUtils.startControlTimer(mDevice,0, "sw_main_sweep", 0);
             } else if (buttonView.getId() == R.id.sw_side_sweep) {
-                startControlTimer(0, "sw_side_sweep");
+                ScheduledThreadUtils.startControlTimer(mDevice,0, "sw_side_sweep", 0);
             } else if (buttonView.getId() == R.id.sw_sprinkling_water) {
-                startControlTimer(0, "sw_sprinkling_water");
+                ScheduledThreadUtils.startControlTimer(mDevice,0, "sw_sprinkling_water", 0);
             } else if (buttonView.getId() == R.id.sw_left_tail_light) {
-                startControlTimer(0, "sw_left_tail_light");
+                ScheduledThreadUtils.startControlTimer(mDevice,0, "sw_left_tail_light", 0);
             } else if (buttonView.getId() == R.id.sw_right_tail_light) {
-                startControlTimer(0, "sw_right_tail_light");
+                ScheduledThreadUtils.startControlTimer(mDevice,0, "sw_right_tail_light", 0);
             } else if (buttonView.getId() == R.id.sw_alarm_light) {
-                startControlTimer(0, "sw_alarm_light");
+                ScheduledThreadUtils.startControlTimer(mDevice,0, "sw_alarm_light", 0);
             } else if (buttonView.getId() == R.id.sw_front_light) {
-                startControlTimer(0, "sw_front_light");
+                ScheduledThreadUtils.startControlTimer(mDevice,0, "sw_front_light", 0);
             } else if (buttonView.getId() == R.id.sw_horn) {
-                startControlTimer(0, "sw_horn");
+                ScheduledThreadUtils.startControlTimer(mDevice,0, "sw_horn", 0);
             } else if (buttonView.getId() == R.id.sw_suck_fan) {
-                startControlTimer(0, "sw_suck_fan");
+                ScheduledThreadUtils.startControlTimer(mDevice,0, "sw_suck_fan", 0);
             } else if (buttonView.getId() == R.id.sw_vibrating_dust) {
-                startControlTimer(0, "sw_vibrating_dust");
+                ScheduledThreadUtils.startControlTimer(mDevice,0, "sw_vibrating_dust", 0);
             } else if (buttonView.getId() == R.id.sw_motor) {
-                startControlTimer(0, "sw_motor");
+                ScheduledThreadUtils.startControlTimer(mDevice,0, "sw_motor", 0);
             } else if (buttonView.getId() == R.id.sw_emergency_stop) {
-                startControlTimer(0, "sw_emergency_stop");
+                ScheduledThreadUtils.startControlTimer(mDevice,0, "sw_emergency_stop", 0);
             }
         }
     }
@@ -462,13 +460,13 @@ public class DeviceOperationFragment extends BaseFragment implements RadioGroup.
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(OperationStopEvent messageEvent) {
-        stopControlTimer();
+        ScheduledThreadUtils.stopControlTimer();
         stopReadControlStatusTimer();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(SetStatusCompleteEvent messageEvent) {
-        stopControlTimer();
+        ScheduledThreadUtils.stopControlTimer();
         startReadControlStatusTimer(messageEvent.getStatus(), messageEvent.getMark());
     }
 
@@ -478,24 +476,10 @@ public class DeviceOperationFragment extends BaseFragment implements RadioGroup.
                 0, 2, TimeUnit.SECONDS);
     }
 
-    private void startControlTimer(int status, String mark) {
-        DialogUtil.showProgressDialog(getActivity(), getResources().getString(R.string.yl_common_saving), false, false);
-        scheduledThreadControl = new ScheduledThreadPoolExecutor(6);
-        scheduledThreadControl.scheduleAtFixedRate(new TaskUtils.TaskControlStatus(mDevice, status, mark),
-                0, 5, TimeUnit.SECONDS);
-    }
-
     private void stopReadControlStatusTimer() {
         if (scheduledThreadReadControlStatus != null) {
             scheduledThreadReadControlStatus.shutdownNow();
             scheduledThreadReadControlStatus = null;
-        }
-    }
-
-    private void stopControlTimer() {
-        if (scheduledThreadControl != null) {
-            scheduledThreadControl.shutdownNow();
-            scheduledThreadControl = null;
         }
     }
 
@@ -506,7 +490,7 @@ public class DeviceOperationFragment extends BaseFragment implements RadioGroup.
 
     @Override
     public void onDestroy() {
-        stopControlTimer();
+        ScheduledThreadUtils.stopControlTimer();
         stopReadControlStatusTimer();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
