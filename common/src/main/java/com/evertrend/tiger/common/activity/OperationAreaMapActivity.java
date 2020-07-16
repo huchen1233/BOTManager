@@ -524,7 +524,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         Pose pose = event.getPose();
         mMapView.setRobotPose(pose);
         if (pose != null) {
-            currentPose = String.format("%.6f,%.6f,%.6f,%.6f", pose.getX(), pose.getY(), pose.getZ(), RadianUtil.toAngel(pose.getYaw()));
+            currentPose = String.format("%.3f,%.3f,%.3f,%.3f", pose.getX(), pose.getY(), pose.getZ(), RadianUtil.toAngel(pose.getYaw()));
             tv_location_pose.setText(currentPose);
         }
     }
