@@ -18,6 +18,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.evertrend.tiger.common.fragment.BaseFragment;
+import com.evertrend.tiger.common.utils.general.CommonConstants;
 import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.device.R;
 import com.evertrend.tiger.device.adapter.DeviceSpinnerAdapter;
@@ -118,7 +119,7 @@ public class DeviceMainActivity extends AppCompatActivity {
     private void startGetDeviceInfoTimer() {
         scheduledThreadGetDeviceInfoPoolExecutor = new ScheduledThreadPoolExecutor(2);
         scheduledThreadGetDeviceInfoPoolExecutor.scheduleAtFixedRate(new TaskUtils.TaskGetDevice(String.valueOf(device.getId())),
-                0, Constants.GET_DEVICE_TIME_INTERVAL, TimeUnit.SECONDS);
+                0, CommonConstants.GET_DEVICE_TIME_INTERVAL, TimeUnit.SECONDS);
         //0表示首次执行任务的延迟时间，10 表示每次执行任务的间隔时间，TimeUnit.SECONDS 执行的时间间隔数值单位
     }
 

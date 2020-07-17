@@ -92,8 +92,6 @@ public class Constants {
     public static final String DEVICE_TYPE_MFBOT_SL = "5";//MFBOT-SL(拖地机器人-SL)
     public static final int SCANNER_QR_CODE_REQUEST_CODE = 100;
 
-    public static final int GET_DEVICE_TIME_INTERVAL = 10;//秒
-
     public static final int TYPE_EXEC_FLAG_ONLY_ONCE = 1;
     public static final int TYPE_EXEC_FLAG_EVERYDAY = 2;
     public static final int TYPE_EXEC_FLAG_INFINITE_CYCLE = 3;
