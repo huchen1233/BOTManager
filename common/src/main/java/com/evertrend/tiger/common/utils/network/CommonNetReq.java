@@ -1,8 +1,8 @@
 package com.evertrend.tiger.common.utils.network;
 
 public class CommonNetReq {
-    public static final String REQ_HOST = "http://172.27.35.1/nalcol/frontend/web/index.php?r=";
-//    public static final String REQ_HOST = "https://robot.360yongli.com?r=";
+//    public static final String REQ_HOST = "http://172.27.35.1/nalcol/frontend/web/index.php?r=";
+    public static final String REQ_HOST = "https://robot.360yongli.com?r=";
 
     public static final String NET_GET_CURRENT_MAP_PAGE_ALL_PATH = REQ_HOST + "api/remote/get-map-page-all-path";
     public static final String NET_GET_DEVICE_ALL_GRANTS = REQ_HOST + "api/remote/get-device-all-grants";
