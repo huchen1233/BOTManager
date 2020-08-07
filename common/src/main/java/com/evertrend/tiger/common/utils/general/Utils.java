@@ -161,20 +161,20 @@ public class Utils {
         if((valCode & 0x04) != 0) stringList.add("主控板与传感器板通信中断");
 
         valCode = Integer.parseInt(alarmInfo.substring(6, 8), 16);
-        if((valCode & 0x01) != 0) stringList.add("普通超声第0路通信中断");
-        if((valCode & 0x02) != 0) stringList.add("普通超声第1路通信中断");
-        if((valCode & 0x04) != 0) stringList.add("普通超声第2路通信中断");
-        if((valCode & 0x08) != 0) stringList.add("普通超声第3路通信中断");
-        if((valCode & 0x10) != 0) stringList.add("普通超声第4路通信中断");
-        if((valCode & 0x20) != 0) stringList.add("普通超声第5路通信中断");
-        if((valCode & 0x40) != 0) stringList.add("普通超声第6路通信中断");
-        if((valCode & 0x80) != 0) stringList.add("普通超声第7路通信中断");
+        if((valCode & 0x01) != 0) stringList.add("第0路超声通信中断");
+        if((valCode & 0x02) != 0) stringList.add("第1路超声通信中断");
+        if((valCode & 0x04) != 0) stringList.add("第2路超声通信中断");
+        if((valCode & 0x08) != 0) stringList.add("第3路超声通信中断");
+        if((valCode & 0x10) != 0) stringList.add("第4路超声通信中断");
+        if((valCode & 0x20) != 0) stringList.add("第5路超声通信中断");
+        if((valCode & 0x40) != 0) stringList.add("第6路超声通信中断");
+        if((valCode & 0x80) != 0) stringList.add("第7路超声通信中断");
 
         valCode = Integer.parseInt(alarmInfo.substring(8, 10), 16);
-        if((valCode & 0x01) != 0) stringList.add("防水超声第0路通信中断");
-        if((valCode & 0x02) != 0) stringList.add("防水超声第1路通信中断");
-        if((valCode & 0x04) != 0) stringList.add("防水超声第2路通信中断");
-        if((valCode & 0x08) != 0) stringList.add("防水超声第3路通信中断");
+        if((valCode & 0x01) != 0) stringList.add("第8路超声通信中断");
+        if((valCode & 0x02) != 0) stringList.add("第9路超声通信中断");
+        if((valCode & 0x04) != 0) stringList.add("第10路超声通信中断");
+        if((valCode & 0x08) != 0) stringList.add("第11路超声通信中断");
         if((valCode & 0x10) != 0) stringList.add("碰撞条第0路通信中断");
         if((valCode & 0x20) != 0) stringList.add("碰撞条第1路通信中断");
         if((valCode & 0x40) != 0) stringList.add("碰撞条第2路通信中断");

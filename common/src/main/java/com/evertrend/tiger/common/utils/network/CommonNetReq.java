@@ -30,6 +30,7 @@ public class CommonNetReq {
     public static final String NET_SET_SUCK_FUN = REQ_HOST + "api/remote/set-suck-fun";
     public static final String NET_SET_VIBRATING_DUST = REQ_HOST + "api/remote/set-vibrating-dust";
     public static final String NET_SET_MOTOR = REQ_HOST + "api/remote/set-motor";
+    public static final String NET_SET_GARBAGE_VALVE = REQ_HOST + "api/remote/set-garbage-valve";
     public static final String NET_SET_EMERGENCY_STOP = REQ_HOST + "api/remote/set-emergency-stop";
     public static final String NET_SET_TAIL_LIGHT = REQ_HOST + "api/remote/set-tail-light";
     public static final String NET_SET_LEFT_TAIL_LIGHT = REQ_HOST + "api/remote/set-left-tail-light";

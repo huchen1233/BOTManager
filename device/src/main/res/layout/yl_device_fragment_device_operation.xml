@@ -171,6 +171,13 @@
                     android:text="@string/yl_device_motor" />
 
                 <Switch
+                    android:id="@+id/sw_garbage_valve"
+                    style="@style/yl_device_CleanSwitchStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yl_device_garbage_valve" />
+
+                <Switch
                     android:id="@+id/sw_emergency_stop"
                     style="@style/yl_device_CleanSwitchStyle"
                     android:layout_width="wrap_content"

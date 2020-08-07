@@ -44,7 +44,7 @@ public class DeviceOperationFragment extends BaseFragment implements RadioGroup.
     private Switch sw_main_sweep, sw_side_sweep, sw_sprinkling_water;
     private Switch sw_left_tail_light, sw_alarm_light, sw_front_light;
     private Switch sw_right_tail_light, sw_horn, sw_suck_fan, sw_vibrating_dust;
-    private Switch sw_motor, sw_emergency_stop;
+    private Switch sw_motor, sw_garbage_valve, sw_emergency_stop;
 
     private Device mDevice;
     private ProgressDialog mDialogOperation;
@@ -101,6 +101,7 @@ public class DeviceOperationFragment extends BaseFragment implements RadioGroup.
                 sw_suck_fan.setVisibility(View.GONE);
                 sw_vibrating_dust.setVisibility(View.GONE);
                 sw_motor.setVisibility(View.GONE);
+                sw_garbage_valve.setVisibility(View.GONE);
                 sw_emergency_stop.setVisibility(View.GONE);
                 break;
             case Constants.DEVICE_TYPE_SWBOT_SL:
@@ -121,6 +122,7 @@ public class DeviceOperationFragment extends BaseFragment implements RadioGroup.
                 sw_suck_fan.setVisibility(View.VISIBLE);
                 sw_vibrating_dust.setVisibility(View.VISIBLE);
                 sw_motor.setVisibility(View.VISIBLE);
+                sw_garbage_valve.setVisibility(View.VISIBLE);
                 sw_emergency_stop.setVisibility(View.VISIBLE);
                 break;
             case Constants.DEVICE_TYPE_MFBOT_SL:
@@ -141,6 +143,7 @@ public class DeviceOperationFragment extends BaseFragment implements RadioGroup.
                 sw_suck_fan.setVisibility(View.VISIBLE);
                 sw_vibrating_dust.setVisibility(View.VISIBLE);
                 sw_motor.setVisibility(View.VISIBLE);
+                sw_garbage_valve.setVisibility(View.VISIBLE);
                 sw_emergency_stop.setVisibility(View.VISIBLE);
                 break;
             case Constants.DEVICE_TYPE_SWBOT_AP:
@@ -161,6 +164,7 @@ public class DeviceOperationFragment extends BaseFragment implements RadioGroup.
                 sw_suck_fan.setVisibility(View.VISIBLE);
                 sw_vibrating_dust.setVisibility(View.VISIBLE);
                 sw_motor.setVisibility(View.VISIBLE);
+                sw_garbage_valve.setVisibility(View.VISIBLE);
                 sw_emergency_stop.setVisibility(View.VISIBLE);
                 break;
             case Constants.DEVICE_TYPE_SWBOT_MINI:
@@ -181,6 +185,7 @@ public class DeviceOperationFragment extends BaseFragment implements RadioGroup.
                 sw_suck_fan.setVisibility(View.GONE);
                 sw_vibrating_dust.setVisibility(View.GONE);
                 sw_motor.setVisibility(View.VISIBLE);
+                sw_garbage_valve.setVisibility(View.VISIBLE);
                 sw_emergency_stop.setVisibility(View.VISIBLE);
                 break;
             default:
@@ -201,6 +206,7 @@ public class DeviceOperationFragment extends BaseFragment implements RadioGroup.
                 sw_suck_fan.setVisibility(View.VISIBLE);
                 sw_vibrating_dust.setVisibility(View.VISIBLE);
                 sw_motor.setVisibility(View.VISIBLE);
+                sw_garbage_valve.setVisibility(View.VISIBLE);
                 sw_emergency_stop.setVisibility(View.VISIBLE);
                 break;
         }
@@ -267,6 +273,11 @@ public class DeviceOperationFragment extends BaseFragment implements RadioGroup.
         } else {
             sw_motor.setChecked(false);
         }
+        if (device.getGarbage_valve_status() == 1) {
+            sw_garbage_valve.setChecked(true);
+        } else {
+            sw_garbage_valve.setChecked(false);
+        }
         if (device.getEmergency_stop_status() == 1) {
             sw_emergency_stop.setChecked(true);
         } else {
@@ -311,6 +322,7 @@ public class DeviceOperationFragment extends BaseFragment implements RadioGroup.
         sw_suck_fan.setOnCheckedChangeListener(this);
         sw_vibrating_dust.setOnCheckedChangeListener(this);
         sw_motor.setOnCheckedChangeListener(this);
+        sw_garbage_valve.setOnCheckedChangeListener(this);
         sw_emergency_stop.setOnCheckedChangeListener(this);
     }
 
@@ -328,6 +340,7 @@ public class DeviceOperationFragment extends BaseFragment implements RadioGroup.
         sw_suck_fan.setOnCheckedChangeListener(null);
         sw_vibrating_dust.setOnCheckedChangeListener(null);
         sw_motor.setOnCheckedChangeListener(null);
+        sw_garbage_valve.setOnCheckedChangeListener(null);
         sw_emergency_stop.setOnCheckedChangeListener(null);
     }
 
@@ -351,6 +364,7 @@ public class DeviceOperationFragment extends BaseFragment implements RadioGroup.
         sw_suck_fan = root.findViewById(R.id.sw_suck_fan);
         sw_vibrating_dust = root.findViewById(R.id.sw_vibrating_dust);
         sw_motor = root.findViewById(R.id.sw_motor);
+        sw_garbage_valve = root.findViewById(R.id.sw_garbage_valve);
         sw_emergency_stop = root.findViewById(R.id.sw_emergency_stop);
     }
 
@@ -398,6 +412,8 @@ public class DeviceOperationFragment extends BaseFragment implements RadioGroup.
                 ScheduledThreadUtils.startControlTimer(mDevice,1, "sw_vibrating_dust", 0);
             } else if (buttonView.getId() == R.id.sw_motor) {
                 ScheduledThreadUtils.startControlTimer(mDevice,1, "sw_motor", 0);
+            } else if (buttonView.getId() == R.id.sw_garbage_valve) {
+                ScheduledThreadUtils.startControlTimer(mDevice,1, "sw_garbage_valve", 0);
             } else if (buttonView.getId() == R.id.sw_emergency_stop) {
                 ScheduledThreadUtils.startControlTimer(mDevice,1, "sw_emergency_stop", 0);
             }
@@ -426,6 +442,8 @@ public class DeviceOperationFragment extends BaseFragment implements RadioGroup.
                 ScheduledThreadUtils.startControlTimer(mDevice,0, "sw_vibrating_dust", 0);
             } else if (buttonView.getId() == R.id.sw_motor) {
                 ScheduledThreadUtils.startControlTimer(mDevice,0, "sw_motor", 0);
+            } else if (buttonView.getId() == R.id.sw_garbage_valve) {
+                ScheduledThreadUtils.startControlTimer(mDevice,0, "sw_garbage_valve", 0);
             } else if (buttonView.getId() == R.id.sw_emergency_stop) {
                 ScheduledThreadUtils.startControlTimer(mDevice,0, "sw_emergency_stop", 0);
             }

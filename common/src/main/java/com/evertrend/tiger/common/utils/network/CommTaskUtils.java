@@ -1378,6 +1378,9 @@ public class CommTaskUtils {
                 case "sw_motor":
                     request = CommonNetReq.NET_SET_MOTOR;
                     break;
+                case "sw_garbage_valve":
+                    request = CommonNetReq.NET_SET_GARBAGE_VALVE;
+                    break;
                 case "sw_emergency_stop":
                     request = CommonNetReq.NET_SET_EMERGENCY_STOP;
                     break;

@@ -30,6 +30,7 @@ public class Device extends LitePalSupport implements Serializable {
     private int suck_fan_status;//风机状态
     private int vibrating_dust_status;//振尘状态
     private int motor_release_status;//电机状态（释放、刹车）
+    private int garbage_valve_status;//垃圾槽阀门状态
     private int emergency_stop_status;//急停状态（释放、使能）
     private String water_level;
     private double latitude;//纬度
@@ -148,6 +149,14 @@ public class Device extends LitePalSupport implements Serializable {
 
     public void setMotor_release_status(int motor_release_status) {
         this.motor_release_status = motor_release_status;
+    }
+
+    public int getGarbage_valve_status() {
+        return garbage_valve_status;
+    }
+
+    public void setGarbage_valve_status(int garbage_valve_status) {
+        this.garbage_valve_status = garbage_valve_status;
     }
 
     public int getEmergency_stop_status() {
@@ -567,6 +576,7 @@ public class Device extends LitePalSupport implements Serializable {
                 ", suck_fan_status=" + suck_fan_status +
                 ", vibrating_dust_status=" + vibrating_dust_status +
                 ", motor_release_status=" + motor_release_status +
+                ", garbage_valve_status=" + garbage_valve_status +
                 ", emergency_stop_status=" + emergency_stop_status +
                 ", water_level='" + water_level + '\'' +
                 ", latitude=" + latitude +
