@@ -182,7 +182,7 @@ public class DeviceOperationFragment extends BaseFragment implements RadioGroup.
                 sw_alarm_light.setVisibility(View.VISIBLE);
                 sw_front_light.setVisibility(View.GONE);
                 sw_horn.setVisibility(View.VISIBLE);
-                sw_suck_fan.setVisibility(View.GONE);
+                sw_suck_fan.setVisibility(View.VISIBLE);
                 sw_vibrating_dust.setVisibility(View.GONE);
                 sw_motor.setVisibility(View.VISIBLE);
                 sw_garbage_valve.setVisibility(View.VISIBLE);
