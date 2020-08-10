@@ -87,6 +87,7 @@ public class DeviceMapFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onMessageEvent(DeviceMessageEvent messageEvent) {
         mDevice = messageEvent.getMessage();
+        ScheduledThreadUtils.ThreadGetAllMapPages(mDevice);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
