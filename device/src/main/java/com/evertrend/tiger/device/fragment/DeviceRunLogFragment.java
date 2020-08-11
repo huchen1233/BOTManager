@@ -63,6 +63,15 @@ public class DeviceRunLogFragment extends BaseFragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void onMessageEvent(DeviceMessageEvent messageEvent) {
+        device = messageEvent.getMessage();
+        runLogList.removeAll(runLogList);
+        runLogAdapter.notifyDataSetChanged();
+        page = 1;
+        ScheduledThreadUtils.ThreadGetRunLogs(device, page);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onMessageEvent(SpinnerChoiceDeviceMessageEvent messageEvent) {
         LogUtil.d(TAG, "==SpinnerChoiceDeviceMessageEvent==");
 //        ScheduledThreadUtils.stopGetRunLogsTimer();
