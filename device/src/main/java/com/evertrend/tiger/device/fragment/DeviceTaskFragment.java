@@ -111,6 +111,13 @@ public class DeviceTaskFragment extends BaseFragment implements View.OnClickList
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onMessageEvent(DeviceMessageEvent messageEvent) {
         device = messageEvent.getMessage();
+        ScheduledThreadUtils.ThreadGetAllMapPages(device);
+        if (device.getDevice_type().equals(Constants.DEVICE_TYPE_EVBOT_SL)) {
+            cl_show_clean_task.setVisibility(View.GONE);
+        } else {
+            cl_show_clean_task.setVisibility(View.VISIBLE);
+            startGetAllCleanTasks(device);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
