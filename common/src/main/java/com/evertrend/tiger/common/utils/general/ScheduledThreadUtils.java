@@ -19,15 +19,19 @@ public class ScheduledThreadUtils {
     }
 
     public static void ThreadGetAllMapPages(Device device) {
-        if (scheduledThreadGetAllMapPages == null) scheduledThreadGetAllMapPages = new ScheduledThreadPoolExecutor(4);
-        scheduledThreadGetAllMapPages.scheduleAtFixedRate(new CommTaskUtils.TaskGetAllMapPages(device),
-                0, 10, TimeUnit.SECONDS);
+        if (scheduledThreadGetAllMapPages == null) {
+            scheduledThreadGetAllMapPages = new ScheduledThreadPoolExecutor(4);
+            scheduledThreadGetAllMapPages.scheduleAtFixedRate(new CommTaskUtils.TaskGetAllMapPages(device),
+                    0, 10, TimeUnit.SECONDS);
+        }
     }
 
     public static void ThreadGetRunLogs(Device device, int page) {
-        if (scheduledThreadGetRunLogs == null) scheduledThreadGetRunLogs = new ScheduledThreadPoolExecutor(4);
-        scheduledThreadGetRunLogs.scheduleAtFixedRate(new CommTaskUtils.TaskGetRunLogs(device, page),
-                0, 10, TimeUnit.SECONDS);
+        if (scheduledThreadGetRunLogs == null) {
+            scheduledThreadGetRunLogs = new ScheduledThreadPoolExecutor(4);
+            scheduledThreadGetRunLogs.scheduleAtFixedRate(new CommTaskUtils.TaskGetRunLogs(device, page),
+                    0, 10, TimeUnit.SECONDS);
+        }
     }
 
     public static void stopGetAllMapPagesTimer() {
