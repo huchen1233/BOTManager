@@ -35,4 +35,14 @@
         <item name="android:layout_width">80dp</item>
         <item name="android:layout_height">60dp</item>
     </style>
+
+    <style name="yl_common_map_tab_style">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:button">@null</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textColor">@drawable/yl_common_map_tab_text_color</item>
+    </style>
 </resources>

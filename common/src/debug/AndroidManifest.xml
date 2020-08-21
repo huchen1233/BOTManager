@@ -16,15 +16,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/yl_common_AppTheme">
-
-        <activity android:name=".activity.LogConfigActivity"></activity>
+        <activity android:name=".activity.MapActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MapActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.LogConfigActivity" />
         <activity
             android:name=".activity.OperationAreaMapActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.OperationAreaMapActivity" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

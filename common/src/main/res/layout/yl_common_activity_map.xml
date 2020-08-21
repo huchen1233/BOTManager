@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.MapActivity">
+
+    <com.evertrend.tiger.common.bean.mapview.MapView
+        android:id="@+id/mv_map"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/rg_navigation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/rg_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/yl_common_color_white"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.evertrend.tiger.common.widget.ToggleRadioButton
+            android:id="@+id/tab_spot"
+            style="@style/yl_common_map_tab_style"
+            android:text="@string/yl_common_spot" />
+
+        <com.evertrend.tiger.common.widget.ToggleRadioButton
+            android:id="@+id/tab_action"
+            style="@style/yl_common_map_tab_style"
+            android:text="@string/yl_common_action" />
+
+        <com.evertrend.tiger.common.widget.ToggleRadioButton
+            android:id="@+id/tab_map_edit"
+            style="@style/yl_common_map_tab_style"
+            android:text="@string/yl_common_edit_mappage" />
+    </RadioGroup>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/rg_navigation">
+
+        <include
+            android:id="@+id/ll_set_spot"
+            layout="@layout/yl_common_view_set_spot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"/>
+
+        <include
+            android:id="@+id/cl_action"
+            layout="@layout/yl_common_view_device_action_control"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"/>
+
+        <include
+            android:id="@+id/ll_edit"
+            layout="@layout/yl_common_view_device_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
