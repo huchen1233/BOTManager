@@ -27,6 +27,7 @@ public class CommonConstants {
     public static final String SUCK_FAN_STATUS = "suck_fan_status";
     public static final String VIBRATING_DUST_STATUS = "vibrating_dust_status";
     public static final String MOTOR_RELEASE_STATUS = "motor_release_status";
+    public static final String GARBAGE_VALVE_STATUS = "garbage_valve_status";
     public static final String EMERGENCY_STOP_STATUS = "emergency_stop_status";
     public static final String DESCRIPTION = "description";
     public static final String STATUS = "status";

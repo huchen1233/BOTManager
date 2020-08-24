@@ -114,6 +114,7 @@ public class JsonAnalysisUtil {
                 device.setSuck_fan_status(devices.getJSONObject(i).getIntValue(CommonConstants.SUCK_FAN_STATUS));
                 device.setVibrating_dust_status(devices.getJSONObject(i).getIntValue(CommonConstants.VIBRATING_DUST_STATUS));
                 device.setMotor_release_status(devices.getJSONObject(i).getIntValue(CommonConstants.MOTOR_RELEASE_STATUS));
+                device.setGarbage_valve_status(devices.getJSONObject(i).getIntValue(CommonConstants.GARBAGE_VALVE_STATUS));
                 device.setEmergency_stop_status(devices.getJSONObject(i).getIntValue(CommonConstants.EMERGENCY_STOP_STATUS));
                 device.setSet_current_task(devices.getJSONObject(i).getIntValue(CommonConstants.SET_CURRENT_TASK));
                 device.setCurrent_virtaul_track_group(devices.getJSONObject(i).getIntValue(CommonConstants.CURRENT_VIRTAUL_TRACK_GROUP));
@@ -177,6 +178,7 @@ public class JsonAnalysisUtil {
         device.setSuck_fan_status(jsonObject.getIntValue(CommonConstants.SUCK_FAN_STATUS));
         device.setVibrating_dust_status(jsonObject.getIntValue(CommonConstants.VIBRATING_DUST_STATUS));
         device.setMotor_release_status(jsonObject.getIntValue(CommonConstants.MOTOR_RELEASE_STATUS));
+        device.setGarbage_valve_status(jsonObject.getIntValue(CommonConstants.GARBAGE_VALVE_STATUS));
         device.setEmergency_stop_status(jsonObject.getIntValue(CommonConstants.EMERGENCY_STOP_STATUS));
         device.setSet_current_task(jsonObject.getIntValue(CommonConstants.SET_CURRENT_TASK));
         device.setCurrent_virtaul_track_group(jsonObject.getIntValue(CommonConstants.CURRENT_VIRTAUL_TRACK_GROUP));
