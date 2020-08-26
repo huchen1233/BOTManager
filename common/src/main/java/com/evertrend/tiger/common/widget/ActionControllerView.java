@@ -374,13 +374,13 @@ public class ActionControllerView extends View {
         topActionPath.lineTo(0 + 30, startF + 40);
         topActionPath.close();
 
-        LogUtil.d(TAG, "globalRegion: " + globalRegion);
-        LogUtil.d(TAG, "globalRegion: " + globalRegion);
-        LogUtil.d(TAG, "leftRegion: " + leftRegion);
-        LogUtil.d(TAG, "topRegion: " + topRegion);
-        LogUtil.d(TAG, "rightRegion: " + rightRegion);
-        LogUtil.d(TAG, "bottomRegion: " + bottomRegion);
-        LogUtil.d(TAG, "centerRegion: " + centerRegion);
+//        LogUtil.d(TAG, "globalRegion: " + globalRegion);
+//        LogUtil.d(TAG, "globalRegion: " + globalRegion);
+//        LogUtil.d(TAG, "leftRegion: " + leftRegion);
+//        LogUtil.d(TAG, "topRegion: " + topRegion);
+//        LogUtil.d(TAG, "rightRegion: " + rightRegion);
+//        LogUtil.d(TAG, "bottomRegion: " + bottomRegion);
+//        LogUtil.d(TAG, "centerRegion: " + centerRegion);
     }
 
     @Override

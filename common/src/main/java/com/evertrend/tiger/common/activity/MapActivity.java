@@ -2,18 +2,28 @@ package com.evertrend.tiger.common.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 
 import com.evertrend.tiger.common.R;
+import com.evertrend.tiger.common.bean.RobotAction;
 import com.evertrend.tiger.common.bean.mapview.MapView;
+import com.evertrend.tiger.common.service.ConnectService;
+import com.evertrend.tiger.common.utils.ConnectManager;
+import com.evertrend.tiger.common.utils.EvertrendAgent;
+import com.evertrend.tiger.common.utils.SessionManager;
 import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.common.widget.ActionControllerView;
 
-public class MapActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener, ActionControllerView.LongClickRepeatListener {
+public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener, ActionControllerView.LongClickRepeatListener {
     public static final String TAG = MapActivity.class.getCanonicalName();
 
     private MapView mv_map;
@@ -22,11 +32,34 @@ public class MapActivity extends AppCompatActivity implements RadioGroup.OnCheck
     private ConstraintLayout cl_action;
     private ActionControllerView acv_action;
 
+    private EvertrendAgent mAgent;
+    private Intent intent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.yl_common_activity_map);
         initView();
+        mAgent = getEvertrendAgent();
+        mAgent.connectTo("192.168.11.102");
+        //注册广播 用来接收服务器返回的信息
+//        IntentFilter filter = new IntentFilter();
+//        filter.addAction(ConnectManager.BROADCAST_ACTION);
+//        LocalBroadcastManager.getInstance(this).registerReceiver(actionBroadcastReceiver, filter);
+//        //开启服务
+//        intent = new Intent(MapActivity.this, ConnectService.class);
+//        intent.putExtra("IP", "192.168.11.102");
+//        intent.putExtra("port", 28700);
+//        startService(intent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mAgent.disconnect();
+//        LocalBroadcastManager.getInstance(this).unregisterReceiver(actionBroadcastReceiver);
+//        SessionManager.getmInstance().closeSession();
+//        stopService(intent);
     }
 
     private void initView() {
@@ -71,18 +104,23 @@ public class MapActivity extends AppCompatActivity implements RadioGroup.OnCheck
             switch (what) {
                 case ActionControllerView.TouchArea.LEFT:
                     LogUtil.d(TAG, "longclock LEFT");
+                    mAgent.moveBy(RobotAction.CMD.TURN_LEFT);
                     break;
                 case ActionControllerView.TouchArea.TOP:
                     LogUtil.d(TAG, "longclock TOP");
+                    mAgent.moveBy(RobotAction.CMD.FORWARD);
                     break;
                 case ActionControllerView.TouchArea.RIGHT:
                     LogUtil.d(TAG, "longclock RIGHT");
+                    mAgent.moveBy(RobotAction.CMD.TURN_RIGHT);
                     break;
                 case ActionControllerView.TouchArea.BOTTOM:
                     LogUtil.d(TAG, "longclock BOTTOM");
+                    mAgent.moveBy(RobotAction.CMD.BACKWARD);
                     break;
                 case ActionControllerView.TouchArea.CENTER:
                     LogUtil.d(TAG, "longclock CENTER");
+                    mAgent.cancelAllActions();
                     break;
             }
         }
