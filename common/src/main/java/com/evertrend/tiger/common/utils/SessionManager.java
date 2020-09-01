@@ -10,6 +10,8 @@ import org.json.JSONObject;
 public class SessionManager {
     public static final String TAG = SessionManager.class.getCanonicalName();
     private static  SessionManager mInstance = null;
+    private static final String DEVICE_ID = "9005";
+    private static final String KEY = "1993";
 
     private IoSession ioSession;//最终与服务器 通信的对象
 
@@ -38,37 +40,10 @@ public class SessionManager {
     /**
      * 将对象写到服务器
      */
-//    public void writeToServer(Object msg) {
-//        LogUtil.d(TAG, "ioSession write: "+ioSession);
-//        if (ioSession != null) {
-//            ioSession.write(msg);
-//        }
-//    }
-
-    public void stop() throws JSONException {
-        JSONObject object = new JSONObject();
-        object.put(RobotAction.CMD_CODE, RobotAction.CMD.STOP);
-        object.put(RobotAction.DEVICE_ID, "9002");
-        object.put(RobotAction.KEY, "1993");
-        object.put(RobotAction.TIME_STAMP, getTime());
+    public void writeToServer(Object msg) {
+        LogUtil.d(TAG, "send msg: "+msg);
         if (ioSession != null) {
-            ioSession.write(object.toString());
-        }
-    }
-
-    public void moveBy(int robotAction) throws JSONException {
-        JSONObject object = new JSONObject();
-        if (robotAction == RobotAction.CMD.FORWARD || robotAction == RobotAction.CMD.TURN_LEFT) {
-            object.put(RobotAction.DATA, 0.1);
-        } else if (robotAction == RobotAction.CMD.BACKWARD || robotAction == RobotAction.CMD.TURN_RIGHT) {
-            object.put(RobotAction.DATA, -0.1);
-        }
-        object.put(RobotAction.CMD_CODE, robotAction);
-        object.put(RobotAction.DEVICE_ID, "9002");
-        object.put(RobotAction.KEY, "1993");
-        object.put(RobotAction.TIME_STAMP, getTime());
-        if (ioSession != null) {
-            ioSession.write(object.toString());
+            ioSession.write(msg);
         }
     }
 
@@ -88,5 +63,33 @@ public class SessionManager {
     private long getTime() {
         long time = System.currentTimeMillis();
         return time/1000;
+    }
+
+    public void stop() throws JSONException {
+        JSONObject object = new JSONObject();
+        object.put(RobotAction.CMD_CODE, RobotAction.CMD.STOP);
+        object.put(RobotAction.DEVICE_ID, DEVICE_ID);
+        object.put(RobotAction.KEY, KEY);
+        object.put(RobotAction.TIME_STAMP, getTime());
+        writeToServer(object.toString());
+    }
+
+    public void moveBy(int robotAction, float speed) throws JSONException {
+        JSONObject object = new JSONObject();
+        object.put(RobotAction.CMD_CODE, robotAction);
+        object.put(RobotAction.DATA, speed);
+        object.put(RobotAction.DEVICE_ID, DEVICE_ID);
+        object.put(RobotAction.KEY, KEY);
+        object.put(RobotAction.TIME_STAMP, getTime());
+        writeToServer(object.toString());
+    }
+
+    public void getMap(int getType) throws JSONException {
+        JSONObject object = new JSONObject();
+        object.put(RobotAction.CMD_CODE, getType);
+        object.put(RobotAction.DEVICE_ID, DEVICE_ID);
+        object.put(RobotAction.KEY, KEY);
+        object.put(RobotAction.TIME_STAMP, getTime());
+        writeToServer(object.toString());
     }
 }

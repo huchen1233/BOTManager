@@ -5,6 +5,7 @@ public class ConnectConfig {
     private String ip;
     private int port;
     private int readBufferSize; //缓存大小
+    private int receiveBufferSize; //缓存大小
     private long connectionTimeout;//连接超时时间
 
     public String getIp() {
@@ -19,6 +20,10 @@ public class ConnectConfig {
         return readBufferSize;
     }
 
+    public int getReceiveBufferSize() {
+        return receiveBufferSize;
+    }
+
     public long getConnectionTimeout() {
         return connectionTimeout;
     }
@@ -26,7 +31,8 @@ public class ConnectConfig {
     public static class Builder{
         private String ip = "";
         private int port = 28700;
-        private int readBufferSize = 10240; //缓存大小
+        private int readBufferSize = 2*1024*1024; //缓存大小
+        private int receiveBufferSize = 2*1024*1024; //接收缓存大小
         private long connectionTimeout = 10000;//连接超时时间
 
         public Builder setConnectionTimeout(long connectionTimeout) {
@@ -49,12 +55,18 @@ public class ConnectConfig {
             return this;
         }
 
+        public Builder setReceiveBufferSize(int receiveBufferSize) {
+            this.receiveBufferSize = receiveBufferSize;
+            return this;
+        }
+
         public ConnectConfig bulid(){
             ConnectConfig connectConfig = new ConnectConfig();
             connectConfig.connectionTimeout = this.connectionTimeout;
             connectConfig.ip = this.ip;
             connectConfig.port = this.port;
             connectConfig.readBufferSize = this.readBufferSize;
+            connectConfig.receiveBufferSize = this.receiveBufferSize;
             return  connectConfig;
         }
     }

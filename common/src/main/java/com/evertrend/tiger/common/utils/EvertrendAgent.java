@@ -1,10 +1,16 @@
 package com.evertrend.tiger.common.utils;
 
+import android.graphics.RectF;
+
 import com.evertrend.tiger.common.bean.event.slamtec.ConnectedEvent;
 import com.evertrend.tiger.common.bean.event.slamtec.ConnectionLostEvent;
-import com.evertrend.tiger.common.utils.general.LogUtil;
+import com.evertrend.tiger.common.bean.event.slamtec.MapGetEvent;
+import com.slamtec.slamware.robot.Map;
+import com.slamtec.slamware.robot.MapKind;
 
 import org.greenrobot.eventbus.EventBus;
+
+import static com.slamtec.slamware.robot.MapType.BITMAP_8BIT;
 
 public class EvertrendAgent {
     private final static String TAG = "EvertrendAgent";
@@ -21,6 +27,7 @@ public class EvertrendAgent {
     private static TaskDisconnect sTaskDisconnect;
     private static TaskCancelAllActions sTaskCancelAllActions;
     private static TaskMoveBy sTaskMoveBy;
+    private static TaskGetMap sTaskGetMap;
 
     public EvertrendAgent() {
         mThreadManager = ThreadManager.getInstance();
@@ -30,6 +37,7 @@ public class EvertrendAgent {
         sTaskDisconnect = new TaskDisconnect();
         sTaskCancelAllActions = new TaskCancelAllActions();
         sTaskMoveBy = new TaskMoveBy();
+        sTaskGetMap = new TaskGetMap();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -42,13 +50,18 @@ public class EvertrendAgent {
         pushTask(sTaskDisconnect);
     }
 
-    public void moveBy(int robotAction) {
-        sTaskMoveBy.setRobotAction(robotAction);
+    public void moveBy(int robotAction, float speed) {
+        sTaskMoveBy.setRobotAction(robotAction, speed);
         pushTask(sTaskMoveBy);
     }
 
     public void cancelAllActions() {
         pushTaskHead(sTaskCancelAllActions);
+    }
+
+    public void getMap(int getType) {
+        sTaskGetMap.setGetType(getType);
+        pushTask(sTaskGetMap);
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private synchronized void pushTask(Runnable Task) {
@@ -64,7 +77,7 @@ public class EvertrendAgent {
             mPoolProxy.cancleAll();
             mSessionManager = null;
         }
-        EventBus.getDefault().postSticky(new ConnectionLostEvent());
+        EventBus.getDefault().post(new ConnectionLostEvent());
     }
 
     //////////////////////////////////// Runnable //////////////////////////////////////////////////
@@ -77,12 +90,17 @@ public class EvertrendAgent {
                 return;
             }
 
+            if (mSessionManager != null) {
+                return;
+            }
+
             synchronized (this) {
                 //创建配置文件类
                 ConnectConfig config = new ConnectConfig.Builder()
                         .setIp(mIp)
                         .setPort(ROBOT_PORT)
-                        .setReadBufferSize(10240)
+                        .setReadBufferSize(2*1024*1024)
+                        .setReceiveBufferSize(2*1024*1024)
                         .setConnectionTimeout(10000)
                         .bulid();
                 //创建连接的管理类
@@ -90,11 +108,10 @@ public class EvertrendAgent {
                 //利用循环请求连接
                 while (true) {
                     boolean isConnection = mConnectManager.connect();
-                    LogUtil.d(TAG, "isConnection: "+isConnection);
                     if (isConnection) {
                         //当请求成功的时候,跳出循环
                         mSessionManager = SessionManager.getmInstance();
-                        EventBus.getDefault().postSticky(new ConnectedEvent());
+                        EventBus.getDefault().post(new ConnectedEvent());
                         break;
                     }
                     try {
@@ -148,13 +165,15 @@ public class EvertrendAgent {
 
     private class TaskMoveBy implements Runnable {
         int robotAction;
+        float speed;
 
         public TaskMoveBy() {
             robotAction = 0;
         }
 
-        public void setRobotAction(int robotAction) {
+        public void setRobotAction(int robotAction, float speed) {
             this.robotAction = robotAction;
+            this.speed = speed;
         }
 
         @Override
@@ -171,11 +190,48 @@ public class EvertrendAgent {
             }
 
             try {
-                manager.moveBy(robotAction);
+                manager.moveBy(robotAction, speed);
             } catch (Exception e) {
                 onRequestError(e);
             }
         }
     }
 
+    private class TaskGetMap implements Runnable {
+        private int getType;
+
+        public void setGetType(int getType) {
+            this.getType = getType;
+        }
+
+        @Override
+        public void run() {
+            SessionManager manager;
+
+            synchronized (this) {
+                manager = mSessionManager;
+            }
+
+            if (mSessionManager == null) {
+                return;
+            }
+            if (mSessionManager.getIoSession() == null) {
+                onRequestError(new Exception("connect closed"));
+                return;
+            }
+
+            Map map = null;
+
+            try {
+//                RectF area = platform.getKnownArea(BITMAP_8BIT, MapKind.EXPLORE_MAP);
+//                map = platform.getMap(BITMAP_8BIT, MapKind.EXPLORE_MAP, area);
+                manager.getMap(getType);
+            } catch (Exception e) {
+                onRequestError(e);
+                return;
+            }
+
+//            EventBus.getDefault().postSticky(new MapGetEvent(map));
+        }
+    }
 }
