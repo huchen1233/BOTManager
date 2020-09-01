@@ -4,6 +4,10 @@ import android.content.Context;
 import android.util.Log;
 
 public class LogUtil {
+    //可以全局控制是否打印log日志
+    private static boolean isPrintLog = true;
+    private static int LOG_MAXLENGTH = 4*1024;
+
     private static final String FLAG = " chenhu";
     private static boolean isInputLogI = true;
     private static boolean isInputLogD = true;
@@ -23,7 +27,21 @@ public class LogUtil {
 
     public static void d(String TAG, String message) {
         if (isInputLogD) {
-            Log.d(TAG + AppSharePreference.getAppSharedPreference().loadLogFlag() + FLAG, message);
+            if (isPrintLog) {
+                int strLength = message.length();
+                int start = 0;
+                int end = LOG_MAXLENGTH;
+                for (int i = 0; i < 100; i++) {
+                    if (strLength > end) {
+                        Log.d(TAG + AppSharePreference.getAppSharedPreference().loadLogFlag() + FLAG + i, message.substring(start, end));
+                        start = end;
+                        end = end + LOG_MAXLENGTH;
+                    } else {
+                        Log.d(TAG + AppSharePreference.getAppSharedPreference().loadLogFlag() + FLAG + i, message.substring(start, strLength));
+                        break;
+                    }
+                }
+            }
         }
     }
 

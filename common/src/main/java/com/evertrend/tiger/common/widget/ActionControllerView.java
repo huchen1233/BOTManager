@@ -145,7 +145,6 @@ public class ActionControllerView extends View {
     }
 
     private void stopPostActionTimer() {
-        LogUtil.d(TAG, "stopPostActionTimer");
         if (scheduledThreadPostAction != null) {
             scheduledThreadPostAction.shutdownNow();
             scheduledThreadPostAction = null;
@@ -427,7 +426,7 @@ public class ActionControllerView extends View {
                 canvas.drawPath(centerPath, mPaint);
                 break;
         }
-        LogUtil.e(TAG, " touchArea: " + mTouchArea);
+//        LogUtil.e(TAG, " touchArea: " + mTouchArea);
 
         //Android还提供了一个RegionIterator来对Region中的所有矩阵进行迭代，
         // 可以使用该类，获得某个Region的所有矩阵
