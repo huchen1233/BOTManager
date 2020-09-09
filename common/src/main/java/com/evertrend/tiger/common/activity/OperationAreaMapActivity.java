@@ -103,6 +103,7 @@ import com.evertrend.tiger.common.utils.network.CommonNetReq;
 import com.evertrend.tiger.common.widget.BaseTraceBottomPopupView;
 import com.evertrend.tiger.common.widget.LongClickImageView;
 import com.evertrend.tiger.common.widget.MapBottomPopupView;
+import com.evertrend.tiger.common.widget.PoseBottomPopupView;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnInputConfirmListener;
 import com.lxj.xpopup.interfaces.OnSelectListener;
@@ -144,7 +145,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
     private TextView tv_device_speed;
     private RadioGroup rg_navigation_mode;
     private EditText et_rollback_trace_path_num;
-    private Button btn_set_recharge, btn_set_add_water, btn_set_garage, btn_set_empty_trash, btn_set_trace_spot, btn_set_common_spot;
+    private Button btn_set_recharge, btn_set_add_water, btn_set_garage, btn_set_empty_trash, btn_set_trace_spot, btn_set_common_spot, btn_set_pose;
     private ListView lv_spot_data;
     private Button btn_trace_path_spot_save, btn_trace_path_spot_not_save;
     private Switch btn_auto_record_trace_spot, btn_enable_gps_fence, btn_log_gps_map_slam, btn_delete_gps_map_slam;
@@ -1000,6 +1001,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         rg_navigation_mode = findViewById(R.id.rg_navigation_mode);
         et_rollback_trace_path_num = findViewById(R.id.et_rollback_trace_path_num);
         et_auto_mode_config_distance = findViewById(R.id.et_auto_mode_config_distance);
+        btn_set_pose = findViewById(R.id.btn_set_pose);
         btn_set_recharge = findViewById(R.id.btn_set_recharge);
         btn_set_add_water = findViewById(R.id.btn_set_add_water);
         btn_set_garage = findViewById(R.id.btn_set_garage);
@@ -1051,6 +1053,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         btn_edit.setOnClickListener(this);
         btn_set_spot.setOnClickListener(this);
         rg_navigation_mode.setOnCheckedChangeListener(this);
+        btn_set_pose.setOnClickListener(this);
         btn_set_recharge.setOnClickListener(this);
         btn_set_add_water.setOnClickListener(this);
         btn_set_garage.setOnClickListener(this);
@@ -1233,6 +1236,8 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
                 cl_action.setVisibility(View.GONE);
                 ll_set_spot.setVisibility(View.GONE);
             }
+        } else if (v.getId() == R.id.btn_set_pose) {
+            showSetPosePop();
         } else if (v.getId() == R.id.btn_set_recharge) {
             saveSpot(1, 0);
         } else if (v.getId() == R.id.btn_set_add_water) {
@@ -1316,6 +1321,13 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         } else if (v.getId() == R.id.save_virtual_track) {
             showVirtualTrackChoice(virtualTrackGroupList);
         }
+    }
+
+    private void showSetPosePop() {
+        new XPopup.Builder(this)
+                .autoOpenSoftInput(true)
+                .asCustom(new PoseBottomPopupView(this, device, mapPages))
+                .show();
     }
 
     private void saveTracePathPic() {

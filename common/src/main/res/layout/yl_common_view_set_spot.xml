@@ -9,6 +9,12 @@
         android:layout_height="wrap_content"
         android:visibility="visible"
         android:background="#33000000">
+        <Button
+            android:id="@+id/btn_set_pose"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/yl_common_ButtonStyle"
+            android:text="@string/yl_common_set_pose" />
 
         <Button
             android:id="@+id/btn_set_empty_trash"

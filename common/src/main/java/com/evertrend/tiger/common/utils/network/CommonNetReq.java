@@ -13,6 +13,7 @@ public class CommonNetReq {
     public static final String NET_GET_SAVE_MAP = REQ_HOST + "api/remote/get-save-map";
     public static final String NET_GET_DEVICE = REQ_HOST + "api/remote/get-device";
     public static final String NET_ADD_SPOT = REQ_HOST + "api/remote/add-spot";
+    public static final String NET_SET_POSE = REQ_HOST + "api/remote/set-pose";
     public static final String NET_ADD_SPOT_COMPLETE = REQ_HOST + "api/remote/add-spot-complete";
     public static final String NET_DELETE_TRACE_SPOT = REQ_HOST + "api/remote/delete-trace-spot";
     public static final String NET_DELETE_TRACE_SPOT_COMPLETE = REQ_HOST + "api/remote/delete-trace-spot-complete";
@@ -104,6 +105,7 @@ public class CommonNetReq {
     public static final String USER_GRANTED = "user_granted";
     public static final String USER_FLAG = "user_flag";
     public static final String STATUS = "status";
+    public static final String SET_POSE = "set_pose";
 
     public static final int CODE_SUCCESS = 0;
     public static final int ERR_CODE_INVALID_LOGIN = 5102;

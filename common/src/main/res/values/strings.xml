@@ -84,4 +84,5 @@
     <string name="yl_common_enable_gps_fence">enable gps fence</string>
     <string name="yl_common_log_gps_map_slam">Record relationship between GPS and slam</string>
     <string name="yl_common_delete_gps_map_slam">Delete relationship between GPS and slam</string>
+    <string name="yl_common_set_pose">set pose</string>
 </resources>

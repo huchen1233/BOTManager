@@ -25,6 +25,7 @@ import com.evertrend.tiger.common.bean.event.GetDeviceGrantSuccessEvent;
 import com.evertrend.tiger.common.bean.event.GetRunLogsSuccessEvent;
 import com.evertrend.tiger.common.bean.event.SaveMapPageEvent;
 import com.evertrend.tiger.common.bean.event.SaveTraceSpotFailEvent;
+import com.evertrend.tiger.common.bean.event.SetPoseOKEvent;
 import com.evertrend.tiger.common.bean.event.SetStatusCompleteEvent;
 import com.evertrend.tiger.common.bean.event.UpdateBaseTraceSuccessEvent;
 import com.evertrend.tiger.common.bean.event.UpdateDeviceGrantSuccessEvent;
@@ -1420,6 +1421,50 @@ public class CommTaskUtils {
                         switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
                             case CommonNetReq.CODE_SUCCESS:
                                 EventBus.getDefault().post(new SetStatusCompleteEvent(status, mark));
+                                break;
+                            default:
+                                break;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(TAG, "出错：解析数据失败");
+                    }
+                }
+            }, new OKHttpManager.FuncFailure() {
+                @Override
+                public void onFailure() {
+                    Log.e(TAG, "出错：请求网络失败");
+                }
+            });
+        }
+    }
+
+    public static class TaskSetPose implements Runnable {
+        Device device;
+        MapPages mapPages;
+        String pose;
+
+        public TaskSetPose(Device device, MapPages mapPages, String pose) {
+            this.device = device;
+            this.mapPages = mapPages;
+            this.pose = pose;
+        }
+
+        @Override
+        public void run() {
+            LogUtil.d(TAG, "pose: " + pose);
+            HashMap<String, String> map = new HashMap<>();
+            map.put(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
+            map.put(CommonNetReq.DEVICE_ID, String.valueOf(device.getId()));
+            map.put(CommonNetReq.MAP_PAGE, String.valueOf(mapPages.getId()));
+            map.put(CommonNetReq.SET_POSE, pose);
+            OKHttpManager.getInstance().sendComplexForm(CommonNetReq.NET_SET_POSE, map, new OKHttpManager.FuncJsonObj() {
+                @Override
+                public void onResponse(JSONObject jsonObject) throws JSONException {
+                    try {
+                        switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
+                            case CommonNetReq.CODE_SUCCESS:
+                                EventBus.getDefault().post(new SetPoseOKEvent());
                                 break;
                             default:
                                 break;

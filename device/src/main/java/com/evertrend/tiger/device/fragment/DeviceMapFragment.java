@@ -126,7 +126,7 @@ public class DeviceMapFragment extends BaseFragment {
         intent.putExtra("device", mDevice);
         intent.putExtra("mappage", choiceMapPages);
         if (CommonConstants.TYPE_MAPPAGE_OPERATION_OPEN == event.getType()) {
-            intent.setAction("android.intent.action.MapActivity");
+            intent.setAction("android.intent.action.OperationAreaMapActivity");
             startActivity(intent);
         } else if (CommonConstants.TYPE_MAPPAGE_OPERATION_DELETE == event.getType()) {
             String deleteConfirm = getResources().getString(R.string.yl_device_delete_mappage_confirm);
