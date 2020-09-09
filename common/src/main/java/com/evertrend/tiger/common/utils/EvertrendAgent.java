@@ -128,6 +128,10 @@ public class EvertrendAgent {
         @Override
         public void run() {
             synchronized (this) {
+                if (mSessionManager == null) {
+                    return;
+                }
+
                 if (mSessionManager.getIoSession() == null) {
                     return;
                 }

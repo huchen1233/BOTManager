@@ -71,7 +71,7 @@ public class SessionManager {
         object.put(RobotAction.DEVICE_ID, DEVICE_ID);
         object.put(RobotAction.KEY, KEY);
         object.put(RobotAction.TIME_STAMP, getTime());
-        writeToServer(object.toString());
+        writeToServer(object);
     }
 
     public void moveBy(int robotAction, float speed) throws JSONException {
@@ -81,7 +81,7 @@ public class SessionManager {
         object.put(RobotAction.DEVICE_ID, DEVICE_ID);
         object.put(RobotAction.KEY, KEY);
         object.put(RobotAction.TIME_STAMP, getTime());
-        writeToServer(object.toString());
+        writeToServer(object);
     }
 
     public void getMap(int getType) throws JSONException {
@@ -90,6 +90,6 @@ public class SessionManager {
         object.put(RobotAction.DEVICE_ID, DEVICE_ID);
         object.put(RobotAction.KEY, KEY);
         object.put(RobotAction.TIME_STAMP, getTime());
-        writeToServer(object.toString());
+        writeToServer(object);
     }
 }

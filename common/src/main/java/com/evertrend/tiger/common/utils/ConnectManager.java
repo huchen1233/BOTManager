@@ -85,7 +85,7 @@ public class ConnectManager {
          */
         @Override
         public void messageReceived(IoSession session, Object message) throws Exception {
-            LogUtil.d(TAG, "message Received: "+message.toString());
+//            LogUtil.d(TAG, "message Received: "+message.toString());
             EventBus.getDefault().post(new ServerMsgEvent(message.toString()));
         }
 

@@ -10,6 +10,7 @@ import android.widget.RadioGroup;
 
 import com.evertrend.tiger.common.R;
 import com.evertrend.tiger.common.bean.RobotAction;
+import com.evertrend.tiger.common.bean.event.ServerMsgEvent;
 import com.evertrend.tiger.common.bean.event.slamtec.ConnectedEvent;
 import com.evertrend.tiger.common.bean.event.slamtec.ConnectionLostEvent;
 import com.evertrend.tiger.common.bean.event.slamtec.MapGetEvent;
@@ -17,12 +18,19 @@ import com.evertrend.tiger.common.bean.mapview.MapView;
 import com.evertrend.tiger.common.utils.EvertrendAgent;
 import com.evertrend.tiger.common.utils.general.AppSharePreference;
 import com.evertrend.tiger.common.utils.general.LogUtil;
+import com.evertrend.tiger.common.utils.general.Utils;
 import com.evertrend.tiger.common.widget.ActionControllerView;
+import com.slamtec.slamware.geometry.PointF;
+import com.slamtec.slamware.geometry.Size;
 import com.slamtec.slamware.robot.Map;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Arrays;
 
 public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener, ActionControllerView.LongClickRepeatListener {
     public static final String TAG = MapActivity.class.getCanonicalName();
@@ -66,8 +74,9 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
                 if ((cnt % 30) == 0) {
 //                    mAgent.getHomePose();
                 }
-                mAgent.getMap(RobotAction.CMD.GET_MAP_CON_BIN);
-                SystemClock.sleep(10000);
+//                mAgent.getMap(RobotAction.CMD.GET_MAP_CON_BIN);
+                mAgent.getMap(RobotAction.CMD.GET_MAP);
+                SystemClock.sleep(5000);
                 cnt++;
             }
         }
@@ -117,9 +126,44 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         mAgent.connectTo(IP);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
-    public void onEventMainThread(MapGetEvent event) {
-        Map map = event.getMap();
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(ServerMsgEvent event) {
+        try {
+            JSONObject jsonObject = new JSONObject(event.getMsg());
+//            LogUtil.d(TAG, "json: "+jsonObject.toString());
+            if (jsonObject.getInt(RobotAction.RESULT_CODE) == 0) {
+                switch (jsonObject.getInt(RobotAction.CMD_CODE)) {
+                    case RobotAction.CMD.GET_MAP:
+                        updateMap(jsonObject.getJSONObject(RobotAction.DATA), false);
+                        break;
+                    case RobotAction.CMD.GET_MAP_CONDENSE:
+                    case RobotAction.CMD.GET_MAP_CON_BIN:
+                        updateMap(jsonObject.getJSONObject(RobotAction.DATA), true);
+                        break;
+                }
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//        Map map = event.getMap();
+//        mv_map.setMap(map);
+    }
+
+    private void updateMap(JSONObject jsonObject, boolean isCondense) throws JSONException {
+        PointF origin = new PointF((float)jsonObject.getDouble(RobotAction.ORIGIN_X), (float)jsonObject.getDouble(RobotAction.ORIGIN_Y));
+        Size dimension = new Size(jsonObject.getInt(RobotAction.WIDTH), jsonObject.getInt(RobotAction.HEIGHT));
+//        PointF resolution = new PointF(0.05f, 0.05f);
+        PointF resolution = new PointF((float)jsonObject.getDouble(RobotAction.RESOLUTION), (float)jsonObject.getDouble(RobotAction.RESOLUTION));
+        long timestamp = System.currentTimeMillis();
+        byte[] data = Utils.hexStringToByte(jsonObject.getString(RobotAction.DATA));
+        Map map = new Map(origin, dimension, resolution, timestamp, data);
+        LogUtil.d(TAG, "getDimension: "+map.getDimension().getWidth()+","+map.getDimension().getHeight());
+        LogUtil.d(TAG, "getOrigin: "+map.getOrigin().getX()+","+map.getOrigin().getY());
+        LogUtil.d(TAG, "getResolution: "+map.getResolution().getX()+","+map.getResolution().getY());
+        LogUtil.d(TAG, "getTimestamp: "+map.getTimestamp());
+        LogUtil.d(TAG, "getMapArea: "+map.getMapArea());
+//        LogUtil.d(TAG, "data: "+ Arrays.toString(data));
         mv_map.setMap(map);
     }
 
