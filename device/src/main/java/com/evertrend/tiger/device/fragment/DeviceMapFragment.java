@@ -23,7 +23,7 @@ import com.evertrend.tiger.common.bean.MapPages;
 import com.evertrend.tiger.common.bean.event.ChoiceMapPagesEvent;
 import com.evertrend.tiger.device.bean.event.DeleteMapPageEvent;
 import com.evertrend.tiger.common.bean.event.SaveMapPageEvent;
-import com.evertrend.tiger.device.bean.event.DeviceMessageEvent;
+import com.evertrend.tiger.common.bean.event.DeviceMessageEvent;
 import com.evertrend.tiger.common.bean.event.GetAllMapPagesSuccessEvent;
 import com.evertrend.tiger.device.bean.event.SpinnerChoiceDeviceMessageEvent;
 import com.evertrend.tiger.common.utils.general.ScheduledThreadUtils;

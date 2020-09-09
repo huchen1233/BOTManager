@@ -27,6 +27,9 @@ public class AppSharePreference {
     public static final String DEVICE_TRACE_PATH_ROLLBACK_NUM = "DEVICE_TRACE_PATH_ROLLBACK_NUM";//循迹路径回滚个数
     public static final String DEVICE_TRACE_PATH_AUTO_RECORD = "DEVICE_TRACE_PATH_AUTO_RECORD";//自动记录清扫路径点
     public static final String DEVICE_TRACE_PATH_AUTO_RECORD_DISTANCE = "DEVICE_TRACE_PATH_AUTO_RECORD_DISTANCE";//自动记录清扫路径点间隔距离
+    public static final String DEVICE_ENABLE_GPS_FENCE = "DEVICE_ENABLE_GPS_FENCE";//使能GPS电子围栏
+    public static final String DEVICE_LOG_GPS_SLAM = "DEVICE_LOG_GPS_SLAM";//
+    public static final String DEVICE_DELETE_GPS_SLAM = "DEVICE_DELETE_GPS_SLAM";//
 //    public static final String DEVICE_TMP_TRACE_PATH = "DEVICE_TMP_TRACE_PATH";
 
     //初始化保存的环境
@@ -63,6 +66,33 @@ public class AppSharePreference {
 
     public int loadAutoRecordPathDistance() {
         return sp.getInt(DEVICE_TRACE_PATH_AUTO_RECORD_DISTANCE, CommonConstants.DEVICE_TRACE_PATH_AUTO_RECORD_DISTANCE);
+    }
+
+    public void saveDeleteGPSSlam(boolean deleteGPSSlam) {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean(DEVICE_DELETE_GPS_SLAM, deleteGPSSlam);
+        editor.apply();
+    }
+    public boolean loadDeleteGPSSlam() {
+        return sp.getBoolean(DEVICE_DELETE_GPS_SLAM, false);
+    }
+
+    public void saveLogGPSSlam(boolean logGPSSlam) {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean(DEVICE_LOG_GPS_SLAM, logGPSSlam);
+        editor.apply();
+    }
+    public boolean loadLogGPSSlam() {
+        return sp.getBoolean(DEVICE_LOG_GPS_SLAM, false);
+    }
+
+    public void saveEnableGPSFence(boolean enableGPSFence) {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean(DEVICE_ENABLE_GPS_FENCE, enableGPSFence);
+        editor.apply();
+    }
+    public boolean loadEnableGPSFence() {
+        return sp.getBoolean(DEVICE_ENABLE_GPS_FENCE, false);
     }
 
     public void saveAutoRecordPath(boolean autoRecordPath) {

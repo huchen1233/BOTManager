@@ -81,4 +81,7 @@
     <string name="yl_common_authorization_fail">授权失败，请重试</string>
     <string name="yl_common_no_authorization_items">没有授权项</string>
     <string name="yl_common_distanceAndTime">点位数: %1$d，路径长度(m): %2$.3f，估计耗时(s):%3$d</string>
+    <string name="yl_common_enable_gps_fence">使能GPS电子围栏</string>
+    <string name="yl_common_log_gps_map_slam">记录GPS坐标与SLAM坐标对应关系</string>
+    <string name="yl_common_delete_gps_map_slam">删除GPS坐标与SLAM坐标对应关系</string>
 </resources>

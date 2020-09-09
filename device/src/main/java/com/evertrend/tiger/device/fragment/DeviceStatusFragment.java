@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -14,13 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.evertrend.tiger.common.fragment.BaseFragment;
-import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.common.utils.general.Utils;
 import com.evertrend.tiger.device.R;
 import com.evertrend.tiger.device.adapter.AlarmInfoAdapter;
 import com.evertrend.tiger.device.adapter.StatusShowAdapter;
 import com.evertrend.tiger.common.bean.Device;
-import com.evertrend.tiger.device.bean.event.DeviceMessageEvent;
+import com.evertrend.tiger.common.bean.event.DeviceMessageEvent;
 import com.evertrend.tiger.device.bean.event.SpinnerChoiceDeviceMessageEvent;
 import com.evertrend.tiger.device.utils.Constants;
 import com.evertrend.tiger.device.utils.DeviceStatusValueInitUtil;

@@ -448,6 +448,15 @@ public class CommTaskUtils {
             } else if (type == CommonConstants.TYPE_AUTO_RECORD_PATH) {
                 map.put(CommonNetReq.STATUS, String.valueOf(status));
                 net = CommonNetReq.NET_AUTO_RECORD_PATH;
+            } else if (type == CommonConstants.TYPE_ENABLE_GPS_FENCE) {
+                map.put(CommonNetReq.STATUS, String.valueOf(status));
+                net = CommonNetReq.NET_ENABLE_GPS_FENCE;
+            } else if (type == CommonConstants.TYPE_LOG_GPS_MAP_SLAM) {
+                map.put(CommonNetReq.STATUS, String.valueOf(status));
+                net = CommonNetReq.NET_LOG_GPS_MAP_SLAM;
+            } else if (type == CommonConstants.TYPE_DELETE_GPS_MAP_SLAM) {
+                map.put(CommonNetReq.STATUS, String.valueOf(status));
+                net = CommonNetReq.NET_DELETE_GPS_MAP_SLAM;
             }
             OKHttpManager.getInstance().sendComplexForm(net, map, new OKHttpManager.FuncJsonObj() {
                 @Override

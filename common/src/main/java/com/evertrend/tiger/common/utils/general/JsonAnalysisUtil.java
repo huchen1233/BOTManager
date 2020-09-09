@@ -123,6 +123,10 @@ public class JsonAnalysisUtil {
                 device.setEnable_auto_empty_trash(devices.getJSONObject(i).getIntValue(CommonConstants.ENABLE_AUTO_EMPTY_TRASH));
                 device.setAlarm_info(devices.getJSONObject(i).getString(CommonConstants.ALARM_INFO));
                 device.setGrant_flag(devices.getJSONObject(i).getIntValue(CommonConstants.GRANT_FLAG));
+                device.setAuto_record_trace_path(devices.getJSONObject(i).getIntValue(CommonConstants.AUTO_RECORD_TRACE_PATH));
+                device.setEnable_gps_fence(devices.getJSONObject(i).getIntValue(CommonConstants.ENABLE_GPS_FENCE));
+                device.setLog_gps_map_slam(devices.getJSONObject(i).getIntValue(CommonConstants.LOG_GPS_MAP_SLAM));
+                device.setDelete_gps_map_slam(devices.getJSONObject(i).getIntValue(CommonConstants.DELETE_GPS_MAP_SLAM));
                 deviceLists.add(device);
             }
         }
@@ -187,6 +191,10 @@ public class JsonAnalysisUtil {
         device.setEnable_auto_empty_trash(jsonObject.getIntValue(CommonConstants.ENABLE_AUTO_EMPTY_TRASH));
         device.setAlarm_info(jsonObject.getString(CommonConstants.ALARM_INFO));
         device.setGrant_flag(jsonObject.getIntValue(CommonConstants.GRANT_FLAG));
+        device.setAuto_record_trace_path(jsonObject.getIntValue(CommonConstants.AUTO_RECORD_TRACE_PATH));
+        device.setEnable_gps_fence(jsonObject.getIntValue(CommonConstants.ENABLE_GPS_FENCE));
+        device.setLog_gps_map_slam(jsonObject.getIntValue(CommonConstants.LOG_GPS_MAP_SLAM));
+        device.setDelete_gps_map_slam(jsonObject.getIntValue(CommonConstants.DELETE_GPS_MAP_SLAM));
         return device;
     }
 

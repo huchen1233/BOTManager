@@ -57,6 +57,9 @@ public class CommonNetReq {
     public static final String NET_RELOCATION_MAP_APGE = REQ_HOST + "api/remote/relocation-map-page";
     public static final String NET_SET_CURRENT_MAP = REQ_HOST + "api/remote/set-current-map";
     public static final String NET_AUTO_RECORD_PATH = REQ_HOST + "api/remote/auto-record-path";
+    public static final String NET_ENABLE_GPS_FENCE = REQ_HOST + "api/remote/enable-gps-fence";
+    public static final String NET_LOG_GPS_MAP_SLAM = REQ_HOST + "api/remote/log-gps-map-slam";
+    public static final String NET_DELETE_GPS_MAP_SLAM = REQ_HOST + "api/remote/delete-gps-map-slam";
     public static final String NET_SAVE_VIRTUAL_TRACK = REQ_HOST + "api/remote/save-virtual-track";
     public static final String NET_NEW_VT_GROUP = REQ_HOST + "api/remote/new-vtgroup";
     public static final String NET_UPDATE_VT_GROUP = REQ_HOST + "api/remote/update-vtgroup";

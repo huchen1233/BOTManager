@@ -46,6 +46,7 @@ import com.evertrend.tiger.common.bean.VirtualTrackGroup;
 import com.evertrend.tiger.common.bean.event.AutoRecordPathDistanceOKEvent;
 import com.evertrend.tiger.common.bean.event.ChoiceMapPagesEvent;
 import com.evertrend.tiger.common.bean.event.CreateNewBaseTraceSuccessEvent;
+import com.evertrend.tiger.common.bean.event.DeviceMessageEvent;
 import com.evertrend.tiger.common.bean.event.DialogChoiceEvent;
 import com.evertrend.tiger.common.bean.event.GetAllMapPagesSuccessEvent;
 import com.evertrend.tiger.common.bean.event.GetDeviceGrantSuccessEvent;
@@ -146,7 +147,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
     private Button btn_set_recharge, btn_set_add_water, btn_set_garage, btn_set_empty_trash, btn_set_trace_spot, btn_set_common_spot;
     private ListView lv_spot_data;
     private Button btn_trace_path_spot_save, btn_trace_path_spot_not_save;
-    private Switch btn_auto_record_trace_spot;
+    private Switch btn_auto_record_trace_spot, btn_enable_gps_fence, btn_log_gps_map_slam, btn_delete_gps_map_slam;
     private Button btn_virtual_walls, btn_virtual_tracks, btn_clear_map;
     private LinearLayout ll_top, ll_bottom;
     private ConstraintLayout ll_map_virtual_walls, ll_map_virtual_tracks;
@@ -404,7 +405,20 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
             scheduledThreadGetDeviceGrant = null;
         }
     }
+
+    private void updateSaveStatus(Device device) {
+        AppSharePreference.getAppSharedPreference().saveAutoRecordPath(device.getAuto_record_trace_path() == 0 ? false : true);
+        AppSharePreference.getAppSharedPreference().saveEnableGPSFence(device.getEnable_gps_fence() == 0 ? false : true);
+        AppSharePreference.getAppSharedPreference().saveLogGPSSlam(device.getLog_gps_map_slam() == 0 ? false : true);
+        AppSharePreference.getAppSharedPreference().saveDeleteGPSSlam(device.getDelete_gps_map_slam() == 0 ? false : true);
+    }
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void onMessageEvent(DeviceMessageEvent messageEvent) {
+        device = messageEvent.getMessage();
+        updateSaveStatus(device);
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onEventMainThread(ConnectedEvent event) {
         DialogUtil.hideProgressDialog();
@@ -1004,6 +1018,9 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         btn_trace_path_rollback = findViewById(R.id.btn_trace_path_rollback);
         ibtn_trace_path_close = findViewById(R.id.ibtn_trace_path_close);
         btn_auto_record_trace_spot = findViewById(R.id.btn_auto_record_trace_spot);
+        btn_enable_gps_fence = findViewById(R.id.btn_enable_gps_fence);
+        btn_log_gps_map_slam = findViewById(R.id.btn_log_gps_map_slam);
+        btn_delete_gps_map_slam = findViewById(R.id.btn_delete_gps_map_slam);
         btn_virtual_walls = findViewById(R.id.btn_virtual_walls);
         btn_virtual_tracks = findViewById(R.id.btn_virtual_tracks);
         btn_clear_map = findViewById(R.id.btn_clear_map);
@@ -1052,6 +1069,9 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         btn_trace_path_rollback.setEnabled(false);
         ibtn_trace_path_close.setOnClickListener(this);
         btn_auto_record_trace_spot.setOnCheckedChangeListener(this);
+        btn_enable_gps_fence.setOnCheckedChangeListener(this);
+        btn_log_gps_map_slam.setOnCheckedChangeListener(this);
+        btn_delete_gps_map_slam.setOnCheckedChangeListener(this);
         ibtn_map_set_centred.setOnClickListener(this);
         btn_virtual_walls.setOnClickListener(this);
         btn_virtual_tracks.setOnClickListener(this);
@@ -1175,6 +1195,9 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
             sb_device_speed.setProgress(dSpeed);
             et_rollback_trace_path_num.setText(AppSharePreference.getAppSharedPreference().loadTracePathRollbackNum()+"");
             et_rollback_trace_path_num.setSelection(1);
+            btn_enable_gps_fence.setChecked(AppSharePreference.getAppSharedPreference().loadEnableGPSFence());
+            btn_log_gps_map_slam.setChecked(AppSharePreference.getAppSharedPreference().loadLogGPSSlam());
+            btn_delete_gps_map_slam.setChecked(AppSharePreference.getAppSharedPreference().loadDeleteGPSSlam());
             btn_auto_record_trace_spot.setChecked(AppSharePreference.getAppSharedPreference().loadAutoRecordPath());
             et_rollback_trace_path_num.setText(AppSharePreference.getAppSharedPreference().loadAutoRecordPathDistance()+"");
         } else if (v.getId() == R.id.iv_settings_back) {
@@ -1566,6 +1589,30 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
             } else {
                 startRelocationOrSetCurrentMapOrAutoRecordPath(CommonConstants.TYPE_AUTO_RECORD_PATH, 0);
 //                stopRecordSpot();
+            }
+        } else if (buttonView.getId() == R.id.btn_enable_gps_fence) {
+            LogUtil.i(this, TAG, "isChecked: "+isChecked);
+            AppSharePreference.getAppSharedPreference().saveEnableGPSFence(isChecked);
+            if (isChecked) {
+                startRelocationOrSetCurrentMapOrAutoRecordPath(CommonConstants.TYPE_ENABLE_GPS_FENCE, 1);
+            } else {
+                startRelocationOrSetCurrentMapOrAutoRecordPath(CommonConstants.TYPE_ENABLE_GPS_FENCE, 0);
+            }
+        } else if (buttonView.getId() == R.id.btn_log_gps_map_slam) {
+            LogUtil.i(this, TAG, "isChecked: "+isChecked);
+            AppSharePreference.getAppSharedPreference().saveLogGPSSlam(isChecked);
+            if (isChecked) {
+                startRelocationOrSetCurrentMapOrAutoRecordPath(CommonConstants.TYPE_LOG_GPS_MAP_SLAM, 1);
+            } else {
+                startRelocationOrSetCurrentMapOrAutoRecordPath(CommonConstants.TYPE_LOG_GPS_MAP_SLAM, 0);
+            }
+        } else if (buttonView.getId() == R.id.btn_delete_gps_map_slam) {
+            LogUtil.i(this, TAG, "isChecked: "+isChecked);
+            AppSharePreference.getAppSharedPreference().saveDeleteGPSSlam(isChecked);
+            if (isChecked) {
+                startRelocationOrSetCurrentMapOrAutoRecordPath(CommonConstants.TYPE_DELETE_GPS_MAP_SLAM, 1);
+            } else {
+                startRelocationOrSetCurrentMapOrAutoRecordPath(CommonConstants.TYPE_DELETE_GPS_MAP_SLAM, 0);
             }
         }
     }

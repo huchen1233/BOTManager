@@ -226,4 +226,73 @@
             android:text="米"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:visibility="visible"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/yl_common_enable_gps_fence"
+            android:textSize="16sp" />
+
+        <Switch
+            android:id="@+id/btn_enable_gps_fence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:showText="true"
+            android:textOn="@string/yl_common_on"
+            android:textOff="@string/yl_common_off"
+            android:switchPadding="5dp"
+            style="@style/yl_common_ButtonStyle" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:visibility="visible"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/yl_common_log_gps_map_slam"
+            android:textSize="16sp" />
+
+        <Switch
+            android:id="@+id/btn_log_gps_map_slam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:showText="true"
+            android:textOn="@string/yl_common_on"
+            android:textOff="@string/yl_common_off"
+            android:switchPadding="5dp"
+            style="@style/yl_common_ButtonStyle" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:visibility="visible"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/yl_common_delete_gps_map_slam"
+            android:textSize="16sp" />
+
+        <Switch
+            android:id="@+id/btn_delete_gps_map_slam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:showText="true"
+            android:textOn="@string/yl_common_on"
+            android:textOff="@string/yl_common_off"
+            android:switchPadding="5dp"
+            style="@style/yl_common_ButtonStyle" />
+    </LinearLayout>
+
 </LinearLayout>

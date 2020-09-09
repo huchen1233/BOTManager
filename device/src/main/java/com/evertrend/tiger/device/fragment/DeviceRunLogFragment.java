@@ -18,7 +18,7 @@ import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.device.R;
 import com.evertrend.tiger.device.adapter.RunLogAdapter;
 import com.evertrend.tiger.common.bean.event.GetRunLogsSuccessEvent;
-import com.evertrend.tiger.device.bean.event.DeviceMessageEvent;
+import com.evertrend.tiger.common.bean.event.DeviceMessageEvent;
 import com.evertrend.tiger.device.bean.event.SpinnerChoiceDeviceMessageEvent;
 import com.evertrend.tiger.common.utils.general.ScheduledThreadUtils;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;

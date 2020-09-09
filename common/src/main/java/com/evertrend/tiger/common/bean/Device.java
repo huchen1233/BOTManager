@@ -62,6 +62,42 @@ public class Device extends LitePalSupport implements Serializable {
     private int enable_auto_empty_trash;
     private String alarm_info;//报警信息
     private int grant_flag;//是否为授权设备，1是
+    private int auto_record_trace_path;//
+    private int enable_gps_fence;//
+    private int log_gps_map_slam;//
+    private int delete_gps_map_slam;//
+
+    public int getAuto_record_trace_path() {
+        return auto_record_trace_path;
+    }
+
+    public void setAuto_record_trace_path(int auto_record_trace_path) {
+        this.auto_record_trace_path = auto_record_trace_path;
+    }
+
+    public int getEnable_gps_fence() {
+        return enable_gps_fence;
+    }
+
+    public void setEnable_gps_fence(int enable_gps_fence) {
+        this.enable_gps_fence = enable_gps_fence;
+    }
+
+    public int getLog_gps_map_slam() {
+        return log_gps_map_slam;
+    }
+
+    public void setLog_gps_map_slam(int log_gps_map_slam) {
+        this.log_gps_map_slam = log_gps_map_slam;
+    }
+
+    public int getDelete_gps_map_slam() {
+        return delete_gps_map_slam;
+    }
+
+    public void setDelete_gps_map_slam(int delete_gps_map_slam) {
+        this.delete_gps_map_slam = delete_gps_map_slam;
+    }
 
     public int getGrant_flag() {
         return grant_flag;
@@ -608,6 +644,10 @@ public class Device extends LitePalSupport implements Serializable {
                 ", enable_auto_empty_trash=" + enable_auto_empty_trash +
                 ", alarm_info=" + alarm_info +
                 ", grant_flag=" + grant_flag +
+                ", auto_record_trace_path=" + auto_record_trace_path +
+                ", enable_gps_fence=" + enable_gps_fence +
+                ", log_gps_map_slam=" + log_gps_map_slam +
+                ", delete_trace_path=" + delete_trace_path +
                 '}';
     }
 }

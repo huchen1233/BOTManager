@@ -19,7 +19,7 @@ import com.evertrend.tiger.common.bean.TracePath;
 import com.evertrend.tiger.common.bean.VirtualTrackGroup;
 import com.evertrend.tiger.device.bean.event.DeleteMapPageEvent;
 import com.evertrend.tiger.device.bean.event.DeleteCleanTaskEvent;
-import com.evertrend.tiger.device.bean.event.DeviceMessageEvent;
+import com.evertrend.tiger.common.bean.event.DeviceMessageEvent;
 import com.evertrend.tiger.device.bean.event.GetAllCleanTasksSuccessEvent;
 import com.evertrend.tiger.device.bean.event.GetAllSpecialTaskSpotSuccessEvent;
 import com.evertrend.tiger.device.bean.event.GetAllVirtualTrackGroupSuccessEvent;

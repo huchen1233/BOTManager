@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import com.baidu.location.BDAbstractLocationListener;
@@ -35,7 +34,7 @@ import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.device.R;
 import com.evertrend.tiger.device.activity.DeviceMainActivity;
 import com.evertrend.tiger.device.bean.event.DeviceListEvent;
-import com.evertrend.tiger.device.bean.event.DeviceMessageEvent;
+import com.evertrend.tiger.common.bean.event.DeviceMessageEvent;
 import com.evertrend.tiger.device.bean.event.LoadDevicesEvent;
 
 import org.greenrobot.eventbus.EventBus;

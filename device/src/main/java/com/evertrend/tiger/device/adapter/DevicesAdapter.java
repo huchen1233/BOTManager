@@ -13,15 +13,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.evertrend.tiger.common.bean.CleanTask;
 import com.evertrend.tiger.common.bean.event.ChoiceDeviceEvent;
 import com.evertrend.tiger.common.utils.general.CommonConstants;
 import com.evertrend.tiger.device.R;
 import com.evertrend.tiger.device.activity.DeviceMainActivity;
 import com.evertrend.tiger.common.bean.Device;
-import com.evertrend.tiger.device.bean.event.ChoiceCleanTaskEvent;
 import com.evertrend.tiger.device.bean.event.DeviceListEvent;
-import com.evertrend.tiger.device.bean.event.DeviceMessageEvent;
+import com.evertrend.tiger.common.bean.event.DeviceMessageEvent;
 import com.evertrend.tiger.device.utils.Constants;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnSelectListener;

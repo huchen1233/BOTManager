@@ -89,6 +89,10 @@ public class CommonConstants {
     public static final String TYPE_CODE = "type_code";
     public static final String LOG_TIME = "log_time";
     public static final String GRANT_FLAG = "grant_flag";
+    public static final String AUTO_RECORD_TRACE_PATH = "auto_record_trace_path";
+    public static final String ENABLE_GPS_FENCE = "enable_gps_fence";
+    public static final String LOG_GPS_MAP_SLAM = "log_gps_map_slam";
+    public static final String DELETE_GPS_MAP_SLAM = "delete_gps_map_slam";
 
     public static final String TYPE_EXTRA_NAME = "name";
     public static final String TYPE_EXTRA_PASS = "pass";
@@ -142,6 +146,9 @@ public class CommonConstants {
     public static final int TYPE_RELOCATION = 0;
     public static final int TYPE_SET_CURRENT_MAP = 1;
     public static final int TYPE_AUTO_RECORD_PATH = 2;
+    public static final int TYPE_ENABLE_GPS_FENCE = 3;
+    public static final int TYPE_LOG_GPS_MAP_SLAM = 4;
+    public static final int TYPE_DELETE_GPS_MAP_SLAM = 5;
 
     public static final int CREATE_TRACE_SPOT_REQUEST_CODE = 104;
     public static final int CREATE_TRACE_PATH_REQUEST_CODE = 105;

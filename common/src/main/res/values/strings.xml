@@ -81,4 +81,7 @@
     <string name="yl_common_authorization_fail">authorization fail</string>
     <string name="yl_common_no_authorization_items">No authorization items</string>
     <string name="yl_common_distanceAndTime">point num: %1$d，distance(m): %2$.3f，time:%3$d</string>
+    <string name="yl_common_enable_gps_fence">enable gps fence</string>
+    <string name="yl_common_log_gps_map_slam">Record relationship between GPS and slam</string>
+    <string name="yl_common_delete_gps_map_slam">Delete relationship between GPS and slam</string>
 </resources>
