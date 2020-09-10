@@ -10,11 +10,18 @@
         android:visibility="visible"
         android:background="#33000000">
         <Button
-            android:id="@+id/btn_set_pose"
+            android:id="@+id/btn_reset_start_spot"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/yl_common_ButtonStyle"
-            android:text="@string/yl_common_set_pose" />
+            android:text="@string/yl_common_reset_start_spot" />
+
+        <Button
+            android:id="@+id/btn_set_start_spot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/yl_common_ButtonStyle"
+            android:text="@string/yl_common_set_start_spot" />
 
         <Button
             android:id="@+id/btn_set_empty_trash"

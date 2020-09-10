@@ -85,4 +85,6 @@
     <string name="yl_common_log_gps_map_slam">记录GPS坐标与SLAM坐标对应关系</string>
     <string name="yl_common_delete_gps_map_slam">删除GPS坐标与SLAM坐标对应关系</string>
     <string name="yl_common_set_pose">设置位姿</string>
+    <string name="yl_common_set_start_spot">设为开始点</string>
+    <string name="yl_common_reset_start_spot">复位开始点</string>
 </resources>

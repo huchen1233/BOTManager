@@ -52,6 +52,8 @@ import com.evertrend.tiger.common.bean.event.GetAllMapPagesSuccessEvent;
 import com.evertrend.tiger.common.bean.event.GetDeviceGrantSuccessEvent;
 import com.evertrend.tiger.common.bean.event.SaveMapPageEvent;
 import com.evertrend.tiger.common.bean.event.SaveTraceSpotFailEvent;
+import com.evertrend.tiger.common.bean.event.SetPoseFailEvent;
+import com.evertrend.tiger.common.bean.event.SetPoseOKEvent;
 import com.evertrend.tiger.common.bean.event.map.AddTrack;
 import com.evertrend.tiger.common.bean.event.map.AddVtracks;
 import com.evertrend.tiger.common.bean.event.map.AddVwalls;
@@ -145,7 +147,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
     private TextView tv_device_speed;
     private RadioGroup rg_navigation_mode;
     private EditText et_rollback_trace_path_num;
-    private Button btn_set_recharge, btn_set_add_water, btn_set_garage, btn_set_empty_trash, btn_set_trace_spot, btn_set_common_spot, btn_set_pose;
+    private Button btn_set_recharge, btn_set_add_water, btn_set_garage, btn_set_empty_trash, btn_set_trace_spot, btn_set_common_spot, btn_set_start_spot, btn_reset_start_spot;
     private ListView lv_spot_data;
     private Button btn_trace_path_spot_save, btn_trace_path_spot_not_save;
     private Switch btn_auto_record_trace_spot, btn_enable_gps_fence, btn_log_gps_map_slam, btn_delete_gps_map_slam;
@@ -198,6 +200,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
     private ScheduledThreadPoolExecutor scheduledThreadGetMapPagesAllVirtualTrackGroup;
     private ScheduledThreadPoolExecutor scheduledThreadSaveVirtualTrack;
     private ScheduledThreadPoolExecutor scheduledThreadGetDeviceGrant;
+    private ScheduledThreadPoolExecutor scheduledThreadSetPose;
 
     private Runnable mRobotStateUpdateRunnable = new Runnable() {
         int cnt;
@@ -323,6 +326,13 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    private void stopSetPoseTimer() {
+        if (scheduledThreadSetPose != null) {
+            scheduledThreadSetPose.shutdownNow();
+            scheduledThreadSetPose = null;
+        }
+    }
+
     private void stopSaveTraceSpotTimer() {
         if (scheduledThreadSaveTraceSpot != null) {
             scheduledThreadSaveTraceSpot.shutdownNow();
@@ -851,6 +861,16 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         stopGetDeviceGrantTimer();
         deviceGrant = event.getDeviceGrant();
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(SetPoseOKEvent event) {
+        stopSetPoseTimer();
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(SetPoseFailEvent event) {
+        stopSetPoseTimer();
+        DialogUtil.showToast(this, event.getDesc(), Toast.LENGTH_LONG);
+    }
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private void virtualWallsComplete() {
@@ -886,6 +906,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         stopGetDeviceGrantTimer();
         stopUpdate();
         stopRecordSpot();
+        stopSetPoseTimer();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
@@ -1001,7 +1022,8 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         rg_navigation_mode = findViewById(R.id.rg_navigation_mode);
         et_rollback_trace_path_num = findViewById(R.id.et_rollback_trace_path_num);
         et_auto_mode_config_distance = findViewById(R.id.et_auto_mode_config_distance);
-        btn_set_pose = findViewById(R.id.btn_set_pose);
+        btn_reset_start_spot = findViewById(R.id.btn_reset_start_spot);
+        btn_set_start_spot = findViewById(R.id.btn_set_start_spot);
         btn_set_recharge = findViewById(R.id.btn_set_recharge);
         btn_set_add_water = findViewById(R.id.btn_set_add_water);
         btn_set_garage = findViewById(R.id.btn_set_garage);
@@ -1053,7 +1075,8 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         btn_edit.setOnClickListener(this);
         btn_set_spot.setOnClickListener(this);
         rg_navigation_mode.setOnCheckedChangeListener(this);
-        btn_set_pose.setOnClickListener(this);
+        btn_reset_start_spot.setOnClickListener(this);
+        btn_set_start_spot.setOnClickListener(this);
         btn_set_recharge.setOnClickListener(this);
         btn_set_add_water.setOnClickListener(this);
         btn_set_garage.setOnClickListener(this);
@@ -1236,9 +1259,12 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
                 cl_action.setVisibility(View.GONE);
                 ll_set_spot.setVisibility(View.GONE);
             }
-        } else if (v.getId() == R.id.btn_set_pose) {
-            showSetPosePop();
-        } else if (v.getId() == R.id.btn_set_recharge) {
+        } else if (v.getId() == R.id.btn_reset_start_spot) {
+//            showSetPosePop();
+            resetStartSpot();
+        } else if (v.getId() == R.id.btn_set_start_spot) {
+            saveSpot(7, 0);
+        }  else if (v.getId() == R.id.btn_set_recharge) {
             saveSpot(1, 0);
         } else if (v.getId() == R.id.btn_set_add_water) {
             saveSpot(2, 0);
@@ -1264,7 +1290,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         } else if (v.getId() == R.id.btn_save_map) {
             showEditDialog();
         } else if (v.getId() == R.id.btn_relocation) {
-            mAgent.clearMap();
+//            mAgent.clearMap();
             clearTraceSpotList();
             DialogUtil.showProgressDialog(this, getResources().getString(R.string.yl_common_reloading), false, false);
             startRelocationOrSetCurrentMapOrAutoRecordPath(CommonConstants.TYPE_RELOCATION, 1);
@@ -1321,6 +1347,12 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         } else if (v.getId() == R.id.save_virtual_track) {
             showVirtualTrackChoice(virtualTrackGroupList);
         }
+    }
+
+    private void resetStartSpot() {
+        scheduledThreadSetPose = new ScheduledThreadPoolExecutor(4);
+        scheduledThreadSetPose.scheduleAtFixedRate(new CommTaskUtils.TaskSetPose(device, mapPages),
+                0, 5, TimeUnit.SECONDS);
     }
 
     private void showSetPosePop() {

@@ -13,6 +13,7 @@ public class CommonNetReq {
     public static final String NET_GET_SAVE_MAP = REQ_HOST + "api/remote/get-save-map";
     public static final String NET_GET_DEVICE = REQ_HOST + "api/remote/get-device";
     public static final String NET_ADD_SPOT = REQ_HOST + "api/remote/add-spot";
+    public static final String NET_SET_START_SPOT = REQ_HOST + "api/remote/set-start-spot";
     public static final String NET_SET_POSE = REQ_HOST + "api/remote/set-pose";
     public static final String NET_ADD_SPOT_COMPLETE = REQ_HOST + "api/remote/add-spot-complete";
     public static final String NET_DELETE_TRACE_SPOT = REQ_HOST + "api/remote/delete-trace-spot";

@@ -25,6 +25,7 @@ import com.evertrend.tiger.common.bean.event.GetDeviceGrantSuccessEvent;
 import com.evertrend.tiger.common.bean.event.GetRunLogsSuccessEvent;
 import com.evertrend.tiger.common.bean.event.SaveMapPageEvent;
 import com.evertrend.tiger.common.bean.event.SaveTraceSpotFailEvent;
+import com.evertrend.tiger.common.bean.event.SetPoseFailEvent;
 import com.evertrend.tiger.common.bean.event.SetPoseOKEvent;
 import com.evertrend.tiger.common.bean.event.SetStatusCompleteEvent;
 import com.evertrend.tiger.common.bean.event.UpdateBaseTraceSuccessEvent;
@@ -259,7 +260,13 @@ public class CommTaskUtils {
         map.put(CommonNetReq.TARGET_MAP_PAGE, String.valueOf(targetMapPageId));
         map.put(CommonNetReq.SPOT_FLAG, String.valueOf(spotFlag));
         map.put(CommonNetReq.TRACE_PATH_ID, String.valueOf(tracePathId));//注意当前选择循迹路径为空的情况
-        map.put(CommonNetReq.SPOT_FLAG_DATA, currentPose);
+        if (spotFlag == 7) {
+            String[] strs = currentPose.split(",");
+            String startPose = strs[0]+","+strs[1]+","+strs[3];
+            map.put(CommonNetReq.SPOT_FLAG_DATA, startPose);
+        } else {
+            map.put(CommonNetReq.SPOT_FLAG_DATA, currentPose);
+        }
         OKHttpManager.getInstance().sendComplexForm(CommonNetReq.NET_ADD_SPOT, map, new OKHttpManager.FuncJsonObj() {
             @Override
             public void onResponse(JSONObject jsonObject) throws JSONException {
@@ -725,7 +732,7 @@ public class CommTaskUtils {
 
     public static class TaskSaveTraceSpot implements Runnable {
         private Device device;
-        private int spotFlag;//标志该点类型，0：路径点，1: 充电点，2: 加水点，3: 倾倒垃圾点，4：车库点，5：公共点
+        private int spotFlag;//标志该点类型，0：路径点，1: 充电点，2: 加水点，3: 倾倒垃圾点，4：车库点，5：公共点，7：开始点
         private String currentPose;
         private int mapPageId;
         private int targetMapPageId;
@@ -1444,6 +1451,11 @@ public class CommTaskUtils {
         MapPages mapPages;
         String pose;
 
+        public TaskSetPose(Device device, MapPages mapPages) {
+            this.device = device;
+            this.mapPages = mapPages;
+        }
+
         public TaskSetPose(Device device, MapPages mapPages, String pose) {
             this.device = device;
             this.mapPages = mapPages;
@@ -1452,13 +1464,13 @@ public class CommTaskUtils {
 
         @Override
         public void run() {
-            LogUtil.d(TAG, "pose: " + pose);
+//            LogUtil.d(TAG, "pose: " + pose);
             HashMap<String, String> map = new HashMap<>();
             map.put(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
             map.put(CommonNetReq.DEVICE_ID, String.valueOf(device.getId()));
             map.put(CommonNetReq.MAP_PAGE, String.valueOf(mapPages.getId()));
-            map.put(CommonNetReq.SET_POSE, pose);
-            OKHttpManager.getInstance().sendComplexForm(CommonNetReq.NET_SET_POSE, map, new OKHttpManager.FuncJsonObj() {
+//            map.put(CommonNetReq.SET_POSE, pose);
+            OKHttpManager.getInstance().sendComplexForm(CommonNetReq.NET_SET_START_SPOT, map, new OKHttpManager.FuncJsonObj() {
                 @Override
                 public void onResponse(JSONObject jsonObject) throws JSONException {
                     try {
@@ -1467,6 +1479,7 @@ public class CommTaskUtils {
                                 EventBus.getDefault().post(new SetPoseOKEvent());
                                 break;
                             default:
+                                EventBus.getDefault().post(new SetPoseFailEvent(jsonObject.getString(CommonNetReq.RESULT_DESC)));
                                 break;
                         }
                     } catch (Exception e) {

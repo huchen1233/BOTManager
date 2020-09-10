@@ -85,4 +85,6 @@
     <string name="yl_common_log_gps_map_slam">Record relationship between GPS and slam</string>
     <string name="yl_common_delete_gps_map_slam">Delete relationship between GPS and slam</string>
     <string name="yl_common_set_pose">set pose</string>
+    <string name="yl_common_set_start_spot">set start spot</string>
+    <string name="yl_common_reset_start_spot">reset start spot</string>
 </resources>
