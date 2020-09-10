@@ -87,4 +87,5 @@
     <string name="yl_common_set_pose">设置位姿</string>
     <string name="yl_common_set_start_spot">设为开始点</string>
     <string name="yl_common_reset_start_spot">复位开始点</string>
+    <string name="yl_common_load_map">加载地图</string>
 </resources>

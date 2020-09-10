@@ -151,7 +151,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
     private ListView lv_spot_data;
     private Button btn_trace_path_spot_save, btn_trace_path_spot_not_save;
     private Switch btn_auto_record_trace_spot, btn_enable_gps_fence, btn_log_gps_map_slam, btn_delete_gps_map_slam;
-    private Button btn_virtual_walls, btn_virtual_tracks, btn_clear_map;
+    private Button btn_virtual_walls, btn_virtual_tracks, btn_clear_map, btn_load_map;
     private LinearLayout ll_top, ll_bottom;
     private ConstraintLayout ll_map_virtual_walls, ll_map_virtual_tracks;
     private LinearLayout ll_add_virtual_wall_line, ll_add_virtual_wall_all_delete, ll_virtual_wall_delete;
@@ -1048,6 +1048,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         btn_virtual_walls = findViewById(R.id.btn_virtual_walls);
         btn_virtual_tracks = findViewById(R.id.btn_virtual_tracks);
         btn_clear_map = findViewById(R.id.btn_clear_map);
+        btn_load_map = findViewById(R.id.btn_load_map);
         ll_top = findViewById(R.id.ll_top);
         ll_bottom = findViewById(R.id.ll_bottom);
         ll_map_virtual_walls = findViewById(R.id.ll_map_virtual_walls);
@@ -1102,6 +1103,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         btn_virtual_walls.setOnClickListener(this);
         btn_virtual_tracks.setOnClickListener(this);
         btn_clear_map.setOnClickListener(this);
+        btn_load_map.setOnClickListener(this);
         ll_add_virtual_wall_line.setOnClickListener(this);
         ibtn_add_virtual_wall_ok.setOnClickListener(this);
         ibtn_add_virtual_wall_cancel.setOnClickListener(this);
@@ -1324,6 +1326,8 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         }  else if (v.getId() == R.id.btn_clear_map) {
             mAgent.clearMap();
             clearTraceSpotList();
+        }  else if (v.getId() == R.id.btn_load_map) {
+            startRelocationOrSetCurrentMapOrAutoRecordPath(CommonConstants.TYPE_LOAD_MAP, 1);
         } else if (v.getId() == R.id.ll_add_virtual_wall_line) {
             addVirtualWall();
         } else if (v.getId() == R.id.ibtn_add_virtual_wall_ok) {

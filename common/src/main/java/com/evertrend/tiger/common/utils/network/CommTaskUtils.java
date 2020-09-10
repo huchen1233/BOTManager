@@ -465,6 +465,9 @@ public class CommTaskUtils {
             } else if (type == CommonConstants.TYPE_DELETE_GPS_MAP_SLAM) {
                 map.put(CommonNetReq.STATUS, String.valueOf(status));
                 net = CommonNetReq.NET_DELETE_GPS_MAP_SLAM;
+            } else if (type == CommonConstants.TYPE_LOAD_MAP) {
+                map.put(CommonNetReq.STATUS, String.valueOf(status));
+                net = CommonNetReq.NET_LOAD_MAP;
             }
             OKHttpManager.getInstance().sendComplexForm(net, map, new OKHttpManager.FuncJsonObj() {
                 @Override

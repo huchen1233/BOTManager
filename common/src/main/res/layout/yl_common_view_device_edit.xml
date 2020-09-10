@@ -30,6 +30,13 @@
             android:layout_height="wrap_content"
             style="@style/yl_common_ButtonStyle"
             android:text="@string/yl_common_clear_map" />
+
+        <Button
+            android:id="@+id/btn_load_map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/yl_common_ButtonStyle"
+            android:text="@string/yl_common_load_map" />
     </LinearLayout>
 
 </LinearLayout>

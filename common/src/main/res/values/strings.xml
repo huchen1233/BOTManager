@@ -87,4 +87,5 @@
     <string name="yl_common_set_pose">set pose</string>
     <string name="yl_common_set_start_spot">set start spot</string>
     <string name="yl_common_reset_start_spot">reset start spot</string>
+    <string name="yl_common_load_map">load map</string>
 </resources>
