@@ -143,6 +143,9 @@ public class DeviceMapFragment extends BaseFragment {
         } else if (CommonConstants.TYPE_MAPPAGE_OPERATION_VIRTUAL_TRACK == event.getType()) {
             intent.setAction("android.intent.action.VirtualTrackGroupOperationActivity");
             startActivity(intent);
+        } else if (CommonConstants.TYPE_MAPPAGE_OPERATION_GPS_FENCE == event.getType()) {
+            intent.setAction("android.intent.action.GpsFenceActivity");
+            startActivity(intent);
         }
     }
 

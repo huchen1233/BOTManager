@@ -56,6 +56,7 @@
     <string name="yl_common_delete_virtual_track_group_confirm">您确定要删除虚拟轨道组(%1$s)吗?</string>
     <string name="yl_common_testing">检测中......</string>
     <string name="yl_common_set_common_spot">设为公共点</string>
+    <string name="yl_common_gps_fence">GPS围栏</string>
     <string name="yl_common_delete_mappage">删除地图</string>
     <string name="yl_common_edit_mappage">编辑地图</string>
     <string name="yl_common_virtual_tracks_group">虚拟轨道组</string>

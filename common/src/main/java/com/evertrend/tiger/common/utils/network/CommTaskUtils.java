@@ -5,6 +5,7 @@ import android.util.Log;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
+import com.baidu.mapapi.model.LatLng;
 import com.evertrend.tiger.common.bean.BaseTrace;
 import com.evertrend.tiger.common.bean.Device;
 import com.evertrend.tiger.common.bean.DeviceGrant;
@@ -22,6 +23,8 @@ import com.evertrend.tiger.common.bean.event.DeviceExceptionEvent;
 import com.evertrend.tiger.common.bean.event.GetAllMapPagesSuccessEvent;
 import com.evertrend.tiger.common.bean.event.GetDeviceAllGrantsSuccessEvent;
 import com.evertrend.tiger.common.bean.event.GetDeviceGrantSuccessEvent;
+import com.evertrend.tiger.common.bean.event.GetGpsFenceFailEvent;
+import com.evertrend.tiger.common.bean.event.GetGpsFenceOKEvent;
 import com.evertrend.tiger.common.bean.event.GetRunLogsSuccessEvent;
 import com.evertrend.tiger.common.bean.event.SaveMapPageEvent;
 import com.evertrend.tiger.common.bean.event.SaveTraceSpotFailEvent;
@@ -1483,6 +1486,66 @@ public class CommTaskUtils {
                                 break;
                             default:
                                 EventBus.getDefault().post(new SetPoseFailEvent(jsonObject.getString(CommonNetReq.RESULT_DESC)));
+                                break;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(TAG, "出错：解析数据失败");
+                    }
+                }
+            }, new OKHttpManager.FuncFailure() {
+                @Override
+                public void onFailure() {
+                    Log.e(TAG, "出错：请求网络失败");
+                }
+            });
+        }
+    }
+
+    public static class TaskGetGPSFence implements Runnable {
+        Device device;
+        MapPages mapPages;
+
+        public TaskGetGPSFence(Device device, MapPages mapPages) {
+            this.device = device;
+            this.mapPages = mapPages;
+        }
+
+        @Override
+        public void run() {
+            startGetGPSFence();
+        }
+
+        private void startGetGPSFence() {
+            HashMap<String, String> map = new HashMap<>();
+            map.put(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
+            map.put(CommonNetReq.DEVICE_ID, String.valueOf(device.getId()));
+            map.put(CommonNetReq.MAP_PAGE, String.valueOf(mapPages.getId()));
+            OKHttpManager.getInstance().sendComplexForm(CommonNetReq.NET_GET_GPS_FENCE, map, new OKHttpManager.FuncJsonObj() {
+                @Override
+                public void onResponse(JSONObject jsonObject) throws JSONException {
+                    try {
+                        switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
+                            case CommonNetReq.CODE_SUCCESS:
+                                List<LatLng> points = new ArrayList<>();
+                                JSONArray jsonArray = jsonObject.getJSONArray(CommonNetReq.RESULT_DATA);
+                                if (jsonArray != null) {
+                                    for (int i = 0; i <= jsonArray.size(); i++) {
+                                        if (i == jsonArray.size()) {//形成闭环
+                                            JSONObject object = jsonArray.getJSONObject(0);
+                                            LatLng latLng = new LatLng(object.getDoubleValue(CommonNetReq.LATITUDE), object.getDoubleValue(CommonNetReq.LONGITUDE));
+                                            points.add(latLng);
+                                            break;
+                                        }
+                                        JSONObject object = jsonArray.getJSONObject(i);
+                                        LatLng latLng = new LatLng(object.getDoubleValue(CommonNetReq.LATITUDE), object.getDoubleValue(CommonNetReq.LONGITUDE));
+                                        points.add(latLng);
+                                    }
+                                }
+                                EventBus.getDefault().post(new GetGpsFenceOKEvent(points));
+                                break;
+                            default:
+                                EventBus.getDefault().post(new GetGpsFenceFailEvent(jsonObject.getString(CommonNetReq.RESULT_DESC)));
                                 break;
                         }
                     } catch (Exception e) {

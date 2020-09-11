@@ -18,10 +18,6 @@
         android:supportsRtl="true"
         android:theme="@style/yl_common_AppTheme">
 
-        <meta-data
-            android:name="com.baidu.lbsapi.API_KEY"
-            android:value="VMka1LlcKZWX80k0L3o0Y26jz8GSdiGm" />
-
         <activity android:name=".activity.DeviceGrantActivity"
             android:label="@string/yl_device_grant">
             <intent-filter>
@@ -34,10 +30,6 @@
         <activity android:name=".activity.DeviceMainActivity" />
         <activity android:name=".activity.DevicesActivity" />
 
-        <service
-            android:name="com.baidu.location.f"
-            android:enabled="true"
-            android:process=":remote" />
         <service
             android:name=".service.DeviceCommunicationService"
             android:enabled="true"

@@ -76,6 +76,7 @@ public class CommonNetReq {
     public static final String NET_GET_DEVICE_GRANT = REQ_HOST + "api/remote/get-device-grant";
     public static final String NET_UPLOAD_TRACE_PATH_PIC = REQ_HOST + "api/remote/upload-trace-path-pic";
     public static final String NET_UPLOAD_MAP_PIC = REQ_HOST + "api/remote/upload-map-pic";
+    public static final String NET_GET_GPS_FENCE = REQ_HOST + "api/remote/get-gps-fence";
 
     public static final String TOKEN = "token";
     public static final String RESULT_CODE = "res_code";
@@ -108,6 +109,8 @@ public class CommonNetReq {
     public static final String USER_FLAG = "user_flag";
     public static final String STATUS = "status";
     public static final String SET_POSE = "set_pose";
+    public static final String LONGITUDE = "longitude";
+    public static final String LATITUDE = "latitude";
 
     public static final int CODE_SUCCESS = 0;
     public static final int ERR_CODE_INVALID_LOGIN = 5102;
