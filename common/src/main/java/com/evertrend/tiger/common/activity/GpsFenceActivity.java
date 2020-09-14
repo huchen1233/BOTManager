@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.baidu.mapapi.map.BaiduMap;
@@ -15,6 +16,7 @@ import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.PolygonOptions;
@@ -45,6 +47,7 @@ public class GpsFenceActivity extends AppCompatActivity {
 
     private MapView mMapView;
     private BaiduMap mBaiduMap;
+    private Marker marker;
 
     private Device device;
     private MapPages mapPages;
@@ -65,7 +68,7 @@ public class GpsFenceActivity extends AppCompatActivity {
         mapPages = (MapPages) getIntent().getSerializableExtra("mappage");
         initView();
 //        showFence();
-        showMarker();
+//        showMarker();
         points = new ArrayList<>();
         scheduledThreadGetGPSFence = new ScheduledThreadPoolExecutor(3);
         scheduledThreadGetGPSFence.scheduleAtFixedRate(new CommTaskUtils.TaskGetGPSFence(device, mapPages),
@@ -75,8 +78,9 @@ public class GpsFenceActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onMessageEvent(DeviceMessageEvent messageEvent) {
+        LogUtil.d(TAG, "update location");
         device = messageEvent.getMessage();
-//        updateMarker();
+        updateMarker();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -97,25 +101,30 @@ public class GpsFenceActivity extends AppCompatActivity {
         stopGetGPSFenceTimer();
     }
 
-    private void showMarker() {
-//        mBaiduMap.clear();
+    private void updateMarker() {
+        if (marker != null) {
+            marker.remove();
+        }
         LatLng ll = null;
         LogUtil.d(TAG, "lat=" + device.getLatitude());
         LogUtil.d(TAG, "lng=" + device.getLongitude());
-//        device.setLatitude(31.40143);
-//        device.setLongitude(121.49022);
+//        device.setLatitude(31.341043);
+//        device.setLongitude(121.49011);
         if (device.getLongitude() != 0.0 && device.getLatitude() != 0.0) {
+            mMapView.setVisibility(View.VISIBLE);
             LogUtil.d(TAG, "desc=" + device.getDescription());
 //            ll = new LatLng(device.getLatitude(), device.getLongitude());
             ll = Utils.GPSCoordinateToBaiduCoordinate(new LatLng(device.getLatitude(), device.getLongitude()));
             OverlayOptions overlayOptions = new MarkerOptions()
                     .position(ll)
+                    .animateType(MarkerOptions.MarkerAnimateType.grow)
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.yl_common_gps_location));
-            mBaiduMap.addOverlay(overlayOptions);
+            marker = (Marker) mBaiduMap.addOverlay(overlayOptions);
             MapStatus.Builder builder = new MapStatus.Builder();
             builder.target(ll).zoom(18.0f);
             mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
         } else {
+            mMapView.setVisibility(View.INVISIBLE);
             DialogUtil.showToast(this, "无法获取设备GPS定位", Toast.LENGTH_LONG);
         }
     }
