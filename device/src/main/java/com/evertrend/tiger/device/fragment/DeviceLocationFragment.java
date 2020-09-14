@@ -31,6 +31,7 @@ import com.evertrend.tiger.common.bean.Device;
 import com.evertrend.tiger.common.bean.event.SuccessEvent;
 import com.evertrend.tiger.common.fragment.BaseFragment;
 import com.evertrend.tiger.common.utils.general.LogUtil;
+import com.evertrend.tiger.common.utils.general.Utils;
 import com.evertrend.tiger.device.R;
 import com.evertrend.tiger.device.activity.DeviceMainActivity;
 import com.evertrend.tiger.device.bean.event.DeviceListEvent;
@@ -190,7 +191,8 @@ public class DeviceLocationFragment extends BaseFragment {
                 LogUtil.d(TAG, "lng=" + device.getLongitude());
                 if (device.getLongitude() != 0.0 && device.getLatitude() != 0.0) {
                     LogUtil.d(TAG, "desc=" + device.getDescription());
-                    ll = new LatLng(device.getLatitude(), device.getLongitude());
+//                    ll = new LatLng(device.getLatitude(), device.getLongitude());
+                    ll = Utils.GPSCoordinateToBaiduCoordinate(new LatLng(device.getLatitude(), device.getLongitude()));
                     Bundle mbundle = new Bundle();
                     mbundle.putSerializable("device", device);
                     OverlayOptions overlayOptions = new MarkerOptions()

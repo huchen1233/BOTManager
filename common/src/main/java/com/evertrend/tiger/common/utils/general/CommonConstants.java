@@ -151,6 +151,7 @@ public class CommonConstants {
     public static final int TYPE_LOG_GPS_MAP_SLAM = 4;
     public static final int TYPE_DELETE_GPS_MAP_SLAM = 5;
     public static final int TYPE_LOAD_MAP = 6;
+    public static final int TYPE_SET_GPS_FENCE= 7;
 
     public static final int CREATE_TRACE_SPOT_REQUEST_CODE = 104;
     public static final int CREATE_TRACE_PATH_REQUEST_CODE = 105;

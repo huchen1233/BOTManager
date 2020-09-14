@@ -50,6 +50,7 @@ import com.evertrend.tiger.common.utils.general.CommonConstants;
 import com.evertrend.tiger.common.utils.general.DBUtil;
 import com.evertrend.tiger.common.utils.general.JsonAnalysisUtil;
 import com.evertrend.tiger.common.utils.general.LogUtil;
+import com.evertrend.tiger.common.utils.general.Utils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -471,6 +472,9 @@ public class CommTaskUtils {
             } else if (type == CommonConstants.TYPE_LOAD_MAP) {
                 map.put(CommonNetReq.STATUS, String.valueOf(status));
                 net = CommonNetReq.NET_LOAD_MAP;
+            } else if (type == CommonConstants.TYPE_SET_GPS_FENCE) {
+                map.put(CommonNetReq.STATUS, String.valueOf(status));
+                net = CommonNetReq.NET_SET_GPS_FENCE;
             }
             OKHttpManager.getInstance().sendComplexForm(net, map, new OKHttpManager.FuncJsonObj() {
                 @Override
@@ -738,7 +742,7 @@ public class CommTaskUtils {
 
     public static class TaskSaveTraceSpot implements Runnable {
         private Device device;
-        private int spotFlag;//标志该点类型，0：路径点，1: 充电点，2: 加水点，3: 倾倒垃圾点，4：车库点，5：公共点，7：开始点
+        private int spotFlag;//标志该点类型，0：路径点，1: 充电点，2: 加水点，3: 倾倒垃圾点，4：车库点，5：公共点，7：开始点，8：围栏点
         private String currentPose;
         private int mapPageId;
         private int targetMapPageId;
@@ -1538,7 +1542,7 @@ public class CommTaskUtils {
                                             break;
                                         }
                                         JSONObject object = jsonArray.getJSONObject(i);
-                                        LatLng latLng = new LatLng(object.getDoubleValue(CommonNetReq.LATITUDE), object.getDoubleValue(CommonNetReq.LONGITUDE));
+                                        LatLng latLng = Utils.GPSCoordinateToBaiduCoordinate(new LatLng(object.getDoubleValue(CommonNetReq.LATITUDE), object.getDoubleValue(CommonNetReq.LONGITUDE)));
                                         points.add(latLng);
                                     }
                                 }

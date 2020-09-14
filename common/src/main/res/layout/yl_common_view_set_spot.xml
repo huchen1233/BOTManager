@@ -57,6 +57,13 @@
             android:layout_height="wrap_content"
             style="@style/yl_common_ButtonStyle"
             android:text="@string/yl_common_set_common_spot" />
+
+        <Button
+            android:id="@+id/btn_set_fence_spot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/yl_common_ButtonStyle"
+            android:text="@string/yl_common_set_fence_spot" />
     </LinearLayout>
 
 </LinearLayout>

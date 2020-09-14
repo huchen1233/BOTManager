@@ -77,6 +77,7 @@ public class CommonNetReq {
     public static final String NET_UPLOAD_TRACE_PATH_PIC = REQ_HOST + "api/remote/upload-trace-path-pic";
     public static final String NET_UPLOAD_MAP_PIC = REQ_HOST + "api/remote/upload-map-pic";
     public static final String NET_GET_GPS_FENCE = REQ_HOST + "api/remote/get-gps-fence";
+    public static final String NET_SET_GPS_FENCE = REQ_HOST + "api/remote/set-gps-fence";
 
     public static final String TOKEN = "token";
     public static final String RESULT_CODE = "res_code";

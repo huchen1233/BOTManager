@@ -11,6 +11,9 @@ import android.text.TextUtils;
 
 import androidx.annotation.RequiresApi;
 
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.utils.CoordinateConverter;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -22,6 +25,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Utils {
+
+    public static LatLng GPSCoordinateToBaiduCoordinate(LatLng sourceLatLng) {
+        //初始化坐标转换工具类，指定源坐标类型和坐标数据
+        // sourceLatLng待转换坐标
+        CoordinateConverter converter  = new CoordinateConverter()
+                .from(CoordinateConverter.CoordType.GPS)
+                .coord(sourceLatLng);
+
+        //desLatLng 转换后的坐标
+        LatLng desLatLng = converter.convert();
+        return desLatLng;
+    }
 
     /**
      * 把16进制字符串转换成字节数组

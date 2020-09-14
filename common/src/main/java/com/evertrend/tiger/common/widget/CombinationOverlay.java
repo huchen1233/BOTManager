@@ -27,7 +27,7 @@ public class CombinationOverlay {
     private List<LatLng> latLngList;
 
     BitmapDescriptor bdA = BitmapDescriptorFactory
-            .fromResource(R.drawable.icon_marka);
+            .fromResource(R.drawable.yl_common_gps_location);
 
     private List<List<LatLng>> lineListList;
     private Polygon polygonOverlay;

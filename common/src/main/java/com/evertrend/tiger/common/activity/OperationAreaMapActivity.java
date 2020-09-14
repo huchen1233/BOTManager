@@ -147,7 +147,8 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
     private TextView tv_device_speed;
     private RadioGroup rg_navigation_mode;
     private EditText et_rollback_trace_path_num;
-    private Button btn_set_recharge, btn_set_add_water, btn_set_garage, btn_set_empty_trash, btn_set_trace_spot, btn_set_common_spot, btn_set_start_spot, btn_reset_start_spot;
+    private Button btn_set_recharge, btn_set_add_water, btn_set_garage, btn_set_empty_trash, btn_set_trace_spot;
+    private Button btn_set_common_spot, btn_set_start_spot, btn_reset_start_spot, btn_set_fence_spot;
     private ListView lv_spot_data;
     private Button btn_trace_path_spot_save, btn_trace_path_spot_not_save;
     private Switch btn_auto_record_trace_spot, btn_enable_gps_fence, btn_log_gps_map_slam, btn_delete_gps_map_slam;
@@ -1030,6 +1031,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         btn_set_empty_trash = findViewById(R.id.btn_set_empty_trash);
         btn_set_trace_spot = findViewById(R.id.btn_set_trace_spot);
         btn_set_common_spot = findViewById(R.id.btn_set_common_spot);
+        btn_set_fence_spot = findViewById(R.id.btn_set_fence_spot);
         lv_spot_data = findViewById(R.id.lv_spot_data);
         ll_trace_path_spot = findViewById(R.id.ll_trace_path_spot);
         btn_trace_path_spot_save = findViewById(R.id.btn_trace_path_spot_save);
@@ -1084,6 +1086,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
         btn_set_empty_trash.setOnClickListener(this);
         btn_set_trace_spot.setOnClickListener(this);
         btn_set_common_spot.setOnClickListener(this);
+        btn_set_fence_spot.setOnClickListener(this);
         btn_trace_path_spot_save.setOnClickListener(this);
         btn_trace_path_spot_not_save.setOnClickListener(this);
         btn_save_map.setOnClickListener(this);
@@ -1274,6 +1277,8 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
             saveSpot(3, 0);
         } else if (v.getId() == R.id.btn_set_garage) {
             saveSpot(4, 0);
+        }  else if (v.getId() == R.id.btn_set_fence_spot) {
+            startRelocationOrSetCurrentMapOrAutoRecordPath(CommonConstants.TYPE_SET_GPS_FENCE, 1);
         } else if (v.getId() == R.id.btn_set_trace_spot) {
             if (currentPose.equals(lastPose)) {
                 Toast.makeText(OperationAreaMapActivity.this, "重复循迹点", Toast.LENGTH_SHORT).show();
