@@ -631,9 +631,9 @@ public class TaskUtils {
                                         EventBus.getDefault().post(new SetStatusSuccessEvent(mark, newStatus));
                                     }
                                 } else {
-                                    if (status == newStatus) {//APP设置设备状态到服务器与工控机修改设备在服务器状态一致，认为操作成功
+//                                    if (status == newStatus) {//APP设置设备状态到服务器与工控机修改设备在服务器状态一致，认为操作成功
                                         EventBus.getDefault().post(new SetStatusSuccessEvent(mark, newStatus));
-                                    }
+//                                    }
                                 }
                                 break;
                             default:
