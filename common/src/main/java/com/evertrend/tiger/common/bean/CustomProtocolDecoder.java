@@ -21,13 +21,13 @@ package com.evertrend.tiger.common.bean;
 
 import com.evertrend.tiger.common.utils.general.LogUtil;
 
+import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.text.DecimalFormat;
-import java.util.Arrays;
 
 import org.apache.mina.core.buffer.BufferDataException;
 import org.apache.mina.core.buffer.IoBuffer;
@@ -39,7 +39,6 @@ import org.apache.mina.filter.codec.ProtocolDecoderException;
 import org.apache.mina.filter.codec.ProtocolDecoderOutput;
 import org.apache.mina.filter.codec.RecoverableProtocolDecoderException;
 import org.apache.mina.filter.codec.textline.LineDelimiter;
-import org.apache.mina.filter.codec.textline.TextLineDecoder;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -227,8 +226,9 @@ public class CustomProtocolDecoder extends CumulativeProtocolDecoder {
 //        }
 //    }
     public float txfloat(long a, int b) {
+        LogUtil.d(TAG, "a: "+a);
         DecimalFormat df = new DecimalFormat("0.0000");//设置保留位数
-        return Float.valueOf(df.format((float) a / b));
+        return Float.valueOf(df.format((float)a / b));
     }
 
     public JSONObject strToJson(String[] content, String binData) {
@@ -239,12 +239,18 @@ public class CustomProtocolDecoder extends CumulativeProtocolDecoder {
                 jsonObject.put(RobotAction.CMD_CODE, 0x2A);
                 jsonObject.put(RobotAction.RESULT_CODE, 0);
                 JSONObject objectData = new JSONObject();
-                objectData.put(RobotAction.RESOLUTION, txfloat(Long.valueOf(content[6] + content[7], 16), 1000));
+                LogUtil.d(TAG, "ox: "+content[16] + content[17] + content[18] + content[19]);
+                LogUtil.d(TAG, "oy: "+content[20] + content[21] + content[22] + content[23]);
+//                objectData.put(RobotAction.RESOLUTION, txfloat(Long.valueOf(content[6] + content[7], 16), 1000));
+                objectData.put(RobotAction.RESOLUTION, txfloat(new BigInteger(content[6] + content[7], 16).intValue(), 1000));
                 objectData.put(RobotAction.WIDTH, Long.valueOf(content[8] + content[9] + content[10] + content[11], 16));
                 objectData.put(RobotAction.HEIGHT, Long.valueOf(content[12] + content[13] + content[14] + content[15], 16));
-                objectData.put(RobotAction.ORIGIN_X, txfloat(Long.valueOf(content[16] + content[17] + content[18] + content[19], 16), 10000));
-                objectData.put(RobotAction.ORIGIN_Y, txfloat(Long.valueOf(content[20] + content[21] + content[22] + content[23], 16), 10000));
-                objectData.put(RobotAction.ORIGIN_YAW, txfloat(Long.valueOf(content[24] + content[25] + content[26] + content[27], 16), 100));
+//                objectData.put(RobotAction.ORIGIN_X, txfloat(Long.valueOf(content[16] + content[17] + content[18] + content[19], 16), 10000));
+//                objectData.put(RobotAction.ORIGIN_Y, txfloat(Long.valueOf(content[20] + content[21] + content[22] + content[23], 16), 10000));
+//                objectData.put(RobotAction.ORIGIN_YAW, txfloat(Long.valueOf(content[24] + content[25] + content[26] + content[27], 16), 100));
+                objectData.put(RobotAction.ORIGIN_X, txfloat(new BigInteger(content[16] + content[17] + content[18] + content[19], 16).intValue(), 10000));
+                objectData.put(RobotAction.ORIGIN_Y, txfloat(new BigInteger(content[20] + content[21] + content[22] + content[23], 16).intValue(), 10000));
+                objectData.put(RobotAction.ORIGIN_YAW, txfloat(new BigInteger(content[24] + content[25] + content[26] + content[27], 16).intValue(), 100));
                 int length = content.length;
 //                LogUtil.d(TAG, "length: "+length);
 //                LogUtil.d(TAG, "str length: "+ binData.length());
