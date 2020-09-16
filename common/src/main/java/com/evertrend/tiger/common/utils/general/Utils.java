@@ -26,6 +26,36 @@ import java.util.regex.Pattern;
 
 public class Utils {
 
+    public static String decompress(String source) {
+        String compress = source.replaceAll("(.{2})", "$1,");
+        String[] compresss = compress.split(",");
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < compresss.length - 1;) {
+            if (compresss[i].equalsIgnoreCase("FF")) {
+                sb.append(repeatString("FF", Integer.parseInt(compresss[i+1], 16)));
+                i+=2;
+                continue;
+            } else if (compresss[i].equalsIgnoreCase("00")) {
+                sb.append(repeatString("00", Integer.parseInt(compresss[i+1], 16)));
+                i+=2;
+                continue;
+            } else {
+                sb.append(compresss[i]);
+                i++;
+                continue;
+            }
+        }
+        return sb.toString();
+    }
+
+    public static String repeatString(String str, int n) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            sb.append(str);
+        }
+        return sb.toString();
+    }
+
     public static LatLng GPSCoordinateToBaiduCoordinate(LatLng sourceLatLng) {
         //初始化坐标转换工具类，指定源坐标类型和坐标数据
         // sourceLatLng待转换坐标

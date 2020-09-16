@@ -30,7 +30,11 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Time;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener, ActionControllerView.LongClickRepeatListener {
     public static final String TAG = MapActivity.class.getCanonicalName();
@@ -75,7 +79,10 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
 //                    mAgent.getHomePose();
                 }
 //                mAgent.getMap(RobotAction.CMD.GET_MAP_CON_BIN);
-                mAgent.getMap(RobotAction.CMD.GET_MAP);
+//                mAgent.getRobotPose();
+//                mAgent.getLaserScan();
+//                mAgent.getMap(RobotAction.CMD.GET_MAP);
+                mAgent.getMap(RobotAction.CMD.GET_MAP_CON_BIN);
                 SystemClock.sleep(5000);
                 cnt++;
             }
@@ -93,7 +100,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         mAgent.connectTo(IP);
     }
 
-    @Override
+        @Override
     protected void onPause() {
         super.onPause();
         stopUpdate();
@@ -150,19 +157,26 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
 //        mv_map.setMap(map);
     }
 
-    private void updateMap(JSONObject jsonObject, boolean isCondense) throws JSONException {
+    private void updateMap(JSONObject jsonObject, boolean isCompress) throws JSONException {
         PointF origin = new PointF((float)jsonObject.getDouble(RobotAction.ORIGIN_X), (float)jsonObject.getDouble(RobotAction.ORIGIN_Y));
         Size dimension = new Size(jsonObject.getInt(RobotAction.WIDTH), jsonObject.getInt(RobotAction.HEIGHT));
 //        PointF resolution = new PointF(0.05f, 0.05f);
         PointF resolution = new PointF((float)jsonObject.getDouble(RobotAction.RESOLUTION), (float)jsonObject.getDouble(RobotAction.RESOLUTION));
         long timestamp = System.currentTimeMillis();
-        byte[] data = Utils.hexStringToByte(jsonObject.getString(RobotAction.DATA));
+        byte[] data = null;
+        if (isCompress) {
+            LogUtil.d(TAG, "time start: "+System.currentTimeMillis());
+            data = Utils.hexStringToByte(Utils.decompress(jsonObject.getString(RobotAction.DATA)));
+            LogUtil.d(TAG, "time end: "+System.currentTimeMillis());
+        } else {
+            data = Utils.hexStringToByte(jsonObject.getString(RobotAction.DATA));
+        }
         Map map = new Map(origin, dimension, resolution, timestamp, data);
-        LogUtil.d(TAG, "getDimension: "+map.getDimension().getWidth()+","+map.getDimension().getHeight());
-        LogUtil.d(TAG, "getOrigin: "+map.getOrigin().getX()+","+map.getOrigin().getY());
-        LogUtil.d(TAG, "getResolution: "+map.getResolution().getX()+","+map.getResolution().getY());
-        LogUtil.d(TAG, "getTimestamp: "+map.getTimestamp());
-        LogUtil.d(TAG, "getMapArea: "+map.getMapArea());
+//        LogUtil.d(TAG, "getDimension: "+map.getDimension().getWidth()+","+map.getDimension().getHeight());
+//        LogUtil.d(TAG, "getOrigin: "+map.getOrigin().getX()+","+map.getOrigin().getY());
+//        LogUtil.d(TAG, "getResolution: "+map.getResolution().getX()+","+map.getResolution().getY());
+//        LogUtil.d(TAG, "getTimestamp: "+map.getTimestamp());
+//        LogUtil.d(TAG, "getMapArea: "+map.getMapArea());
 //        LogUtil.d(TAG, "data: "+ Arrays.toString(data));
         mv_map.setMap(map);
     }
