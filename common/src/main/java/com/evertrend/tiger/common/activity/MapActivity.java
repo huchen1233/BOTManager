@@ -1,7 +1,9 @@
 package com.evertrend.tiger.common.activity;
 
+import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
@@ -13,28 +15,24 @@ import com.evertrend.tiger.common.bean.RobotAction;
 import com.evertrend.tiger.common.bean.event.ServerMsgEvent;
 import com.evertrend.tiger.common.bean.event.slamtec.ConnectedEvent;
 import com.evertrend.tiger.common.bean.event.slamtec.ConnectionLostEvent;
-import com.evertrend.tiger.common.bean.event.slamtec.MapGetEvent;
 import com.evertrend.tiger.common.bean.mapview.MapView;
 import com.evertrend.tiger.common.utils.EvertrendAgent;
-import com.evertrend.tiger.common.utils.general.AppSharePreference;
 import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.common.utils.general.Utils;
 import com.evertrend.tiger.common.widget.ActionControllerView;
 import com.slamtec.slamware.geometry.PointF;
 import com.slamtec.slamware.geometry.Size;
+import com.slamtec.slamware.robot.LaserScan;
+import com.slamtec.slamware.robot.Location;
 import com.slamtec.slamware.robot.Map;
+import com.slamtec.slamware.robot.Pose;
+import com.slamtec.slamware.robot.Rotation;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.sql.Time;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
 
 public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener, ActionControllerView.LongClickRepeatListener {
     public static final String TAG = MapActivity.class.getCanonicalName();
@@ -46,6 +44,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
     private ActionControllerView acv_action;
 
     private EvertrendAgent mAgent;
+    private Pose robotPose;
     private Intent intent;
 
     private float speed = 0f;
@@ -71,25 +70,28 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
                 }
 
                 if ((cnt % 20) == 0) {
-//                    mAgent.getMap();
+//                    mAgent.getMap(RobotAction.CMD.GET_MAP_CON_BIN);
 //                    mAgent.getMoveAction();
                 }
 
                 if ((cnt % 30) == 0) {
 //                    mAgent.getHomePose();
                 }
-//                mAgent.getMap(RobotAction.CMD.GET_MAP_CON_BIN);
-//                mAgent.getRobotPose();
-//                mAgent.getLaserScan();
 //                mAgent.getMap(RobotAction.CMD.GET_MAP);
+//                mAgent.getMap(RobotAction.CMD.GET_MAP_CONDENSE);
                 mAgent.getMap(RobotAction.CMD.GET_MAP_CON_BIN);
-                SystemClock.sleep(5000);
+                SystemClock.sleep(1000);
+                mAgent.getRobotPose();
+                SystemClock.sleep(200);
+                mAgent.getLaserScan();
+//                SystemClock.sleep(5000);
                 cnt++;
             }
         }
     };
     Thread mRobotStateUpdateThread = new Thread(mRobotStateUpdateRunnable);
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +100,10 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         EventBus.getDefault().register(this);
         mAgent = getEvertrendAgent();
         mAgent.connectTo(IP);
+
+//        String hex = "FFFE4A81";
+//        LogUtil.d(TAG, "value: "+Long.parseUnsignedLong(hex, 16));
+//        LogUtil.d(TAG, "value: "+new BigInteger(hex, 16).intValue());
     }
 
         @Override
@@ -147,6 +153,12 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
                     case RobotAction.CMD.GET_MAP_CON_BIN:
                         updateMap(jsonObject.getJSONObject(RobotAction.DATA), true);
                         break;
+                    case RobotAction.CMD.GET_LASER_SCAN:
+                        updateLaserScan(jsonObject.getJSONObject(RobotAction.DATA));
+                        break;
+                    case RobotAction.CMD.GET_ROBOT_POSE:
+                        updateRobotPose(jsonObject.getJSONObject(RobotAction.DATA));
+                        break;
                 }
 
             }
@@ -157,7 +169,23 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
 //        mv_map.setMap(map);
     }
 
+    private void updateRobotPose(JSONObject jsonObject) throws JSONException {
+        LogUtil.d(TAG, "updateRobotPose: "+jsonObject.toString());
+        Location location = new Location();
+        location.setX((float)jsonObject.getDouble(RobotAction.POSE_X));
+        location.setY((float)jsonObject.getDouble(RobotAction.POSE_Y));
+        Rotation rotation = new Rotation((float)jsonObject.getDouble(RobotAction.POSE_YAW));
+        robotPose = new Pose(location, rotation);
+        mv_map.setRobotPose(robotPose);
+    }
+
+    private void updateLaserScan(JSONObject jsonObject) throws JSONException {
+        LaserScan laserScan = new LaserScan(Utils.toLaserPoint(jsonObject), robotPose);
+        mv_map.setLaserScan(laserScan);
+    }
+
     private void updateMap(JSONObject jsonObject, boolean isCompress) throws JSONException {
+//        LogUtil.d(TAG, "updateMap: "+jsonObject.toString());
         PointF origin = new PointF((float)jsonObject.getDouble(RobotAction.ORIGIN_X), (float)jsonObject.getDouble(RobotAction.ORIGIN_Y));
         Size dimension = new Size(jsonObject.getInt(RobotAction.WIDTH), jsonObject.getInt(RobotAction.HEIGHT));
 //        PointF resolution = new PointF(0.05f, 0.05f);
@@ -171,6 +199,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         } else {
             data = Utils.hexStringToByte(jsonObject.getString(RobotAction.DATA));
         }
+        LogUtil.d(TAG, "length: "+data.length);
         Map map = new Map(origin, dimension, resolution, timestamp, data);
 //        LogUtil.d(TAG, "getDimension: "+map.getDimension().getWidth()+","+map.getDimension().getHeight());
 //        LogUtil.d(TAG, "getOrigin: "+map.getOrigin().getX()+","+map.getOrigin().getY());

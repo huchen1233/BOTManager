@@ -92,4 +92,22 @@ public class SessionManager {
         object.put(RobotAction.TIME_STAMP, getTime());
         writeToServer(object);
     }
+
+    public void getRobotPose() throws JSONException {
+        JSONObject object = new JSONObject();
+        object.put(RobotAction.CMD_CODE, RobotAction.CMD.GET_ROBOT_POSE);
+        object.put(RobotAction.DEVICE_ID, DEVICE_ID);
+        object.put(RobotAction.KEY, KEY);
+        object.put(RobotAction.TIME_STAMP, getTime());
+        writeToServer(object);
+    }
+
+    public void getLaserScan() throws JSONException {
+        JSONObject object = new JSONObject();
+        object.put(RobotAction.CMD_CODE, RobotAction.CMD.GET_LASER_SCAN);
+        object.put(RobotAction.DEVICE_ID, DEVICE_ID);
+        object.put(RobotAction.KEY, KEY);
+        object.put(RobotAction.TIME_STAMP, getTime());
+        writeToServer(object);
+    }
 }

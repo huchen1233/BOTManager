@@ -28,4 +28,10 @@ public class RobotAction {
     public static final String ORIGIN_X = "origin_x";
     public static final String ORIGIN_Y = "origin_y";
     public static final String ORIGIN_YAW = "origin_yaw";
+    public static final String POSE_X = "pose_x";
+    public static final String POSE_Y = "pose_y";
+    public static final String POSE_YAW = "pose_yaw";
+    public static final String ANGLE_INCREMENT = "angle_increment";
+    public static final String ANGLE_MAX = "angle_max";
+    public static final String ANGLE_MIN = "angle_min";
 }

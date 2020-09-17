@@ -1,16 +1,12 @@
 package com.evertrend.tiger.common.utils;
 
-import android.graphics.RectF;
-
 import com.evertrend.tiger.common.bean.event.slamtec.ConnectedEvent;
 import com.evertrend.tiger.common.bean.event.slamtec.ConnectionLostEvent;
-import com.evertrend.tiger.common.bean.event.slamtec.MapGetEvent;
+import com.slamtec.slamware.robot.LaserScan;
 import com.slamtec.slamware.robot.Map;
-import com.slamtec.slamware.robot.MapKind;
+import com.slamtec.slamware.robot.Pose;
 
 import org.greenrobot.eventbus.EventBus;
-
-import static com.slamtec.slamware.robot.MapType.BITMAP_8BIT;
 
 public class EvertrendAgent {
     private final static String TAG = "EvertrendAgent";
@@ -28,6 +24,8 @@ public class EvertrendAgent {
     private static TaskCancelAllActions sTaskCancelAllActions;
     private static TaskMoveBy sTaskMoveBy;
     private static TaskGetMap sTaskGetMap;
+    private static TaskGetRobotPose sTaskGetRobotPose;
+    private static TaskGetLaserScan sTaskGetLaserScan;
 
     public EvertrendAgent() {
         mThreadManager = ThreadManager.getInstance();
@@ -38,6 +36,8 @@ public class EvertrendAgent {
         sTaskCancelAllActions = new TaskCancelAllActions();
         sTaskMoveBy = new TaskMoveBy();
         sTaskGetMap = new TaskGetMap();
+        sTaskGetRobotPose = new TaskGetRobotPose();
+        sTaskGetLaserScan = new TaskGetLaserScan();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -62,6 +62,14 @@ public class EvertrendAgent {
     public void getMap(int getType) {
         sTaskGetMap.setGetType(getType);
         pushTask(sTaskGetMap);
+    }
+
+    public void getRobotPose() {
+        pushTask(sTaskGetRobotPose);
+    }
+
+    public void getLaserScan() {
+        pushTask(sTaskGetLaserScan);
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private synchronized void pushTask(Runnable Task) {
@@ -236,6 +244,66 @@ public class EvertrendAgent {
             }
 
 //            EventBus.getDefault().postSticky(new MapGetEvent(map));
+        }
+    }
+
+    private class TaskGetRobotPose implements Runnable {
+        @Override
+        public void run() {
+            SessionManager manager;
+
+            synchronized (this) {
+                manager = mSessionManager;
+            }
+
+            if (mSessionManager == null) {
+                return;
+            }
+            if (mSessionManager.getIoSession() == null) {
+                onRequestError(new Exception("connect closed"));
+                return;
+            }
+
+            Pose pose;
+
+            try {
+                manager.getRobotPose();
+            } catch (Exception e) {
+                onRequestError(e);
+                return;
+            }
+
+//            EventBus.getDefault().postSticky(new RobotPoseGetEvent(pose));
+        }
+    }
+
+    private class TaskGetLaserScan implements Runnable {
+        @Override
+        public void run() {
+            SessionManager manager;
+
+            synchronized (this) {
+                manager = mSessionManager;
+            }
+
+            if (mSessionManager == null) {
+                return;
+            }
+            if (mSessionManager.getIoSession() == null) {
+                onRequestError(new Exception("connect closed"));
+                return;
+            }
+
+            LaserScan laserScan;
+
+            try {
+                manager.getLaserScan();
+            } catch (Exception e) {
+                onRequestError(e);
+                return;
+            }
+
+//            EventBus.getDefault().postSticky(new LaserScanGetEvent(laserScan));
         }
     }
 }

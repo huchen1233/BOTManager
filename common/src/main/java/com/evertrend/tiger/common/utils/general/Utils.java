@@ -13,6 +13,11 @@ import androidx.annotation.RequiresApi;
 
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.CoordinateConverter;
+import com.evertrend.tiger.common.bean.RobotAction;
+import com.slamtec.slamware.robot.LaserPoint;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,10 +26,40 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Utils {
+    private static final String TAG = "Utils";
+
+    public static Vector<LaserPoint> toLaserPoint(JSONObject jsonObject) throws JSONException {
+        LogUtil.d(TAG, "updateLaserScan: "+jsonObject.toString());
+        String str = jsonObject.getString(RobotAction.DATA);
+        String[] data = str.substring(1, str.length()-1).split(",");
+        LogUtil.d(TAG, "length: "+data.length);
+        double angle_increment = jsonObject.getDouble(RobotAction.ANGLE_INCREMENT);
+        double angle_max = jsonObject.getDouble(RobotAction.ANGLE_MAX);
+        double angle_min = jsonObject.getDouble(RobotAction.ANGLE_MIN);
+        double angle = 0;
+        Vector<LaserPoint> laserPoints = new Vector();
+        for (int i = 0; i < data.length; i++) {
+            LaserPoint point = new LaserPoint();
+            if (i == 0) {
+                angle = angle_max;
+            } else if (i == data.length - 1) {
+                angle = angle_min;
+            } else {
+//                angle = angle + Math.abs(angle_increment);
+                angle = angle + angle_increment;
+            }
+            point.setAngle((float) angle);
+            point.setDistance(Float.parseFloat(data[i]));
+            point.setValid(true);
+            laserPoints.add(point);
+        }
+        return laserPoints;
+    }
 
     public static String decompress(String source) {
         String compress = source.replaceAll("(.{2})", "$1,");
