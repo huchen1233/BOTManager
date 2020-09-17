@@ -57,6 +57,13 @@ public class ConnectManager {
 
     private static class DefaultHandler extends IoHandlerAdapter {
 
+        @Override
+        public void sessionCreated(IoSession session) throws Exception {
+            LogUtil.d(TAG, "connect success: "+session);
+            SessionManager.getmInstance().setIoSession(session);
+//            super.sessionCreated(session);
+        }
+
         /**
          * 连接成功时回调的方法
          * @param session
@@ -65,17 +72,15 @@ public class ConnectManager {
         @Override
         public void sessionOpened(IoSession session) throws Exception {
             //当与服务器连接成功时,将我们的session保存到我们的sesscionmanager类中,从而可以发送消息到服务器
-            LogUtil.d(TAG, "connect success: "+session);
-            SessionManager.getmInstance().setIoSession(session);
+//            LogUtil.d(TAG, "connect success: "+session);
+//            SessionManager.getmInstance().setIoSession(session);
         }
 
-//        @Override
-//        public void messageSent(IoSession session, Object message) throws Exception {
-//            IoFilterChain filterChain = session.getFilterChain();
-//            filterChain.remove("codec");
-//            filterChain.addLast();
-//            super.messageSent(session, message);
-//        }
+        @Override
+        public void messageSent(IoSession session, Object message) throws Exception {
+            LogUtil.d(TAG, "messageSent");
+            super.messageSent(session, message);
+        }
 
         /**
          * 接收到消息时回调的方法
