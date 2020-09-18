@@ -9,6 +9,7 @@ import android.os.SystemClock;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.evertrend.tiger.common.R;
 import com.evertrend.tiger.common.bean.RobotAction;
@@ -16,6 +17,7 @@ import com.evertrend.tiger.common.bean.event.ServerMsgEvent;
 import com.evertrend.tiger.common.bean.event.slamtec.ConnectedEvent;
 import com.evertrend.tiger.common.bean.event.slamtec.ConnectionLostEvent;
 import com.evertrend.tiger.common.bean.mapview.MapView;
+import com.evertrend.tiger.common.bean.mapview.utils.RadianUtil;
 import com.evertrend.tiger.common.utils.EvertrendAgent;
 import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.common.utils.general.Utils;
@@ -42,9 +44,11 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
     private LinearLayout ll_set_spot, ll_edit;
     private ConstraintLayout cl_action;
     private ActionControllerView acv_action;
+    private TextView tv_robot_pose;
 
     private EvertrendAgent mAgent;
     private Pose robotPose;
+    private String currentPose = "0";
     private Intent intent;
 
     private float speed = 0f;
@@ -78,12 +82,13 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
 //                    mAgent.getHomePose();
                 }
 //                mAgent.getMap(RobotAction.CMD.GET_MAP);
-//                mAgent.getMap(RobotAction.CMD.GET_MAP_CONDENSE);
-                mAgent.getMap(RobotAction.CMD.GET_MAP_CON_BIN);
+                mAgent.getMap(RobotAction.CMD.GET_MAP_CONDENSE);
+//                mAgent.getMap(RobotAction.CMD.GET_MAP_CON_BIN);
                 SystemClock.sleep(1000);
                 mAgent.getRobotPose();
                 SystemClock.sleep(200);
                 mAgent.getLaserScan();
+                SystemClock.sleep(200);
 //                SystemClock.sleep(5000);
                 cnt++;
             }
@@ -100,10 +105,6 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         EventBus.getDefault().register(this);
         mAgent = getEvertrendAgent();
         mAgent.connectTo(IP);
-
-//        String hex = "FFFE4A81";
-//        LogUtil.d(TAG, "value: "+Long.parseUnsignedLong(hex, 16));
-//        LogUtil.d(TAG, "value: "+new BigInteger(hex, 16).intValue());
     }
 
         @Override
@@ -170,13 +171,17 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
     }
 
     private void updateRobotPose(JSONObject jsonObject) throws JSONException {
-        LogUtil.d(TAG, "updateRobotPose: "+jsonObject.toString());
+//        LogUtil.d(TAG, "updateRobotPose: "+jsonObject.toString());
         Location location = new Location();
         location.setX((float)jsonObject.getDouble(RobotAction.POSE_X));
         location.setY((float)jsonObject.getDouble(RobotAction.POSE_Y));
         Rotation rotation = new Rotation((float)jsonObject.getDouble(RobotAction.POSE_YAW));
         robotPose = new Pose(location, rotation);
         mv_map.setRobotPose(robotPose);
+        if (robotPose != null) {
+            currentPose = String.format("%.3f,%.3f,%.3f", robotPose.getX(), robotPose.getY(), RadianUtil.toAngel(robotPose.getYaw()));
+            tv_robot_pose.setText(currentPose);
+        }
     }
 
     private void updateLaserScan(JSONObject jsonObject) throws JSONException {
@@ -193,13 +198,13 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         long timestamp = System.currentTimeMillis();
         byte[] data = null;
         if (isCompress) {
-            LogUtil.d(TAG, "time start: "+System.currentTimeMillis());
+//            LogUtil.d(TAG, "time start: "+System.currentTimeMillis());
             data = Utils.hexStringToByte(Utils.decompress(jsonObject.getString(RobotAction.DATA)));
-            LogUtil.d(TAG, "time end: "+System.currentTimeMillis());
+//            LogUtil.d(TAG, "time end: "+System.currentTimeMillis());
         } else {
             data = Utils.hexStringToByte(jsonObject.getString(RobotAction.DATA));
         }
-        LogUtil.d(TAG, "length: "+data.length);
+//        LogUtil.d(TAG, "length: "+data.length);
         Map map = new Map(origin, dimension, resolution, timestamp, data);
 //        LogUtil.d(TAG, "getDimension: "+map.getDimension().getWidth()+","+map.getDimension().getHeight());
 //        LogUtil.d(TAG, "getOrigin: "+map.getOrigin().getX()+","+map.getOrigin().getY());
@@ -219,6 +224,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         ll_edit = findViewById(R.id.ll_edit);
         acv_action = findViewById(R.id.acv_action);
         acv_action.setLongClickRepeatListener(this);
+        tv_robot_pose = findViewById(R.id.tv_robot_pose);
     }
 
     private void startUpdate() {

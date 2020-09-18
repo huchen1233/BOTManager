@@ -226,7 +226,7 @@ public class CustomProtocolDecoder extends CumulativeProtocolDecoder {
 //        }
 //    }
     public float txfloat(long a, int b) {
-        LogUtil.d(TAG, "a: "+a);
+//        LogUtil.d(TAG, "a: "+a);
         DecimalFormat df = new DecimalFormat("0.0000");//设置保留位数
         return Float.valueOf(df.format((float)a / b));
     }
@@ -239,8 +239,8 @@ public class CustomProtocolDecoder extends CumulativeProtocolDecoder {
                 jsonObject.put(RobotAction.CMD_CODE, 0x2A);
                 jsonObject.put(RobotAction.RESULT_CODE, 0);
                 JSONObject objectData = new JSONObject();
-                LogUtil.d(TAG, "ox: "+content[16] + content[17] + content[18] + content[19]);
-                LogUtil.d(TAG, "oy: "+content[20] + content[21] + content[22] + content[23]);
+//                LogUtil.d(TAG, "ox: "+content[16] + content[17] + content[18] + content[19]);
+//                LogUtil.d(TAG, "oy: "+content[20] + content[21] + content[22] + content[23]);
 //                objectData.put(RobotAction.RESOLUTION, txfloat(Long.valueOf(content[6] + content[7], 16), 1000));
                 objectData.put(RobotAction.RESOLUTION, txfloat(new BigInteger(content[6] + content[7], 16).intValue(), 1000));
                 objectData.put(RobotAction.WIDTH, Long.valueOf(content[8] + content[9] + content[10] + content[11], 16));
@@ -324,16 +324,16 @@ public class CustomProtocolDecoder extends CumulativeProtocolDecoder {
             IoBuffer lengthB = in.getSlice(0, 4);
             IoBuffer cmdB = in.getSlice(4, 1);
             IoBuffer resultB = in.getSlice(5, 1);
-            LogUtil.d(TAG, "cmd: " + cmdB.getHexDump());
+//            LogUtil.d(TAG, "cmd: " + cmdB.getHexDump());
 //            LogUtil.d(TAG, "result: " + resultB.getHexDump());
 //            in.reset();
 
             if (("2A".equals(cmdB.getHexDump()) && "00".equals(resultB.getHexDump())) || isHex) {
                 isHex = true;
                 if (length == 0) {
-                    LogUtil.d(TAG, "length hex: " + lengthB.getHexDump());
+//                    LogUtil.d(TAG, "length hex: " + lengthB.getHexDump());
                     length = Integer.valueOf(lengthB.getHexDump().replace(" ", ""), 16);
-                    LogUtil.d(TAG, "length: " + length);
+//                    LogUtil.d(TAG, "length: " + length);
                     totalContent = new StringBuffer(length);
                 }
                 String content = in.getHexDump();
@@ -341,7 +341,7 @@ public class CustomProtocolDecoder extends CumulativeProtocolDecoder {
                 totalContent.append(content);
                 totalContent.append(" ");
                 String[] tmp = totalContent.toString().trim().split(" ");
-                LogUtil.d(TAG, "tmp length: " + tmp.length);
+//                LogUtil.d(TAG, "tmp length: " + tmp.length);
                 if (tmp.length >= length) {
                     JSONObject jsonObject = strToJson(tmp, totalContent.toString().trim().replace(" ", ""));
                     if (jsonObject != null) {

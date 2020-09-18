@@ -34,7 +34,7 @@ public class Utils {
     private static final String TAG = "Utils";
 
     public static Vector<LaserPoint> toLaserPoint(JSONObject jsonObject) throws JSONException {
-        LogUtil.d(TAG, "updateLaserScan: "+jsonObject.toString());
+//        LogUtil.d(TAG, "updateLaserScan: "+jsonObject.toString());
         String str = jsonObject.getString(RobotAction.DATA);
         String[] data = str.substring(1, str.length()-1).split(",");
         LogUtil.d(TAG, "length: "+data.length);
