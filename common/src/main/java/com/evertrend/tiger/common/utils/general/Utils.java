@@ -15,6 +15,9 @@ import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.CoordinateConverter;
 import com.evertrend.tiger.common.bean.RobotAction;
 import com.slamtec.slamware.robot.LaserPoint;
+import com.slamtec.slamware.robot.Location;
+import com.slamtec.slamware.robot.Pose;
+import com.slamtec.slamware.robot.Rotation;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,11 +36,19 @@ import java.util.regex.Pattern;
 public class Utils {
     private static final String TAG = "Utils";
 
+    public static Pose toPose(JSONObject jsonObject) throws JSONException {
+        Location location = new Location();
+        location.setX((float)jsonObject.getDouble(RobotAction.POSE_X));
+        location.setY((float)jsonObject.getDouble(RobotAction.POSE_Y));
+        Rotation rotation = new Rotation((float)jsonObject.getDouble(RobotAction.POSE_YAW));
+        return new Pose(location, rotation);
+    }
+
     public static Vector<LaserPoint> toLaserPoint(JSONObject jsonObject) throws JSONException {
 //        LogUtil.d(TAG, "updateLaserScan: "+jsonObject.toString());
         String str = jsonObject.getString(RobotAction.DATA);
         String[] data = str.substring(1, str.length()-1).split(",");
-        LogUtil.d(TAG, "length: "+data.length);
+//        LogUtil.d(TAG, "length: "+data.length);
         double angle_increment = jsonObject.getDouble(RobotAction.ANGLE_INCREMENT);
         double angle_max = jsonObject.getDouble(RobotAction.ANGLE_MAX);
         double angle_min = jsonObject.getDouble(RobotAction.ANGLE_MIN);

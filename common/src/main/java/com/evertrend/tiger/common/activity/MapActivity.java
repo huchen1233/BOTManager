@@ -172,11 +172,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
 
     private void updateRobotPose(JSONObject jsonObject) throws JSONException {
 //        LogUtil.d(TAG, "updateRobotPose: "+jsonObject.toString());
-        Location location = new Location();
-        location.setX((float)jsonObject.getDouble(RobotAction.POSE_X));
-        location.setY((float)jsonObject.getDouble(RobotAction.POSE_Y));
-        Rotation rotation = new Rotation((float)jsonObject.getDouble(RobotAction.POSE_YAW));
-        robotPose = new Pose(location, rotation);
+        robotPose = Utils.toPose(jsonObject);
         mv_map.setRobotPose(robotPose);
         if (robotPose != null) {
             currentPose = String.format("%.3f,%.3f,%.3f", robotPose.getX(), robotPose.getY(), RadianUtil.toAngel(robotPose.getYaw()));
@@ -185,7 +181,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
     }
 
     private void updateLaserScan(JSONObject jsonObject) throws JSONException {
-        LaserScan laserScan = new LaserScan(Utils.toLaserPoint(jsonObject), robotPose);
+        LaserScan laserScan = new LaserScan(Utils.toLaserPoint(jsonObject), Utils.toPose(jsonObject));
         mv_map.setLaserScan(laserScan);
     }
 
