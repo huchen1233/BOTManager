@@ -78,7 +78,7 @@ public class ConnectManager {
 
         @Override
         public void messageSent(IoSession session, Object message) throws Exception {
-//            LogUtil.d(TAG, "messageSent");
+//            LogUtil.d(TAG, "messageSent msg: "+message.toString());
             super.messageSent(session, message);
         }
 

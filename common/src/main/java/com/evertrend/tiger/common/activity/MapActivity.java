@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -213,6 +214,12 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
 
     private void initView() {
         mv_map = findViewById(R.id.mv_map);
+        mv_map.setSingleTapListener(new MapView.ISingleTapListener() {
+            @Override
+            public void onSingleTapListener(MotionEvent event) {
+                moveToLocation(event.getX(), event.getY());
+            }
+        });
         rg_navigation = findViewById(R.id.rg_navigation);
         rg_navigation.setOnCheckedChangeListener(this);
         ll_set_spot = findViewById(R.id.ll_set_spot);
@@ -221,6 +228,13 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         acv_action = findViewById(R.id.acv_action);
         acv_action.setLongClickRepeatListener(this);
         tv_robot_pose = findViewById(R.id.tv_robot_pose);
+    }
+
+    private void moveToLocation(float x, float y) {
+        PointF target = mv_map.widgetCoordinateToMapCoordinate(x, y);
+        if (target == null) return;
+        Location location = new Location(target.getX(), target.getY(), 0);
+        mAgent.moveTo(location);
     }
 
     private void startUpdate() {

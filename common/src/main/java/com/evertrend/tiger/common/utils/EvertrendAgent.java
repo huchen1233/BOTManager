@@ -2,8 +2,11 @@ package com.evertrend.tiger.common.utils;
 
 import com.evertrend.tiger.common.bean.event.slamtec.ConnectedEvent;
 import com.evertrend.tiger.common.bean.event.slamtec.ConnectionLostEvent;
+import com.slamtec.slamware.AbstractSlamwarePlatform;
 import com.slamtec.slamware.robot.LaserScan;
+import com.slamtec.slamware.robot.Location;
 import com.slamtec.slamware.robot.Map;
+import com.slamtec.slamware.robot.MoveOption;
 import com.slamtec.slamware.robot.Pose;
 
 import org.greenrobot.eventbus.EventBus;
@@ -23,6 +26,7 @@ public class EvertrendAgent {
     private static TaskDisconnect sTaskDisconnect;
     private static TaskCancelAllActions sTaskCancelAllActions;
     private static TaskMoveBy sTaskMoveBy;
+    private static TaskMoveTo sTaskMoveTo;
     private static TaskGetMap sTaskGetMap;
     private static TaskGetRobotPose sTaskGetRobotPose;
     private static TaskGetLaserScan sTaskGetLaserScan;
@@ -35,6 +39,7 @@ public class EvertrendAgent {
         sTaskDisconnect = new TaskDisconnect();
         sTaskCancelAllActions = new TaskCancelAllActions();
         sTaskMoveBy = new TaskMoveBy();
+        sTaskMoveTo = new TaskMoveTo();
         sTaskGetMap = new TaskGetMap();
         sTaskGetRobotPose = new TaskGetRobotPose();
         sTaskGetLaserScan = new TaskGetLaserScan();
@@ -53,6 +58,11 @@ public class EvertrendAgent {
     public void moveBy(int robotAction, float speed) {
         sTaskMoveBy.setRobotAction(robotAction, speed);
         pushTask(sTaskMoveBy);
+    }
+
+    public void moveTo(Location location) {
+        sTaskMoveTo.setlocation(location);
+        pushTaskHead(sTaskMoveTo);
     }
 
     public void cancelAllActions() {
@@ -203,6 +213,38 @@ public class EvertrendAgent {
 
             try {
                 manager.moveBy(robotAction, speed);
+            } catch (Exception e) {
+                onRequestError(e);
+            }
+        }
+    }
+
+    private class TaskMoveTo implements Runnable {
+        private Location location;
+
+        public TaskMoveTo() {
+        }
+
+        public void setlocation(Location location) {
+            this.location = location;
+        }
+
+
+        @Override
+        public void run() {
+            SessionManager manager;
+
+            synchronized (this) {
+                manager = mSessionManager;
+            }
+
+            if (mSessionManager.getIoSession() == null) {
+                onRequestError(new Exception("connect closed"));
+                return;
+            }
+
+            try {
+                manager.moveTo(location, 0f);
             } catch (Exception e) {
                 onRequestError(e);
             }

@@ -2,6 +2,7 @@ package com.evertrend.tiger.common.utils;
 
 import com.evertrend.tiger.common.bean.RobotAction;
 import com.evertrend.tiger.common.utils.general.LogUtil;
+import com.slamtec.slamware.robot.Location;
 
 import org.apache.mina.core.session.IoSession;
 import org.json.JSONException;
@@ -78,6 +79,20 @@ public class SessionManager {
         JSONObject object = new JSONObject();
         object.put(RobotAction.CMD_CODE, robotAction);
         object.put(RobotAction.DATA, speed);
+        object.put(RobotAction.DEVICE_ID, DEVICE_ID);
+        object.put(RobotAction.KEY, KEY);
+        object.put(RobotAction.TIME_STAMP, getTime());
+        writeToServer(object);
+    }
+
+    public void moveTo(Location location, float yaw) throws JSONException {
+        JSONObject object = new JSONObject();
+        JSONObject data = new JSONObject();
+        data.put(RobotAction.POSE_X, location.getX());
+        data.put(RobotAction.POSE_Y, location.getY());
+        data.put(RobotAction.POSE_YAW, yaw);
+        object.put(RobotAction.CMD_CODE, RobotAction.CMD.SET_ROBOT_POSE);
+        object.put(RobotAction.DATA, data);
         object.put(RobotAction.DEVICE_ID, DEVICE_ID);
         object.put(RobotAction.KEY, KEY);
         object.put(RobotAction.TIME_STAMP, getTime());
