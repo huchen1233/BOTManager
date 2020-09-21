@@ -11,8 +11,8 @@ import org.json.JSONObject;
 public class SessionManager {
     public static final String TAG = SessionManager.class.getCanonicalName();
     private static  SessionManager mInstance = null;
-    private static final String DEVICE_ID = "9005";
-    private static final String KEY = "1993";
+    private String deviceID = "9005";
+    private String key = "1993";
 
     private IoSession ioSession;//最终与服务器 通信的对象
 
@@ -36,6 +36,22 @@ public class SessionManager {
 
     public IoSession getIoSession() {
         return ioSession;
+    }
+
+    public String getDeviceID() {
+        return deviceID;
+    }
+
+    public void setDeviceID(String deviceID) {
+        this.deviceID = deviceID;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     /**
@@ -69,8 +85,8 @@ public class SessionManager {
     public void stop() throws JSONException {
         JSONObject object = new JSONObject();
         object.put(RobotAction.CMD_CODE, RobotAction.CMD.STOP);
-        object.put(RobotAction.DEVICE_ID, DEVICE_ID);
-        object.put(RobotAction.KEY, KEY);
+        object.put(RobotAction.DEVICE_ID, deviceID);
+        object.put(RobotAction.KEY, key);
         object.put(RobotAction.TIME_STAMP, getTime());
         writeToServer(object);
     }
@@ -79,8 +95,8 @@ public class SessionManager {
         JSONObject object = new JSONObject();
         object.put(RobotAction.CMD_CODE, robotAction);
         object.put(RobotAction.DATA, speed);
-        object.put(RobotAction.DEVICE_ID, DEVICE_ID);
-        object.put(RobotAction.KEY, KEY);
+        object.put(RobotAction.DEVICE_ID, deviceID);
+        object.put(RobotAction.KEY, key);
         object.put(RobotAction.TIME_STAMP, getTime());
         writeToServer(object);
     }
@@ -93,8 +109,8 @@ public class SessionManager {
         data.put(RobotAction.POSE_YAW, yaw);
         object.put(RobotAction.CMD_CODE, RobotAction.CMD.SET_ROBOT_POSE);
         object.put(RobotAction.DATA, data);
-        object.put(RobotAction.DEVICE_ID, DEVICE_ID);
-        object.put(RobotAction.KEY, KEY);
+        object.put(RobotAction.DEVICE_ID, deviceID);
+        object.put(RobotAction.KEY, key);
         object.put(RobotAction.TIME_STAMP, getTime());
         writeToServer(object);
     }
@@ -102,8 +118,8 @@ public class SessionManager {
     public void getMap(int getType) throws JSONException {
         JSONObject object = new JSONObject();
         object.put(RobotAction.CMD_CODE, getType);
-        object.put(RobotAction.DEVICE_ID, DEVICE_ID);
-        object.put(RobotAction.KEY, KEY);
+        object.put(RobotAction.DEVICE_ID, deviceID);
+        object.put(RobotAction.KEY, key);
         object.put(RobotAction.TIME_STAMP, getTime());
         writeToServer(object);
     }
@@ -111,8 +127,8 @@ public class SessionManager {
     public void getRobotPose() throws JSONException {
         JSONObject object = new JSONObject();
         object.put(RobotAction.CMD_CODE, RobotAction.CMD.GET_ROBOT_POSE);
-        object.put(RobotAction.DEVICE_ID, DEVICE_ID);
-        object.put(RobotAction.KEY, KEY);
+        object.put(RobotAction.DEVICE_ID, deviceID);
+        object.put(RobotAction.KEY, key);
         object.put(RobotAction.TIME_STAMP, getTime());
         writeToServer(object);
     }
@@ -120,8 +136,8 @@ public class SessionManager {
     public void getLaserScan() throws JSONException {
         JSONObject object = new JSONObject();
         object.put(RobotAction.CMD_CODE, RobotAction.CMD.GET_LASER_SCAN);
-        object.put(RobotAction.DEVICE_ID, DEVICE_ID);
-        object.put(RobotAction.KEY, KEY);
+        object.put(RobotAction.DEVICE_ID, deviceID);
+        object.put(RobotAction.KEY, key);
         object.put(RobotAction.TIME_STAMP, getTime());
         writeToServer(object);
     }

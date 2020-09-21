@@ -46,8 +46,9 @@ public class EvertrendAgent {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public void connectTo(String local_ins_ip) {
+    public void connectTo(String local_ins_ip, String deviceID, String key) {
         mIp = local_ins_ip;
+        sTaskConnect.setConnect(deviceID, key);
         pushTask(sTaskConnect);
     }
 
@@ -100,6 +101,13 @@ public class EvertrendAgent {
 
     //////////////////////////////////// Runnable //////////////////////////////////////////////////
     private class TaskConnect implements Runnable {
+        String deviceID;
+        String key;
+
+        public void setConnect(String deviceID, String key) {
+            this.deviceID = deviceID;
+            this.key = key;
+        }
 
         @Override
         public void run() {
@@ -129,6 +137,8 @@ public class EvertrendAgent {
                     if (isConnection) {
                         //当请求成功的时候,跳出循环
                         mSessionManager = SessionManager.getmInstance();
+                        mSessionManager.setDeviceID(deviceID);
+                        mSessionManager.setKey(key);
                         EventBus.getDefault().post(new ConnectedEvent());
                         break;
                     }
