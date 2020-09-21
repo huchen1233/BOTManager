@@ -99,6 +99,7 @@ public class Constants {
     public static final int TASK_TYPE_TRACE_PATH = 1;
     public static final int TASK_TYPE_VIRTUAL_TRACK = 2;
     public static final int TASK_TYPE_SPE_WORK = 3;
+    public static final int TASK_TYPE_AUTO_COVERAGE = 4;
 
     public static final int BASE_TRACE_OPERATION_CHOICE = 1;
     public static final int BASE_TRACE_OPERATION_EDIT = 2;

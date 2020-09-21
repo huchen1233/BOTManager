@@ -81,7 +81,7 @@
     <string name="yl_device_everyday">everyday</string>
     <string name="yl_device_infinite_cycle">infinite cycle</string>
     <string name="yl_device_special_work">special work</string>
-    <string name="yl_device_task_choice_tips">trace path/virtual track group/special work must be one of three</string>
+    <string name="yl_device_task_choice_tips">trace path/virtual track group/special work/auto coverage must be one of four</string>
     <string name="yl_device_repeat">repeat</string>
     <string name="yl_device_start_time">start time</string>
     <string name="yl_device_task_status">task status</string>
@@ -137,4 +137,5 @@
     <string name="yl_device_grant_device">grant device</string>
     <string name="yl_device_grant">device grant</string>
     <string name="yl_device_cannot_grant">This device is not authorized</string>
+    <string name="yl_device_auto_coverage_area">Automatic coverage of area</string>
 </resources>

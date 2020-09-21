@@ -81,7 +81,7 @@
     <string name="yl_device_everyday">每天一次</string>
     <string name="yl_device_infinite_cycle">无限循环</string>
     <string name="yl_device_special_work">特别任务</string>
-    <string name="yl_device_task_choice_tips">循迹路径/虚拟轨道组/特别任务 必须三选一</string>
+    <string name="yl_device_task_choice_tips">循迹路径/虚拟轨道组/特别任务/自动覆盖 必须四选一</string>
     <string name="yl_device_repeat">重复</string>
     <string name="yl_device_start_time">开始时间+</string>
     <string name="yl_device_task_status">任务状态</string>
@@ -137,4 +137,5 @@
     <string name="yl_device_grant_device">授权设备</string>
     <string name="yl_device_grant">设备授权</string>
     <string name="yl_device_cannot_grant">此设备不可授权</string>
+    <string name="yl_device_auto_coverage_area">全区域自动覆盖</string>
 </resources>

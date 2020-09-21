@@ -67,7 +67,7 @@ public class CleanTaskBottomPopupView extends BottomPopupView implements View.On
     private RadioButton rib_only_once, rib_everyday, rib_infinite_cycle;
     private Button btn_create_path, btn_create_group, btn_create_special_work, btn_task_submit;
     private RadioGroup rig_task_type;
-    private RadioButton rib_trace_path, rib_virtual_track_group, rib_special_work;
+    private RadioButton rib_trace_path, rib_virtual_track_group, rib_special_work, rib_auto_coverage_area;
     private LinearLayout ll_trace_path, ll_virtual_track_group, ll_special_work;
 
     private Context context;
@@ -270,6 +270,7 @@ public class CleanTaskBottomPopupView extends BottomPopupView implements View.On
         rib_trace_path = findViewById(R.id.rib_trace_path);
         rib_virtual_track_group = findViewById(R.id.rib_virtual_track_group);
         rib_special_work = findViewById(R.id.rib_special_work);
+        rib_auto_coverage_area = findViewById(R.id.rib_auto_coverage_area);
         ll_trace_path = findViewById(R.id.ll_trace_path);
         ll_virtual_track_group = findViewById(R.id.ll_virtual_track_group);
         ll_special_work = findViewById(R.id.ll_special_work);
@@ -325,6 +326,9 @@ public class CleanTaskBottomPopupView extends BottomPopupView implements View.On
                 break;
             case Constants.TASK_TYPE_SPE_WORK:
                 rib_special_work.setChecked(true);
+                break;
+            case Constants.TASK_TYPE_AUTO_COVERAGE:
+                rib_auto_coverage_area.setChecked(true);
                 break;
         }
         String[] startTime = newCleanTask.getStartTime().split(":");
@@ -472,7 +476,7 @@ public class CleanTaskBottomPopupView extends BottomPopupView implements View.On
             LogUtil.i(context, TAG, "special work : " + specialWork);
         }
 
-        if (tracePaths.length() == 0 && vTGroups.length() == 0 && TextUtils.isEmpty(specialWork)) {
+        if (tracePaths.length() == 0 && vTGroups.length() == 0 && TextUtils.isEmpty(specialWork) && !rib_auto_coverage_area.isChecked()) {
             Toast.makeText(context, R.string.yl_device_task_choice_tips, Toast.LENGTH_LONG).show();
             return false;
         } else {
@@ -491,6 +495,11 @@ public class CleanTaskBottomPopupView extends BottomPopupView implements View.On
                     newCleanTask.setTracePaths("");
                     newCleanTask.setVirtualTrackGroups("");
                     newCleanTask.setSpecialWorks(specialWork);
+                    break;
+                case Constants.TASK_TYPE_AUTO_COVERAGE:
+                    newCleanTask.setTracePaths("");
+                    newCleanTask.setVirtualTrackGroups("");
+                    newCleanTask.setSpecialWorks("");
                     break;
             }
         }
@@ -520,6 +529,11 @@ public class CleanTaskBottomPopupView extends BottomPopupView implements View.On
             ll_trace_path.setVisibility(GONE);
             ll_virtual_track_group.setVisibility(GONE);
             ll_special_work.setVisibility(VISIBLE);
+        } else if (group.getCheckedRadioButtonId() == R.id.rib_auto_coverage_area) {
+            newCleanTask.setTaskType(Constants.TASK_TYPE_AUTO_COVERAGE);
+            ll_trace_path.setVisibility(GONE);
+            ll_virtual_track_group.setVisibility(GONE);
+            ll_special_work.setVisibility(GONE);
         }
     }
 
