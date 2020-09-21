@@ -11,6 +11,7 @@
         <item>@string/yl_common_trace_path</item>
         <item>@string/yl_common_virtual_tracks_group</item>
         <item>@string/yl_common_gps_fence</item>
+        <item>test</item>
     </string-array>
 
     <string-array name="yl_common_run_log_level">

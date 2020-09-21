@@ -103,7 +103,7 @@ public class CommonConstants {
     public static final int GET_CODE_COUNT = 60;
     public static final int GET_DEVICE_EXCEPTION_TIME = 1;//分钟
     public static final int DEVICE_TRACE_PATH_AUTO_RECORD_DISTANCE = 2;//米
-    public static final int GET_DEVICE_TIME_INTERVAL = 30;//秒
+    public static final int GET_DEVICE_TIME_INTERVAL = 8;//秒
 
     public static final int TYPE_SUCCESS_EVENT_LOGIN = 1;
     public static final int TYPE_SUCCESS_EVENT_LOGOUT = 2;
@@ -133,6 +133,7 @@ public class CommonConstants {
     public static final int TYPE_MAPPAGE_OPERATION_CREATE_TASK_CHOICE = 5;
     public static final int TYPE_MAPPAGE_OPERATION_ADD_COMMON_SPOT_CHOICE = 6;
     public static final int TYPE_MAPPAGE_OPERATION_GPS_FENCE = 7;
+    public static final int TYPE_MAPPAGE_OPERATION_MAP_TEST = 8;
 
     public static final int TYPE_DEVICE_OPERATION_GRANT = 0;
     public static final int TYPE_DEVICE_OPERATION_CANOT_GRANT = 1;

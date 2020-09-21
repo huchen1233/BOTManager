@@ -146,6 +146,9 @@ public class DeviceMapFragment extends BaseFragment {
         } else if (CommonConstants.TYPE_MAPPAGE_OPERATION_GPS_FENCE == event.getType()) {
             intent.setAction("android.intent.action.GpsFenceActivity");
             startActivity(intent);
+        } else if (CommonConstants.TYPE_MAPPAGE_OPERATION_MAP_TEST == event.getType()) {
+            intent.setAction("android.intent.action.TestActivity");
+            startActivity(intent);
         }
     }
 

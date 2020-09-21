@@ -105,7 +105,7 @@ public class MapPagesChoiceAdapter extends  RecyclerView.Adapter<MapPagesChoiceA
                 .asAttachList(mContext.getResources().getStringArray(R.array.yl_common_map_page_operation),
                         new int[]{R.drawable.yl_common_ic_delete_red_24dp, R.drawable.yl_common_ic_edit_green_24dp,
                                 R.drawable.yl_common_ic_trace_path_orange_24dp, R.drawable.yl_common_ic_virtual_track_group_blue_24dp,
-                                R.drawable.yl_common_ic_gps_fence_violet_24dp},
+                                R.drawable.yl_common_ic_gps_fence_violet_24dp, R.drawable.yl_common_ic_grant_green_24dp},
                         new OnSelectListener() {
                             @Override
                             public void onSelect(int position, String text) {
@@ -124,6 +124,9 @@ public class MapPagesChoiceAdapter extends  RecyclerView.Adapter<MapPagesChoiceA
                                         break;
                                     case 4:
                                         EventBus.getDefault().post(new ChoiceMapPagesEvent(mapPages, CommonConstants.TYPE_MAPPAGE_OPERATION_GPS_FENCE));
+                                        break;
+                                    case 5:
+                                        EventBus.getDefault().post(new ChoiceMapPagesEvent(mapPages, CommonConstants.TYPE_MAPPAGE_OPERATION_MAP_TEST));
                                         break;
                                 }
                             }

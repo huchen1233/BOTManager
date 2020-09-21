@@ -13,6 +13,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.evertrend.tiger.common.R;
+import com.evertrend.tiger.common.bean.Device;
 import com.evertrend.tiger.common.bean.RobotAction;
 import com.evertrend.tiger.common.bean.event.ServerMsgEvent;
 import com.evertrend.tiger.common.bean.event.slamtec.ConnectedEvent;
@@ -51,9 +52,11 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
     private Pose robotPose;
     private String currentPose = "0";
     private Intent intent;
+    private String ip = "192.168.0.129";
+    private Device device;
 
-    private float speed = 0f;
-    private static final String IP = "192.168.0.129";
+    private float speed = 0.7f;
+//    private static final String IP = "192.168.0.129";
 
     private Runnable mRobotStateUpdateRunnable = new Runnable() {
         int cnt;
@@ -82,8 +85,8 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
                 if ((cnt % 30) == 0) {
 //                    mAgent.getHomePose();
                 }
-//                mAgent.getMap(RobotAction.CMD.GET_MAP);
-                mAgent.getMap(RobotAction.CMD.GET_MAP_CONDENSE);
+                mAgent.getMap(RobotAction.CMD.GET_MAP);
+//                mAgent.getMap(RobotAction.CMD.GET_MAP_CONDENSE);
 //                mAgent.getMap(RobotAction.CMD.GET_MAP_CON_BIN);
                 SystemClock.sleep(1000);
                 mAgent.getRobotPose();
@@ -103,9 +106,11 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         super.onCreate(savedInstanceState);
         setContentView(R.layout.yl_common_activity_map);
         initView();
+        device = (Device) getIntent().getSerializableExtra("device");
+        ip = getIntent().getStringExtra("ip");
         EventBus.getDefault().register(this);
         mAgent = getEvertrendAgent();
-        mAgent.connectTo(IP);
+        mAgent.connectTo(ip, device.getDevice_id(), "1993");
     }
 
         @Override
@@ -138,7 +143,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ConnectionLostEvent event) {
         LogUtil.d(TAG, "connect lost");
-        mAgent.connectTo(IP);
+        mAgent.connectTo(ip, device.getDevice_id(), "1993");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
