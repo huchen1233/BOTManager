@@ -13,7 +13,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
+        <com.evertrend.tiger.common.widget.SeniorEditText
             android:id="@+id/et_account"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,10 +23,13 @@
             android:hint="@string/yl_user_account_hint"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:yl_common_clearDrawable="@drawable/ic_content_clear"
+            app:yl_common_editFrameStyle="roundRect"
+            app:yl_common_editFrameColor="@color/yl_common_color_white_gray"/>
 <!--            app:layout_constraintTop_toBottomOf="@id/spinner_region_code" />-->
 
-        <EditText
+        <com.evertrend.tiger.common.widget.SeniorEditText
             android:id="@+id/et_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,9 +40,14 @@
             android:inputType="textPassword"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_account" />
+            app:layout_constraintTop_toBottomOf="@id/et_account"
+            app:yl_common_clearDrawable="@drawable/ic_content_clear"
+            app:yl_common_visibleDrawable="@drawable/ic_content_visible"
+            app:yl_common_invisibleDrawable="@drawable/ic_content_invisible"
+            app:yl_common_editFrameStyle="roundRect"
+            app:yl_common_editFrameColor="@color/yl_common_color_white_gray"/>
 
-        <EditText
+        <com.evertrend.tiger.common.widget.SeniorEditText
             android:id="@+id/et_confirm_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,7 +58,12 @@
             android:inputType="textPassword"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_password" />
+            app:layout_constraintTop_toBottomOf="@id/et_password"
+            app:yl_common_clearDrawable="@drawable/ic_content_clear"
+            app:yl_common_visibleDrawable="@drawable/ic_content_visible"
+            app:yl_common_invisibleDrawable="@drawable/ic_content_invisible"
+            app:yl_common_editFrameStyle="roundRect"
+            app:yl_common_editFrameColor="@color/yl_common_color_white_gray"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/ll_verification_code"
@@ -63,13 +76,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/et_confirm_password">
 
-            <EditText
+            <com.evertrend.tiger.common.widget.SeniorEditText
                 android:id="@+id/et_verification_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/yl_user_verification_code"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:yl_common_clearDrawable="@drawable/ic_content_clear"
+                app:yl_common_editFrameStyle="roundRect"
+                app:yl_common_editFrameColor="@color/yl_common_color_white_gray"/>
 
             <Button
                 android:id="@+id/btn_get_verification_code"

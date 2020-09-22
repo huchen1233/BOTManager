@@ -13,7 +13,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <EditText
+        <com.evertrend.tiger.common.widget.SeniorEditText
             android:id="@+id/et_account"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,7 +22,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:hint="@string/yl_user_account_hint"/>
+            android:hint="@string/yl_user_account_hint"
+            app:yl_common_clearDrawable="@drawable/ic_content_clear"
+            app:yl_common_editFrameStyle="roundRect"
+            app:yl_common_editFrameColor="@color/yl_common_color_white_gray"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/ll_verification_code"
@@ -35,13 +38,16 @@
             android:layout_marginEnd="10dp"
             android:layout_marginTop="20dp">
 
-            <EditText
+            <com.evertrend.tiger.common.widget.SeniorEditText
                 android:id="@+id/et_verification_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:hint="@string/yl_user_verification_code"/>
+                android:hint="@string/yl_user_verification_code"
+                app:yl_common_clearDrawable="@drawable/ic_content_clear"
+                app:yl_common_editFrameStyle="roundRect"
+                app:yl_common_editFrameColor="@color/yl_common_color_white_gray"/>
 
             <Button
                 android:id="@+id/btn_get_verification_code"
