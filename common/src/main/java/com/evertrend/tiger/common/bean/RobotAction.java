@@ -14,6 +14,7 @@ public class RobotAction {
         int GET_LASER_SCAN = 0x30;
         int GET_ROBOT_POSE = 0x31;
         int SET_ROBOT_POSE = 0x32;
+        int MOVE_TO_POSE = 0x33;
     }
 
     public static final String DEVICE_ID = "device_id";

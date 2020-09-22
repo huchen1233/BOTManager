@@ -3,6 +3,7 @@ package com.evertrend.tiger.common.utils;
 import com.evertrend.tiger.common.bean.RobotAction;
 import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.slamtec.slamware.robot.Location;
+import com.slamtec.slamware.robot.Pose;
 
 import org.apache.mina.core.session.IoSession;
 import org.json.JSONException;
@@ -107,6 +108,20 @@ public class SessionManager {
         data.put(RobotAction.POSE_X, location.getX());
         data.put(RobotAction.POSE_Y, location.getY());
         data.put(RobotAction.POSE_YAW, yaw);
+        object.put(RobotAction.CMD_CODE, RobotAction.CMD.MOVE_TO_POSE);
+        object.put(RobotAction.DATA, data);
+        object.put(RobotAction.DEVICE_ID, deviceID);
+        object.put(RobotAction.KEY, key);
+        object.put(RobotAction.TIME_STAMP, getTime());
+        writeToServer(object);
+    }
+
+    public void setPose(Pose pose) throws JSONException {
+        JSONObject object = new JSONObject();
+        JSONObject data = new JSONObject();
+        data.put(RobotAction.POSE_X, pose.getLocation().getX());
+        data.put(RobotAction.POSE_Y, pose.getLocation().getY());
+        data.put(RobotAction.POSE_YAW, pose.getRotation().getYaw());
         object.put(RobotAction.CMD_CODE, RobotAction.CMD.SET_ROBOT_POSE);
         object.put(RobotAction.DATA, data);
         object.put(RobotAction.DEVICE_ID, deviceID);

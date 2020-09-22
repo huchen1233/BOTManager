@@ -26,6 +26,7 @@ public class EvertrendAgent {
     private static TaskDisconnect sTaskDisconnect;
     private static TaskCancelAllActions sTaskCancelAllActions;
     private static TaskMoveBy sTaskMoveBy;
+    private static TaskSetPose sTaskSetPose;
     private static TaskMoveTo sTaskMoveTo;
     private static TaskGetMap sTaskGetMap;
     private static TaskGetRobotPose sTaskGetRobotPose;
@@ -39,6 +40,7 @@ public class EvertrendAgent {
         sTaskDisconnect = new TaskDisconnect();
         sTaskCancelAllActions = new TaskCancelAllActions();
         sTaskMoveBy = new TaskMoveBy();
+        sTaskSetPose = new TaskSetPose();
         sTaskMoveTo = new TaskMoveTo();
         sTaskGetMap = new TaskGetMap();
         sTaskGetRobotPose = new TaskGetRobotPose();
@@ -64,6 +66,11 @@ public class EvertrendAgent {
     public void moveTo(Location location) {
         sTaskMoveTo.setlocation(location);
         pushTaskHead(sTaskMoveTo);
+    }
+
+    public void setPose(Pose pose) {
+        sTaskSetPose.setPose(pose);
+        pushTaskHead(sTaskSetPose);
     }
 
     public void cancelAllActions() {
@@ -255,6 +262,38 @@ public class EvertrendAgent {
 
             try {
                 manager.moveTo(location, 0f);
+            } catch (Exception e) {
+                onRequestError(e);
+            }
+        }
+    }
+
+    private class TaskSetPose implements Runnable {
+        private Pose pose;
+
+        public TaskSetPose() {
+        }
+
+        public void setPose(Pose pose) {
+            this.pose = pose;
+        }
+
+
+        @Override
+        public void run() {
+            SessionManager manager;
+
+            synchronized (this) {
+                manager = mSessionManager;
+            }
+
+            if (mSessionManager.getIoSession() == null) {
+                onRequestError(new Exception("connect closed"));
+                return;
+            }
+
+            try {
+                manager.setPose(pose);
             } catch (Exception e) {
                 onRequestError(e);
             }
