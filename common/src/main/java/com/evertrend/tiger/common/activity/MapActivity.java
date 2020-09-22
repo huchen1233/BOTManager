@@ -1,11 +1,14 @@
 package com.evertrend.tiger.common.activity;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -24,6 +27,8 @@ import com.evertrend.tiger.common.utils.EvertrendAgent;
 import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.common.utils.general.Utils;
 import com.evertrend.tiger.common.widget.ActionControllerView;
+import com.evertrend.tiger.common.widget.MapSettingsBottomPopupView;
+import com.lxj.xpopup.XPopup;
 import com.slamtec.slamware.geometry.PointF;
 import com.slamtec.slamware.geometry.Size;
 import com.slamtec.slamware.robot.LaserScan;
@@ -41,6 +46,7 @@ import org.json.JSONObject;
 public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener, ActionControllerView.LongClickRepeatListener {
     public static final String TAG = MapActivity.class.getCanonicalName();
 
+    private Toolbar tb_map;
     private MapView mv_map;
     private RadioGroup rg_navigation;
     private LinearLayout ll_set_spot, ll_edit;
@@ -85,8 +91,8 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
                 if ((cnt % 30) == 0) {
 //                    mAgent.getHomePose();
                 }
-                mAgent.getMap(RobotAction.CMD.GET_MAP);
-//                mAgent.getMap(RobotAction.CMD.GET_MAP_CONDENSE);
+//                mAgent.getMap(RobotAction.CMD.GET_MAP);
+                mAgent.getMap(RobotAction.CMD.GET_MAP_CONDENSE);
 //                mAgent.getMap(RobotAction.CMD.GET_MAP_CON_BIN);
                 SystemClock.sleep(1000);
                 mAgent.getRobotPose();
@@ -100,7 +106,6 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
     };
     Thread mRobotStateUpdateThread = new Thread(mRobotStateUpdateRunnable);
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,7 +118,25 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         mAgent.connectTo(ip, device.getDevice_id(), "1993");
     }
 
-        @Override
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.yl_common_map_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        } else if (item.getItemId() == R.id.item_settings) {
+            new XPopup.Builder(this)
+                    .asCustom(new MapSettingsBottomPopupView(this, device, mAgent))
+                    .show();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         stopUpdate();
@@ -218,6 +241,14 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
     }
 
     private void initView() {
+        tb_map = findViewById(R.id.tb_map);
+        tb_map.setTitle("map");
+        //设置左侧导航图标
+        tb_map.setNavigationIcon(R.drawable.yl_common_ic_arrow_back_white_36dp);
+        setSupportActionBar(tb_map);
+        //返回按钮的监听
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
         mv_map = findViewById(R.id.mv_map);
         mv_map.setSingleTapListener(new MapView.ISingleTapListener() {
             @Override

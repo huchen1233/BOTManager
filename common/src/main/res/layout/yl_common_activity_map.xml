@@ -6,13 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".activity.MapActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tb_map"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/yl_common_colorPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <com.evertrend.tiger.common.bean.mapview.MapView
         android:id="@+id/mv_map"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/rg_navigation"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/tb_map" />
 
     <TextView
         android:id="@+id/tv_robot_pose"
