@@ -32,6 +32,7 @@ import static com.evertrend.tiger.common.bean.mapview.utils.MathUtils.inverseMat
 
 public class MapView extends FrameLayout implements SlamGestureDetector.OnRPGestureListener {
     private final static String TAG = MapView.class.getName();
+    private boolean isEvertrend = false;
 
     // View argc
     private Matrix mOuterMatrix = new Matrix();
@@ -76,6 +77,14 @@ public class MapView extends FrameLayout implements SlamGestureDetector.OnRPGest
         mOuterMatrix = new Matrix();
         mGestureDetector = new SlamGestureDetector(this, this);
         initView();
+    }
+
+    public boolean isEvertrend() {
+        return isEvertrend;
+    }
+
+    public void setEvertrend(boolean evertrend) {
+        isEvertrend = evertrend;
     }
 
     private void setDefaultBackground() {
@@ -125,7 +134,7 @@ public class MapView extends FrameLayout implements SlamGestureDetector.OnRPGest
             public void run() {
                 if (map == null) return;
                 mMapData = new MapDataCache(map);
-                mSlamMapView.updateTiles(mMapData);
+                mSlamMapView.updateTiles(mMapData, isEvertrend);
                 if (mCnt++ == 0) setCentred();
             }
         }).start();

@@ -12,6 +12,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.evertrend.tiger.common.bean.mapview.mapdata.MapDataCache;
+import com.evertrend.tiger.common.bean.mapview.utils.EvertrendImageUtil;
 import com.evertrend.tiger.common.bean.mapview.utils.ImageUtil;
 import com.evertrend.tiger.common.bean.mapview.utils.MatrixUtil;
 
@@ -78,7 +79,7 @@ public final class SlamMapView extends View {
         }
     }
 
-    public void updateTiles(MapDataCache mapDataCache) {
+    public void updateTiles(MapDataCache mapDataCache, boolean isEvertrend) {
         mMapDataCache = mapDataCache;
         mPixelWidth = mapDataCache.getmDimension().getWidth();
         mPixelHeight = mapDataCache.getmDimension().getHeight();
@@ -107,7 +108,11 @@ public final class SlamMapView extends View {
 
                     byte[] buffer = new byte[tile.area.width() * tile.area.height()];
                     mMapDataCache.fetch(tile.area, buffer);
-                    tile.bitmap = ImageUtil.createImage(buffer, tile.area.width(), tile.area.height());
+                    if (isEvertrend) {
+                        tile.bitmap = EvertrendImageUtil.createImage(buffer, tile.area.width(), tile.area.height());
+                    } else {
+                        tile.bitmap = ImageUtil.createImage(buffer, tile.area.width(), tile.area.height());
+                    }
                     if (mTiles.size() <= size) {
                         mTiles.add(tile);
                     }

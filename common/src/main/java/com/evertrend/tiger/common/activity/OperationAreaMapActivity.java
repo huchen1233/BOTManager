@@ -992,6 +992,7 @@ public class OperationAreaMapActivity extends BaseActivity implements LongClickI
 
     private void initView() {
         mMapView = findViewById(R.id.device_map_view);
+        mMapView.setEvertrend(false);
         mMapView.setSingleTapListener(new MapView.ISingleTapListener() {
             @Override
             public void onSingleTapListener(MotionEvent event) {

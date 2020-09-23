@@ -250,6 +250,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         mv_map = findViewById(R.id.mv_map);
+        mv_map.setEvertrend(true);
         mv_map.setSingleTapListener(new MapView.ISingleTapListener() {
             @Override
             public void onSingleTapListener(MotionEvent event) {
