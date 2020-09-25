@@ -142,6 +142,9 @@ public class CleanTaskReclyViewAdapter extends  RecyclerView.Adapter<CleanTaskRe
             case Constants.TASK_TYPE_SPE_WORK:
                 holder.cleanTaskImage.setImageResource(R.drawable.yl_device_task_special_work_green_72dp);
                 break;
+            case Constants.TASK_TYPE_AUTO_COVERAGE:
+                holder.cleanTaskImage.setImageResource(R.drawable.yl_device_task_auto_coverage_red_72dp);
+                break;
         }
 //        holder.cleanTaskImage.setImageResource(R.drawable.yl_device_ic_clean_task_green_36dp);
     }
