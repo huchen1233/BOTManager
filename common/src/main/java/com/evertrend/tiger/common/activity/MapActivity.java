@@ -11,9 +11,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.evertrend.tiger.common.R;
 import com.evertrend.tiger.common.bean.Device;
@@ -24,6 +26,7 @@ import com.evertrend.tiger.common.bean.event.slamtec.ConnectionLostEvent;
 import com.evertrend.tiger.common.bean.mapview.MapView;
 import com.evertrend.tiger.common.bean.mapview.utils.RadianUtil;
 import com.evertrend.tiger.common.utils.EvertrendAgent;
+import com.evertrend.tiger.common.utils.general.DialogUtil;
 import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.common.utils.general.Utils;
 import com.evertrend.tiger.common.widget.ActionControllerView;
@@ -45,7 +48,7 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 
-public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener, ActionControllerView.LongClickRepeatListener {
+public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener, ActionControllerView.LongClickRepeatListener, View.OnClickListener {
     public static final String TAG = MapActivity.class.getCanonicalName();
 
     private Toolbar tb_map;
@@ -55,6 +58,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
     private ConstraintLayout cl_action;
     private ActionControllerView acv_action;
     private TextView tv_robot_pose;
+    private Button btn_virtual_walls;
 
     private EvertrendAgent mAgent;
     private Pose robotPose;
@@ -145,12 +149,6 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        startUpdate();
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         mAgent.disconnect();
@@ -162,12 +160,16 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ConnectedEvent event) {
         LogUtil.d(TAG, "ConnectedEvent");
+        startUpdate();
 //        mAgent.getMap();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ConnectionLostEvent event) {
         LogUtil.d(TAG, "connect lost");
+        DialogUtil.showToast(this, "connect lost", Toast.LENGTH_SHORT);
+        mAgent.disconnect();
+        stopUpdate();
         mAgent.connectTo(ip, device.getDevice_id(), "1993");
     }
 
@@ -269,6 +271,8 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         acv_action = findViewById(R.id.acv_action);
         acv_action.setLongClickRepeatListener(this);
         tv_robot_pose = findViewById(R.id.tv_robot_pose);
+        btn_virtual_walls = findViewById(R.id.btn_virtual_walls);
+        btn_virtual_walls.setOnClickListener(this);
     }
 
     private void moveToLocation(float x, float y) {
@@ -286,6 +290,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
     private void stopUpdate() {
         if (mRobotStateUpdateThread != null && !mRobotStateUpdateThread.isInterrupted()) {
             mRobotStateUpdateThread.interrupt();
+            mRobotStateUpdateThread = null;
         }
     }
 
@@ -330,6 +335,18 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
                     mAgent.cancelAllActions();
                     break;
             }
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.btn_virtual_walls) {
+            Intent intent = new Intent();
+            intent.putExtra("ip", ip);
+            intent.putExtra("device", device);
+            intent.setAction("android.intent.action.VirtualWallActivity");
+            startActivity(intent);
+            finish();
         }
     }
 }

@@ -173,6 +173,7 @@ public class EvertrendAgent {
                 mPoolProxy.cancleAll();
                 mSessionManager.closeSession();
                 mConnectManager.disConnect();
+                mSessionManager = null;
             }
         }
     }
