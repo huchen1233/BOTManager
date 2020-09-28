@@ -43,6 +43,8 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
+
 public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener, ActionControllerView.LongClickRepeatListener {
     public static final String TAG = MapActivity.class.getCanonicalName();
 
@@ -94,7 +96,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
 //                mAgent.getMap(RobotAction.CMD.GET_MAP);
                 mAgent.getMap(RobotAction.CMD.GET_MAP_CONDENSE);
 //                mAgent.getMap(RobotAction.CMD.GET_MAP_CON_BIN);
-                SystemClock.sleep(1000);
+                SystemClock.sleep(2000);
                 mAgent.getRobotPose();
                 SystemClock.sleep(200);
                 mAgent.getLaserScan();
@@ -191,6 +193,8 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
                         break;
                 }
 
+            } else {
+                LogUtil.d(TAG, "fail: "+jsonObject.toString());
             }
         } catch (JSONException e) {
             e.printStackTrace();
