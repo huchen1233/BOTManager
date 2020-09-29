@@ -140,7 +140,7 @@ public class ActionControllerView extends View {
         longClickThread.setTouchArea(touchArea);
         stopPostActionTimer();
         scheduledThreadPostAction = new ScheduledThreadPoolExecutor(5);
-        scheduledThreadPostAction.scheduleAtFixedRate(longClickThread, 0, 200, TimeUnit.MILLISECONDS);
+        scheduledThreadPostAction.scheduleAtFixedRate(longClickThread, 0, 100, TimeUnit.MILLISECONDS);
 //        postDelayed(longClickThread, 200);
     }
 
