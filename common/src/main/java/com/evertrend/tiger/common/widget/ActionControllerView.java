@@ -43,8 +43,8 @@ public class ActionControllerView extends View {
     private int bigRadius;
     private RectF smallRectF;
     private int smallRadius;
-    private int padding = 20;
-    private int sweepAngel = 80;
+    private int padding = 5;
+    private int sweepAngel = 85;
     private int offsetAngel;
 
     @TouchArea
@@ -308,10 +308,10 @@ public class ActionControllerView extends View {
         leftActionPath = new Path();
         topActionPath = new Path();
         //大圆
-        bigRadius = (Math.min(mWidth, mHeight) - 60) / 2;
+        bigRadius = (Math.min(mWidth, mHeight) - 10) / 2;
         bigRectF.set(-bigRadius, -bigRadius, bigRadius, bigRadius);
         //小圆
-        smallRadius = (bigRadius - padding - 20) / 2;
+        smallRadius = (bigRadius - padding - 50) / 2;
         smallRectF.set(-smallRadius - padding, -smallRadius - padding,
                 smallRadius + padding, smallRadius + padding);
 
@@ -349,25 +349,27 @@ public class ActionControllerView extends View {
         topPath.close();
         topRegion.setPath(topPath, globalRegion);
 
-        float startF = bigRadius - 20;
+        float commonLength = (bigRadius+smallRadius)/4 - 30;
+        LogUtil.d(TAG, "commonLength: "+commonLength);
+        float startF = bigRadius - commonLength;
         rightActionPath.moveTo(startF, 0);
         rightActionPath.lineTo(startF - 40, 0 - 30);
         rightActionPath.lineTo(startF - 40, 0 + 30);
         rightActionPath.close();
 
-        startF = -bigRadius + 20;
+        startF = -bigRadius + commonLength;
         leftActionPath.moveTo(startF, 0);
         leftActionPath.lineTo(startF + 40, 0 - 30);
         leftActionPath.lineTo(startF + 40, 0 + 30);
         leftActionPath.close();
 
-        startF = bigRadius - 20;
+        startF = bigRadius - commonLength;
         topActionPath.moveTo(0, startF);
         topActionPath.lineTo(0 - 30, startF - 40);
         topActionPath.lineTo(0 + 30, startF - 40);
         topActionPath.close();
 
-        startF = -bigRadius + 20;
+        startF = -bigRadius + commonLength;
         topActionPath.moveTo(0, startF);
         topActionPath.lineTo(0 - 30, startF + 40);
         topActionPath.lineTo(0 + 30, startF + 40);
