@@ -8,6 +8,9 @@ import org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder;
 import org.apache.mina.core.filterchain.IoFilterChain;
 import org.apache.mina.core.future.ConnectFuture;
 import org.apache.mina.core.service.IoHandlerAdapter;
+import org.apache.mina.core.service.IoService;
+import org.apache.mina.core.service.IoServiceListener;
+import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.codec.demux.DemuxingProtocolCodecFactory;
@@ -40,8 +43,14 @@ public class ConnectManager {
         mConnection = new NioSocketConnector();
         //设置连接地址
         mConnection.setDefaultRemoteAddress(mAddress);
+        mConnection.setConnectTimeoutMillis(mConfig.getConnectionTimeout());
         mConnection.getSessionConfig().setReadBufferSize(mConfig.getReadBufferSize());
-//        mConnection.getSessionConfig().setReceiveBufferSize(20*1024*1024);
+        mConnection.getSessionConfig().setReceiveBufferSize(mConfig.getReceiveBufferSize());
+        mConnection.getSessionConfig().setSendBufferSize(2*1024*1024);
+
+        mConnection.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 10000);
+        mConnection.getSessionConfig().setIdleTime(IdleStatus.READER_IDLE, 3000);
+        mConnection.getSessionConfig().setIdleTime(IdleStatus.WRITER_IDLE, 60000);
         //设置过滤
         mConnection.getFilterChain().addLast("logger",new LoggingFilter());
 //        TextLineCodecFactory factory = new TextLineCodecFactory(Charset.forName("UTF-8"));
@@ -53,9 +62,48 @@ public class ConnectManager {
 //        mConnection.getFilterChain().addLast("exceutor", new ExecutorFilter(Executors.newCachedThreadPool()));
         //设置连接监听
         mConnection.setHandler(new DefaultHandler());
+        mConnection.addListener(new IoServiceListener() {
+            @Override
+            public void serviceActivated(IoService service) throws Exception {
+                LogUtil.d(TAG, "serviceActivated: "+service);
+            }
+
+            @Override
+            public void serviceIdle(IoService service, IdleStatus idleStatus) throws Exception {
+                LogUtil.d(TAG, "serviceIdle: "+service);
+            }
+
+            @Override
+            public void serviceDeactivated(IoService service) throws Exception {
+                LogUtil.d(TAG, "serviceDeactivated: "+service);
+            }
+
+            @Override
+            public void sessionCreated(IoSession session) throws Exception {
+                LogUtil.d(TAG, "sessionCreated: "+session);
+            }
+
+            @Override
+            public void sessionClosed(IoSession session) throws Exception {
+                LogUtil.d(TAG, "sessionClosed: "+session);
+            }
+
+            @Override
+            public void sessionDestroyed(IoSession session) throws Exception {
+                LogUtil.d(TAG, "sessionDestroyed: "+session);
+            }
+        });
     }
 
     private static class DefaultHandler extends IoHandlerAdapter {
+
+        @Override
+        public void sessionIdle(IoSession session, IdleStatus status) throws Exception {
+            LogUtil.d(TAG, "sessionIdle: "+session);
+            if(session != null){
+                session.closeOnFlush();
+            }
+        }
 
         @Override
         public void sessionCreated(IoSession session) throws Exception {

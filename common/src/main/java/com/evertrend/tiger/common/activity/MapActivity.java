@@ -79,7 +79,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
 //            mAgent.getGetRobotInfo();
 
             while (true) {
-                if (mRobotStateUpdateRunnable == null || !mRobotStateUpdateThread.isAlive() || mRobotStateUpdateThread.isInterrupted()) {
+                if (mRobotStateUpdateRunnable == null || mRobotStateUpdateThread == null || !mRobotStateUpdateThread.isAlive() || mRobotStateUpdateThread.isInterrupted()) {
                     break;
                 }
 
@@ -98,13 +98,13 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
 //                    mAgent.getHomePose();
                 }
 //                mAgent.getMap(RobotAction.CMD.GET_MAP);
-                mAgent.getMap(RobotAction.CMD.GET_MAP_CONDENSE);
+//                mAgent.getMap(RobotAction.CMD.GET_MAP_CONDENSE);
 //                mAgent.getMap(RobotAction.CMD.GET_MAP_CON_BIN);
-                SystemClock.sleep(2000);
-                mAgent.getRobotPose();
-                SystemClock.sleep(200);
-                mAgent.getLaserScan();
-                SystemClock.sleep(200);
+//                SystemClock.sleep(2000);
+//                mAgent.getRobotPose();
+//                SystemClock.sleep(200);
+//                mAgent.getLaserScan();
+//                SystemClock.sleep(200);
 //                SystemClock.sleep(5000);
                 cnt++;
             }
@@ -170,6 +170,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         DialogUtil.showToast(this, "connect lost", Toast.LENGTH_SHORT);
         mAgent.disconnect();
         stopUpdate();
+        SystemClock.sleep(1000);
         mAgent.connectTo(ip, device.getDevice_id(), "1993");
     }
 

@@ -68,8 +68,8 @@ public class Utils {
         double angle_increment = jsonObject.getDouble(RobotAction.ANGLE_INCREMENT);
         double angle_max = jsonObject.getDouble(RobotAction.ANGLE_MAX);
         double angle_min = jsonObject.getDouble(RobotAction.ANGLE_MIN);
-        double angle = Math.PI;
-//        double angle = 0;
+//        double angle = Math.PI;
+        double angle = 0;
         Vector<LaserPoint> laserPoints = new Vector();
         for (int i = 0; i < data.length; i++) {
             LaserPoint point = new LaserPoint();

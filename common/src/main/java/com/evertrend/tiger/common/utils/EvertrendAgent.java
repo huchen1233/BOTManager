@@ -224,7 +224,11 @@ public class EvertrendAgent {
                 manager = mSessionManager;
             }
 
-            if (mSessionManager.getIoSession() == null) {
+            if (manager == null) {
+                return;
+            }
+
+            if (manager.getIoSession() == null) {
                 onRequestError(new Exception("connect closed"));
                 return;
             }

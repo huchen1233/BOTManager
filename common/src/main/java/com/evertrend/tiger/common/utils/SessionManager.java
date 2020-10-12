@@ -59,7 +59,7 @@ public class SessionManager {
      * 将对象写到服务器
      */
     public void writeToServer(Object msg) {
-        LogUtil.d(TAG, "send msg: "+msg);
+//        LogUtil.d(TAG, "send msg: "+msg);
         if (ioSession != null) {
             ioSession.write(msg);
         }
