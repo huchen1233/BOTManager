@@ -19,7 +19,7 @@ public class CustomProtocolCodecFactory implements ProtocolCodecFactory {
 
     // 构造方法注入编解码器
     public CustomProtocolCodecFactory(Charset charset) {
-        this.encoder = new TextLineEncoder(charset);
+        this.encoder = new CustomProtocolEncoder(charset);
         this.decoder = new CustomProtocolDecoder(charset);
 //        this.decoder = new BigDataProtocolDecoder();
     }
