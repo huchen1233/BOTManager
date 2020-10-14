@@ -19,6 +19,7 @@ import com.evertrend.tiger.common.bean.mapview.mapdata.MapDataColor;
 import com.evertrend.tiger.common.bean.mapview.utils.MathUtils;
 import com.evertrend.tiger.common.bean.mapview.utils.RadianUtil;
 import com.evertrend.tiger.common.bean.mapview.utils.SlamGestureDetector;
+import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.slamtec.slamware.action.Path;
 import com.slamtec.slamware.geometry.Line;
 import com.slamtec.slamware.robot.LaserScan;
@@ -33,6 +34,7 @@ import static com.evertrend.tiger.common.bean.mapview.utils.MathUtils.inverseMat
 public class MapView extends FrameLayout implements SlamGestureDetector.OnRPGestureListener {
     private final static String TAG = MapView.class.getName();
     private boolean isEvertrend = false;
+    private int gestureMode = SlamGestureDetector.MODE_NONE;
 
     // View argc
     private Matrix mOuterMatrix = new Matrix();
@@ -48,6 +50,7 @@ public class MapView extends FrameLayout implements SlamGestureDetector.OnRPGest
     private ArrayList<SlamwareBaseView> mapLayers = new ArrayList<>(10);
     private SlamMapView mSlamMapView;
     private VirtualLineView mWallView;
+    private VirtualWallView mVWallView;
 //    private VirtualLineView mTrackView;
     private VirtualTrackLineView mTrackView;
     private VirtualTracePathLineView mTracePathView;
@@ -87,6 +90,10 @@ public class MapView extends FrameLayout implements SlamGestureDetector.OnRPGest
         isEvertrend = evertrend;
     }
 
+    public void setGestureMode(int modeVirtualWall) {
+        gestureMode = modeVirtualWall;
+    }
+
     private void setDefaultBackground() {
         int backgroud = MapDataColor.RGB_GREY;
         setBackgroundColor(Color.argb(0xFF, backgroud, backgroud, backgroud));
@@ -100,6 +107,7 @@ public class MapView extends FrameLayout implements SlamGestureDetector.OnRPGest
 
         mSlamMapView = new SlamMapView(getContext());
         mWallView = new VirtualLineView(getContext(), mMapView, Color.RED);
+        mVWallView = new VirtualWallView(getContext(), mMapView, Color.RED);
 //        mTrackView = new VirtualLineView(getContext(), mMapView, Color.GREEN);
         mTrackView = new VirtualTrackLineView(getContext(), mMapView, Color.GREEN);
         mTracePathView = new VirtualTracePathLineView(getContext(), mMapView, Color.BLUE);
@@ -113,6 +121,7 @@ public class MapView extends FrameLayout implements SlamGestureDetector.OnRPGest
 
         addView(mSlamMapView, lp);
         addMapLayers(mWallView);
+        addMapLayers(mVWallView);
         addMapLayers(mTrackView);
         addMapLayers(mTracePathView);
         addMapLayers(mVirtualTraceSpotView);
@@ -180,32 +189,71 @@ public class MapView extends FrameLayout implements SlamGestureDetector.OnRPGest
         mHomeDockView.setHomePose(homePose);
     }
 
-
+    public void setVwalls(List<Line> walls) {
+        mVWallView.setLines(walls);
+    }
+    public void drawVwall(Line wall) {
+        mVWallView.drawLine(wall);
+    }
+    public void addVwall(Line wall) {
+        mVWallView.addLine(wall);
+    }
+    public void drawClearArea(Line wall) {
+        mVWallView.drawClearArea(wall);
+    }
+    public void doClearArea(Line wall) {
+        mVWallView.doClearArea(wall);
+    }
     // 以下为触摸事件 ///////////////////////////////////////////////////////////////////////////////
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+//        LogUtil.d(TAG, "onTouchEvent: "+event);
         super.onTouchEvent(event);
-        return mGestureDetector.onTouchEvent(event);
+        return mGestureDetector.onTouchEvent(event, gestureMode);
     }
 
     @Override
     public void onMapTap(MotionEvent event) {
+//        LogUtil.d(TAG, "onMapTap: "+event);
         singleTap(event);
     }
 
     @Override
     public void onMapPinch(float factor, PointF center) {
+//        LogUtil.d(TAG, "onMapPinch: ");
         setScale(factor, center.x, center.y);
     }
 
     @Override
     public void onMapMove(int distanceX, int distanceY) {
+//        LogUtil.d(TAG, "onMapMove: ");
         setTransition(distanceX, distanceY);
     }
 
     @Override
     public void onMapRotate(float factor, PointF center) {
+//        LogUtil.d(TAG, "onMapRotate: ");
         setRotation(factor, (int) center.x, (int) center.y);
+    }
+
+    @Override
+    public void onMapDrawWall(Line line) {
+        drawVwall(line);
+    }
+
+    @Override
+    public void onMapAddWall(Line line) {
+        addVwall(line);
+    }
+
+    @Override
+    public void onMapDrawClearArea(Line line) {
+        drawClearArea(line);
+    }
+
+    @Override
+    public void onMapDoClearArea(Line line) {
+        doClearArea(line);
     }
 
     private void setRotation(float factor, int cx, int cy) {

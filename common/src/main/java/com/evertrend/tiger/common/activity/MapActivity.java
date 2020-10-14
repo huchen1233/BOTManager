@@ -32,6 +32,7 @@ import com.evertrend.tiger.common.utils.general.Utils;
 import com.evertrend.tiger.common.widget.ActionControllerView;
 import com.evertrend.tiger.common.widget.MapSettingsBottomPopupView;
 import com.lxj.xpopup.XPopup;
+import com.slamtec.slamware.geometry.Line;
 import com.slamtec.slamware.geometry.PointF;
 import com.slamtec.slamware.geometry.Size;
 import com.slamtec.slamware.robot.LaserScan;
@@ -43,10 +44,13 @@ import com.slamtec.slamware.robot.Rotation;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener, ActionControllerView.LongClickRepeatListener, View.OnClickListener {
     public static final String TAG = MapActivity.class.getCanonicalName();
@@ -71,11 +75,10 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
 //    private static final String IP = "192.168.0.129";
 
     private Runnable mRobotStateUpdateRunnable = new Runnable() {
-        int cnt;
 
         @Override
         public void run() {
-            cnt = 0;
+            int count = 0;
 //            mAgent.getGetRobotInfo();
 
             while (true) {
@@ -83,30 +86,38 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
                     break;
                 }
 
-                if ((cnt % 3) == 0) {
-//                    mAgent.getRobotPose();
+                LogUtil.d(TAG, "count: "+count);
+                if ((count % 5) == 0) {
 //                    mAgent.getLaserScan();
 //                    mAgent.setDeviceSpeed(AppSharePreference.getAppSharedPreference().loadDeviceSpeed());
                 }
+                if ((count % 10) == 0) {
+//                    mAgent.getRobotPose();
+                }
 
-                if ((cnt % 20) == 0) {
-//                    mAgent.getMap(RobotAction.CMD.GET_MAP_CON_BIN);
+                if ((count % 40) == 0) {
+//                    mAgent.getMap(RobotAction.CMD.GET_MAP);
+//                mAgent.getMap(RobotAction.CMD.GET_MAP_CONDENSE);
+//                mAgent.getMap(RobotAction.CMD.GET_MAP_CON_BIN);
 //                    mAgent.getMoveAction();
                 }
 
-                if ((cnt % 30) == 0) {
+                if ((count % 30) == 0) {
 //                    mAgent.getHomePose();
                 }
-//                mAgent.getMap(RobotAction.CMD.GET_MAP);
+                mAgent.getMap(RobotAction.CMD.GET_MAP);
 //                mAgent.getMap(RobotAction.CMD.GET_MAP_CONDENSE);
 //                mAgent.getMap(RobotAction.CMD.GET_MAP_CON_BIN);
-//                SystemClock.sleep(2000);
-//                mAgent.getRobotPose();
-//                SystemClock.sleep(200);
-//                mAgent.getLaserScan();
-//                SystemClock.sleep(200);
+                SystemClock.sleep(1000);
+                mAgent.getRobotPose();
+                SystemClock.sleep(200);
+                mAgent.getLaserScan();
+                SystemClock.sleep(200);
+                mAgent.getWalls();
+                SystemClock.sleep(200);
 //                SystemClock.sleep(5000);
-                cnt++;
+//                SystemClock.sleep(50);
+//                count++;
             }
         }
     };
@@ -146,6 +157,13 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
     protected void onPause() {
         super.onPause();
         stopUpdate();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LogUtil.d(TAG, "Connecte");
+//        mAgent.connectTo(ip, device.getDevice_id(), "1993");
     }
 
     @Override
@@ -194,6 +212,9 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
                     case RobotAction.CMD.GET_ROBOT_POSE:
                         updateRobotPose(jsonObject.getJSONObject(RobotAction.DATA));
                         break;
+                    case RobotAction.CMD.GET_VIRTUAL_WALL:
+                        updateVWalls(jsonObject.getJSONArray(RobotAction.DATA));
+                        break;
                 }
 
             } else {
@@ -204,6 +225,20 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         }
 //        Map map = event.getMap();
 //        mv_map.setMap(map);
+    }
+
+    private void updateVWalls(JSONArray jsonArray) throws JSONException {
+//        LogUtil.d(TAG, "walls: "+jsonArray.toString());
+        List<Line> lines = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject object = jsonArray.getJSONObject(i);
+            String id = object.keys().next();
+            JSONArray array = object.getJSONArray(id);
+            Line line = new Line(Integer.valueOf(id), new PointF((float) array.getDouble(0), (float) array.getDouble(1)),
+                    new PointF((float) array.getDouble(2), (float) array.getDouble(3)));
+            lines.add(line);
+        }
+        mv_map.setVwalls(lines);
     }
 
     private void updateRobotPose(JSONObject jsonObject) throws JSONException {
@@ -229,11 +264,15 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         PointF resolution = new PointF((float)jsonObject.getDouble(RobotAction.RESOLUTION), (float)jsonObject.getDouble(RobotAction.RESOLUTION));
         long timestamp = System.currentTimeMillis();
         byte[] data = null;
-        if (isCompress) {
-//            LogUtil.d(TAG, "time start: "+System.currentTimeMillis());
+        if (isCompress) {//解压缩时间700-800毫秒，需要继续优化
+//            long startT = System.currentTimeMillis();
+//            LogUtil.d(TAG, "time start: "+startT);
             data = Utils.hexStringToByte(Utils.decompress(jsonObject.getString(RobotAction.DATA)));
-//            LogUtil.d(TAG, "time end: "+System.currentTimeMillis());
-        } else {
+//            long endT = System.currentTimeMillis();
+//            LogUtil.d(TAG, "time end: "+endT);
+//            long time = endT - startT;
+//            LogUtil.d(TAG, "time all: "+time);
+        } else {//20毫秒左右
             data = Utils.hexStringToByte(jsonObject.getString(RobotAction.DATA));
         }
 //        LogUtil.d(TAG, "length: "+data.length);
@@ -347,7 +386,6 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
             intent.putExtra("device", device);
             intent.setAction("android.intent.action.VirtualWallActivity");
             startActivity(intent);
-            finish();
         }
     }
 }

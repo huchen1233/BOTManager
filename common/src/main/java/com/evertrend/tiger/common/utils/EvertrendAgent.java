@@ -1,12 +1,13 @@
 package com.evertrend.tiger.common.utils;
 
+import com.evertrend.tiger.common.bean.event.map.DeleteOneVwallCompleteEvent;
 import com.evertrend.tiger.common.bean.event.slamtec.ConnectedEvent;
 import com.evertrend.tiger.common.bean.event.slamtec.ConnectionLostEvent;
 import com.slamtec.slamware.AbstractSlamwarePlatform;
+import com.slamtec.slamware.geometry.Line;
 import com.slamtec.slamware.robot.LaserScan;
 import com.slamtec.slamware.robot.Location;
 import com.slamtec.slamware.robot.Map;
-import com.slamtec.slamware.robot.MoveOption;
 import com.slamtec.slamware.robot.Pose;
 
 import org.greenrobot.eventbus.EventBus;
@@ -31,6 +32,10 @@ public class EvertrendAgent {
     private static TaskGetMap sTaskGetMap;
     private static TaskGetRobotPose sTaskGetRobotPose;
     private static TaskGetLaserScan sTaskGetLaserScan;
+    private static TaskGetWalls sTaskGetWalls;
+    private static TaskAddVwall sTaskAddVwall;
+    private static TaskClearAllVwalls sTaskClearAllVwalls;
+    private static TaskClearOneVwall sTaskClearOneVwall;
 
     public EvertrendAgent() {
         mThreadManager = ThreadManager.getInstance();
@@ -45,6 +50,10 @@ public class EvertrendAgent {
         sTaskGetMap = new TaskGetMap();
         sTaskGetRobotPose = new TaskGetRobotPose();
         sTaskGetLaserScan = new TaskGetLaserScan();
+        sTaskGetWalls = new TaskGetWalls();
+        sTaskAddVwall = new TaskAddVwall();
+        sTaskClearAllVwalls = new TaskClearAllVwalls();
+        sTaskClearOneVwall = new TaskClearOneVwall();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -89,6 +98,25 @@ public class EvertrendAgent {
     public void getLaserScan() {
         pushTask(sTaskGetLaserScan);
     }
+
+    public void getWalls() {
+        pushTask(sTaskGetWalls);
+    }
+
+    public void addVwall(Line line) {
+        sTaskAddVwall.setVwall(line);
+        pushTask(sTaskAddVwall);
+    }
+
+    public void clearAllVwalls() {
+        pushTask(sTaskClearAllVwalls);
+    }
+
+    public void clearOneVwall(Line line) {
+        sTaskClearOneVwall.setLine(line);
+        pushTask(sTaskClearOneVwall);
+    }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private synchronized void pushTask(Runnable Task) {
         mPoolProxy.execute(Task);
@@ -400,6 +428,126 @@ public class EvertrendAgent {
             }
 
 //            EventBus.getDefault().postSticky(new LaserScanGetEvent(laserScan));
+        }
+    }
+
+    private class TaskGetWalls implements Runnable {
+        @Override
+        public void run() {
+            SessionManager manager;
+
+            synchronized (this) {
+                manager = mSessionManager;
+            }
+
+            if (mSessionManager == null) {
+                return;
+            }
+            if (mSessionManager.getIoSession() == null) {
+                onRequestError(new Exception("connect closed"));
+                return;
+            }
+
+            try {
+                manager.getWalls();
+            } catch (Exception e) {
+                onRequestError(e);
+                return;
+            }
+        }
+    }
+
+    private class TaskAddVwall implements Runnable {
+        private Line line;
+
+        public TaskAddVwall() {
+        }
+
+        public void setVwall(Line line) {
+            this.line = line;
+        }
+
+        @Override
+        public void run() {
+            SessionManager manager;
+
+            synchronized (this) {
+                manager = mSessionManager;
+            }
+
+            if (mSessionManager == null) {
+                return;
+            }
+            if (mSessionManager.getIoSession() == null) {
+                onRequestError(new Exception("connect closed"));
+                return;
+            }
+
+            try {
+                manager.addWall(line);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+//            EventBus.getDefault().post(new AddWall(typeAddVirtualWall));
+        }
+    }
+
+    private class TaskClearAllVwalls implements Runnable {
+        @Override
+        public void run() {
+            SessionManager manager;
+
+            synchronized (this) {
+                manager = mSessionManager;
+            }
+
+            if (mSessionManager == null) {
+                return;
+            }
+            if (mSessionManager.getIoSession() == null) {
+                onRequestError(new Exception("connect closed"));
+                return;
+            }
+
+            try {
+                manager.clearWalls();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private class TaskClearOneVwall implements Runnable {
+        private Line line;
+
+        public TaskClearOneVwall() {
+        }
+
+        public void setLine(Line line) {
+            this.line = line;
+        }
+
+        @Override
+        public void run() {
+            SessionManager manager;
+
+            synchronized (this) {
+                manager = mSessionManager;
+            }
+
+            if (mSessionManager == null) {
+                return;
+            }
+            if (mSessionManager.getIoSession() == null) {
+                onRequestError(new Exception("connect closed"));
+                return;
+            }
+
+            try {
+                manager.clearWallById(line.getSegmentId());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

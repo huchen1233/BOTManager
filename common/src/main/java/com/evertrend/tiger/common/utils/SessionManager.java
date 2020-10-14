@@ -2,6 +2,7 @@ package com.evertrend.tiger.common.utils;
 
 import com.evertrend.tiger.common.bean.RobotAction;
 import com.evertrend.tiger.common.utils.general.LogUtil;
+import com.slamtec.slamware.geometry.Line;
 import com.slamtec.slamware.robot.Location;
 import com.slamtec.slamware.robot.Pose;
 
@@ -83,6 +84,11 @@ public class SessionManager {
         return time/1000;
     }
 
+    private String lineToStr(Line line) {
+        String str = line.getStartX()+","+line.getStartY()+","+line.getEndX()+","+line.getEndY();
+        return str;
+    }
+
     public void stop() throws JSONException {
         JSONObject object = new JSONObject();
         object.put(RobotAction.CMD_CODE, RobotAction.CMD.STOP);
@@ -154,6 +160,45 @@ public class SessionManager {
         object.put(RobotAction.DEVICE_ID, deviceID);
         object.put(RobotAction.KEY, key);
         object.put(RobotAction.TIME_STAMP, getTime());
+        writeToServer(object);
+    }
+
+    public void getWalls() throws JSONException {
+        JSONObject object = new JSONObject();
+        object.put(RobotAction.CMD_CODE, RobotAction.CMD.GET_VIRTUAL_WALL);
+        object.put(RobotAction.DEVICE_ID, deviceID);
+        object.put(RobotAction.KEY, key);
+        object.put(RobotAction.TIME_STAMP, getTime());
+        writeToServer(object);
+    }
+
+    public void addWall(Line line) throws JSONException {
+        JSONObject object = new JSONObject();
+        object.put(RobotAction.CMD_CODE, RobotAction.CMD.SET_VIRTUAL_WALL);
+        object.put(RobotAction.DEVICE_ID, deviceID);
+        object.put(RobotAction.KEY, key);
+        object.put(RobotAction.TIME_STAMP, getTime());
+        object.put(RobotAction.DATA, lineToStr(line));
+        writeToServer(object);
+    }
+
+    public void clearWalls() throws JSONException {
+        JSONObject object = new JSONObject();
+        object.put(RobotAction.CMD_CODE, RobotAction.CMD.CLEAR_ALL_VIRTUAL_WALL);
+        object.put(RobotAction.DEVICE_ID, deviceID);
+        object.put(RobotAction.KEY, key);
+        object.put(RobotAction.TIME_STAMP, getTime());
+        object.put(RobotAction.DATA, 0);
+        writeToServer(object);
+    }
+
+    public void clearWallById(int id) throws JSONException {
+        JSONObject object = new JSONObject();
+        object.put(RobotAction.CMD_CODE, RobotAction.CMD.CLEAR_ONE_VIRTUAL_WALL);
+        object.put(RobotAction.DEVICE_ID, deviceID);
+        object.put(RobotAction.KEY, key);
+        object.put(RobotAction.TIME_STAMP, getTime());
+        object.put(RobotAction.DATA, id);
         writeToServer(object);
     }
 }

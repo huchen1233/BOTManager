@@ -90,4 +90,8 @@
     <string name="yl_common_reset_start_spot">reset start spot</string>
     <string name="yl_common_load_map">load map</string>
     <string name="yl_common_set_fence_spot">set fence spot</string>
+    <string name="yl_common_clear_all">clear all</string>
+    <string name="yl_common_area_clear">area clear</string>
+    <string name="yl_common_add_wall">add wall</string>
+    <string name="yl_common_save">save</string>
 </resources>

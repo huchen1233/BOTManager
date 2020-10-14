@@ -90,4 +90,8 @@
     <string name="yl_common_reset_start_spot">复位开始点</string>
     <string name="yl_common_load_map">加载地图</string>
     <string name="yl_common_set_fence_spot">设置围栏点</string>
+    <string name="yl_common_clear_all">全部清除</string>
+    <string name="yl_common_area_clear">区域清除</string>
+    <string name="yl_common_add_wall">添加墙</string>
+    <string name="yl_common_save">保存</string>
 </resources>

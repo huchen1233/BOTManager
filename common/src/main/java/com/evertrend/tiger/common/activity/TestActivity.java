@@ -64,6 +64,7 @@ public class TestActivity extends AppCompatActivity {
                     Intent intent = new Intent();
                     intent.putExtra("ip", ip);
                     intent.putExtra("device", device);
+//                    intent.setAction("android.intent.action.VirtualWallActivity");
                     intent.setAction("android.intent.action.MapActivity");
                     startActivity(intent);
                     finish();
