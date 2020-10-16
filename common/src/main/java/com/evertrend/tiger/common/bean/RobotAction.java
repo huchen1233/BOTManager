@@ -18,7 +18,11 @@ public class RobotAction {
         int SET_VIRTUAL_WALL = 0x34;
         int CLEAR_ONE_VIRTUAL_WALL = 0x35;
         int CLEAR_ALL_VIRTUAL_WALL = 0x36;
-        int MOVE_TO_POSE = 0x37;
+        int GET_VIRTUAL_TRACK = 0x37;
+        int SET_VIRTUAL_TRACK = 0x38;
+        int CLEAR_ONE_VIRTUAL_TRACK = 0x39;
+        int CLEAR_ALL_VIRTUAL_TRACK = 0x3A;
+        int MOVE_TO_POSE = 0x3B;
     }
 
     public static final String DEVICE_ID = "device_id";

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.MapActivity">
+
+    <com.evertrend.tiger.common.bean.mapview.MapView
+        android:id="@+id/mv_map"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/rg_navigation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/rg_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/yl_common_color_white"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.evertrend.tiger.common.widget.ToggleRadioButton
+            android:id="@+id/tab_clear_all"
+            style="@style/yl_common_map_tab_style"
+            android:text="@string/yl_common_clear_all" />
+
+        <com.evertrend.tiger.common.widget.ToggleRadioButton
+            android:id="@+id/tab_area_clear"
+            style="@style/yl_common_map_tab_style"
+            android:text="@string/yl_common_area_clear" />
+
+        <com.evertrend.tiger.common.widget.ToggleRadioButton
+            android:id="@+id/tab_map_add_track"
+            style="@style/yl_common_map_tab_style"
+            android:text="@string/yl_common_add_track" />
+
+        <com.evertrend.tiger.common.widget.ToggleRadioButton
+            android:id="@+id/tab_map_save"
+            style="@style/yl_common_map_tab_style"
+            android:text="@string/yl_common_save" />
+    </RadioGroup>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -94,4 +94,5 @@
     <string name="yl_common_area_clear">area clear</string>
     <string name="yl_common_add_wall">add wall</string>
     <string name="yl_common_save">save</string>
+    <string name="yl_common_add_track">add track</string>
 </resources>

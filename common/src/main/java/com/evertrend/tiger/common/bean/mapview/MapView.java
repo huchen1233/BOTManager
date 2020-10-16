@@ -51,6 +51,7 @@ public class MapView extends FrameLayout implements SlamGestureDetector.OnRPGest
     private SlamMapView mSlamMapView;
     private VirtualLineView mWallView;
     private VirtualWallView mVWallView;
+    private VirtualTrackView mVTrackView;
 //    private VirtualLineView mTrackView;
     private VirtualTrackLineView mTrackView;
     private VirtualTracePathLineView mTracePathView;
@@ -108,7 +109,7 @@ public class MapView extends FrameLayout implements SlamGestureDetector.OnRPGest
         mSlamMapView = new SlamMapView(getContext());
         mWallView = new VirtualLineView(getContext(), mMapView, Color.RED);
         mVWallView = new VirtualWallView(getContext(), mMapView, Color.RED);
-//        mTrackView = new VirtualLineView(getContext(), mMapView, Color.GREEN);
+        mVTrackView = new VirtualTrackView(getContext(), mMapView, Color.GREEN);
         mTrackView = new VirtualTrackLineView(getContext(), mMapView, Color.GREEN);
         mTracePathView = new VirtualTracePathLineView(getContext(), mMapView, Color.BLUE);
         mVirtualTraceSpotView = new VirtualTraceSpotView(getContext(), mMapView, Color.BLUE);
@@ -122,6 +123,7 @@ public class MapView extends FrameLayout implements SlamGestureDetector.OnRPGest
         addView(mSlamMapView, lp);
         addMapLayers(mWallView);
         addMapLayers(mVWallView);
+        addMapLayers(mVTrackView);
         addMapLayers(mTrackView);
         addMapLayers(mTracePathView);
         addMapLayers(mVirtualTraceSpotView);
@@ -198,11 +200,27 @@ public class MapView extends FrameLayout implements SlamGestureDetector.OnRPGest
     public void addVwall(Line wall) {
         mVWallView.addLine(wall);
     }
-    public void drawClearArea(Line wall) {
+    public void wallDrawClearArea(Line wall) {
         mVWallView.drawClearArea(wall);
     }
-    public void doClearArea(Line wall) {
+    public void wallDoClearArea(Line wall) {
         mVWallView.doClearArea(wall);
+    }
+
+    public void setVtracks(List<Line> tracks) {
+        mVTrackView.setLines(tracks);
+    }
+    public void drawVtrack(Line track) {
+        mVTrackView.drawLine(track);
+    }
+    public void addVtrack(Line track) {
+        mVTrackView.addLine(track);
+    }
+    public void trackDrawClearArea(Line track) {
+        mVTrackView.drawClearArea(track);
+    }
+    public void trackDoClearArea(Line track) {
+        mVTrackView.doClearArea(track);
     }
     // 以下为触摸事件 ///////////////////////////////////////////////////////////////////////////////
     @Override
@@ -240,20 +258,34 @@ public class MapView extends FrameLayout implements SlamGestureDetector.OnRPGest
     public void onMapDrawWall(Line line) {
         drawVwall(line);
     }
-
     @Override
     public void onMapAddWall(Line line) {
         addVwall(line);
     }
-
     @Override
-    public void onMapDrawClearArea(Line line) {
-        drawClearArea(line);
+    public void onMapWallDrawClearArea(Line line) {
+        wallDrawClearArea(line);
+    }
+    @Override
+    public void onMapWallDoClearArea(Line line) {
+        wallDoClearArea(line);
     }
 
     @Override
-    public void onMapDoClearArea(Line line) {
-        doClearArea(line);
+    public void onMapDrawTrack(Line line) {
+        drawVtrack(line);
+    }
+    @Override
+    public void onMapAddTrack(Line line) {
+        addVtrack(line);
+    }
+    @Override
+    public void onMapTrackDrawClearArea(Line line) {
+        trackDrawClearArea(line);
+    }
+    @Override
+    public void onMapTrackDoClearArea(Line line) {
+        trackDoClearArea(line);
     }
 
     private void setRotation(float factor, int cx, int cy) {

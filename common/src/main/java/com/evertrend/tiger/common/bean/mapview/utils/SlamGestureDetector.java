@@ -22,8 +22,13 @@ public class SlamGestureDetector {
 
         void onMapDrawWall(Line line);
         void onMapAddWall(Line line);
-        void onMapDrawClearArea(Line line);
-        void onMapDoClearArea(Line line);
+        void onMapWallDrawClearArea(Line line);
+        void onMapWallDoClearArea(Line line);
+
+        void onMapDrawTrack(Line line);
+        void onMapAddTrack(Line line);
+        void onMapTrackDrawClearArea(Line line);
+        void onMapTrackDoClearArea(Line line);
     }
 
     private static int currTouchCount;
@@ -47,7 +52,9 @@ public class SlamGestureDetector {
     public final static int MODE_PINCH_ROTATE = 2;
     public final static int MODE_MOVE = 3;
     public final static int MODE_VIRTUAL_WALL = 4;
-    public final static int MODE_AREA_CLEAR = 5;
+    public final static int MODE_WALL_AREA_CLEAR = 5;
+    public final static int MODE_VIRTUAL_TRACK = 6;
+    public final static int MODE_TRACK_AREA_CLEAR = 7;
 
     private final static long TAP_TOUCH_TIME_LIMIT = 500l;
 
@@ -74,7 +81,8 @@ public class SlamGestureDetector {
             case MotionEvent.ACTION_DOWN:
                 // 第一个手指按下
                 multiFingers = false;
-                if (touchMode == MODE_VIRTUAL_WALL || touchMode == MODE_AREA_CLEAR) {
+                if (touchMode == MODE_VIRTUAL_WALL || touchMode == MODE_WALL_AREA_CLEAR
+                        || touchMode == MODE_VIRTUAL_TRACK || touchMode == MODE_TRACK_AREA_CLEAR) {
                     startPoint = new com.slamtec.slamware.geometry.PointF();
                     startPoint.setX(event.getX());
                     startPoint.setY(event.getY());
@@ -114,11 +122,21 @@ public class SlamGestureDetector {
                     movePoint.setX(event.getX());
                     movePoint.setY(event.getY());
                     mListener.onMapDrawWall(new Line(startPoint, movePoint));
-                } else if (touchMode == MODE_AREA_CLEAR) {
+                } else if (touchMode == MODE_WALL_AREA_CLEAR) {
                     com.slamtec.slamware.geometry.PointF movePoint = new com.slamtec.slamware.geometry.PointF();
                     movePoint.setX(event.getX());
                     movePoint.setY(event.getY());
-                    mListener.onMapDrawClearArea(new Line(startPoint, movePoint));
+                    mListener.onMapWallDrawClearArea(new Line(startPoint, movePoint));
+                } else if (touchMode == MODE_VIRTUAL_TRACK) {
+                    com.slamtec.slamware.geometry.PointF movePoint = new com.slamtec.slamware.geometry.PointF();
+                    movePoint.setX(event.getX());
+                    movePoint.setY(event.getY());
+                    mListener.onMapDrawTrack(new Line(startPoint, movePoint));
+                } else if (touchMode == MODE_TRACK_AREA_CLEAR) {
+                    com.slamtec.slamware.geometry.PointF movePoint = new com.slamtec.slamware.geometry.PointF();
+                    movePoint.setX(event.getX());
+                    movePoint.setY(event.getY());
+                    mListener.onMapTrackDrawClearArea(new Line(startPoint, movePoint));
                 }
                 break;
             case MotionEvent.ACTION_POINTER_UP:
@@ -133,11 +151,21 @@ public class SlamGestureDetector {
                     endPoint.setX(event.getX());
                     endPoint.setY(event.getY());
                     mListener.onMapAddWall(new Line(startPoint, endPoint));
-                } else if (touchMode == MODE_AREA_CLEAR) {
+                } else if (touchMode == MODE_WALL_AREA_CLEAR) {
                     com.slamtec.slamware.geometry.PointF endPoint = new com.slamtec.slamware.geometry.PointF();
                     endPoint.setX(event.getX());
                     endPoint.setY(event.getY());
-                    mListener.onMapDoClearArea(new Line(startPoint, endPoint));
+                    mListener.onMapWallDoClearArea(new Line(startPoint, endPoint));
+                } else if (touchMode == MODE_VIRTUAL_TRACK) {
+                    com.slamtec.slamware.geometry.PointF endPoint = new com.slamtec.slamware.geometry.PointF();
+                    endPoint.setX(event.getX());
+                    endPoint.setY(event.getY());
+                    mListener.onMapAddTrack(new Line(startPoint, endPoint));
+                } else if (touchMode == MODE_TRACK_AREA_CLEAR) {
+                    com.slamtec.slamware.geometry.PointF endPoint = new com.slamtec.slamware.geometry.PointF();
+                    endPoint.setX(event.getX());
+                    endPoint.setY(event.getY());
+                    mListener.onMapTrackDoClearArea(new Line(startPoint, endPoint));
                 }
                 multiFingers = false;
                 clear();

@@ -1,10 +1,7 @@
 package com.evertrend.tiger.common.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -13,7 +10,9 @@ import com.evertrend.tiger.common.bean.Device;
 import com.evertrend.tiger.common.bean.RobotAction;
 import com.evertrend.tiger.common.bean.event.DialogChoiceEvent;
 import com.evertrend.tiger.common.bean.event.ServerMsgEvent;
+import com.evertrend.tiger.common.bean.event.map.AddVirtualTrack;
 import com.evertrend.tiger.common.bean.event.map.AddVirtualWall;
+import com.evertrend.tiger.common.bean.event.map.ClearVirtualTracks;
 import com.evertrend.tiger.common.bean.event.map.ClearVirtualWalls;
 import com.evertrend.tiger.common.bean.event.slamtec.ConnectedEvent;
 import com.evertrend.tiger.common.bean.event.slamtec.ConnectionLostEvent;
@@ -28,7 +27,6 @@ import com.slamtec.slamware.geometry.Line;
 import com.slamtec.slamware.geometry.PointF;
 import com.slamtec.slamware.geometry.Size;
 import com.slamtec.slamware.robot.Map;
-import com.slamtec.slamware.robot.Pose;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -40,8 +38,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VirtualWallActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
-    public static final String TAG = VirtualWallActivity.class.getCanonicalName();
+public class VirtualTrackActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
+    public static final String TAG = VirtualTrackActivity.class.getCanonicalName();
 
     private MapView mv_map;
     private RadioGroup rg_navigation;
@@ -68,7 +66,7 @@ public class VirtualWallActivity extends BaseActivity implements RadioGroup.OnCh
 //                    mAgent.getMap(RobotAction.CMD.GET_MAP_CON_BIN);
                 }
                 if ((count % 10) == 0) {
-                    mAgent.getWalls();
+                    mAgent.getTracks();
                 }
 
                 SystemClock.sleep(50);
@@ -81,7 +79,7 @@ public class VirtualWallActivity extends BaseActivity implements RadioGroup.OnCh
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.yl_common_activity_virtual_wall);
+        setContentView(R.layout.yl_common_activity_virtual_track);
         initView();
         device = (Device) getIntent().getSerializableExtra("device");
         ip = getIntent().getStringExtra("ip");
@@ -124,24 +122,24 @@ public class VirtualWallActivity extends BaseActivity implements RadioGroup.OnCh
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(AddVirtualWall event) {
-        Line vWall = event.getWall();
-        PointF startF = mv_map.widgetCoordinateToMapCoordinate(vWall.getStartX(), vWall.getStartY());
-        PointF endF = mv_map.widgetCoordinateToMapCoordinate(vWall.getEndX(), vWall.getEndY());
-        mAgent.addVwall(new Line(startF, endF));
+    public void onEventMainThread(AddVirtualTrack event) {
+        Line vTrack = event.getTrack();
+        PointF startF = mv_map.widgetCoordinateToMapCoordinate(vTrack.getStartX(), vTrack.getStartY());
+        PointF endF = mv_map.widgetCoordinateToMapCoordinate(vTrack.getEndX(), vTrack.getEndY());
+        mAgent.addVtrack(new Line(startF, endF));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(ClearVirtualWalls event) {
-        DialogUtil.showChoiceDialog(this, "确定要删除吗?", CommonConstants.TYPE_DELETE_VIRTUAL_WALL);
+    public void onEventMainThread(ClearVirtualTracks event) {
+        DialogUtil.showChoiceDialog(this, "确定要删除吗?", CommonConstants.TYPE_DELETE_VIRTUAL_TRACK);
         clearLines = event.getClearLines();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(DialogChoiceEvent event) {
-        if (event.getType() == CommonConstants.TYPE_DELETE_VIRTUAL_WALL) {
+        if (event.getType() == CommonConstants.TYPE_DELETE_VIRTUAL_TRACK) {
             for (Line line : clearLines) {
-                mAgent.clearOneVwall(line);
+                mAgent.clearOneVtrack(line);
                 SystemClock.sleep(200);
             }
         }
@@ -161,8 +159,8 @@ public class VirtualWallActivity extends BaseActivity implements RadioGroup.OnCh
                     case RobotAction.CMD.GET_MAP_CON_BIN:
                         updateMap(jsonObject.getJSONObject(RobotAction.DATA), true);
                         break;
-                    case RobotAction.CMD.GET_VIRTUAL_WALL:
-                        updateVWalls(jsonObject.getJSONArray(RobotAction.DATA));
+                    case RobotAction.CMD.GET_VIRTUAL_TRACK:
+                        updateVTracks(jsonObject.getJSONArray(RobotAction.DATA));
                         break;
                 }
 
@@ -174,8 +172,8 @@ public class VirtualWallActivity extends BaseActivity implements RadioGroup.OnCh
         }
     }
 
-    private void updateVWalls(JSONArray jsonArray) throws JSONException {
-//        LogUtil.d(TAG, "walls: "+jsonArray.toString());
+    private void updateVTracks(JSONArray jsonArray) throws JSONException {
+        LogUtil.d(TAG, "tracks: "+jsonArray.toString());
         List<Line> lines = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject object = jsonArray.getJSONObject(i);
@@ -185,7 +183,7 @@ public class VirtualWallActivity extends BaseActivity implements RadioGroup.OnCh
                     new PointF((float) array.getDouble(2), (float) array.getDouble(3)));
             lines.add(line);
         }
-        mv_map.setVwalls(lines);
+        mv_map.setVtracks(lines);
     }
 
     private void updateMap(JSONObject jsonObject, boolean isCompress) throws JSONException {
@@ -215,13 +213,11 @@ public class VirtualWallActivity extends BaseActivity implements RadioGroup.OnCh
     public void onCheckedChanged(RadioGroup group, int i) {
         if (group.getCheckedRadioButtonId() == R.id.tab_clear_all) {
             mv_map.setGestureMode(SlamGestureDetector.MODE_NONE);
-//            mv_map.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_DOWN, mv_map.getLeft()+5, mv_map.getTop()+5, 0));
-//            mv_map.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_UP, mv_map.getLeft()+5, mv_map.getTop()+5, 0));
-            mAgent.clearAllVwalls();
+            mAgent.clearAllVtracks();
         } else if (group.getCheckedRadioButtonId() == R.id.tab_area_clear) {
-            mv_map.setGestureMode(SlamGestureDetector.MODE_WALL_AREA_CLEAR);
-        } else if (group.getCheckedRadioButtonId() == R.id.tab_map_add_wall) {
-            mv_map.setGestureMode(SlamGestureDetector.MODE_VIRTUAL_WALL);
+            mv_map.setGestureMode(SlamGestureDetector.MODE_TRACK_AREA_CLEAR);
+        } else if (group.getCheckedRadioButtonId() == R.id.tab_map_add_track) {
+            mv_map.setGestureMode(SlamGestureDetector.MODE_VIRTUAL_TRACK);
         } else if (group.getCheckedRadioButtonId() == R.id.tab_map_save) {
             mv_map.setGestureMode(SlamGestureDetector.MODE_NONE);
             finish();

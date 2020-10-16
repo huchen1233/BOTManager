@@ -63,6 +63,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
     private ActionControllerView acv_action;
     private TextView tv_robot_pose;
     private Button btn_virtual_walls;
+    private Button btn_virtual_tracks;
 
     private EvertrendAgent mAgent;
     private Pose robotPose;
@@ -261,7 +262,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         byte[] data = null;
         //decompress解压缩时间700-900毫秒，需要继续优化；
         //新修改decompress需要400-550毫秒，随着地图增大，时间也会变长，需要继续优化；
-        //新修改multiThreadDecompress需要200毫秒，随着地图增大，开启更多线程，时间维持200毫秒左右，需要注意线程回收；
+        //新修改multiThreadDecompress需要100-200毫秒，随着地图增大，开启更多线程，时间维持100-200毫秒，需要注意线程回收；
         if (isCompress) {
             long startT = System.currentTimeMillis();
             data = Utils.hexStringToByte(Utils.multiThreadDecompress(jsonObject.getString(RobotAction.DATA)));
@@ -307,6 +308,8 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         tv_robot_pose = findViewById(R.id.tv_robot_pose);
         btn_virtual_walls = findViewById(R.id.btn_virtual_walls);
         btn_virtual_walls.setOnClickListener(this);
+        btn_virtual_tracks = findViewById(R.id.btn_virtual_tracks);
+        btn_virtual_tracks.setOnClickListener(this);
     }
 
     private void moveToLocation(float x, float y) {
@@ -379,6 +382,12 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
             intent.putExtra("ip", ip);
             intent.putExtra("device", device);
             intent.setAction("android.intent.action.VirtualWallActivity");
+            startActivity(intent);
+        } else if (view.getId() == R.id.btn_virtual_tracks) {
+            Intent intent = new Intent();
+            intent.putExtra("ip", ip);
+            intent.putExtra("device", device);
+            intent.setAction("android.intent.action.VirtualTrackActivity");
             startActivity(intent);
         }
     }

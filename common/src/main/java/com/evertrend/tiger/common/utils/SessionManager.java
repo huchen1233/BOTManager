@@ -171,7 +171,6 @@ public class SessionManager {
         object.put(RobotAction.TIME_STAMP, getTime());
         writeToServer(object);
     }
-
     public void addWall(Line line) throws JSONException {
         JSONObject object = new JSONObject();
         object.put(RobotAction.CMD_CODE, RobotAction.CMD.SET_VIRTUAL_WALL);
@@ -181,20 +180,54 @@ public class SessionManager {
         object.put(RobotAction.DATA, lineToStr(line));
         writeToServer(object);
     }
-
     public void clearWalls() throws JSONException {
         JSONObject object = new JSONObject();
         object.put(RobotAction.CMD_CODE, RobotAction.CMD.CLEAR_ALL_VIRTUAL_WALL);
         object.put(RobotAction.DEVICE_ID, deviceID);
         object.put(RobotAction.KEY, key);
         object.put(RobotAction.TIME_STAMP, getTime());
-        object.put(RobotAction.DATA, 0);
+//        object.put(RobotAction.DATA, 0);
         writeToServer(object);
     }
-
     public void clearWallById(int id) throws JSONException {
         JSONObject object = new JSONObject();
         object.put(RobotAction.CMD_CODE, RobotAction.CMD.CLEAR_ONE_VIRTUAL_WALL);
+        object.put(RobotAction.DEVICE_ID, deviceID);
+        object.put(RobotAction.KEY, key);
+        object.put(RobotAction.TIME_STAMP, getTime());
+        object.put(RobotAction.DATA, id);
+        writeToServer(object);
+    }
+
+    public void getTracks() throws JSONException {
+        JSONObject object = new JSONObject();
+        object.put(RobotAction.CMD_CODE, RobotAction.CMD.GET_VIRTUAL_TRACK);
+        object.put(RobotAction.DEVICE_ID, deviceID);
+        object.put(RobotAction.KEY, key);
+        object.put(RobotAction.TIME_STAMP, getTime());
+        writeToServer(object);
+    }
+    public void addTrack(Line line) throws JSONException {
+        JSONObject object = new JSONObject();
+        object.put(RobotAction.CMD_CODE, RobotAction.CMD.SET_VIRTUAL_TRACK);
+        object.put(RobotAction.DEVICE_ID, deviceID);
+        object.put(RobotAction.KEY, key);
+        object.put(RobotAction.TIME_STAMP, getTime());
+        object.put(RobotAction.DATA, lineToStr(line));
+        writeToServer(object);
+    }
+    public void clearTracks() throws JSONException {
+        JSONObject object = new JSONObject();
+        object.put(RobotAction.CMD_CODE, RobotAction.CMD.CLEAR_ALL_VIRTUAL_TRACK);
+        object.put(RobotAction.DEVICE_ID, deviceID);
+        object.put(RobotAction.KEY, key);
+        object.put(RobotAction.TIME_STAMP, getTime());
+//        object.put(RobotAction.DATA, 0);
+        writeToServer(object);
+    }
+    public void clearTrackById(int id) throws JSONException {
+        JSONObject object = new JSONObject();
+        object.put(RobotAction.CMD_CODE, RobotAction.CMD.CLEAR_ONE_VIRTUAL_TRACK);
         object.put(RobotAction.DEVICE_ID, deviceID);
         object.put(RobotAction.KEY, key);
         object.put(RobotAction.TIME_STAMP, getTime());

@@ -36,6 +36,10 @@ public class EvertrendAgent {
     private static TaskAddVwall sTaskAddVwall;
     private static TaskClearAllVwalls sTaskClearAllVwalls;
     private static TaskClearOneVwall sTaskClearOneVwall;
+    private static TaskGetTracks sTaskGetTracks;
+    private static TaskAddVtrack sTaskAddVtrack;
+    private static TaskClearAllVtracks sTaskClearAllVtracks;
+    private static TaskClearOneVtrack sTaskClearOneVtrack;
 
     public EvertrendAgent() {
         mThreadManager = ThreadManager.getInstance();
@@ -54,6 +58,10 @@ public class EvertrendAgent {
         sTaskAddVwall = new TaskAddVwall();
         sTaskClearAllVwalls = new TaskClearAllVwalls();
         sTaskClearOneVwall = new TaskClearOneVwall();
+        sTaskGetTracks = new TaskGetTracks();
+        sTaskAddVtrack = new TaskAddVtrack();
+        sTaskClearAllVtracks = new TaskClearAllVtracks();
+        sTaskClearOneVtrack = new TaskClearOneVtrack();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -102,21 +110,32 @@ public class EvertrendAgent {
     public void getWalls() {
         pushTask(sTaskGetWalls);
     }
-
     public void addVwall(Line line) {
         sTaskAddVwall.setVwall(line);
         pushTask(sTaskAddVwall);
     }
-
     public void clearAllVwalls() {
         pushTask(sTaskClearAllVwalls);
     }
-
     public void clearOneVwall(Line line) {
         sTaskClearOneVwall.setLine(line);
         pushTask(sTaskClearOneVwall);
     }
 
+    public void getTracks() {
+        pushTask(sTaskGetTracks);
+    }
+    public void addVtrack(Line line) {
+        sTaskAddVtrack.setVtrack(line);
+        pushTask(sTaskAddVtrack);
+    }
+    public void clearAllVtracks() {
+        pushTask(sTaskClearAllVtracks);
+    }
+    public void clearOneVtrack(Line line) {
+        sTaskClearOneVtrack.setLine(line);
+        pushTask(sTaskClearOneVtrack);
+    }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private synchronized void pushTask(Runnable Task) {
         mPoolProxy.execute(Task);
@@ -545,6 +564,126 @@ public class EvertrendAgent {
 
             try {
                 manager.clearWallById(line.getSegmentId());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private class TaskGetTracks implements Runnable {
+        @Override
+        public void run() {
+            SessionManager manager;
+
+            synchronized (this) {
+                manager = mSessionManager;
+            }
+
+            if (mSessionManager == null) {
+                return;
+            }
+            if (mSessionManager.getIoSession() == null) {
+                onRequestError(new Exception("connect closed"));
+                return;
+            }
+
+            try {
+                manager.getTracks();
+            } catch (Exception e) {
+                onRequestError(e);
+                return;
+            }
+        }
+    }
+
+    private class TaskAddVtrack implements Runnable {
+        private Line line;
+
+        public TaskAddVtrack() {
+        }
+
+        public void setVtrack(Line line) {
+            this.line = line;
+        }
+
+        @Override
+        public void run() {
+            SessionManager manager;
+
+            synchronized (this) {
+                manager = mSessionManager;
+            }
+
+            if (mSessionManager == null) {
+                return;
+            }
+            if (mSessionManager.getIoSession() == null) {
+                onRequestError(new Exception("connect closed"));
+                return;
+            }
+
+            try {
+                manager.addTrack(line);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+//            EventBus.getDefault().post(new AddWall(typeAddVirtualWall));
+        }
+    }
+
+    private class TaskClearAllVtracks implements Runnable {
+        @Override
+        public void run() {
+            SessionManager manager;
+
+            synchronized (this) {
+                manager = mSessionManager;
+            }
+
+            if (mSessionManager == null) {
+                return;
+            }
+            if (mSessionManager.getIoSession() == null) {
+                onRequestError(new Exception("connect closed"));
+                return;
+            }
+
+            try {
+                manager.clearTracks();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private class TaskClearOneVtrack implements Runnable {
+        private Line line;
+
+        public TaskClearOneVtrack() {
+        }
+
+        public void setLine(Line line) {
+            this.line = line;
+        }
+
+        @Override
+        public void run() {
+            SessionManager manager;
+
+            synchronized (this) {
+                manager = mSessionManager;
+            }
+
+            if (mSessionManager == null) {
+                return;
+            }
+            if (mSessionManager.getIoSession() == null) {
+                onRequestError(new Exception("connect closed"));
+                return;
+            }
+
+            try {
+                manager.clearTrackById(line.getSegmentId());
             } catch (Exception e) {
                 e.printStackTrace();
             }

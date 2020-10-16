@@ -94,4 +94,5 @@
     <string name="yl_common_area_clear">区域清除</string>
     <string name="yl_common_add_wall">添加墙</string>
     <string name="yl_common_save">保存</string>
+    <string name="yl_common_add_track">添加轨道</string>
 </resources>
