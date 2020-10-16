@@ -185,8 +185,13 @@ public class EvertrendAgent {
                         .bulid();
                 //创建连接的管理类
                 mConnectManager = new ConnectManager(config);
+                int count = 0;
                 //利用循环请求连接
                 while (true) {
+                    if (count == 100) {
+                        mSessionManager = null;
+                        break;
+                    }
                     boolean isConnection = mConnectManager.connect();
                     if (isConnection) {
                         //当请求成功的时候,跳出循环
@@ -198,6 +203,7 @@ public class EvertrendAgent {
                     }
                     try {
                         Thread.sleep(3000);
+                        count++;
                     } catch (Exception e) {
                         onRequestError(e);
                     }
