@@ -28,8 +28,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -68,7 +72,7 @@ public class Utils {
         double angle_increment = jsonObject.getDouble(RobotAction.ANGLE_INCREMENT);
         double angle_max = jsonObject.getDouble(RobotAction.ANGLE_MAX);
         double angle_min = jsonObject.getDouble(RobotAction.ANGLE_MIN);
-//        double angle = Math.PI;
+//        double angle = Math.PI;//激光雷达方向切换180度
         double angle = 0;
         Vector<LaserPoint> laserPoints = new Vector();
         for (int i = 0; i < data.length; i++) {
@@ -91,22 +95,102 @@ public class Utils {
         return laserPoints;
     }
 
-    public static String decompress(String source) {
-        String compress = source.replaceAll("(.{2})", "$1,");
-        String[] compresss = compress.split(",");
+    public static String multiThreadDecompress(String source) {
+        int length = source.length();
+//        LogUtil.d(TAG, "length: "+length);
+        if (length <= 20000) {
+            return decompress(source);
+        }
+        final Map<Integer, String> map = new HashMap<>();
+        int count = 0;
+        int key = 0;
+        while (count < length) {
+//            LogUtil.d(TAG, "count: "+count);
+//            LogUtil.d(TAG, "length - count: "+(length - count));
+            int val = 10000;
+            if (length - count < val) {
+                val = length - count;
+            }
+            String str = source.substring(count, count+val);
+            if (str.endsWith("FF") || str.endsWith("00")) {
+                val = 10002;
+                str = source.substring(count, count+val);
+            }
+            map.put(key, str);
+            key++;
+            count+=val;
+        }
+//        LogUtil.d(TAG, "map size: "+map.size());
+
+        final long time = System.currentTimeMillis() ;
+        final CountDownLatch latch = new CountDownLatch(map.size());
+        for (int i = 0; i < map.size(); i++) {
+            final int num = i;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    map.put(num, decompress(map.get(num)));
+                    latch.countDown();
+//                    LogUtil.d(TAG, Thread.currentThread().getName()+"运行结束  运行时间为："+(System.currentTimeMillis()-time)
+//                            +"毫秒  countDownLatch="+latch.getCount());
+                }
+            }).start();
+        }
+        try {
+            latch.await(1, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            LogUtil.d(TAG, "latch.await: "+e);
+        }
+//        LogUtil.d(TAG, "总耗时==="+(System.currentTimeMillis()-time)+"毫秒");
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < compresss.length - 1;) {
-            if (compresss[i].equalsIgnoreCase("FF")) {
-                sb.append(repeatString("FF", Integer.parseInt(compresss[i+1], 16)));
-                i+=2;
+        for (int i = 0; i < map.size(); i++) {
+            sb.append(map.get(i));
+        }
+        return sb.toString();
+    }
+
+    public static String decompress(String source) {
+        LogUtil.d(TAG, "source length: "+source.length());
+//        LogUtil.d(TAG, "source: "+source);
+//        String compress = source.replaceAll("(.{2})", "$1,");//每2位插入,号
+//        String[] compresss = compress.split(",");
+//        StringBuilder sb = new StringBuilder();
+//        for (int i = 0; i < compresss.length - 1;) {
+//            if (compresss[i].equalsIgnoreCase("FF")) {
+//                sb.append(repeatString("FF", Integer.parseInt(compresss[i+1], 16)));
+//                i+=2;
+//                continue;
+//            } else if (compresss[i].equalsIgnoreCase("00")) {
+//                sb.append(repeatString("00", Integer.parseInt(compresss[i+1], 16)));
+//                i+=2;
+//                continue;
+//            } else {
+//                sb.append(compresss[i]);
+//                i++;
+//                continue;
+//            }
+//        }
+//        return sb.toString();
+        StringBuilder sb = new StringBuilder();
+        int length = source.length() - 1;
+        int i = 0;
+        while (i < length) {
+            String str = source.substring(i, i+2);
+            if (str.equalsIgnoreCase("FF")) {
+                if (i > 9990) {
+                    LogUtil.d(TAG, "dep str: "+source.substring(i-100, i+2));
+                }
+                sb.append(repeatString("FF", Integer.parseInt(source.substring(i+2, i+4), 16)));
+                i+=4;
                 continue;
-            } else if (compresss[i].equalsIgnoreCase("00")) {
-                sb.append(repeatString("00", Integer.parseInt(compresss[i+1], 16)));
-                i+=2;
+            } else if (str.equalsIgnoreCase("00")) {
+                sb.append(repeatString("00", Integer.parseInt(source.substring(i+2, i+4), 16)));
+                i+=4;
                 continue;
             } else {
-                sb.append(compresss[i]);
-                i++;
+                sb.append(str);
+                i+=2;
                 continue;
             }
         }

@@ -86,7 +86,6 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
                     break;
                 }
 
-                LogUtil.d(TAG, "count: "+count);
                 if ((count % 5) == 0) {
 //                    mAgent.getLaserScan();
 //                    mAgent.setDeviceSpeed(AppSharePreference.getAppSharedPreference().loadDeviceSpeed());
@@ -105,8 +104,8 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
                 if ((count % 30) == 0) {
 //                    mAgent.getHomePose();
                 }
-                mAgent.getMap(RobotAction.CMD.GET_MAP);
-//                mAgent.getMap(RobotAction.CMD.GET_MAP_CONDENSE);
+//                mAgent.getMap(RobotAction.CMD.GET_MAP);
+                mAgent.getMap(RobotAction.CMD.GET_MAP_CONDENSE);
 //                mAgent.getMap(RobotAction.CMD.GET_MAP_CON_BIN);
                 SystemClock.sleep(1000);
                 mAgent.getRobotPose();
@@ -133,6 +132,9 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         EventBus.getDefault().register(this);
         mAgent = getEvertrendAgent();
         mAgent.connectTo(ip, device.getDevice_id(), "1993");
+
+//        String str = Utils.decompress("FF04000564FF07");
+//        LogUtil.d(TAG, "str: "+str);
     }
 
     @Override
@@ -157,13 +159,6 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
     protected void onPause() {
         super.onPause();
         stopUpdate();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        LogUtil.d(TAG, "Connecte");
-//        mAgent.connectTo(ip, device.getDevice_id(), "1993");
     }
 
     @Override
@@ -264,14 +259,13 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         PointF resolution = new PointF((float)jsonObject.getDouble(RobotAction.RESOLUTION), (float)jsonObject.getDouble(RobotAction.RESOLUTION));
         long timestamp = System.currentTimeMillis();
         byte[] data = null;
-        if (isCompress) {//解压缩时间700-800毫秒，需要继续优化
-//            long startT = System.currentTimeMillis();
-//            LogUtil.d(TAG, "time start: "+startT);
-            data = Utils.hexStringToByte(Utils.decompress(jsonObject.getString(RobotAction.DATA)));
-//            long endT = System.currentTimeMillis();
-//            LogUtil.d(TAG, "time end: "+endT);
-//            long time = endT - startT;
-//            LogUtil.d(TAG, "time all: "+time);
+        //decompress解压缩时间700-900毫秒，需要继续优化；
+        //新修改decompress需要400-550毫秒，随着地图增大，时间也会变长，需要继续优化；
+        //新修改multiThreadDecompress需要200毫秒，随着地图增大，开启更多线程，时间维持200毫秒左右，需要注意线程回收；
+        if (isCompress) {
+            long startT = System.currentTimeMillis();
+            data = Utils.hexStringToByte(Utils.multiThreadDecompress(jsonObject.getString(RobotAction.DATA)));
+            LogUtil.d(TAG, "time all: "+(System.currentTimeMillis() - startT));
         } else {//20毫秒左右
             data = Utils.hexStringToByte(jsonObject.getString(RobotAction.DATA));
         }
