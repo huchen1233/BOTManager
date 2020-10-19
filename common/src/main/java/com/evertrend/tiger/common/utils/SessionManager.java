@@ -108,12 +108,12 @@ public class SessionManager {
         writeToServer(object);
     }
 
-    public void moveTo(Location location, float yaw) throws JSONException {
+    public void moveTo(Pose moveToPose) throws JSONException {
         JSONObject object = new JSONObject();
         JSONObject data = new JSONObject();
-        data.put(RobotAction.POSE_X, location.getX());
-        data.put(RobotAction.POSE_Y, location.getY());
-        data.put(RobotAction.POSE_YAW, yaw);
+        data.put(RobotAction.POSE_X, moveToPose.getX());
+        data.put(RobotAction.POSE_Y, moveToPose.getY());
+        data.put(RobotAction.POSE_YAW, moveToPose.getYaw());
         object.put(RobotAction.CMD_CODE, RobotAction.CMD.MOVE_TO_POSE);
         object.put(RobotAction.DATA, data);
         object.put(RobotAction.DEVICE_ID, deviceID);

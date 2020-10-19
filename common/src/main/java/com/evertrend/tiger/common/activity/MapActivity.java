@@ -318,7 +318,11 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         PointF target = mv_map.widgetCoordinateToMapCoordinate(x, y);
         if (target == null) return;
         Location location = new Location(target.getX(), target.getY(), 0);
-        mAgent.moveTo(location);
+        Pose moveToPose = new Pose(location, robotPose.getRotation());
+//        LogUtil.d(TAG, "X: "+moveToPose.getX());
+//        LogUtil.d(TAG, "Y: "+moveToPose.getY());
+//        LogUtil.d(TAG, "yaw: "+moveToPose.getYaw());
+        mAgent.moveTo(moveToPose);
     }
 
     private void startUpdate() {

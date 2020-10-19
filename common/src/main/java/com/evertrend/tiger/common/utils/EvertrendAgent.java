@@ -80,8 +80,8 @@ public class EvertrendAgent {
         pushTask(sTaskMoveBy);
     }
 
-    public void moveTo(Location location) {
-        sTaskMoveTo.setlocation(location);
+    public void moveTo(Pose moveToPose) {
+        sTaskMoveTo.setPose(moveToPose);
         pushTaskHead(sTaskMoveTo);
     }
 
@@ -295,13 +295,13 @@ public class EvertrendAgent {
     }
 
     private class TaskMoveTo implements Runnable {
-        private Location location;
+        private Pose moveToPose;
 
         public TaskMoveTo() {
         }
 
-        public void setlocation(Location location) {
-            this.location = location;
+        public void setPose(Pose moveToPose) {
+            this.moveToPose = moveToPose;
         }
 
 
@@ -319,7 +319,7 @@ public class EvertrendAgent {
             }
 
             try {
-                manager.moveTo(location, 0f);
+                manager.moveTo(moveToPose);
             } catch (Exception e) {
                 onRequestError(e);
             }
