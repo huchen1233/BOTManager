@@ -141,8 +141,8 @@ public class VirtualLineView extends SlamwareBaseView {
      */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        LogUtil.i(mContext, TAG, "wall onTouchEvent canTouch : "+canTouch);
-        LogUtil.i(mContext, TAG, "wall onTouchEvent type : "+type);
+//        LogUtil.i(mContext, TAG, "wall onTouchEvent canTouch : "+canTouch);
+//        LogUtil.i(mContext, TAG, "wall onTouchEvent type : "+type);
         if (canTouch) {
             if (CommonConstants.TYPE_DELETE_VIRTUAL_WALL == type) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {

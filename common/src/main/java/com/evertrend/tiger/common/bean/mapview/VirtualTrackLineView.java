@@ -141,8 +141,8 @@ public class VirtualTrackLineView extends SlamwareBaseView {
      */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        LogUtil.i(mContext, TAG, "track onTouchEvent canTouch : "+canTouch);
-        LogUtil.i(mContext, TAG, "track onTouchEvent type : "+type);
+//        LogUtil.i(mContext, TAG, "track onTouchEvent canTouch : "+canTouch);
+//        LogUtil.i(mContext, TAG, "track onTouchEvent type : "+type);
         if (canTouch) {
             if (CommonConstants.TYPE_DELETE_VIRTUAL_TRACK == type) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
