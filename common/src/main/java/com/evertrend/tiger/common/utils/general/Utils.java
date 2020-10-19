@@ -107,14 +107,30 @@ public class Utils {
         while (count < length) {
 //            LogUtil.d(TAG, "count: "+count);
 //            LogUtil.d(TAG, "length - count: "+(length - count));
-            int val = 10000;
+            int val = 8000;
             if (length - count < val) {
                 val = length - count;
             }
             String str = source.substring(count, count+val);
-            if (str.endsWith("FF") || str.endsWith("00")) {
-                val = 10002;
+            if (str.endsWith("00")) {
+                val = 8002;
                 str = source.substring(count, count+val);
+            } else if (str.endsWith("FF")) {//处理以00FF、FFFF结尾会报错问题
+                val = 8002;
+                str = source.substring(count, count+val);
+                List<String> ff = new ArrayList<>();
+                for (int i = str.length(); i > 0; i-=2) {
+                    String ff00 = str.substring(i-2, i);
+                    if (ff00.equalsIgnoreCase("FF") || ff00.equalsIgnoreCase("00")) {
+                        ff.add(ff00);
+                    } else {
+                        break;
+                    }
+                }
+                if (ff.size()%2 != 0) {
+                    val = 8000;
+                    str = source.substring(count, count+val);
+                }
             }
             map.put(key, str);
             key++;
@@ -151,7 +167,6 @@ public class Utils {
     }
 
     public static String decompress(String source) {
-        LogUtil.d(TAG, "source length: "+source.length());
 //        LogUtil.d(TAG, "source: "+source);
 //        String compress = source.replaceAll("(.{2})", "$1,");//每2位插入,号
 //        String[] compresss = compress.split(",");
@@ -178,9 +193,6 @@ public class Utils {
         while (i < length) {
             String str = source.substring(i, i+2);
             if (str.equalsIgnoreCase("FF")) {
-                if (i > 9990) {
-                    LogUtil.d(TAG, "dep str: "+source.substring(i-100, i+2));
-                }
                 sb.append(repeatString("FF", Integer.parseInt(source.substring(i+2, i+4), 16)));
                 i+=4;
                 continue;

@@ -115,6 +115,8 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
                 SystemClock.sleep(200);
                 mAgent.getWalls();
                 SystemClock.sleep(200);
+                mAgent.getTracks();
+                SystemClock.sleep(200);
 //                SystemClock.sleep(5000);
 //                SystemClock.sleep(50);
 //                count++;

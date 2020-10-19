@@ -134,7 +134,7 @@ public class CustomProtocolEncoder extends ProtocolEncoderAdapter {
         String value = message == null ? "" : message.toString()+"\n";
         IoBuffer buf = IoBuffer.allocate(value.length()).setAutoExpand(true);
 
-        buf.putString(value, encoder);
+        buf.putString(value, encoder);//java.nio.BufferUnderflowException
 
         if (buf.position() > maxLineLength) {
             throw new IllegalArgumentException("Line length: " + buf.position());
