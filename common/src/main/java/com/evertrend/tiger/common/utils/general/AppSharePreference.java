@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Base64;
 
+import com.evertrend.tiger.common.bean.mapview.utils.SlamGestureDetector;
+
 import java.util.Set;
 
 public class AppSharePreference {
@@ -30,6 +32,7 @@ public class AppSharePreference {
     public static final String DEVICE_ENABLE_GPS_FENCE = "DEVICE_ENABLE_GPS_FENCE";//使能GPS电子围栏
     public static final String DEVICE_LOG_GPS_SLAM = "DEVICE_LOG_GPS_SLAM";//
     public static final String DEVICE_DELETE_GPS_SLAM = "DEVICE_DELETE_GPS_SLAM";//
+    public static final String MAP_TOUCH_MODE = "MAP_TOUCH_MODE";//地图单指触摸操作选择
 //    public static final String DEVICE_TMP_TRACE_PATH = "DEVICE_TMP_TRACE_PATH";
 
     //初始化保存的环境
@@ -56,6 +59,16 @@ public class AppSharePreference {
 
     public Set<String> loadTmpPath(String key) {
         return sp.getStringSet(key, null);
+    }
+
+    public void saveMapTouchMode(int mode) {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt(MAP_TOUCH_MODE, mode);
+        editor.apply();
+    }
+
+    public int loadMapTouchMode() {
+        return sp.getInt(MAP_TOUCH_MODE, SlamGestureDetector.MODE_NONE);
     }
 
     public void saveAutoRecordPathDistance(int distance) {

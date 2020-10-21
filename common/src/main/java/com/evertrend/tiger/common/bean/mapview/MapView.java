@@ -35,6 +35,7 @@ public class MapView extends FrameLayout implements SlamGestureDetector.OnRPGest
     private final static String TAG = MapView.class.getName();
     private boolean isEvertrend = false;
     private int gestureMode = SlamGestureDetector.MODE_NONE;
+    private Pose robotPose;
 
     // View argc
     private Matrix mOuterMatrix = new Matrix();
@@ -62,6 +63,7 @@ public class MapView extends FrameLayout implements SlamGestureDetector.OnRPGest
     private DeviceView mDeviceView;
     private HomeDockView mHomeDockView;
     private TradeMarkView mTradeMarkView;
+    private RotatePoseAngleView mRotatePoseAngleView;
 
     private ISingleTapListener mSingleTapListener;
     private SlamGestureDetector mGestureDetector;
@@ -91,8 +93,8 @@ public class MapView extends FrameLayout implements SlamGestureDetector.OnRPGest
         isEvertrend = evertrend;
     }
 
-    public void setGestureMode(int modeVirtualWall) {
-        gestureMode = modeVirtualWall;
+    public void setGestureMode(int gestureMode) {
+        this.gestureMode = gestureMode;
     }
 
     private void setDefaultBackground() {
@@ -119,6 +121,7 @@ public class MapView extends FrameLayout implements SlamGestureDetector.OnRPGest
         mDeviceView = new DeviceView(getContext(), mMapView);
         mHomeDockView = new HomeDockView(getContext(), mMapView);
         mTradeMarkView = new TradeMarkView(getContext());
+        mRotatePoseAngleView = new RotatePoseAngleView(getContext(), mMapView, Color.RED);
 
         addView(mSlamMapView, lp);
         addMapLayers(mWallView);
@@ -132,6 +135,7 @@ public class MapView extends FrameLayout implements SlamGestureDetector.OnRPGest
         addMapLayers(mRemainingPathView);
         addMapLayers(mRemainingMilestonesView);
         addMapLayers(mDeviceView);
+        addMapLayers(mRotatePoseAngleView);
         addView(mTradeMarkView);
         setCentred();
     }
@@ -185,6 +189,7 @@ public class MapView extends FrameLayout implements SlamGestureDetector.OnRPGest
 
     public void setRobotPose(Pose pose) {
         mDeviceView.setDevicePose(pose);
+        robotPose = pose;
     }
 
     public void setHomePose(Pose homePose) {
@@ -221,6 +226,13 @@ public class MapView extends FrameLayout implements SlamGestureDetector.OnRPGest
     }
     public void trackDoClearArea(Line track) {
         mVTrackView.doClearArea(track);
+    }
+
+    public void rotatePoseDraw(Line rotateLine) {
+        mRotatePoseAngleView.setLine(rotateLine);
+    }
+    public void rotatePoseAdd(Line rotateLine) {
+        mRotatePoseAngleView.addLocation(rotateLine);
     }
     // 以下为触摸事件 ///////////////////////////////////////////////////////////////////////////////
     @Override
@@ -286,6 +298,15 @@ public class MapView extends FrameLayout implements SlamGestureDetector.OnRPGest
     @Override
     public void onMapTrackDoClearArea(Line line) {
         trackDoClearArea(line);
+    }
+
+    @Override
+    public void onMapRotatePoseDraw(Line line) {
+        rotatePoseDraw(line);
+    }
+    @Override
+    public void onMapRotatePoseAdd(Line line) {
+        rotatePoseAdd(line);
     }
 
     private void setRotation(float factor, int cx, int cy) {

@@ -21,11 +21,14 @@ import com.evertrend.tiger.common.R;
 import com.evertrend.tiger.common.bean.Device;
 import com.evertrend.tiger.common.bean.RobotAction;
 import com.evertrend.tiger.common.bean.event.ServerMsgEvent;
+import com.evertrend.tiger.common.bean.event.map.AddNavigationLocation;
 import com.evertrend.tiger.common.bean.event.slamtec.ConnectedEvent;
 import com.evertrend.tiger.common.bean.event.slamtec.ConnectionLostEvent;
 import com.evertrend.tiger.common.bean.mapview.MapView;
 import com.evertrend.tiger.common.bean.mapview.utils.RadianUtil;
+import com.evertrend.tiger.common.bean.mapview.utils.SlamGestureDetector;
 import com.evertrend.tiger.common.utils.EvertrendAgent;
+import com.evertrend.tiger.common.utils.general.AppSharePreference;
 import com.evertrend.tiger.common.utils.general.DialogUtil;
 import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.common.utils.general.Utils;
@@ -152,7 +155,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
             finish();
         } else if (item.getItemId() == R.id.item_settings) {
             new XPopup.Builder(this)
-                    .asCustom(new MapSettingsBottomPopupView(this, device, mAgent))
+                    .asCustom(new MapSettingsBottomPopupView(this, device, mAgent, mv_map))
                     .show();
         }
         return super.onOptionsItemSelected(item);
@@ -167,6 +170,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
     @Override
     protected void onDestroy() {
         super.onDestroy();
+//        AppSharePreference.getAppSharedPreference().saveMapTouchMode(SlamGestureDetector.MODE_NONE);
         mAgent.disconnect();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
@@ -225,6 +229,11 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
 //        mv_map.setMap(map);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(AddNavigationLocation event) {
+        moveToLocation(event.getX(), event.getY(), event.getAngle());
+    }
+
     private void updateVWalls(JSONArray jsonArray) throws JSONException {
 //        LogUtil.d(TAG, "walls: "+jsonArray.toString());
         List<Line> lines = new ArrayList<>();
@@ -244,7 +253,8 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         robotPose = Utils.toPose(jsonObject);
         mv_map.setRobotPose(robotPose);
         if (robotPose != null) {
-            currentPose = String.format("%.3f,%.3f,%.3f", robotPose.getX(), robotPose.getY(), RadianUtil.toAngel(robotPose.getYaw()));
+//            currentPose = String.format("%.3f,%.3f,%.3f", robotPose.getX(), robotPose.getY(), RadianUtil.toAngel(robotPose.getYaw()));
+            currentPose = String.format("%.3f,%.3f,%.3f", robotPose.getX(), robotPose.getY(), robotPose.getYaw());
             tv_robot_pose.setText(currentPose);
         }
     }
@@ -268,7 +278,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         if (isCompress) {
             long startT = System.currentTimeMillis();
             data = Utils.hexStringToByte(Utils.multiThreadDecompress(jsonObject.getString(RobotAction.DATA)));
-            LogUtil.d(TAG, "time all: "+(System.currentTimeMillis() - startT));
+//            LogUtil.d(TAG, "time all: "+(System.currentTimeMillis() - startT));
         } else {//20毫秒左右
             data = Utils.hexStringToByte(jsonObject.getString(RobotAction.DATA));
         }
@@ -297,9 +307,10 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         mv_map.setSingleTapListener(new MapView.ISingleTapListener() {
             @Override
             public void onSingleTapListener(MotionEvent event) {
-                moveToLocation(event.getX(), event.getY());
+//                moveToLocation(event.getX(), event.getY());
             }
         });
+        mv_map.setGestureMode(AppSharePreference.getAppSharedPreference().loadMapTouchMode());
         rg_navigation = findViewById(R.id.rg_navigation);
         rg_navigation.setOnCheckedChangeListener(this);
         ll_set_spot = findViewById(R.id.ll_set_spot);
@@ -322,6 +333,19 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
 //        LogUtil.d(TAG, "X: "+moveToPose.getX());
 //        LogUtil.d(TAG, "Y: "+moveToPose.getY());
 //        LogUtil.d(TAG, "yaw: "+moveToPose.getYaw());
+        mAgent.moveTo(moveToPose);
+    }
+
+    private void moveToLocation(float x, float y, float radians) {
+        PointF target = mv_map.widgetCoordinateToMapCoordinate(x, y);
+        if (target == null) return;
+        Location location = new Location(target.getX(), target.getY(), 0);
+//        Location location = new Location(robotPose.getX(), robotPose.getY(), 0);//设备所在点旋转，测试方向用
+        Rotation rotation = new Rotation(radians);
+        Pose moveToPose = new Pose(location, rotation);
+        LogUtil.d(TAG, "X: "+moveToPose.getX());
+        LogUtil.d(TAG, "Y: "+moveToPose.getY());
+        LogUtil.d(TAG, "yaw: "+moveToPose.getYaw());
         mAgent.moveTo(moveToPose);
     }
 

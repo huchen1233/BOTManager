@@ -95,4 +95,7 @@
     <string name="yl_common_add_wall">add wall</string>
     <string name="yl_common_save">save</string>
     <string name="yl_common_add_track">add track</string>
+    <string name="yl_common_map_touch_mode">One finger touch:</string>
+    <string name="yl_common_move_map">Move map</string>
+    <string name="yl_common_rotate_pose_angle">Set pose angle</string>
 </resources>
