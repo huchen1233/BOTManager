@@ -186,6 +186,40 @@
             </LinearLayout>
 
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/yl_common_block_background"
+            android:divider="?android:dividerHorizontal"
+            android:orientation="vertical"
+            android:showDividers="middle">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="地图加载" />
+
+            <RadioGroup
+                android:id="@+id/rg_device_load_map"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_load_map_slam"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="思岚地图" />
+
+                <RadioButton
+                    android:id="@+id/rb_load_map_evertrend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="定圆地图" />
+            </RadioGroup>
+        </LinearLayout>
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

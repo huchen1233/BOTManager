@@ -133,7 +133,6 @@ public class CommonConstants {
     public static final int TYPE_MAPPAGE_OPERATION_CREATE_TASK_CHOICE = 5;
     public static final int TYPE_MAPPAGE_OPERATION_ADD_COMMON_SPOT_CHOICE = 6;
     public static final int TYPE_MAPPAGE_OPERATION_GPS_FENCE = 7;
-    public static final int TYPE_MAPPAGE_OPERATION_MAP_TEST = 8;
 
     public static final int TYPE_DEVICE_OPERATION_GRANT = 0;
     public static final int TYPE_DEVICE_OPERATION_CANOT_GRANT = 1;

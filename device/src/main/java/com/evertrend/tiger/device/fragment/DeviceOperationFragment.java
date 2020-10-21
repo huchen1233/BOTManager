@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 
 import com.evertrend.tiger.common.bean.Device;
 import com.evertrend.tiger.common.fragment.BaseFragment;
+import com.evertrend.tiger.common.utils.general.AppSharePreference;
 import com.evertrend.tiger.common.utils.general.DialogUtil;
 import com.evertrend.tiger.common.utils.general.ScheduledThreadUtils;
 import com.evertrend.tiger.device.R;
@@ -39,12 +40,13 @@ public class DeviceOperationFragment extends BaseFragment implements RadioGroup.
 
     private View root;
     private Switch sw_device_run;
-    private RadioGroup rg_device_work_control;
+    private RadioGroup rg_device_work_control, rg_device_load_map;
     private RadioButton rb_go_to_idle, rb_go_to_garage, rb_go_to_recharge, rb_go_to_add_water, rb_go_to_empty_trash, rb_go_to_work;
     private Switch sw_main_sweep, sw_side_sweep, sw_sprinkling_water;
     private Switch sw_left_tail_light, sw_alarm_light, sw_front_light;
     private Switch sw_right_tail_light, sw_horn, sw_suck_fan, sw_vibrating_dust;
     private Switch sw_motor, sw_garbage_valve, sw_emergency_stop;
+    private RadioButton rb_load_map_slam, rb_load_map_evertrend;
 
     private Device mDevice;
     private ProgressDialog mDialogOperation;
@@ -213,6 +215,11 @@ public class DeviceOperationFragment extends BaseFragment implements RadioGroup.
     }
 
     private void updateStatus(Device device) {
+        if (AppSharePreference.getAppSharedPreference().loadMapLoad(device.getDevice_id()) == 0) {
+            rb_load_map_slam.setChecked(true);
+        } else {
+            rb_load_map_evertrend.setChecked(true);
+        }
         if (device.getIs_running() == 1) {
             sw_device_run.setChecked(true);
         } else {
@@ -324,6 +331,7 @@ public class DeviceOperationFragment extends BaseFragment implements RadioGroup.
         sw_motor.setOnCheckedChangeListener(this);
         sw_garbage_valve.setOnCheckedChangeListener(this);
         sw_emergency_stop.setOnCheckedChangeListener(this);
+        rg_device_load_map.setOnCheckedChangeListener(this);
     }
 
     private void setUnListener() {
@@ -366,6 +374,9 @@ public class DeviceOperationFragment extends BaseFragment implements RadioGroup.
         sw_motor = root.findViewById(R.id.sw_motor);
         sw_garbage_valve = root.findViewById(R.id.sw_garbage_valve);
         sw_emergency_stop = root.findViewById(R.id.sw_emergency_stop);
+        rg_device_load_map = root.findViewById(R.id.rg_device_load_map);
+        rb_load_map_slam = root.findViewById(R.id.rb_load_map_slam);
+        rb_load_map_evertrend = root.findViewById(R.id.rb_load_map_evertrend);
     }
 
     @Override
@@ -382,6 +393,10 @@ public class DeviceOperationFragment extends BaseFragment implements RadioGroup.
             ScheduledThreadUtils.startControlTimer(mDevice,4, "rb_go_to_empty_trash", 0);
         } else if (group.getCheckedRadioButtonId() == R.id.rb_go_to_work) {
             ScheduledThreadUtils.startControlTimer(mDevice,5, "rb_go_to_work", 0);
+        } else if (group.getCheckedRadioButtonId() == R.id.rb_load_map_slam) {
+            AppSharePreference.getAppSharedPreference().saveMapLoad(mDevice.getDevice_id(), 0);
+        } else if (group.getCheckedRadioButtonId() == R.id.rb_load_map_evertrend) {
+            AppSharePreference.getAppSharedPreference().saveMapLoad(mDevice.getDevice_id(), 1);
         }
     }
 

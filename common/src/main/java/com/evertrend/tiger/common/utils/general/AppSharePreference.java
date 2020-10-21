@@ -61,6 +61,16 @@ public class AppSharePreference {
         return sp.getStringSet(key, null);
     }
 
+    public void saveMapLoad(String key, int mode) {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt(key, mode);
+        editor.apply();
+    }
+
+    public int loadMapLoad(String key) {
+        return sp.getInt(key, 0);
+    }
+
     public void saveMapTouchMode(int mode) {
         SharedPreferences.Editor editor = sp.edit();
         editor.putInt(MAP_TOUCH_MODE, mode);
