@@ -123,7 +123,7 @@ public class MapView extends FrameLayout implements SlamGestureDetector.OnRPGest
         mHomeDockView = new HomeDockView(getContext(), mMapView);
         mZeroPointView = new ZeroPointView(getContext(), mMapView);
         mTradeMarkView = new TradeMarkView(getContext());
-        mRotatePoseAngleView = new RotatePoseAngleView(getContext(), mMapView, Color.RED);
+        mRotatePoseAngleView = new RotatePoseAngleView(getContext(), mMapView, 0xFFFF00CC);
 
         addView(mSlamMapView, lp);
         addMapLayers(mWallView);
