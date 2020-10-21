@@ -76,7 +76,7 @@ public class RotatePoseAngleView extends SlamwareBaseView {
             GraphicalUtil.drawArrow(canvas, mPaint, mLine.getStartX(), mLine.getStartY(), x1, y1, 30f,10f);
 //            drawArrow(canvas, zeroPointF.x, zeroPointF.y, mLine.getEndX(), mLine.getEndY(), 30,10);
             EventBus.getDefault().post(new AddNavigationLocation(mLine.getStartX(), mLine.getStartY(), radians));
-            drawMode = MODE_NONE;
+//            drawMode = MODE_NONE;
         }
     }
 
