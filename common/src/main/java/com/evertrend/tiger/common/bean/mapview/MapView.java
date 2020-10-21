@@ -62,6 +62,7 @@ public class MapView extends FrameLayout implements SlamGestureDetector.OnRPGest
     private RemainingPathView mRemainingPathView;
     private DeviceView mDeviceView;
     private HomeDockView mHomeDockView;
+    private ZeroPointView mZeroPointView;
     private TradeMarkView mTradeMarkView;
     private RotatePoseAngleView mRotatePoseAngleView;
 
@@ -120,6 +121,7 @@ public class MapView extends FrameLayout implements SlamGestureDetector.OnRPGest
         mRemainingPathView = new RemainingPathView(getContext(), mMapView);
         mDeviceView = new DeviceView(getContext(), mMapView);
         mHomeDockView = new HomeDockView(getContext(), mMapView);
+        mZeroPointView = new ZeroPointView(getContext(), mMapView);
         mTradeMarkView = new TradeMarkView(getContext());
         mRotatePoseAngleView = new RotatePoseAngleView(getContext(), mMapView, Color.RED);
 
@@ -131,6 +133,7 @@ public class MapView extends FrameLayout implements SlamGestureDetector.OnRPGest
         addMapLayers(mTracePathView);
         addMapLayers(mVirtualTraceSpotView);
         addMapLayers(mHomeDockView);
+        addMapLayers(mZeroPointView);
         addMapLayers(mLaserScanView);
         addMapLayers(mRemainingPathView);
         addMapLayers(mRemainingMilestonesView);
@@ -194,6 +197,10 @@ public class MapView extends FrameLayout implements SlamGestureDetector.OnRPGest
 
     public void setHomePose(Pose homePose) {
         mHomeDockView.setHomePose(homePose);
+    }
+
+    public void drawZeroAxis() {
+        mZeroPointView.drawZeroAxis();
     }
 
     public void setVwalls(List<Line> walls) {

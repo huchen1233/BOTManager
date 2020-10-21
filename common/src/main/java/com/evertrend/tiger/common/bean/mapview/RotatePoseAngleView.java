@@ -66,14 +66,14 @@ public class RotatePoseAngleView extends SlamwareBaseView {
         if (drawMode == MODE_DRAW) {
             float x1 = mLine.getStartX()+mLine.getEndX()-zeroPointF.x;
             float y1 = mLine.getStartY()+mLine.getEndY()-zeroPointF.y;
-            GraphicalUtil.drawArrow(canvas, mPaint, mLine.getStartX(), mLine.getStartY(), x1, y1, 30,10);
+            GraphicalUtil.drawArrow(canvas, mPaint, mLine.getStartX(), mLine.getStartY(), x1, y1, 30f,10f);
 //            drawArrow(canvas, zeroPointF.x, zeroPointF.y, mLine.getEndX(), mLine.getEndY(), 30,10);
         } else if (drawMode == MODE_ADD) {
             float radians = getRadians();
 //            LogUtil.d(TAG, "radians: "+radians);
             float x1 = mLine.getStartX()+mLine.getEndX()-zeroPointF.x;
             float y1 = mLine.getStartY()+mLine.getEndY()-zeroPointF.y;
-            GraphicalUtil.drawArrow(canvas, mPaint, mLine.getStartX(), mLine.getStartY(), x1, y1, 30,10);
+            GraphicalUtil.drawArrow(canvas, mPaint, mLine.getStartX(), mLine.getStartY(), x1, y1, 30f,10f);
 //            drawArrow(canvas, zeroPointF.x, zeroPointF.y, mLine.getEndX(), mLine.getEndY(), 30,10);
             EventBus.getDefault().post(new AddNavigationLocation(mLine.getStartX(), mLine.getStartY(), radians));
             drawMode = MODE_NONE;

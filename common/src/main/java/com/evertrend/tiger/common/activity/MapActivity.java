@@ -170,7 +170,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        AppSharePreference.getAppSharedPreference().saveMapTouchMode(SlamGestureDetector.MODE_NONE);
+        AppSharePreference.getAppSharedPreference().saveMapTouchMode(SlamGestureDetector.MODE_NONE);
         mAgent.disconnect();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
@@ -310,6 +310,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
 //                moveToLocation(event.getX(), event.getY());
             }
         });
+        mv_map.drawZeroAxis();
         mv_map.setGestureMode(AppSharePreference.getAppSharedPreference().loadMapTouchMode());
         rg_navigation = findViewById(R.id.rg_navigation);
         rg_navigation.setOnCheckedChangeListener(this);
