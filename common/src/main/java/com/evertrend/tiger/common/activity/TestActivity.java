@@ -82,6 +82,7 @@ public class TestActivity extends AppCompatActivity {
         View view = LayoutInflater.from(this).inflate(R.layout.yl_common_view_ip_connection_item_header, null);
         historyAdapter.setHeaderView(view);
         rlv_connection_history.setAdapter(historyAdapter);
+        et_ip.setText(connectionList.get(0).getIp());
     }
 
     @Override
