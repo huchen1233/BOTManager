@@ -109,8 +109,6 @@ public class MapSettingsBottomPopupView extends BottomPopupView implements View.
         et_pose_yaw = findViewById(R.id.et_pose_yaw);
         btn_set_pose = findViewById(R.id.btn_set_pose);
         btn_set_pose.setOnClickListener(this);
-        rg_map_touch_mode = findViewById(R.id.rg_map_touch_mode);
-        rg_map_touch_mode.setOnCheckedChangeListener(this);
         rb_mode_move_map = findViewById(R.id.rb_mode_move_map);
         rb_mode_rotate_pose_angle = findViewById(R.id.rb_mode_rotate_pose_angle);
         if (AppSharePreference.getAppSharedPreference().loadMapTouchMode() == SlamGestureDetector.MODE_NONE) {
@@ -118,6 +116,8 @@ public class MapSettingsBottomPopupView extends BottomPopupView implements View.
         } else {
             rb_mode_rotate_pose_angle.setChecked(true);
         }
+        rg_map_touch_mode = findViewById(R.id.rg_map_touch_mode);
+        rg_map_touch_mode.setOnCheckedChangeListener(this);
     }
 
     @Override
@@ -145,11 +145,15 @@ public class MapSettingsBottomPopupView extends BottomPopupView implements View.
     @Override
     public void onCheckedChanged(RadioGroup group, int i) {
         if (group.getCheckedRadioButtonId() == R.id.rb_mode_move_map) {
+            LogUtil.d(TAG, "rb_mode_move_map");
             mapView.setGestureMode(SlamGestureDetector.MODE_NONE);
             AppSharePreference.getAppSharedPreference().saveMapTouchMode(SlamGestureDetector.MODE_NONE);
+            dismiss();
         } else if (group.getCheckedRadioButtonId() == R.id.rb_mode_rotate_pose_angle) {
+            LogUtil.d(TAG, "rb_mode_rotate_pose_angle");
             mapView.setGestureMode(SlamGestureDetector.MODE_ROTATE_POSE_ANGLE);
             AppSharePreference.getAppSharedPreference().saveMapTouchMode(SlamGestureDetector.MODE_ROTATE_POSE_ANGLE);
+            dismiss();
         }
     }
 }
