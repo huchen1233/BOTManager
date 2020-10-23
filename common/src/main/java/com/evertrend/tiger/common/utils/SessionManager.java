@@ -122,6 +122,15 @@ public class SessionManager {
         writeToServer(object);
     }
 
+    public void getNavigationPathPlanning() throws JSONException {
+        JSONObject object = new JSONObject();
+        object.put(RobotAction.CMD_CODE, RobotAction.CMD.GET_NAVIGATION_PATH_PLANNING);
+        object.put(RobotAction.DEVICE_ID, deviceID);
+        object.put(RobotAction.KEY, key);
+        object.put(RobotAction.TIME_STAMP, getTime());
+        writeToServer(object);
+    }
+
     public void setPose(Pose pose) throws JSONException {
         JSONObject object = new JSONObject();
         JSONObject data = new JSONObject();

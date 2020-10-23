@@ -40,6 +40,7 @@ public class EvertrendAgent {
     private static TaskAddVtrack sTaskAddVtrack;
     private static TaskClearAllVtracks sTaskClearAllVtracks;
     private static TaskClearOneVtrack sTaskClearOneVtrack;
+    private static TaskNavigationPathPlanning sTaskNavigationPathPlanning;
 
     public EvertrendAgent() {
         mThreadManager = ThreadManager.getInstance();
@@ -62,6 +63,7 @@ public class EvertrendAgent {
         sTaskAddVtrack = new TaskAddVtrack();
         sTaskClearAllVtracks = new TaskClearAllVtracks();
         sTaskClearOneVtrack = new TaskClearOneVtrack();
+        sTaskNavigationPathPlanning = new TaskNavigationPathPlanning();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -135,6 +137,9 @@ public class EvertrendAgent {
     public void clearOneVtrack(Line line) {
         sTaskClearOneVtrack.setLine(line);
         pushTask(sTaskClearOneVtrack);
+    }
+    public void getNavigationPathPlanning() {
+        pushTask(sTaskNavigationPathPlanning);
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private synchronized void pushTask(Runnable Task) {
@@ -690,6 +695,33 @@ public class EvertrendAgent {
 
             try {
                 manager.clearTrackById(line.getSegmentId());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private class TaskNavigationPathPlanning implements Runnable {
+        public TaskNavigationPathPlanning() {
+        }
+        @Override
+        public void run() {
+            SessionManager manager;
+
+            synchronized (this) {
+                manager = mSessionManager;
+            }
+
+            if (mSessionManager == null) {
+                return;
+            }
+            if (mSessionManager.getIoSession() == null) {
+                onRequestError(new Exception("connect closed"));
+                return;
+            }
+
+            try {
+                manager.getNavigationPathPlanning();
             } catch (Exception e) {
                 e.printStackTrace();
             }

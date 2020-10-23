@@ -23,6 +23,7 @@ public class RobotAction {
         int CLEAR_ONE_VIRTUAL_TRACK = 0x39;
         int CLEAR_ALL_VIRTUAL_TRACK = 0x3A;
         int MOVE_TO_POSE = 0x40;
+        int GET_NAVIGATION_PATH_PLANNING = 0x41;
     }
 
     public static final String DEVICE_ID = "device_id";

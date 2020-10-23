@@ -35,6 +35,7 @@ import com.evertrend.tiger.common.utils.general.Utils;
 import com.evertrend.tiger.common.widget.ActionControllerView;
 import com.evertrend.tiger.common.widget.MapSettingsBottomPopupView;
 import com.lxj.xpopup.XPopup;
+import com.slamtec.slamware.action.Path;
 import com.slamtec.slamware.geometry.Line;
 import com.slamtec.slamware.geometry.PointF;
 import com.slamtec.slamware.geometry.Size;
@@ -54,6 +55,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Vector;
 
 public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener, ActionControllerView.LongClickRepeatListener, View.OnClickListener {
     public static final String TAG = MapActivity.class.getCanonicalName();
@@ -111,7 +113,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
 //                mAgent.getMap(RobotAction.CMD.GET_MAP);
                 mAgent.getMap(RobotAction.CMD.GET_MAP_CONDENSE);
 //                mAgent.getMap(RobotAction.CMD.GET_MAP_CON_BIN);
-                SystemClock.sleep(1000);
+                SystemClock.sleep(200);
                 mAgent.getRobotPose();
                 SystemClock.sleep(200);
                 mAgent.getLaserScan();
@@ -119,6 +121,8 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
                 mAgent.getWalls();
                 SystemClock.sleep(200);
                 mAgent.getTracks();
+                SystemClock.sleep(200);
+                mAgent.getNavigationPathPlanning();
                 SystemClock.sleep(200);
 //                SystemClock.sleep(5000);
 //                SystemClock.sleep(50);
@@ -195,6 +199,11 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(AddNavigationLocation event) {
+        moveToLocation(event.getX(), event.getY(), event.getAngle());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ServerMsgEvent event) {
         try {
             JSONObject jsonObject = new JSONObject(event.getMsg());
@@ -217,6 +226,9 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
                     case RobotAction.CMD.GET_VIRTUAL_WALL:
                         updateVWalls(jsonObject.getJSONArray(RobotAction.DATA));
                         break;
+                    case RobotAction.CMD.GET_NAVIGATION_PATH_PLANNING:
+                        updateNavigationPathPlanning(jsonObject.getJSONArray(RobotAction.DATA));
+                        break;
                 }
 
             } else {
@@ -229,9 +241,16 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
 //        mv_map.setMap(map);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(AddNavigationLocation event) {
-        moveToLocation(event.getX(), event.getY(), event.getAngle());
+    private void updateNavigationPathPlanning(JSONArray jsonArray) throws JSONException {
+        LogUtil.d(TAG, "planning: "+jsonArray.toString());
+        Vector<Location> points = new Vector(jsonArray.length());
+        for (int i = 0; i < jsonArray.length(); i++){
+            JSONArray poinJA = jsonArray.getJSONArray(i);
+            Location location = new Location((float) poinJA.getDouble(0), (float) poinJA.getDouble(1), 0f);
+            points.add(location);
+        }
+        Path planningingPath = new Path(points);
+        mv_map.setRemainingPath(planningingPath);
     }
 
     private void updateVWalls(JSONArray jsonArray) throws JSONException {
@@ -253,8 +272,8 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         robotPose = Utils.toPose(jsonObject);
         mv_map.setRobotPose(robotPose);
         if (robotPose != null) {
-//            currentPose = String.format("%.3f,%.3f,%.3f", robotPose.getX(), robotPose.getY(), RadianUtil.toAngel(robotPose.getYaw()));
-            currentPose = String.format("%.3f,%.3f,%.3f", robotPose.getX(), robotPose.getY(), robotPose.getYaw());
+            currentPose = String.format("%.3f,%.3f,%.3f", robotPose.getX(), robotPose.getY(), RadianUtil.toAngel(robotPose.getYaw()));
+//            currentPose = String.format("%.3f,%.3f,%.3f", robotPose.getX(), robotPose.getY(), robotPose.getYaw());
             tv_robot_pose.setText(currentPose);
         }
     }
