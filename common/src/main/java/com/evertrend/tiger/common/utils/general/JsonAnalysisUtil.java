@@ -127,6 +127,7 @@ public class JsonAnalysisUtil {
                 device.setEnable_gps_fence(devices.getJSONObject(i).getIntValue(CommonConstants.ENABLE_GPS_FENCE));
                 device.setLog_gps_map_slam(devices.getJSONObject(i).getIntValue(CommonConstants.LOG_GPS_MAP_SLAM));
                 device.setDelete_gps_map_slam(devices.getJSONObject(i).getIntValue(CommonConstants.DELETE_GPS_MAP_SLAM));
+                device.setIs_connected(devices.getJSONObject(i).getIntValue(CommonConstants.IS_CONNECTED));
                 deviceLists.add(device);
             }
         }
@@ -195,6 +196,7 @@ public class JsonAnalysisUtil {
         device.setEnable_gps_fence(jsonObject.getIntValue(CommonConstants.ENABLE_GPS_FENCE));
         device.setLog_gps_map_slam(jsonObject.getIntValue(CommonConstants.LOG_GPS_MAP_SLAM));
         device.setDelete_gps_map_slam(jsonObject.getIntValue(CommonConstants.DELETE_GPS_MAP_SLAM));
+        device.setIs_connected(jsonObject.getIntValue(CommonConstants.IS_CONNECTED));
         return device;
     }
 

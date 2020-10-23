@@ -93,6 +93,7 @@ public class CommonConstants {
     public static final String ENABLE_GPS_FENCE = "enable_gps_fence";
     public static final String LOG_GPS_MAP_SLAM = "log_gps_map_slam";
     public static final String DELETE_GPS_MAP_SLAM = "delete_gps_map_slam";
+    public static final String IS_CONNECTED = "is_connected";
 
     public static final String TYPE_EXTRA_NAME = "name";
     public static final String TYPE_EXTRA_PASS = "pass";

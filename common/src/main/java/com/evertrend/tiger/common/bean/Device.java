@@ -66,6 +66,15 @@ public class Device extends LitePalSupport implements Serializable {
     private int enable_gps_fence;//
     private int log_gps_map_slam;//
     private int delete_gps_map_slam;//
+    private int is_connected;//
+
+    public int getIs_connected() {
+        return is_connected;
+    }
+
+    public void setIs_connected(int is_connected) {
+        this.is_connected = is_connected;
+    }
 
     public int getAuto_record_trace_path() {
         return auto_record_trace_path;
@@ -648,6 +657,7 @@ public class Device extends LitePalSupport implements Serializable {
                 ", enable_gps_fence=" + enable_gps_fence +
                 ", log_gps_map_slam=" + log_gps_map_slam +
                 ", delete_trace_path=" + delete_trace_path +
+                ", is_connected=" + is_connected +
                 '}';
     }
 }

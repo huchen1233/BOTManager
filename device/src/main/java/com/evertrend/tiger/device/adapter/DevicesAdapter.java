@@ -97,6 +97,7 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Device device = mDeviceList.get(position);
+        holder.tv_device_id.setText(device.getDevice_id());
         holder.deviceDescription.setText(device.getDescription());
         switch (device.getDevice_type()) {
             case Constants.DEVICE_TYPE_EVBOT_SL:
@@ -132,6 +133,16 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.ViewHold
                 holder.deviceStatus.setTextColor(Color.GRAY);
                 break;
         }
+        switch (device.getIs_connected()) {
+            case 0:
+                holder.tv_device_isconnect.setText(R.string.yl_device_disconnect);
+                holder.tv_device_isconnect.setTextColor(Color.RED);
+                break;
+            case 1:
+                holder.tv_device_isconnect.setText(R.string.yl_device_connected);
+                holder.tv_device_isconnect.setTextColor(Color.GREEN);
+                break;
+        }
         if (device.getGrant_flag() == 1) {
             holder.tv_device_grant_flag.setVisibility(View.VISIBLE);
             holder.tv_device_grant_flag.setText(R.string.yl_device_grant_device);
@@ -146,6 +157,8 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.ViewHold
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView tv_device_id;
+        TextView tv_device_isconnect;
         TextView deviceDescription;
         TextView deviceStatus;
         TextView tv_device_grant_flag;
@@ -155,6 +168,8 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.ViewHold
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             deviceViwe = itemView;
+            tv_device_id = itemView.findViewById(R.id.tv_device_id);
+            tv_device_isconnect = itemView.findViewById(R.id.tv_device_isconnect);
             deviceDescription = itemView.findViewById(R.id.tv_device_description);
             deviceStatus = itemView.findViewById(R.id.tv_device_status);
             tv_device_grant_flag = itemView.findViewById(R.id.tv_device_grant_flag);
