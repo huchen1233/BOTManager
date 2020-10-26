@@ -140,4 +140,5 @@
     <string name="yl_device_auto_coverage_area">Automatic coverage of area</string>
     <string name="yl_device_connected">(connected)</string>
     <string name="yl_device_disconnect">(disconnect)</string>
+    <string name="yl_device_add_device_success">add device success</string>
 </resources>

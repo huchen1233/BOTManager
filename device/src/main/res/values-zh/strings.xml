@@ -140,4 +140,5 @@
     <string name="yl_device_auto_coverage_area">全区域自动覆盖</string>
     <string name="yl_device_connected">(已连接)</string>
     <string name="yl_device_disconnect">(未连接)</string>
+    <string name="yl_device_add_device_success">添加设备成功</string>
 </resources>

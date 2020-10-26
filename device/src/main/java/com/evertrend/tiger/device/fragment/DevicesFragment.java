@@ -342,7 +342,8 @@ public class DevicesFragment extends BaseFragment implements View.OnClickListene
                         switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
                             case CommonNetReq.CODE_SUCCESS:
 //                                registerDeviceSuccess(jsonObject.getJSONObject(NetReq.RESULT_DATA));
-                                Toast.makeText(getActivity(), "register success", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), R.string.yl_device_add_device_success, Toast.LENGTH_LONG).show();
+                                loadDevice();
                                 break;
                             case NetReq.ERR_CODE_NOT_FOUND_DEVICE:
                                 showTipsDialog(getActivity(), NetReq.ERR_CODE_NOT_FOUND_DEVICE);
