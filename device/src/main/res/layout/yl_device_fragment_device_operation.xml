@@ -28,7 +28,8 @@
                 style="@style/yl_device_CleanSwitchStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/yl_device_run" />
+                android:text="@string/yl_device_run"
+                android:visibility="gone"/>
 
             <RadioGroup
                 android:id="@+id/rg_device_work_control"

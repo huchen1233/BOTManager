@@ -35,8 +35,8 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public class DeviceOperationFragment extends BaseFragment implements RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener {
-    public static final String TAG = DeviceOperationFragment.class.getCanonicalName();
+public class DeviceControlFragment extends BaseFragment implements RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener {
+    public static final String TAG = DeviceControlFragment.class.getCanonicalName();
 
     private View root;
     private Switch sw_device_run;

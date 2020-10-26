@@ -18,7 +18,7 @@
     <string name="yl_device_login_first">Login first</string>
     <string name="yl_device_task">task</string>
     <string name="yl_device_mappage">map</string>
-    <string name="yl_device_operation">operation</string>
+    <string name="yl_device_control">control</string>
 
     <string name="yl_device_detail_info">detail info</string>
     <string name="yl_device_running_info">running info</string>
@@ -94,7 +94,7 @@
     <string name="yl_device_delete_task_confirm">Are you sure you want to delete the task(%1$s)?</string>
     <string name="yl_device_task_detail_info">task detail info</string>
     <string name="yl_device_delete_mappage_confirm">Are you sure you want to delete the map(%1$s)?</string>
-    <string name="yl_device_control_of_work">control of work</string>
+    <string name="yl_device_control_of_work">Set current task</string>
     <string name="yl_device_run">run</string>
     <string name="yl_device_go_to_garage">go to garage</string>
     <string name="yl_device_go_to_recharge">go to recharge</string>

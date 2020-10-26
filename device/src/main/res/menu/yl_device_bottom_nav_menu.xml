@@ -23,7 +23,7 @@
         android:id="@+id/action_devices_operation"
         android:enabled="true"
         android:icon="@drawable/yl_device_ic_operation_black_24dp"
-        android:title="@string/yl_device_operation"
+        android:title="@string/yl_device_control"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_devices_run_log"

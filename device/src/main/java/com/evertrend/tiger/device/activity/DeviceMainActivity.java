@@ -26,11 +26,10 @@ import com.evertrend.tiger.common.bean.Device;
 import com.evertrend.tiger.device.bean.event.DeviceListEvent;
 import com.evertrend.tiger.device.bean.event.SpinnerChoiceDeviceMessageEvent;
 import com.evertrend.tiger.device.fragment.DeviceMapFragment;
-import com.evertrend.tiger.device.fragment.DeviceOperationFragment;
+import com.evertrend.tiger.device.fragment.DeviceControlFragment;
 import com.evertrend.tiger.device.fragment.DeviceRunLogFragment;
 import com.evertrend.tiger.device.fragment.DeviceStatusFragment;
 import com.evertrend.tiger.device.fragment.DeviceTaskFragment;
-import com.evertrend.tiger.device.utils.Constants;
 import com.evertrend.tiger.device.utils.TaskUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -223,7 +222,7 @@ public class DeviceMainActivity extends AppCompatActivity {
         fragments.add(taskFragment);
         DeviceMapFragment mapFragment = new DeviceMapFragment();
         fragments.add(mapFragment);
-        DeviceOperationFragment operationFragment = new DeviceOperationFragment();
+        DeviceControlFragment operationFragment = new DeviceControlFragment();
         fragments.add(operationFragment);
         DeviceRunLogFragment runLogFragment = new DeviceRunLogFragment();
         fragments.add(runLogFragment);
