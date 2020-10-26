@@ -2,9 +2,9 @@
     <string name="yl_device_module_name">device module</string>
     <string name="yl_device_description">Description</string>
     <string name="yl_device_status">Status</string>
-    <string name="yl_device_malfunction">(malfunction)</string>
-    <string name="yl_device_normal">(normal)</string>
-    <string name="yl_device_not_detected">(not detected)</string>
+    <string name="yl_device_malfunction">malfunction</string>
+    <string name="yl_device_normal">normal</string>
+    <string name="yl_device_not_detected">not detected</string>
     <string name="yl_device_title_register_device">register device</string>
     <string name="yl_device_message_input_register_number">Pls input register number</string>
     <string name="yl_device_str_input_empty">input empty</string>
@@ -138,7 +138,7 @@
     <string name="yl_device_grant">device grant</string>
     <string name="yl_device_cannot_grant">This device is not authorized</string>
     <string name="yl_device_auto_coverage_area">Automatic coverage of area</string>
-    <string name="yl_device_connected">(connected)</string>
-    <string name="yl_device_disconnect">(disconnect)</string>
+    <string name="yl_device_connected">connected</string>
+    <string name="yl_device_disconnect">disconnect</string>
     <string name="yl_device_add_device_success">add device success</string>
 </resources>

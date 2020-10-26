@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/action_devices_status"
-        android:enabled="true"
-        android:icon="@drawable/yl_device_ic_status_black_24dp"
-        android:title="@string/yl_device_status"
-        app:showAsAction="ifRoom" />
+<!--    <item-->
+<!--        android:id="@+id/action_devices_status"-->
+<!--        android:enabled="true"-->
+<!--        android:icon="@drawable/yl_device_ic_status_black_24dp"-->
+<!--        android:title="@string/yl_device_status"-->
+<!--        app:showAsAction="ifRoom" />-->
     <item
         android:id="@+id/action_devices_task"
         android:enabled="true"

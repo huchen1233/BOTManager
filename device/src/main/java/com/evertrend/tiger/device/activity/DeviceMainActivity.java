@@ -46,10 +46,10 @@ public class DeviceMainActivity extends AppCompatActivity {
     private static final String TAG = DeviceMainActivity.class.getSimpleName();
 
     private int deviceStatusIndex = 0;
-    private int deviceTaskIndex = 1;
-    private int deviceMapIndex = 2;
-    private int deviceOperationIndex = 3;
-    private int deviceRunLogIndex = 4;
+    private int deviceTaskIndex = 0;
+    private int deviceMapIndex = 1;
+    private int deviceOperationIndex = 2;
+    private int deviceRunLogIndex = 3;
     private ViewPager2 viewPager2;
     private List<BaseFragment> fragments;
     private Toolbar tbMain;
@@ -198,9 +198,9 @@ public class DeviceMainActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                if (menuItem.getItemId() == R.id.action_devices_status) {
+                /*if (menuItem.getItemId() == R.id.action_devices_status) {
                     viewPager2.setCurrentItem(deviceStatusIndex, false);
-                } else if (menuItem.getItemId() == R.id.action_devices_task) {
+                } else */if (menuItem.getItemId() == R.id.action_devices_task) {
                     viewPager2.setCurrentItem(deviceTaskIndex, false);
                 } else if (menuItem.getItemId() == R.id.action_devices_mappage) {
                     viewPager2.setCurrentItem(deviceMapIndex, false);
@@ -216,8 +216,8 @@ public class DeviceMainActivity extends AppCompatActivity {
 
     private List<BaseFragment> getFragments() {
         List<BaseFragment> fragments = new ArrayList<BaseFragment>(2);
-        DeviceStatusFragment statusFragment = new DeviceStatusFragment();
-        fragments.add(statusFragment);
+//        DeviceStatusFragment statusFragment = new DeviceStatusFragment();
+//        fragments.add(statusFragment);
         DeviceTaskFragment taskFragment = new DeviceTaskFragment();
         fragments.add(taskFragment);
         DeviceMapFragment mapFragment = new DeviceMapFragment();

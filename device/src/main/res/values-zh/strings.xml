@@ -2,9 +2,9 @@
     <string name="yl_device_module_name">设备模块</string>
     <string name="yl_device_description">描述</string>
     <string name="yl_device_status">状态</string>
-    <string name="yl_device_malfunction">(异常)</string>
-    <string name="yl_device_normal">(正常)</string>
-    <string name="yl_device_not_detected">(未检测)</string>
+    <string name="yl_device_malfunction">异常</string>
+    <string name="yl_device_normal">正常</string>
+    <string name="yl_device_not_detected">未检测</string>
     <string name="yl_device_title_register_device">注册设备</string>
     <string name="yl_device_message_input_register_number">请输入注册码</string>
     <string name="yl_device_str_input_empty">输入为空</string>
@@ -138,7 +138,7 @@
     <string name="yl_device_grant">设备授权</string>
     <string name="yl_device_cannot_grant">此设备不可授权</string>
     <string name="yl_device_auto_coverage_area">全区域自动覆盖</string>
-    <string name="yl_device_connected">(已连接)</string>
-    <string name="yl_device_disconnect">(未连接)</string>
+    <string name="yl_device_connected">已连接</string>
+    <string name="yl_device_disconnect">未连接</string>
     <string name="yl_device_add_device_success">添加设备成功</string>
 </resources>

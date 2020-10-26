@@ -99,6 +99,7 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.ViewHold
         Device device = mDeviceList.get(position);
         holder.tv_device_id.setText(device.getDevice_id());
         holder.deviceDescription.setText(device.getDescription());
+        holder.tv_device_battery.setText(device.getBattery_level());
         switch (device.getDevice_type()) {
             case Constants.DEVICE_TYPE_EVBOT_SL:
                 holder.deviceType.setImageResource(R.drawable.evbot_sl);
@@ -149,6 +150,36 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.ViewHold
         } else {
             holder.tv_device_grant_flag.setVisibility(View.GONE);
         }
+        switch (device.getSet_current_task()) {
+            case 0:
+                holder.tv_device_current_task.setCompoundDrawablesWithIntrinsicBounds(
+                        mContext.getResources().getDrawable(R.drawable.yl_device_standby), null, null, null);
+                break;
+            case 1:
+                holder.tv_device_current_task.setCompoundDrawablesWithIntrinsicBounds(
+                        mContext.getResources().getDrawable(R.drawable.yl_device_garage), null, null, null);
+                break;
+            case 2:
+                holder.tv_device_current_task.setCompoundDrawablesWithIntrinsicBounds(
+                        mContext.getResources().getDrawable(R.drawable.yl_device_recharge), null, null, null);
+                break;
+            case 3:
+                holder.tv_device_current_task.setCompoundDrawablesWithIntrinsicBounds(
+                        mContext.getResources().getDrawable(R.drawable.yl_device_add_water), null, null, null);
+                break;
+            case 4:
+                holder.tv_device_current_task.setCompoundDrawablesWithIntrinsicBounds(
+                        mContext.getResources().getDrawable(R.drawable.yl_device_empty_trash), null, null, null);
+                break;
+            case 5:
+                holder.tv_device_current_task.setCompoundDrawablesWithIntrinsicBounds(
+                        mContext.getResources().getDrawable(R.drawable.yl_device_work), null, null, null);
+                break;
+            default:
+                holder.tv_device_current_task.setCompoundDrawablesWithIntrinsicBounds(
+                        mContext.getResources().getDrawable(R.drawable.yl_device_standby), null, null, null);
+                break;
+        }
     }
 
     @Override
@@ -162,6 +193,8 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.ViewHold
         TextView deviceDescription;
         TextView deviceStatus;
         TextView tv_device_grant_flag;
+        TextView tv_device_battery;
+        TextView tv_device_current_task;
         ImageView deviceType;
         View deviceViwe;
 
@@ -173,6 +206,8 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.ViewHold
             deviceDescription = itemView.findViewById(R.id.tv_device_description);
             deviceStatus = itemView.findViewById(R.id.tv_device_status);
             tv_device_grant_flag = itemView.findViewById(R.id.tv_device_grant_flag);
+            tv_device_battery = itemView.findViewById(R.id.tv_device_battery);
+            tv_device_current_task = itemView.findViewById(R.id.tv_device_current_task);
             deviceType = itemView.findViewById(R.id.iv_device_type);
         }
     }

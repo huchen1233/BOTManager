@@ -30,45 +30,86 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:divider="@drawable/yl_device_spacer_medium"
+            android:showDividers="middle"
+            android:dividerPadding="@dimen/yl_common_padding_5">
 
             <TextView
                 android:id="@+id/tv_device_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
-                android:textSize="18sp"/>
+                android:textSize="16sp"/>
             <TextView
                 android:id="@+id/tv_device_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"/>
+                android:textSize="16sp"/>
             <TextView
                 android:id="@+id/tv_device_isconnect"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"/>
+                android:textSize="16sp"/>
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_device_description"
+        <LinearLayout
+            android:id="@+id/ll_device_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="@android:color/darker_gray"
             app:layout_constraintStart_toStartOf="@id/ll_device_main_info"
-            app:layout_constraintTop_toBottomOf="@id/ll_device_main_info"/>
+            app:layout_constraintTop_toBottomOf="@id/ll_device_main_info"
+            android:orientation="horizontal"
+            android:divider="@drawable/yl_device_spacer_medium"
+            android:showDividers="middle"
+            android:dividerPadding="@dimen/yl_common_padding_3">
 
-        <TextView
-            android:id="@+id/tv_device_grant_flag"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/tv_device_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="@android:color/darker_gray"/>
+
+            <TextView
+                android:id="@+id/tv_device_grant_flag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="@android:color/darker_gray"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_device_detail_info"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="@android:color/darker_gray"
-            android:layout_marginStart="150dp"
-            app:layout_constraintStart_toEndOf="@id/tv_device_description"
-            app:layout_constraintBottom_toBottomOf="@id/tv_device_description"/>
+            app:layout_constraintStart_toStartOf="@id/ll_device_desc"
+            app:layout_constraintTop_toBottomOf="@id/ll_device_desc"
+            android:orientation="horizontal"
+            android:divider="@drawable/yl_device_spacer_medium"
+            android:showDividers="middle"
+            android:dividerPadding="@dimen/yl_common_padding_5">
+
+            <TextView
+                android:id="@+id/tv_device_battery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@android:color/darker_gray"
+                android:drawableLeft="@drawable/yl_device_battery"
+                android:paddingEnd="@dimen/yl_common_padding_3"/>
+
+            <TextView
+                android:id="@+id/tv_device_current_task"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:drawableLeft="@drawable/yl_device_standby"
+                android:paddingStart="@dimen/yl_common_padding_3"/>
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
