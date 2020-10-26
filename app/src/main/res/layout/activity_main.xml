@@ -10,12 +10,15 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/yl_common_color_white"
+        app:itemIconTint="@color/yl_common_color_selector_nav"
+        app:itemTextColor="@color/yl_common_color_selector_nav"
         app:menu="@menu/bottom_nav_menu"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottomNavigationView"/>
+        android:layout_above="@id/bottomNavigationView"
+        android:background="@color/yl_common_color_white_gray"/>
 
 </RelativeLayout>
