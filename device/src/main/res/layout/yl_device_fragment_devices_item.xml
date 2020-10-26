@@ -36,6 +36,7 @@
                 android:id="@+id/tv_device_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
                 android:textSize="18sp"/>
             <TextView
                 android:id="@+id/tv_device_status"
@@ -55,6 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="15sp"
+            android:textColor="@android:color/darker_gray"
             app:layout_constraintStart_toStartOf="@id/ll_device_main_info"
             app:layout_constraintTop_toBottomOf="@id/ll_device_main_info"/>
 
@@ -63,6 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15sp"
+            android:textColor="@android:color/darker_gray"
             android:layout_marginStart="150dp"
             app:layout_constraintStart_toEndOf="@id/tv_device_description"
             app:layout_constraintBottom_toBottomOf="@id/tv_device_description"/>
