@@ -29,6 +29,8 @@
             android:label="@string/yl_device_fault_check"></activity>
         <activity android:name=".activity.DeviceMainActivity" />
         <activity android:name=".activity.DevicesActivity" />
+        <activity android:name=".activity.DeviceLocationActivity"
+            android:label="@string/yl_device_location"/>
 
         <service
             android:name=".service.DeviceCommunicationService"

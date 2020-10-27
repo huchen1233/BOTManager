@@ -33,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private int devicesTabIndex = 0;
-    private int locationTabIndex = 1;
-    private int meTabIndex = 2;
+//    private int locationTabIndex = 1;
+    private int meTabIndex = 1;
     private ViewPager2 viewPager2;
     private BottomNavigationView bottomNavigationView;
     private List<BaseFragment> fragments;
@@ -119,9 +119,9 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.action_devices:
                         viewPager2.setCurrentItem(devicesTabIndex, false);
                         break;
-                    case R.id.action_location:
-                        viewPager2.setCurrentItem(locationTabIndex, false);
-                        break;
+//                    case R.id.action_location:
+//                        viewPager2.setCurrentItem(locationTabIndex, false);
+//                        break;
                     case R.id.action_me:
                         viewPager2.setCurrentItem(meTabIndex, false);
                         break;
@@ -135,8 +135,8 @@ public class MainActivity extends AppCompatActivity {
         List<BaseFragment> fragments = new ArrayList<BaseFragment>(3);
         DevicesFragment devicesFragment = new DevicesFragment();
         fragments.add(devicesFragment);
-        DeviceLocationFragment deviceLocationFragment = new DeviceLocationFragment();
-        fragments.add(deviceLocationFragment);
+//        DeviceLocationFragment deviceLocationFragment = new DeviceLocationFragment();
+//        fragments.add(deviceLocationFragment);
         MeFragment meFragment = new MeFragment();
         fragments.add(meFragment);
         return fragments;

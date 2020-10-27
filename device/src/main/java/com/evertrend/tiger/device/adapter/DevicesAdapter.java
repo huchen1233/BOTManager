@@ -13,9 +13,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.evertrend.tiger.common.activity.GpsFenceActivity;
 import com.evertrend.tiger.common.bean.event.ChoiceDeviceEvent;
 import com.evertrend.tiger.common.utils.general.CommonConstants;
 import com.evertrend.tiger.device.R;
+import com.evertrend.tiger.device.activity.DeviceLocationActivity;
 import com.evertrend.tiger.device.activity.DeviceMainActivity;
 import com.evertrend.tiger.common.bean.Device;
 import com.evertrend.tiger.device.bean.event.DeviceListEvent;
@@ -58,6 +60,15 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.ViewHold
                 mContext.startActivity(intent);
                 EventBus.getDefault().postSticky(new DeviceMessageEvent(device));
                 EventBus.getDefault().postSticky(new DeviceListEvent(mDeviceList));
+            }
+        });
+        viewHolder.iv_location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Device device = mDeviceList.get(viewHolder.getAdapterPosition());
+                Intent intent = new Intent(mContext, DeviceLocationActivity.class);
+                intent.putExtra("device", device);
+                mContext.startActivity(intent);
             }
         });
 
@@ -196,6 +207,7 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.ViewHold
         TextView tv_device_battery;
         TextView tv_device_current_task;
         ImageView deviceType;
+        ImageView iv_location;
         View deviceViwe;
 
         public ViewHolder(@NonNull View itemView) {
@@ -209,6 +221,7 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.ViewHold
             tv_device_battery = itemView.findViewById(R.id.tv_device_battery);
             tv_device_current_task = itemView.findViewById(R.id.tv_device_current_task);
             deviceType = itemView.findViewById(R.id.iv_device_type);
+            iv_location = itemView.findViewById(R.id.iv_location);
         }
     }
 }

@@ -113,4 +113,14 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <ImageView
+        android:id="@+id/iv_location"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="@dimen/yl_common_margin_10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/iv_device_type"
+        app:layout_constraintBottom_toBottomOf="@id/iv_device_type"
+        android:background="@drawable/yl_device_ic_location_black_24dp"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

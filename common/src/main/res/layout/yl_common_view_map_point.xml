@@ -15,6 +15,7 @@
         android:textSize="@dimen/yl_common_size_15" />
 
     <ImageView
+        android:id="@+id/iv_device"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"

@@ -141,4 +141,5 @@
     <string name="yl_device_connected">已连接</string>
     <string name="yl_device_disconnect">未连接</string>
     <string name="yl_device_add_device_success">添加设备成功</string>
+    <string name="yl_device_location">位置</string>
 </resources>
