@@ -7,6 +7,7 @@
     <dimen name="yl_common_margin_20">20dp</dimen>
     <dimen name="yl_common_margin_10">10dp</dimen>
     <dimen name="yl_common_margin_5">5dp</dimen>
+    <dimen name="yl_common_margin_3">3dp</dimen>
     <dimen name="yl_common_size_15">15sp</dimen>
     <dimen name="yl_common_size_20">20sp</dimen>
     <dimen name="yl_common_size_25">25sp</dimen>

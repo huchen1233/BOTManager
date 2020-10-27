@@ -626,10 +626,6 @@ public class TaskUtils {
                                     if (newStatus != 0) {
                                         EventBus.getDefault().post(new SetStatusSuccessEvent(mark, newStatus));
                                     }
-                                } else if ("sw_horn".equals(mark)) {
-                                    if (newStatus == 0) {
-                                        EventBus.getDefault().post(new SetStatusSuccessEvent(mark, newStatus));
-                                    }
                                 } else {
 //                                    if (status == newStatus) {//APP设置设备状态到服务器与工控机修改设备在服务器状态一致，认为操作成功
                                         EventBus.getDefault().post(new SetStatusSuccessEvent(mark, newStatus));

@@ -52,6 +52,7 @@ public class DeviceControlFragment extends BaseFragment implements RadioGroup.On
     private ProgressDialog mDialogOperation;
 
     private ScheduledThreadPoolExecutor scheduledThreadReadControlStatus;
+    private int count = 0;
 
     @Nullable
     @Override
@@ -67,7 +68,11 @@ public class DeviceControlFragment extends BaseFragment implements RadioGroup.On
     public void onEventMainThread(DeviceMessageEvent event) {
         mDevice = event.getMessage();
         setUnListener();
-        updateStatus(mDevice);
+        if (count%50==0) {
+            updateStatus(mDevice);
+        }
+        count++;
+//        updateStatus(mDevice);
         showDeviceParts(mDevice);
         EventBus.getDefault().removeStickyEvent(event);
         setListener();
