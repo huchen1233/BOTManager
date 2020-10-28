@@ -58,7 +58,7 @@ public class ActionControllerView extends View {
 
     Matrix mMapMatrix;
 
-    private int unselectedColor = 0xff000000;
+    private int unselectedColor = 0x66ff0000;
     private int selectedColor = 0xffff0000;
     private int directionColor = 0xffffffff;
 
