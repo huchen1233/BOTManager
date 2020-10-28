@@ -1,11 +1,13 @@
 package com.evertrend.tiger.common.utils.network;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.baidu.mapapi.model.LatLng;
+import com.evertrend.tiger.common.activity.MapActivity;
 import com.evertrend.tiger.common.bean.BaseTrace;
 import com.evertrend.tiger.common.bean.Device;
 import com.evertrend.tiger.common.bean.DeviceGrant;
@@ -44,6 +46,8 @@ import com.evertrend.tiger.common.bean.event.map.SaveTraceSpotEvent;
 import com.evertrend.tiger.common.bean.event.map.SaveTraceSpotListCompleteEvent;
 import com.evertrend.tiger.common.bean.event.map.SaveTraceSpotListEvent;
 import com.evertrend.tiger.common.bean.event.map.SaveVirtualTrackEvent;
+import com.evertrend.tiger.common.bean.event.uploadPathPicFailEvent;
+import com.evertrend.tiger.common.bean.event.uploadPathPicSuccessEvent;
 import com.evertrend.tiger.common.bean.mapview.MapView;
 import com.evertrend.tiger.common.utils.general.AppSharePreference;
 import com.evertrend.tiger.common.utils.general.CommonConstants;
@@ -57,12 +61,61 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.litepal.LitePal;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class CommTaskUtils {
     public static final String TAG = CommTaskUtils.class.getSimpleName();
+
+    public static class TaskUploadMapPic implements Runnable {
+        private Context context;
+        private MapPages mapPages;
+
+        public TaskUploadMapPic(Context context, MapPages mapPages) {
+            this.context = context;
+            this.mapPages = mapPages;
+        }
+
+        @Override
+        public void run() {
+            startUploadMapPic();
+        }
+
+        private void startUploadMapPic() {
+            HashMap<String, String> map = new HashMap<>();
+            map.put(CommonNetReq.TOKEN, AppSharePreference.getAppSharedPreference().loadUserToken());
+            map.put(CommonNetReq.MAP_PAGE, String.valueOf(mapPages.getId()));
+            File file = new File(context.getFilesDir() + "/"+mapPages.getName()+"_"+mapPages.getId()+".png");
+            OKHttpManager.getInstance().sendFileForm(OKHttpManager.MEDIA_TYE_PNG, CommonNetReq.NET_UPLOAD_MAP_PIC, map, file, new OKHttpManager.FuncJsonObj() {
+                @Override
+                public void onResponse(com.alibaba.fastjson.JSONObject jsonObject) throws com.alibaba.fastjson.JSONException {
+                    try {
+                        LogUtil.d(TAG, "uploadMapPic:"+jsonObject.getString(CommonNetReq.RESULT_DESC));
+                        switch (jsonObject.getIntValue(CommonNetReq.RESULT_CODE)) {
+                            case CommonNetReq.CODE_SUCCESS:
+                                EventBus.getDefault().post(new uploadPathPicSuccessEvent());
+                                break;
+                            case CommonNetReq.ERR_CODE_SAVE_FAIL:
+                                EventBus.getDefault().post(new uploadPathPicFailEvent());
+                                break;
+                            default:
+                                break;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(TAG, "出错：解析数据失败");
+                    }
+                }
+            }, new OKHttpManager.FuncFailure() {
+                @Override
+                public void onFailure() {
+                    Log.e(TAG, "出错：请求网络失败");
+                }
+            });
+        }
+    }
 
     public static class TaskGetMapPagesAllPath implements Runnable {
         private Device device;

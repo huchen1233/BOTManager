@@ -19,6 +19,7 @@ import com.evertrend.tiger.common.R;
 import com.evertrend.tiger.common.adapter.IPConnectionHistoryAdapter;
 import com.evertrend.tiger.common.bean.Device;
 import com.evertrend.tiger.common.bean.IPConnection;
+import com.evertrend.tiger.common.bean.MapPages;
 import com.evertrend.tiger.common.bean.event.IPConnectionChoiceEvent;
 import com.evertrend.tiger.common.bean.event.slamtec.ConnectedEvent;
 import com.evertrend.tiger.common.utils.general.LogUtil;
@@ -40,6 +41,7 @@ public class TestActivity extends AppCompatActivity {
     private RecyclerView rlv_connection_history;
 
     private Device device;
+    private MapPages mapPages;
     private List<IPConnection> connectionList;
     private IPConnectionHistoryAdapter historyAdapter;
 
@@ -49,6 +51,7 @@ public class TestActivity extends AppCompatActivity {
         setContentView(R.layout.yl_common_activity_test);
         EventBus.getDefault().register(this);
         device = (Device) getIntent().getSerializableExtra("device");
+        mapPages = (MapPages) getIntent().getSerializableExtra("mappage");
         et_ip = findViewById(R.id.et_ip);
         btn_connect = findViewById(R.id.btn_connect);
         btn_connect.setOnClickListener(new View.OnClickListener() {
@@ -64,6 +67,7 @@ public class TestActivity extends AppCompatActivity {
                     Intent intent = new Intent();
                     intent.putExtra("ip", ip);
                     intent.putExtra("device", device);
+                    intent.putExtra("mappage", mapPages);
 //                    intent.setAction("android.intent.action.VirtualWallActivity");
                     intent.setAction("android.intent.action.MapActivity");
                     startActivity(intent);

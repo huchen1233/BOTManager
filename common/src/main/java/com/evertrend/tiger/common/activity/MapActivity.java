@@ -4,9 +4,11 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -19,11 +21,15 @@ import android.widget.Toast;
 
 import com.evertrend.tiger.common.R;
 import com.evertrend.tiger.common.bean.Device;
+import com.evertrend.tiger.common.bean.MapPages;
 import com.evertrend.tiger.common.bean.RobotAction;
+import com.evertrend.tiger.common.bean.event.SaveMapPageEvent;
 import com.evertrend.tiger.common.bean.event.ServerMsgEvent;
 import com.evertrend.tiger.common.bean.event.map.AddNavigationLocation;
 import com.evertrend.tiger.common.bean.event.slamtec.ConnectedEvent;
 import com.evertrend.tiger.common.bean.event.slamtec.ConnectionLostEvent;
+import com.evertrend.tiger.common.bean.event.uploadPathPicFailEvent;
+import com.evertrend.tiger.common.bean.event.uploadPathPicSuccessEvent;
 import com.evertrend.tiger.common.bean.mapview.MapView;
 import com.evertrend.tiger.common.bean.mapview.utils.RadianUtil;
 import com.evertrend.tiger.common.bean.mapview.utils.SlamGestureDetector;
@@ -32,7 +38,11 @@ import com.evertrend.tiger.common.utils.general.AppSharePreference;
 import com.evertrend.tiger.common.utils.general.DialogUtil;
 import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.common.utils.general.Utils;
+import com.evertrend.tiger.common.utils.network.CommTaskUtils;
+import com.evertrend.tiger.common.utils.network.CommonNetReq;
+import com.evertrend.tiger.common.utils.network.OKHttpManager;
 import com.evertrend.tiger.common.widget.ActionControllerView;
+import com.evertrend.tiger.common.widget.MapBottomPopupView;
 import com.evertrend.tiger.common.widget.MapSettingsBottomPopupView;
 import com.lxj.xpopup.XPopup;
 import com.slamtec.slamware.action.Path;
@@ -52,10 +62,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+import static android.graphics.Bitmap.Config.ARGB_8888;
 
 public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener, ActionControllerView.LongClickRepeatListener, View.OnClickListener {
     public static final String TAG = MapActivity.class.getCanonicalName();
@@ -76,9 +93,14 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
     private Intent intent;
     private String ip = "192.168.0.129";
     private Device device;
+    private MapPages mapPages;
+    private boolean saveMapPic = false;
 
     private float speed = 0.7f;
 //    private static final String IP = "192.168.0.129";
+    private MapBottomPopupView mapBottomPopupView;
+
+    private ScheduledThreadPoolExecutor scheduledThreadUploadMapPic;
 
     private Runnable mRobotStateUpdateRunnable = new Runnable() {
 
@@ -138,6 +160,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         setContentView(R.layout.yl_common_activity_map);
         initView();
         device = (Device) getIntent().getSerializableExtra("device");
+        mapPages = (MapPages) getIntent().getSerializableExtra("mappage");
         ip = getIntent().getStringExtra("ip");
         EventBus.getDefault().register(this);
         mAgent = getEvertrendAgent();
@@ -161,6 +184,8 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
             new XPopup.Builder(this)
                     .asCustom(new MapSettingsBottomPopupView(this, device, mAgent, mv_map))
                     .show();
+        } else if (item.getItemId() == R.id.item_save_map) {
+            showEditDialog();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -179,6 +204,21 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+        stopUploadMapPicTimer();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(SaveMapPageEvent event) {
+        mapPages = event.getMapPages();
+        saveMapPic = true;
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(uploadPathPicSuccessEvent event) {
+        stopUploadMapPicTimer();
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(uploadPathPicFailEvent event) {
+        stopUploadMapPicTimer();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -241,8 +281,16 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
 //        mv_map.setMap(map);
     }
 
+    private void showEditDialog() {
+        mapBottomPopupView = new MapBottomPopupView(this, device, mapPages);
+        new XPopup.Builder(this)
+                .autoOpenSoftInput(true)
+                .asCustom(mapBottomPopupView)
+                .show();
+    }
+
     private void updateNavigationPathPlanning(JSONArray jsonArray) throws JSONException {
-        LogUtil.d(TAG, "planning: "+jsonArray.toString());
+//        LogUtil.d(TAG, "planning: "+jsonArray.toString());
         Vector<Location> points = new Vector(jsonArray.length());
         for (int i = 0; i < jsonArray.length(); i++){
             JSONArray poinJA = jsonArray.getJSONArray(i);
@@ -310,6 +358,51 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
 //        LogUtil.d(TAG, "getMapArea: "+map.getMapArea());
 //        LogUtil.d(TAG, "data: "+ Arrays.toString(data));
         mv_map.setMap(map);
+        if (saveMapPic) {
+            saveMapPic = false;
+            saveMapPic(map);
+        }
+    }
+
+    private void saveMapPic(Map map) {
+        int mapWidth =0;
+        int mapHeight = 0;
+        mapWidth = map.getDimension().getWidth();
+        mapHeight = map.getDimension().getHeight();
+//        LogUtil.d(TAG, "mapWidth:"+mapWidth);
+//        LogUtil.d(TAG, "mapHeight:"+mapHeight);
+        Bitmap bitmap = Bitmap.createBitmap(mapWidth, mapHeight, ARGB_8888);
+        for (int posY = 0; posY < mapHeight; ++posY) {
+            for (int posX = 0; posX < mapWidth; ++posX) {
+                // get map pixel
+                byte[] data = map.getData();
+                // (-128, 127) to (0, 255)
+                int rawColor = data[posX + posY * mapWidth];
+                rawColor += 128;
+                // fill the bitmap data, by data of B/G/R/A
+                bitmap.setPixel(posX, posY, rawColor | rawColor<<8 | rawColor<<16 | 0xC0<<24);
+            }
+        }
+
+//        LogUtil.d(TAG, "path: "+ this.getFilesDir());
+        boolean saveStatus = false;
+        try {
+            saveStatus = Utils.saveBitmap(bitmap, String.valueOf(this.getFilesDir()), mapPages.getName()+"_"+mapPages.getId()+".png");
+            LogUtil.d(TAG, "saveStatus: "+saveStatus);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (saveStatus) {
+            uploadMapPic();
+        } else {
+//            EventBus.getDefault().post(new uploadPathPicFailEvent());
+        }
+    }
+
+    private void uploadMapPic() {
+        scheduledThreadUploadMapPic = new ScheduledThreadPoolExecutor(3);
+        scheduledThreadUploadMapPic.scheduleAtFixedRate(new CommTaskUtils.TaskUploadMapPic(this, mapPages),
+                0, 6, TimeUnit.SECONDS);
     }
 
     private void initView() {
@@ -439,6 +532,13 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
             intent.putExtra("device", device);
             intent.setAction("android.intent.action.VirtualTrackActivity");
             startActivity(intent);
+        }
+    }
+
+    private void stopUploadMapPicTimer() {
+        if (scheduledThreadUploadMapPic != null) {
+            scheduledThreadUploadMapPic.shutdownNow();
+            scheduledThreadUploadMapPic = null;
         }
     }
 }
