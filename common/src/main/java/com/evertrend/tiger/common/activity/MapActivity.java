@@ -26,6 +26,7 @@ import com.evertrend.tiger.common.bean.RobotAction;
 import com.evertrend.tiger.common.bean.event.SaveMapPageEvent;
 import com.evertrend.tiger.common.bean.event.ServerMsgEvent;
 import com.evertrend.tiger.common.bean.event.map.AddNavigationLocation;
+import com.evertrend.tiger.common.bean.event.map.RelocationOrSetCurrentMapEvent;
 import com.evertrend.tiger.common.bean.event.slamtec.ConnectedEvent;
 import com.evertrend.tiger.common.bean.event.slamtec.ConnectionLostEvent;
 import com.evertrend.tiger.common.bean.event.uploadPathPicFailEvent;
@@ -35,6 +36,7 @@ import com.evertrend.tiger.common.bean.mapview.utils.RadianUtil;
 import com.evertrend.tiger.common.bean.mapview.utils.SlamGestureDetector;
 import com.evertrend.tiger.common.utils.EvertrendAgent;
 import com.evertrend.tiger.common.utils.general.AppSharePreference;
+import com.evertrend.tiger.common.utils.general.CommonConstants;
 import com.evertrend.tiger.common.utils.general.DialogUtil;
 import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.common.utils.general.Utils;
@@ -101,6 +103,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
     private MapBottomPopupView mapBottomPopupView;
 
     private ScheduledThreadPoolExecutor scheduledThreadUploadMapPic;
+    private ScheduledThreadPoolExecutor scheduledThreadRelocationMapPages;
 
     private Runnable mRobotStateUpdateRunnable = new Runnable() {
 
@@ -165,7 +168,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         EventBus.getDefault().register(this);
         mAgent = getEvertrendAgent();
         mAgent.connectTo(ip, device.getDevice_id(), "1993");
-
+        startRelocationOrSetCurrentMapOrAutoRecordPath(CommonConstants.TYPE_SET_CURRENT_MAP, 1);
 //        String str = Utils.decompress("FF04000564FF07");
 //        LogUtil.d(TAG, "str: "+str);
     }
@@ -205,6 +208,13 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
             EventBus.getDefault().unregister(this);
         }
         stopUploadMapPicTimer();
+        stopRelocationMapPagesTimer();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(RelocationOrSetCurrentMapEvent messageEvent) {
+        LogUtil.i(this, TAG, "===RelocationOrSetCurrentMapEvent===");
+        stopRelocationMapPagesTimer();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -399,12 +409,6 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         }
     }
 
-    private void uploadMapPic() {
-        scheduledThreadUploadMapPic = new ScheduledThreadPoolExecutor(3);
-        scheduledThreadUploadMapPic.scheduleAtFixedRate(new CommTaskUtils.TaskUploadMapPic(this, mapPages),
-                0, 6, TimeUnit.SECONDS);
-    }
-
     private void initView() {
         tb_map = findViewById(R.id.tb_map);
         tb_map.setTitle("map");
@@ -532,6 +536,25 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
             intent.putExtra("device", device);
             intent.setAction("android.intent.action.VirtualTrackActivity");
             startActivity(intent);
+        }
+    }
+
+    private void startRelocationOrSetCurrentMapOrAutoRecordPath(int type, int status) {
+        if (scheduledThreadRelocationMapPages == null) scheduledThreadRelocationMapPages = new ScheduledThreadPoolExecutor(4);
+        scheduledThreadRelocationMapPages.scheduleAtFixedRate(new CommTaskUtils.TaskRelocationOrSetCurrentMap(device, mapPages, type, status),
+                0, 5, TimeUnit.SECONDS);
+    }
+
+    private void uploadMapPic() {
+        scheduledThreadUploadMapPic = new ScheduledThreadPoolExecutor(3);
+        scheduledThreadUploadMapPic.scheduleAtFixedRate(new CommTaskUtils.TaskUploadMapPic(this, mapPages),
+                0, 6, TimeUnit.SECONDS);
+    }
+
+    private void stopRelocationMapPagesTimer() {
+        if (scheduledThreadRelocationMapPages != null) {
+            scheduledThreadRelocationMapPages.shutdownNow();
+            scheduledThreadRelocationMapPages = null;
         }
     }
 
