@@ -189,6 +189,8 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
                     .show();
         } else if (item.getItemId() == R.id.item_save_map) {
             showEditDialog();
+        } else if (item.getItemId() == R.id.item_set_centred) {
+            mv_map.setCentred();
         }
         return super.onOptionsItemSelected(item);
     }
