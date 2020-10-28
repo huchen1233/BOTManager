@@ -28,6 +28,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/mv_map"
+        android:textColor="@color/yl_common_color_green"
         android:text="0,0,0"/>
 
     <RadioGroup
