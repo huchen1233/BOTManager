@@ -13,7 +13,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.evertrend.tiger.common.activity.GpsFenceActivity;
 import com.evertrend.tiger.common.bean.event.ChoiceDeviceEvent;
 import com.evertrend.tiger.common.utils.general.CommonConstants;
 import com.evertrend.tiger.device.R;
@@ -164,31 +163,31 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.ViewHold
         switch (device.getSet_current_task()) {
             case 0:
                 holder.tv_device_current_task.setCompoundDrawablesWithIntrinsicBounds(
-                        mContext.getResources().getDrawable(R.drawable.yl_device_standby), null, null, null);
+                        mContext.getResources().getDrawable(R.drawable.yl_device_standby_on), null, null, null);
                 break;
             case 1:
                 holder.tv_device_current_task.setCompoundDrawablesWithIntrinsicBounds(
-                        mContext.getResources().getDrawable(R.drawable.yl_device_garage), null, null, null);
+                        mContext.getResources().getDrawable(R.drawable.yl_device_garage_on), null, null, null);
                 break;
             case 2:
                 holder.tv_device_current_task.setCompoundDrawablesWithIntrinsicBounds(
-                        mContext.getResources().getDrawable(R.drawable.yl_device_recharge), null, null, null);
+                        mContext.getResources().getDrawable(R.drawable.yl_device_recharge_on), null, null, null);
                 break;
             case 3:
                 holder.tv_device_current_task.setCompoundDrawablesWithIntrinsicBounds(
-                        mContext.getResources().getDrawable(R.drawable.yl_device_add_water), null, null, null);
+                        mContext.getResources().getDrawable(R.drawable.yl_device_add_water_on), null, null, null);
                 break;
             case 4:
                 holder.tv_device_current_task.setCompoundDrawablesWithIntrinsicBounds(
-                        mContext.getResources().getDrawable(R.drawable.yl_device_empty_trash), null, null, null);
+                        mContext.getResources().getDrawable(R.drawable.yl_device_empty_trash_on), null, null, null);
                 break;
             case 5:
                 holder.tv_device_current_task.setCompoundDrawablesWithIntrinsicBounds(
-                        mContext.getResources().getDrawable(R.drawable.yl_device_work), null, null, null);
+                        mContext.getResources().getDrawable(R.drawable.yl_device_work_on), null, null, null);
                 break;
             default:
                 holder.tv_device_current_task.setCompoundDrawablesWithIntrinsicBounds(
-                        mContext.getResources().getDrawable(R.drawable.yl_device_standby), null, null, null);
+                        mContext.getResources().getDrawable(R.drawable.yl_device_standby_on), null, null, null);
                 break;
         }
     }

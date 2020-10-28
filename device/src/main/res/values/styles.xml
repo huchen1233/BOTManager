@@ -13,4 +13,9 @@
         <item name="android:track">@null</item>
         <item name="android:layout_margin">@dimen/yl_common_margin_3</item>
     </style>
+    <style name="yl_device_radio_button_style">
+        <item name="android:button">@null</item>
+        <item name="android:track">@null</item>
+        <item name="android:layout_margin">@dimen/yl_common_margin_5</item>
+    </style>
 </resources>

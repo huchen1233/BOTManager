@@ -8,4 +8,5 @@
     <color name="yl_common_color_white_gray">#B6B6B6</color>
     <color name="yl_common_color_yellow">#FFFF66</color>
     <color name="yl_common_color_red">#FF0000</color>
+    <color name="yl_common_color_green">#00FF00</color>
 </resources>
