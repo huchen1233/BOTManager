@@ -161,9 +161,9 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.yl_common_activity_map);
-        initView();
         device = (Device) getIntent().getSerializableExtra("device");
         mapPages = (MapPages) getIntent().getSerializableExtra("mappage");
+        initView();
         ip = getIntent().getStringExtra("ip");
         EventBus.getDefault().register(this);
         mAgent = getEvertrendAgent();
@@ -357,9 +357,11 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         if (isCompress) {
             long startT = System.currentTimeMillis();
             data = Utils.hexStringToByte(Utils.multiThreadDecompress(jsonObject.getString(RobotAction.DATA)));
-//            LogUtil.d(TAG, "time all: "+(System.currentTimeMillis() - startT));
+            LogUtil.d(TAG, "time all: "+(System.currentTimeMillis() - startT));
         } else {//20毫秒左右
+            long startT = System.currentTimeMillis();
             data = Utils.hexStringToByte(jsonObject.getString(RobotAction.DATA));
+            LogUtil.d(TAG, "time all: "+(System.currentTimeMillis() - startT));
         }
 //        LogUtil.d(TAG, "length: "+data.length);
         Map map = new Map(origin, dimension, resolution, timestamp, data);
@@ -413,7 +415,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
 
     private void initView() {
         tb_map = findViewById(R.id.tb_map);
-        tb_map.setTitle("map");
+        tb_map.setTitle(mapPages.getName());
         //设置左侧导航图标
         tb_map.setNavigationIcon(R.drawable.yl_common_ic_arrow_back_white_36dp);
         setSupportActionBar(tb_map);
