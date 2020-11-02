@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.evertrend.tiger.common.R;
 import com.evertrend.tiger.common.bean.Device;
 import com.evertrend.tiger.common.bean.MapPages;
-import com.evertrend.tiger.common.bean.Robot;
 import com.evertrend.tiger.common.bean.RobotAction;
 import com.evertrend.tiger.common.bean.event.SaveMapPageEvent;
 import com.evertrend.tiger.common.bean.event.ServerMsgEvent;
@@ -257,12 +256,13 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
             if (jsonObject.getInt(RobotAction.RESULT_CODE) == 0) {
                 switch (jsonObject.getInt(RobotAction.CMD_CODE)) {
                     case RobotAction.CMD.GET_MAP:
-                        updateMap(jsonObject.getJSONObject(RobotAction.DATA), false);
+                        updateMap(jsonObject.getJSONObject(RobotAction.DATA), false, false);
                         break;
                     case RobotAction.CMD.GET_MAP_CONDENSE:
-                        updateMap(jsonObject.getJSONObject(RobotAction.DATA), true);
+                        updateMap(jsonObject.getJSONObject(RobotAction.DATA), true, false);
+                        break;
                     case RobotAction.CMD.GET_MAP_CON_BIN:
-                        updateMapBin(jsonObject.getJSONObject(RobotAction.DATA), true);
+                        updateMap(jsonObject.getJSONObject(RobotAction.DATA), true, true);
                         break;
                     case RobotAction.CMD.GET_LASER_SCAN:
                         updateLaserScan(jsonObject.getJSONObject(RobotAction.DATA));
@@ -286,30 +286,6 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         }
 //        Map map = event.getMap();
 //        mv_map.setMap(map);
-    }
-
-    private void updateMapBin(JSONObject jsonObject, boolean b) throws JSONException {
-//        LogUtil.d(TAG, "updateMap: "+jsonObject.toString());
-        PointF origin = new PointF((float)jsonObject.getDouble(RobotAction.ORIGIN_X), (float)jsonObject.getDouble(RobotAction.ORIGIN_Y));
-        Size dimension = new Size(jsonObject.getInt(RobotAction.WIDTH), jsonObject.getInt(RobotAction.HEIGHT));
-//        PointF resolution = new PointF(0.05f, 0.05f);
-        PointF resolution = new PointF((float)jsonObject.getDouble(RobotAction.RESOLUTION), (float)jsonObject.getDouble(RobotAction.RESOLUTION));
-        long timestamp = System.currentTimeMillis();
-        byte[] data = null;
-        long startT = System.currentTimeMillis();
-        byte[] test = Base64.decode(jsonObject.getString(RobotAction.DATA), Base64.DEFAULT);
-//        LogUtil.d(TAG, "data length: "+test.length);
-        data = Utils.decompress(test);
-        LogUtil.d(TAG, "time all: "+(System.currentTimeMillis() - startT));
-//        for (byte b : data) {
-//            LogUtil.d(TAG, "b: "+b);
-//        }
-//        LogUtil.d(TAG, "data length: "+data.length);
-        Map map = new Map(origin, dimension, resolution, timestamp, data);
-//        LogUtil.d(TAG, "getDimension: "+map.getDimension().getWidth()+","+map.getDimension().getHeight());
-//        LogUtil.d(TAG, "getOrigin: "+map.getOrigin().getX()+","+map.getOrigin().getY());
-//        LogUtil.d(TAG, "getResolution: "+map.getResolution().getX()+","+map.getResolution().getY());
-        mv_map.setMap(map);
     }
 
     private void showEditDialog() {
@@ -362,7 +338,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         mv_map.setLaserScan(laserScan);
     }
 
-    private void updateMap(JSONObject jsonObject, boolean isCompress) throws JSONException {
+    private void updateMap(JSONObject jsonObject, boolean isCompress, boolean isBin) throws JSONException {
 //        LogUtil.d(TAG, "updateMap: "+jsonObject.toString());
         PointF origin = new PointF((float)jsonObject.getDouble(RobotAction.ORIGIN_X), (float)jsonObject.getDouble(RobotAction.ORIGIN_Y));
         Size dimension = new Size(jsonObject.getInt(RobotAction.WIDTH), jsonObject.getInt(RobotAction.HEIGHT));
@@ -376,7 +352,11 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         //multiThreadDecompress开启过多线程，出现Background partial concurrent mark sweep GC freed 30280(1214KB) AllocSpace objects, 27(6MB) LOS objects, 9% free, 38MB/42MB, paused 1.280ms total 116.615ms
         if (isCompress) {
             long startT = System.currentTimeMillis();
-            data = Utils.hexStringToByte(Utils.multiThreadDecompress(jsonObject.getString(RobotAction.DATA)));
+            if (isBin) {
+                data = Utils.decompress(Base64.decode(jsonObject.getString(RobotAction.DATA), Base64.DEFAULT));
+            } else {
+                data = Utils.hexStringToByte(Utils.multiThreadDecompress(jsonObject.getString(RobotAction.DATA)));
+            }
             LogUtil.d(TAG, "time all: "+(System.currentTimeMillis() - startT));
         } else {//20毫秒左右，地图越大时间越长，
 //            LogUtil.d(TAG, "length: "+jsonObject.getString(RobotAction.DATA).length());

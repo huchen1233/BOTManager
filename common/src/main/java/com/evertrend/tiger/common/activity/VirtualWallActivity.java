@@ -3,6 +3,7 @@ package com.evertrend.tiger.common.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Base64;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RadioGroup;
@@ -155,11 +156,13 @@ public class VirtualWallActivity extends BaseActivity implements RadioGroup.OnCh
             if (jsonObject.getInt(RobotAction.RESULT_CODE) == 0) {
                 switch (jsonObject.getInt(RobotAction.CMD_CODE)) {
                     case RobotAction.CMD.GET_MAP:
-                        updateMap(jsonObject.getJSONObject(RobotAction.DATA), false);
+                        updateMap(jsonObject.getJSONObject(RobotAction.DATA), false, false);
                         break;
                     case RobotAction.CMD.GET_MAP_CONDENSE:
+                        updateMap(jsonObject.getJSONObject(RobotAction.DATA), true, false);
+                        break;
                     case RobotAction.CMD.GET_MAP_CON_BIN:
-                        updateMap(jsonObject.getJSONObject(RobotAction.DATA), true);
+                        updateMap(jsonObject.getJSONObject(RobotAction.DATA), true, true);
                         break;
                     case RobotAction.CMD.GET_VIRTUAL_WALL:
                         updateVWalls(jsonObject.getJSONArray(RobotAction.DATA));
@@ -188,7 +191,7 @@ public class VirtualWallActivity extends BaseActivity implements RadioGroup.OnCh
         mv_map.setVwalls(lines);
     }
 
-    private void updateMap(JSONObject jsonObject, boolean isCompress) throws JSONException {
+    private void updateMap(JSONObject jsonObject, boolean isCompress, boolean isBin) throws JSONException {
 //        LogUtil.d(TAG, "updateMap: "+jsonObject.toString());
         PointF origin = new PointF((float)jsonObject.getDouble(RobotAction.ORIGIN_X), (float)jsonObject.getDouble(RobotAction.ORIGIN_Y));
         Size dimension = new Size(jsonObject.getInt(RobotAction.WIDTH), jsonObject.getInt(RobotAction.HEIGHT));
@@ -196,7 +199,11 @@ public class VirtualWallActivity extends BaseActivity implements RadioGroup.OnCh
         long timestamp = System.currentTimeMillis();
         byte[] data = null;
         if (isCompress) {
-            data = Utils.hexStringToByte(Utils.multiThreadDecompress(jsonObject.getString(RobotAction.DATA)));
+            if (isBin) {
+                data = Utils.decompress(Base64.decode(jsonObject.getString(RobotAction.DATA), Base64.DEFAULT));
+            } else {
+                data = Utils.hexStringToByte(Utils.multiThreadDecompress(jsonObject.getString(RobotAction.DATA)));
+            }
         } else {
             data = Utils.hexStringToByte(jsonObject.getString(RobotAction.DATA));
         }
