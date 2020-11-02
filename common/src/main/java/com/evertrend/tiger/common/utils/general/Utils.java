@@ -22,10 +22,12 @@ import com.slamtec.slamware.robot.Rotation;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -39,6 +41,55 @@ import java.util.regex.Pattern;
 
 public class Utils {
     private static final String TAG = "Utils";
+
+    /**
+     * byte数组中取int数值，本方法适用于(低位在前，高位在后)的顺序，和和intToBytes（）配套使用
+     *
+     * @param src
+     *            byte数组
+     * @param offset
+     *            从数组的第offset位开始
+     * @return int数值
+     */
+    public static int bytesToInt(byte[] src, int offset) {
+        int value;
+        value = (int) ((src[offset] & 0xFF)
+                | ((src[offset+1] & 0xFF)<<8)
+                | ((src[offset+2] & 0xFF)<<16)
+                | ((src[offset+3] & 0xFF)<<24));
+        return value;
+    }
+
+    /**
+     * byte数组中取int数值，本方法适用于(低位在后，高位在前)的顺序。和intToBytes2（）配套使用
+     */
+    public static int bytesToInt2(byte[] src, int offset) {
+        int value;
+        value = (int) ( ((src[offset] & 0xFF)<<24)
+                |((src[offset+1] & 0xFF)<<16)
+                |((src[offset+2] & 0xFF)<<8)
+                |(src[offset+3] & 0xFF));
+        return value;
+    }
+
+    /**
+     * byte数组中取int数值，本方法适用于(低位在后，高位在前)的顺序。和intToBytes2（）配套使用
+     */
+    public static int bytesToInt2b(byte[] src, int offset) {
+        int value;
+        value = (int) ( ((src[offset] & 0xFF)<<8)
+                |((src[offset+1] & 0xFF)));
+        return value;
+    }
+
+    /**
+     * byte数组中取int数值，本方法适用于(低位在后，高位在前)的顺序。和intToBytes2（）配套使用
+     */
+    public static int bytesToInt1b(byte[] src, int offset) {
+        int value;
+        value = (int) (src[offset] & 0xFF);
+        return value;
+    }
 
     public static boolean isIP(String addr)
     {
@@ -164,6 +215,46 @@ public class Utils {
             sb.append(map.get(i));
         }
         return sb.toString();
+    }
+
+    public static byte[] decompress(byte[] source){
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        int length = source.length - 1;
+        int i = 0;
+//        LogUtil.d(TAG, "byte: "+source[0]);
+//        LogUtil.d(TAG, "string: "+String.valueOf(source[0]));
+        try {
+            while (i < length) {
+                byte b = source[i];
+//                LogUtil.d(TAG, "byte: "+b[0]);
+                if (b == -1) {//FF
+                    byte[] result = repeatByte(b, Utils.bytesToInt1b(source, i+1));
+                    outputStream.write(result);
+                    i+=2;
+                    continue;
+                } else if (b == 0) {//00
+                    byte[] result = repeatByte(b, Utils.bytesToInt1b(source, i+1));
+                    outputStream.write(result);
+                    i+=2;
+                    continue;
+                } else {
+                    outputStream.write(b);
+                    i+=1;
+                    continue;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return outputStream.toByteArray();
+    }
+
+    private static byte[] repeatByte(byte b, int num) {
+        ByteBuffer byteBuffer = ByteBuffer.allocate(num);
+        for (int i = 0; i < num; i++) {
+            byteBuffer.put(b);
+        }
+        return byteBuffer.array();
     }
 
     public static String decompress(String source) {

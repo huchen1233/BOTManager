@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -136,9 +137,9 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
 //                    mAgent.getHomePose();
                 }
 //                mAgent.getMap(RobotAction.CMD.GET_MAP);
-                mAgent.getMap(RobotAction.CMD.GET_MAP_CONDENSE);
-//                mAgent.getMap(RobotAction.CMD.GET_MAP_CON_BIN);
-                SystemClock.sleep(200);
+//                mAgent.getMap(RobotAction.CMD.GET_MAP_CONDENSE);
+                mAgent.getMap(RobotAction.CMD.GET_MAP_CON_BIN);
+                SystemClock.sleep(1000);
                 mAgent.getRobotPose();
                 SystemClock.sleep(200);
                 mAgent.getLaserScan();
@@ -266,8 +267,9 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
                         updateMap(jsonObject.getJSONObject(RobotAction.DATA), false);
                         break;
                     case RobotAction.CMD.GET_MAP_CONDENSE:
-                    case RobotAction.CMD.GET_MAP_CON_BIN:
                         updateMap(jsonObject.getJSONObject(RobotAction.DATA), true);
+                    case RobotAction.CMD.GET_MAP_CON_BIN:
+                        updateMapBin(jsonObject.getJSONObject(RobotAction.DATA), true);
                         break;
                     case RobotAction.CMD.GET_LASER_SCAN:
                         updateLaserScan(jsonObject.getJSONObject(RobotAction.DATA));
@@ -291,6 +293,30 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         }
 //        Map map = event.getMap();
 //        mv_map.setMap(map);
+    }
+
+    private void updateMapBin(JSONObject jsonObject, boolean b) throws JSONException {
+//        LogUtil.d(TAG, "updateMap: "+jsonObject.toString());
+        PointF origin = new PointF((float)jsonObject.getDouble(RobotAction.ORIGIN_X), (float)jsonObject.getDouble(RobotAction.ORIGIN_Y));
+        Size dimension = new Size(jsonObject.getInt(RobotAction.WIDTH), jsonObject.getInt(RobotAction.HEIGHT));
+//        PointF resolution = new PointF(0.05f, 0.05f);
+        PointF resolution = new PointF((float)jsonObject.getDouble(RobotAction.RESOLUTION), (float)jsonObject.getDouble(RobotAction.RESOLUTION));
+        long timestamp = System.currentTimeMillis();
+        byte[] data = null;
+        long startT = System.currentTimeMillis();
+        byte[] test = Base64.decode(jsonObject.getString(RobotAction.DATA), Base64.DEFAULT);
+//        LogUtil.d(TAG, "data length: "+test.length);
+        data = Utils.decompress(test);
+        LogUtil.d(TAG, "time all: "+(System.currentTimeMillis() - startT));
+//        for (byte b : data) {
+//            LogUtil.d(TAG, "b: "+b);
+//        }
+//        LogUtil.d(TAG, "data length: "+data.length);
+        Map map = new Map(origin, dimension, resolution, timestamp, data);
+//        LogUtil.d(TAG, "getDimension: "+map.getDimension().getWidth()+","+map.getDimension().getHeight());
+//        LogUtil.d(TAG, "getOrigin: "+map.getOrigin().getX()+","+map.getOrigin().getY());
+//        LogUtil.d(TAG, "getResolution: "+map.getResolution().getX()+","+map.getResolution().getY());
+        mv_map.setMap(map);
     }
 
     private void showEditDialog() {
@@ -351,18 +377,23 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         PointF resolution = new PointF((float)jsonObject.getDouble(RobotAction.RESOLUTION), (float)jsonObject.getDouble(RobotAction.RESOLUTION));
         long timestamp = System.currentTimeMillis();
         byte[] data = null;
-        //decompress解压缩时间700-900毫秒，需要继续优化；
-        //新修改decompress需要400-550毫秒，随着地图增大，时间也会变长，需要继续优化；
-        //新修改multiThreadDecompress需要100-200毫秒，随着地图增大，开启更多线程，时间维持100-200毫秒，需要注意线程回收；
+        //1、decompress解压缩时间700-900毫秒，需要继续优化；
+        //2、新修改decompress需要400-550毫秒，随着地图增大，时间也会变长，需要继续优化；
+        //3、新修改multiThreadDecompress需要100-200毫秒，随着地图增大，开启更多线程，时间维持100-200毫秒，需要注意线程回收；
+        //multiThreadDecompress开启过多线程，出现Background partial concurrent mark sweep GC freed 30280(1214KB) AllocSpace objects, 27(6MB) LOS objects, 9% free, 38MB/42MB, paused 1.280ms total 116.615ms
         if (isCompress) {
             long startT = System.currentTimeMillis();
             data = Utils.hexStringToByte(Utils.multiThreadDecompress(jsonObject.getString(RobotAction.DATA)));
             LogUtil.d(TAG, "time all: "+(System.currentTimeMillis() - startT));
-        } else {//20毫秒左右
+        } else {//20毫秒左右，地图越大时间越长，
+//            LogUtil.d(TAG, "length: "+jsonObject.getString(RobotAction.DATA).length());
             long startT = System.currentTimeMillis();
             data = Utils.hexStringToByte(jsonObject.getString(RobotAction.DATA));
             LogUtil.d(TAG, "time all: "+(System.currentTimeMillis() - startT));
         }
+//        for (byte b : data) {
+//            LogUtil.d(TAG, "b: "+b);
+//        }
 //        LogUtil.d(TAG, "length: "+data.length);
         Map map = new Map(origin, dimension, resolution, timestamp, data);
 //        LogUtil.d(TAG, "getDimension: "+map.getDimension().getWidth()+","+map.getDimension().getHeight());

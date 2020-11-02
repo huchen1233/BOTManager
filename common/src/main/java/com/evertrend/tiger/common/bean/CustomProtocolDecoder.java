@@ -19,7 +19,10 @@
  */
 package com.evertrend.tiger.common.bean;
 
+import android.util.Base64;
+
 import com.evertrend.tiger.common.utils.general.LogUtil;
+import com.evertrend.tiger.common.utils.general.Utils;
 
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
@@ -56,6 +59,7 @@ public class CustomProtocolDecoder extends CumulativeProtocolDecoder {
     private boolean isHex = false;
     private int length = 0;
     private StringBuffer totalContent;
+    private byte[] totalContentByte;
 
     /**
      * The delimiter used to determinate when a line has been fully decoded
@@ -70,7 +74,7 @@ public class CustomProtocolDecoder extends CumulativeProtocolDecoder {
     /**
      * The default maximum Line length. Default to 1024.
      */
-    private int maxLineLength = 2 * 1024 * 1024;
+    private int maxLineLength = 20 * 1024 * 1024;
 
     /**
      * The default maximum buffer length. Default to 128 chars.
@@ -316,53 +320,77 @@ public class CustomProtocolDecoder extends CumulativeProtocolDecoder {
         return Integer.toHexString(Integer.parseInt(result, 2));
     }
 
+    public JSONObject bytesToJson(byte[] content) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(RobotAction.CMD_CODE, 0x2A);
+            jsonObject.put(RobotAction.RESULT_CODE, 0);
+            JSONObject objectData = new JSONObject();
+            objectData.put(RobotAction.RESOLUTION, txfloat(Utils.bytesToInt2b(content, 6), 1000));
+            objectData.put(RobotAction.WIDTH, Utils.bytesToInt2(content, 8));
+            objectData.put(RobotAction.HEIGHT, Utils.bytesToInt2(content, 12));
+            objectData.put(RobotAction.ORIGIN_X, txfloat(Utils.bytesToInt2(content, 16), 10000));
+            objectData.put(RobotAction.ORIGIN_Y, txfloat(Utils.bytesToInt2(content, 20), 10000));
+            objectData.put(RobotAction.ORIGIN_YAW, txfloat(Utils.bytesToInt2(content, 24), 100));
+            int length = content.length - 29;//28+1
+//            LogUtil.d(TAG, "length: "+length);
+            byte[] data = new byte[length];
+            System.arraycopy(content, 28, data, 0, length);
+//            LogUtil.d(TAG, "data length: "+data.length);
+//            String data = binData.substring(27*2 - 2, length*2 - 2);
+            objectData.put(RobotAction.DATA, Base64.encodeToString(data, Base64.DEFAULT));
+            jsonObject.put(RobotAction.TIME_STAMP, System.currentTimeMillis() / 1000);
+            jsonObject.put(RobotAction.DATA, objectData);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
+
     @Override
     protected boolean doDecode(IoSession session, IoBuffer in, ProtocolDecoderOutput out) throws Exception {
 //        LogUtil.d(TAG, "in.remaining(): " + in.remaining());
-        if (in.remaining() > 0) {
-            in.mark();//标记当前位置，以便reset
-            IoBuffer lengthB = in.getSlice(0, 4);
-            IoBuffer cmdB = in.getSlice(4, 1);
-            IoBuffer resultB = in.getSlice(5, 1);
-//            LogUtil.d(TAG, "cmd: " + cmdB.getHexDump());
-//            LogUtil.d(TAG, "result: " + resultB.getHexDump());
-//            in.reset();
-
-            if (("2A".equals(cmdB.getHexDump()) && "00".equals(resultB.getHexDump())) || isHex) {
-                isHex = true;
-                if (length == 0) {
-//                    LogUtil.d(TAG, "length hex: " + lengthB.getHexDump());
-                    length = Integer.valueOf(lengthB.getHexDump().replace(" ", ""), 16);
-//                    LogUtil.d(TAG, "length: " + length);
-                    totalContent = new StringBuffer(length);
-                }
-                String content = in.getHexDump();
-//                LogUtil.d(TAG, "hex: "+content);
-                totalContent.append(content);
-                totalContent.append(" ");
-                String[] tmp = totalContent.toString().trim().split(" ");
-//                LogUtil.d(TAG, "tmp length: " + tmp.length);
-                if (tmp.length >= length) {
-                    JSONObject jsonObject = strToJson(tmp, totalContent.toString().trim().replace(" ", ""));
-                    if (jsonObject != null) {
-                        out.write(jsonObject);
-                    }
-                    totalContent = null;
-                    isHex = false;
-                    length = 0;
-                    return true;
-                } else {
+        if(in.remaining() > 6){//前4字节是包头
+            //标记当前position的快照标记mark，以便后继的reset操作能恢复position位置
+            in.mark();
+            byte[] l = new byte[4];
+            in.get(l);
+            String cmdS = String.valueOf(in.get());
+            String resultS = String.valueOf(in.get());
+//            LogUtil.d(TAG, "cmdS: " + cmdS);
+//            LogUtil.d(TAG, "resultS: " + resultS);
+            if ("42".equals(cmdS) && "0".equals(resultS)) {
+                int len = Utils.bytesToInt2(l, 0);//将byte转成int
+//                LogUtil.d(TAG, "len: " + len);
+//                LogUtil.d(TAG, "in.remaining(): " + in.remaining());
+                int sumlen = 6+in.remaining();//总长 = 包头+包体
+                //注意上面的get操作会导致下面的remaining()值发生变化
+                if(sumlen < len){
+                    //如果消息内容不够，则重置恢复position位置到操作前,进入下一轮, 接收新数据，以拼凑成完整数据
                     in.reset();
                     return false;
+                } else {
+                    //消息内容足够
+                    in.reset();//重置恢复position位置到操作前
+                    byte[] packArr = new byte[sumlen];
+                    in.get(packArr);
+                    out.write(bytesToJson(packArr));
+//                    IoBuffer buffer = IoBuffer.allocate(sumlen);
+//                    buffer.put(packArr);
+//                    buffer.flip();
+//                    out.write(buffer);
+//                    buffer.free();
+                    return true;
                 }
+            } else if ("42".equals(resultS) && !"0".equals(resultS)) {
+                return true;
             } else {
-                isHex = false;
-                length = 0;
+                in.reset();//重置恢复position位置到操作前
                 Context ctx = getContext(session);
                 return decodeAuto(ctx, session, in, out);
             }
         }
-        return true;
+        return true;//处理成功，让父类进行接收下个包
     }
 
     /**
