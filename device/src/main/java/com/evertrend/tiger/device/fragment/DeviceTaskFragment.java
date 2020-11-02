@@ -147,9 +147,9 @@ public class DeviceTaskFragment extends BaseFragment implements View.OnClickList
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ChoiceMapPagesEvent event) {
-        mapPagesChoiceDialog.dismiss();
         choiceMapPages = event.getMapPages();
         if (CommonConstants.TYPE_MAPPAGE_OPERATION_CREATE_TASK_CHOICE == event.getType()) {
+            mapPagesChoiceDialog.dismiss();
             showCreateCleanTaskBottomDialog();
         }
     }
