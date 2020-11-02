@@ -1,15 +1,12 @@
 package com.evertrend.tiger.common.activity;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Base64;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -23,6 +20,7 @@ import android.widget.Toast;
 import com.evertrend.tiger.common.R;
 import com.evertrend.tiger.common.bean.Device;
 import com.evertrend.tiger.common.bean.MapPages;
+import com.evertrend.tiger.common.bean.Robot;
 import com.evertrend.tiger.common.bean.RobotAction;
 import com.evertrend.tiger.common.bean.event.SaveMapPageEvent;
 import com.evertrend.tiger.common.bean.event.ServerMsgEvent;
@@ -42,8 +40,6 @@ import com.evertrend.tiger.common.utils.general.DialogUtil;
 import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.common.utils.general.Utils;
 import com.evertrend.tiger.common.utils.network.CommTaskUtils;
-import com.evertrend.tiger.common.utils.network.CommonNetReq;
-import com.evertrend.tiger.common.utils.network.OKHttpManager;
 import com.evertrend.tiger.common.widget.ActionControllerView;
 import com.evertrend.tiger.common.widget.MapBottomPopupView;
 import com.evertrend.tiger.common.widget.MapSettingsBottomPopupView;
@@ -65,11 +61,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -356,7 +349,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
     private void updateRobotPose(JSONObject jsonObject) throws JSONException {
 //        LogUtil.d(TAG, "updateRobotPose: "+jsonObject.toString());
         robotPose = Utils.toPose(jsonObject);
-        mv_map.setRobotPose(robotPose);
+        mv_map.setRobotPose(robotPose, Utils.toRobot(jsonObject));
         if (robotPose != null) {
             currentPose = String.format("%.3f,%.3f,%.3f", robotPose.getX(), robotPose.getY(), RadianUtil.toAngel(robotPose.getYaw()));
 //            currentPose = String.format("%.3f,%.3f,%.3f", robotPose.getX(), robotPose.getY(), robotPose.getYaw());

@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi;
 
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.CoordinateConverter;
+import com.evertrend.tiger.common.bean.Robot;
 import com.evertrend.tiger.common.bean.RobotAction;
 import com.slamtec.slamware.robot.LaserPoint;
 import com.slamtec.slamware.robot.Location;
@@ -113,6 +114,13 @@ public class Utils {
         location.setY((float)jsonObject.getDouble(RobotAction.POSE_Y));
         Rotation rotation = new Rotation((float)jsonObject.getDouble(RobotAction.POSE_YAW));
         return new Pose(location, rotation);
+    }
+
+    public static Robot toRobot(JSONObject jsonObject) throws JSONException {
+        Robot robot = new Robot();
+        robot.setWidth((float)jsonObject.getDouble(RobotAction.ROBOT_WIDTH));
+        robot.setLength((float)jsonObject.getDouble(RobotAction.ROBOT_LENGTH));
+        return robot;
     }
 
     public static Vector<LaserPoint> toLaserPoint(JSONObject jsonObject) throws JSONException {

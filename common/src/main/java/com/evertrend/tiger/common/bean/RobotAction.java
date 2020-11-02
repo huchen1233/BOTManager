@@ -44,4 +44,6 @@ public class RobotAction {
     public static final String ANGLE_INCREMENT = "angle_increment";
     public static final String ANGLE_MAX = "angle_max";
     public static final String ANGLE_MIN = "angle_min";
+    public static final String ROBOT_WIDTH = "robot_width";
+    public static final String ROBOT_LENGTH = "robot_length";
 }

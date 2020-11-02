@@ -8,7 +8,9 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
 
+import com.evertrend.tiger.common.bean.Robot;
 import com.evertrend.tiger.common.bean.mapview.utils.RadianUtil;
+import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.slamtec.slamware.robot.Pose;
 
 import java.lang.ref.WeakReference;
@@ -21,6 +23,7 @@ public class DeviceView extends SlamwareBaseView {
 
     private float mDeviceRadius = 0.18f;
     private Pose mDevicePose;
+    private Robot robot;
     private Paint mPaintRadius;
     private Paint mPaintOrientation;
     private Paint mPaintWhite;
@@ -41,9 +44,10 @@ public class DeviceView extends SlamwareBaseView {
         mPaintWhite.setStrokeWidth(1f);
     }
 
-    public void setDevicePose(Pose pose) {
+    public void setDevicePose(Pose pose, Robot robot) {
         if (pose == null) return;
         mDevicePose = pose;
+        this.robot = robot;
         postInvalidate();
     }
 
@@ -59,7 +63,32 @@ public class DeviceView extends SlamwareBaseView {
         float widghtRadius = mParent.get().mapDistanceToWidghtDistance(mDeviceRadius);
 
         mPaintRadius.setStrokeWidth(widghtRadius * 2f);
-        canvas.drawPoint(center.x, center.y, mPaintRadius);
+        if (robot == null) {
+            canvas.drawPoint(center.x, center.y, mPaintRadius);
+        } else {
+//            LogUtil.d(TAG,"W: "+robot.getWidth()+" l:"+robot.getLength());
+//            LogUtil.d(TAG,"scale: "+getScale());
+            float halfW = mParent.get().mapDistanceToWidghtDistance(robot.getWidth())/2;
+            float halfL = mParent.get().mapDistanceToWidghtDistance(robot.getLength())/2;
+//            canvas.drawRect(center.x-halfL, center.y+halfW, center.x+halfL, center.y-halfW, mPaintRadius);
+            PointF originalLeft = new PointF(center.x-halfL, center.y+halfW);
+            PointF originalRight = new PointF(center.x+halfL, center.y+halfW);
+            PointF originalTop = new PointF(center.x+halfL, center.y-halfW);
+            PointF originalBottom = new PointF(center.x-halfL, center.y-halfW);
+
+            Matrix matrix = new Matrix();
+            matrix.postRotate(RadianUtil.toAngel(-yaw) + mRotation, center.x, center.y);
+            float[] points = new float[]{originalTop.x, originalTop.y, originalBottom.x, originalBottom.y, originalLeft.x, originalLeft.y, originalRight.x, originalRight.y};
+            matrix.mapPoints(points);
+
+            Path path = new Path();
+            path.moveTo(points[0], points[1]);
+            path.lineTo(points[2], points[3]);
+            path.lineTo(points[4], points[5]);
+            path.lineTo(points[6], points[7]);
+//            path.lineTo(points[0], points[1]);
+            canvas.drawPath(path, mPaintRadius);
+        }
 
         PointF originalLeft = new PointF(center.x - widghtRadius * 0.25f, center.y - widghtRadius * 0.6f);
         PointF originalRight = new PointF(center.x - widghtRadius * 0.25f, center.y + widghtRadius * 0.6f);

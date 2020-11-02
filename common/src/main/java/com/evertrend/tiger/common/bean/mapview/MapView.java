@@ -13,6 +13,7 @@ import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.evertrend.tiger.common.bean.Robot;
 import com.evertrend.tiger.common.bean.RobotSpot;
 import com.evertrend.tiger.common.bean.mapview.mapdata.MapDataCache;
 import com.evertrend.tiger.common.bean.mapview.mapdata.MapDataColor;
@@ -191,7 +192,12 @@ public class MapView extends FrameLayout implements SlamGestureDetector.OnRPGest
     }
 
     public void setRobotPose(Pose pose) {
-        mDeviceView.setDevicePose(pose);
+        mDeviceView.setDevicePose(pose, null);
+        robotPose = pose;
+    }
+
+    public void setRobotPose(Pose pose, Robot robot) {
+        mDeviceView.setDevicePose(pose, robot);
         robotPose = pose;
     }
 
