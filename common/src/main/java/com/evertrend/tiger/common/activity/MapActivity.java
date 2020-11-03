@@ -189,6 +189,12 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        startUpdate();
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         stopUpdate();
@@ -204,6 +210,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         }
         stopUploadMapPicTimer();
         stopRelocationMapPagesTimer();
+        stopUpdate();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -229,7 +236,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ConnectedEvent event) {
         LogUtil.d(TAG, "ConnectedEvent");
-        startUpdate();
+//        startUpdate();
 //        mAgent.getMap();
     }
 
@@ -238,7 +245,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         LogUtil.d(TAG, "connect lost");
         DialogUtil.showToast(this, "connect lost", Toast.LENGTH_SHORT);
         mAgent.disconnect();
-        stopUpdate();
+//        stopUpdate();
         SystemClock.sleep(1000);
         mAgent.connectTo(ip, device.getDevice_id(), "1993");
     }
@@ -273,6 +280,8 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
                     case RobotAction.CMD.GET_VIRTUAL_WALL:
                         updateVWalls(jsonObject.getJSONArray(RobotAction.DATA));
                         break;
+                    case RobotAction.CMD.GET_VIRTUAL_TRACK:
+                        updateVTracks(jsonObject.getJSONArray(RobotAction.DATA));
                     case RobotAction.CMD.GET_NAVIGATION_PATH_PLANNING:
                         updateNavigationPathPlanning(jsonObject.getJSONArray(RobotAction.DATA));
                         break;
@@ -306,6 +315,20 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         }
         Path planningingPath = new Path(points);
         mv_map.setRemainingPath(planningingPath);
+    }
+
+    private void updateVTracks(JSONArray jsonArray) throws JSONException {
+        LogUtil.d(TAG, "tracks: "+jsonArray.toString());
+        List<Line> lines = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject object = jsonArray.getJSONObject(i);
+            String id = object.keys().next();
+            JSONArray array = object.getJSONArray(id);
+            Line line = new Line(Integer.valueOf(id), new PointF((float) array.getDouble(0), (float) array.getDouble(1)),
+                    new PointF((float) array.getDouble(2), (float) array.getDouble(3)));
+            lines.add(line);
+        }
+        mv_map.setVtracks(lines);
     }
 
     private void updateVWalls(JSONArray jsonArray) throws JSONException {

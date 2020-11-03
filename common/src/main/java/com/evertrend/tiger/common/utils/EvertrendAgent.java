@@ -245,6 +245,9 @@ public class EvertrendAgent {
                 manager = mSessionManager;
             }
 
+            if (manager == null) {
+                return;
+            }
             if (mSessionManager.getIoSession() == null) {
                 onRequestError(new Exception("connect closed"));
                 return;
@@ -285,7 +288,6 @@ public class EvertrendAgent {
             if (manager == null) {
                 return;
             }
-
             if (manager.getIoSession() == null) {
                 onRequestError(new Exception("connect closed"));
                 return;
@@ -318,6 +320,9 @@ public class EvertrendAgent {
                 manager = mSessionManager;
             }
 
+            if (manager == null) {
+                return;
+            }
             if (mSessionManager.getIoSession() == null) {
                 onRequestError(new Exception("connect closed"));
                 return;
@@ -350,6 +355,9 @@ public class EvertrendAgent {
                 manager = mSessionManager;
             }
 
+            if (manager == null) {
+                return;
+            }
             if (mSessionManager.getIoSession() == null) {
                 onRequestError(new Exception("connect closed"));
                 return;

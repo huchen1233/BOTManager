@@ -63,10 +63,11 @@ public class VirtualWallActivity extends BaseActivity implements RadioGroup.OnCh
                     break;
                 }
 
-                if ((count % 5000) == 0) {//250秒
+                if ((count % 100) == 0) {//5秒
 //                    mAgent.getMap(RobotAction.CMD.GET_MAP);
-                    mAgent.getMap(RobotAction.CMD.GET_MAP_CONDENSE);
-//                    mAgent.getMap(RobotAction.CMD.GET_MAP_CON_BIN);
+//                    mAgent.getMap(RobotAction.CMD.GET_MAP_CONDENSE);
+                    mAgent.getMap(RobotAction.CMD.GET_MAP_CON_BIN);
+                    SystemClock.sleep(200);
                 }
                 if ((count % 10) == 0) {
                     mAgent.getWalls();
@@ -89,6 +90,11 @@ public class VirtualWallActivity extends BaseActivity implements RadioGroup.OnCh
         EventBus.getDefault().register(this);
         mAgent = getEvertrendAgent();
 //        mAgent.connectTo(ip, device.getDevice_id(), "1993");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         startUpdate();
     }
 
@@ -106,12 +112,13 @@ public class VirtualWallActivity extends BaseActivity implements RadioGroup.OnCh
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+        stopUpdate();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ConnectedEvent event) {
         LogUtil.d(TAG, "ConnectedEvent");
-        startUpdate();
+//        startUpdate();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -119,7 +126,7 @@ public class VirtualWallActivity extends BaseActivity implements RadioGroup.OnCh
         LogUtil.d(TAG, "connect lost");
         DialogUtil.showToast(this, "connect lost", Toast.LENGTH_SHORT);
         mAgent.disconnect();
-        stopUpdate();
+//        stopUpdate();
         SystemClock.sleep(1000);
         mAgent.connectTo(ip, device.getDevice_id(), "1993");
     }
