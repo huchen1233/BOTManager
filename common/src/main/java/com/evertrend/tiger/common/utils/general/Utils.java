@@ -43,6 +43,15 @@ import java.util.regex.Pattern;
 public class Utils {
     private static final String TAG = "Utils";
 
+    private static byte[] bBlack = new byte[256];
+    private static byte[] bWhite = new byte[256];
+
+    static {
+        for (int i = 0; i < bBlack.length; i++) {
+            bBlack[i] = (byte)-1;
+            bWhite[i] = (byte)0;
+        }
+    }
     /**
      * byte数组中取int数值，本方法适用于(低位在前，高位在后)的顺序，和和intToBytes（）配套使用
      *
@@ -227,10 +236,9 @@ public class Utils {
 
     public static byte[] decompress(byte[] source){
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        int length = source.length - 1;
+        int length = source.length;
         int i = 0;
-//        LogUtil.d(TAG, "byte: "+source[0]);
-//        LogUtil.d(TAG, "string: "+String.valueOf(source[0]));
+        LogUtil.d(TAG, "length: "+length);
         try {
             while (i < length) {
                 byte b = source[i];
@@ -258,11 +266,18 @@ public class Utils {
     }
 
     private static byte[] repeatByte(byte b, int num) {
-        ByteBuffer byteBuffer = ByteBuffer.allocate(num);
+        /*ByteBuffer byteBuffer = ByteBuffer.allocate(num);
         for (int i = 0; i < num; i++) {
             byteBuffer.put(b);
         }
-        return byteBuffer.array();
+        return byteBuffer.array();*/
+        byte[] result = new byte[num];
+        if (b == -1) {
+            System.arraycopy(bBlack, 0, result, 0, num);
+        } else if (b == 0) {
+            System.arraycopy(bWhite, 0, result, 0, num);
+        }
+        return result;
     }
 
     public static String decompress(String source) {

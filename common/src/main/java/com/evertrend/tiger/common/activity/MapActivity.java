@@ -373,6 +373,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         //2、新修改decompress需要400-550毫秒，随着地图增大，时间也会变长，需要继续优化；
         //3、新修改multiThreadDecompress需要100-200毫秒，随着地图增大，开启更多线程，时间维持100-200毫秒，需要注意线程回收；
         //multiThreadDecompress开启过多线程，出现Background partial concurrent mark sweep GC freed 30280(1214KB) AllocSpace objects, 27(6MB) LOS objects, 9% free, 38MB/42MB, paused 1.280ms total 116.615ms
+        //4、使用原始字节数组方式解压缩，300000byte时间150毫秒以内，地图越大时间越长，需要继续优化；
         if (isCompress) {
             long startT = System.currentTimeMillis();
             if (isBin) {
