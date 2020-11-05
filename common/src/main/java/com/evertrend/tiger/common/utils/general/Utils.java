@@ -234,6 +234,94 @@ public class Utils {
         return sb.toString();
     }
 
+    public static byte[] multiThreadDecompress(byte[] source) {
+        int length = source.length;
+        LogUtil.d(TAG, "length: "+length);
+        if (length <= 200000) {
+            return decompress(source);
+        }
+        final Map<Integer, byte[]> map = new HashMap<>();
+        int count = 0;
+        int key = 0;
+        int cutLen = 100000;
+        boolean isLast = false;
+        while (count < length) {
+//            LogUtil.d(TAG, "count: "+count);
+//            LogUtil.d(TAG, "length - count: "+(length - count));
+            int val = cutLen;
+            if (length - count < val) {
+                val = length - count;
+                isLast = true;
+            }
+            byte[] bytes = new byte[val];
+            System.arraycopy(source, count, bytes, 0, val);
+            byte b = bytes[val-1];
+//            LogUtil.d(TAG, "b: "+b);
+            if (b == 0) {
+                if (!isLast) {
+                    val = cutLen+1;
+                    bytes = new byte[val];
+                    System.arraycopy(source, count, bytes, 0, val);
+                }
+            } else if (b == -1) {//处理以00FF、FFFF结尾会报错问题
+                if (!isLast) {
+                    val = cutLen+1;
+                    bytes = new byte[val];
+                    System.arraycopy(source, count, bytes, 0, val);
+
+                    List<Byte> ff = new ArrayList<>();
+                    for (int i = bytes.length; i > 0; i-=1) {
+                        byte ff00 = bytes[i-1];
+                        if (ff00 == -1 || ff00 == 0) {
+                            ff.add(ff00);
+                        } else {
+                            break;
+                        }
+                    }
+                    if (ff.size()%2 != 0) {
+                        val = cutLen;
+                        bytes = new byte[val];
+                        System.arraycopy(source, count, bytes, 0, val);
+                    }
+                }
+            }
+            map.put(key, bytes);
+            key++;
+            count+=val;
+        }
+//        LogUtil.d(TAG, "map size: "+map.size());
+        final long time = System.currentTimeMillis();
+        final CountDownLatch latch = new CountDownLatch(map.size());
+        for (int i = 0; i < map.size(); i++) {
+            final int num = i;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    map.put(num, decompress(map.get(num)));
+                    latch.countDown();
+                    LogUtil.d(TAG, Thread.currentThread().getName()+"运行结束  运行时间为："+(System.currentTimeMillis()-time)
+                            +"毫秒  countDownLatch="+latch.getCount());
+                }
+            }).start();
+        }
+        try {
+            latch.await(1, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            LogUtil.d(TAG, "latch.await: "+e);
+        }
+        LogUtil.d(TAG, "总耗时==="+(System.currentTimeMillis()-time)+"毫秒");
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        for (int i = 0; i < map.size(); i++) {
+            try {
+                outputStream.write(map.get(i));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return outputStream.toByteArray();
+    }
+
     public static byte[] decompress(byte[] source){
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         int length = source.length;
