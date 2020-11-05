@@ -299,8 +299,8 @@ public class Utils {
                 public void run() {
                     map.put(num, decompress(map.get(num)));
                     latch.countDown();
-                    LogUtil.d(TAG, Thread.currentThread().getName()+"运行结束  运行时间为："+(System.currentTimeMillis()-time)
-                            +"毫秒  countDownLatch="+latch.getCount());
+//                    LogUtil.d(TAG, Thread.currentThread().getName()+"运行结束  运行时间为："+(System.currentTimeMillis()-time)
+//                            +"毫秒  countDownLatch="+latch.getCount());
                 }
             }).start();
         }
@@ -311,22 +311,27 @@ public class Utils {
             LogUtil.d(TAG, "latch.await: "+e);
         }
         LogUtil.d(TAG, "总耗时==="+(System.currentTimeMillis()-time)+"毫秒");
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//        long output = System.currentTimeMillis();
+        int[] cut = new int[map.size()+1];
+        cut[0] = 0;
         for (int i = 0; i < map.size(); i++) {
-            try {
-                outputStream.write(map.get(i));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            cut[i+1] = cut[i] + map.get(i).length;
         }
-        return outputStream.toByteArray();
+//        LogUtil.d(TAG, "size: "+cut[cut.length-1]);
+        byte[] finalB = new byte[cut[cut.length-1]];
+        for (int i = 0; i < map.size(); i++) {
+            byte[] tmp = map.get(i);
+            System.arraycopy(tmp, 0, finalB, cut[i], tmp.length);
+        }
+//        LogUtil.d(TAG, "output 耗时==="+(System.currentTimeMillis()-output)+"毫秒");
+        return finalB;
     }
 
     public static byte[] decompress(byte[] source){
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         int length = source.length;
         int i = 0;
-        LogUtil.d(TAG, "length: "+length);
+//        LogUtil.d(TAG, "length: "+length);
         try {
             while (i < length) {
                 byte b = source[i];
