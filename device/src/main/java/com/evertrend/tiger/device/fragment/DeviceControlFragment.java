@@ -18,6 +18,7 @@ import com.evertrend.tiger.common.bean.Device;
 import com.evertrend.tiger.common.fragment.BaseFragment;
 import com.evertrend.tiger.common.utils.general.AppSharePreference;
 import com.evertrend.tiger.common.utils.general.DialogUtil;
+import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.common.utils.general.ScheduledThreadUtils;
 import com.evertrend.tiger.device.R;
 import com.evertrend.tiger.common.bean.event.DeviceMessageEvent;
@@ -66,9 +67,10 @@ public class DeviceControlFragment extends BaseFragment implements RadioGroup.On
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onEventMainThread(DeviceMessageEvent event) {
+//        LogUtil.d(TAG, "onEventMainThread count = "+count);
         mDevice = event.getMessage();
         setUnListener();
-        if (count%50==0) {
+        if (count%15==0) {//15*8秒
             updateStatus(mDevice);
         }
         count++;
@@ -386,6 +388,7 @@ public class DeviceControlFragment extends BaseFragment implements RadioGroup.On
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
+        count = 1;
         if (group.getCheckedRadioButtonId() == R.id.rb_go_to_idle) {
             ScheduledThreadUtils.startControlTimer(mDevice,0, "rb_go_to_idle", 0);
         } else if (group.getCheckedRadioButtonId() == R.id.rb_go_to_garage) {
@@ -407,6 +410,7 @@ public class DeviceControlFragment extends BaseFragment implements RadioGroup.On
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        count = 1;
         if (isChecked) {
             if (buttonView.getId() == R.id.sw_device_run) {
                 ScheduledThreadUtils.startControlTimer(mDevice,1, "sw_device_run", 0);
@@ -504,8 +508,8 @@ public class DeviceControlFragment extends BaseFragment implements RadioGroup.On
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(SetStatusCompleteEvent messageEvent) {
-        ScheduledThreadUtils.stopControlTimer();
-        startReadControlStatusTimer(messageEvent.getStatus(), messageEvent.getMark());
+//        ScheduledThreadUtils.stopControlTimer();
+//        startReadControlStatusTimer(messageEvent.getStatus(), messageEvent.getMark());
     }
 
     private void startReadControlStatusTimer(int status, String mark) {
@@ -528,8 +532,8 @@ public class DeviceControlFragment extends BaseFragment implements RadioGroup.On
 
     @Override
     public void onDestroy() {
-        ScheduledThreadUtils.stopControlTimer();
-        stopReadControlStatusTimer();
+//        ScheduledThreadUtils.stopControlTimer();
+//        stopReadControlStatusTimer();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }

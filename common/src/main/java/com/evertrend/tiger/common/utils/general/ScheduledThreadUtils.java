@@ -13,9 +13,10 @@ public class ScheduledThreadUtils {
 
     public static void startControlTimer(Device device, int status, String mark, int delayTime) {
 //        DialogUtil.showProgressDialog(getActivity(), getResources().getString(R.string.yl_common_saving), false, false);
-        scheduledThreadControl = new ScheduledThreadPoolExecutor(6);
-        scheduledThreadControl.scheduleAtFixedRate(new CommTaskUtils.TaskControlStatus(device, status, mark),
-                delayTime, 5, TimeUnit.SECONDS);
+//        scheduledThreadControl = new ScheduledThreadPoolExecutor(6);
+//        scheduledThreadControl.scheduleAtFixedRate(new CommTaskUtils.TaskControlStatus(device, status, mark),
+//                delayTime, 5, TimeUnit.SECONDS);
+        new Thread(new CommTaskUtils.TaskControlStatus(device, status, mark)).start();
     }
 
     public static void ThreadGetAllMapPages(Device device) {
