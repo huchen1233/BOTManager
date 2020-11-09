@@ -339,6 +339,7 @@ public class CustomProtocolDecoder extends CumulativeProtocolDecoder {
 //            LogUtil.d(TAG, "data length: "+data.length);
 //            String data = binData.substring(27*2 - 2, length*2 - 2);
             objectData.put(RobotAction.DATA, Base64.encodeToString(data, Base64.DEFAULT));
+//            objectData.put(RobotAction.DATA, Utils.bytesToString(data));
             jsonObject.put(RobotAction.TIME_STAMP, System.currentTimeMillis() / 1000);
             jsonObject.put(RobotAction.DATA, objectData);
         } catch (JSONException e) {

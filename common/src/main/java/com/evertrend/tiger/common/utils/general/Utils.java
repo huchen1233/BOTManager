@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -52,6 +53,30 @@ public class Utils {
             bWhite[i] = (byte)0;
         }
     }
+
+    public static String bytesToString(byte[] src) {
+        if (null == src || src.length == 0) {
+            return "";
+        }
+        String strContent = "";
+        try {
+            strContent = new String(src, "ISO-8859-1");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return strContent;
+    }
+
+    public static byte[] stringToBytes(String src) {
+        byte[] bytes = null;
+        try {
+            bytes = src.getBytes("ISO-8859-1");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return bytes;
+    }
+
     /**
      * byte数组中取int数值，本方法适用于(低位在前，高位在后)的顺序，和和intToBytes（）配套使用
      *

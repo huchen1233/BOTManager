@@ -131,7 +131,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
 //                mAgent.getMap(RobotAction.CMD.GET_MAP);
 //                mAgent.getMap(RobotAction.CMD.GET_MAP_CONDENSE);
                 mAgent.getMap(RobotAction.CMD.GET_MAP_CON_BIN);
-                SystemClock.sleep(1000);
+                SystemClock.sleep(1500);
                 mAgent.getRobotPose();
                 SystemClock.sleep(200);
                 mAgent.getLaserScan();
@@ -318,7 +318,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
     }
 
     private void updateVTracks(JSONArray jsonArray) throws JSONException {
-        LogUtil.d(TAG, "tracks: "+jsonArray.toString());
+//        LogUtil.d(TAG, "tracks: "+jsonArray.toString());
         List<Line> lines = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject object = jsonArray.getJSONObject(i);
@@ -379,7 +379,10 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
             long startT = System.currentTimeMillis();
             if (isBin) {
 //                data = Utils.decompress(Base64.decode(jsonObject.getString(RobotAction.DATA), Base64.DEFAULT));
-                data = Utils.multiThreadDecompress(Base64.decode(jsonObject.getString(RobotAction.DATA), Base64.DEFAULT));
+                byte[] bytes = Base64.decode(jsonObject.getString(RobotAction.DATA), Base64.DEFAULT);
+//                byte[] bytes = Utils.stringToBytes(jsonObject.getString(RobotAction.DATA));
+                LogUtil.d(TAG, "decode time all: "+(System.currentTimeMillis() - startT));
+                data = Utils.multiThreadDecompress(bytes);
             } else {
                 data = Utils.hexStringToByte(Utils.multiThreadDecompress(jsonObject.getString(RobotAction.DATA)));
             }
