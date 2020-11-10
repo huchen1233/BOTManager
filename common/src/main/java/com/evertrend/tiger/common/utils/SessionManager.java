@@ -154,6 +154,33 @@ public class SessionManager {
         writeToServer(object);
     }
 
+    public void clearMap() throws JSONException {
+        JSONObject object = new JSONObject();
+        object.put(RobotAction.CMD_CODE, RobotAction.CMD.CLEAR_MAP);
+        object.put(RobotAction.DEVICE_ID, deviceID);
+        object.put(RobotAction.KEY, key);
+        object.put(RobotAction.TIME_STAMP, getTime());
+        writeToServer(object);
+    }
+
+    public void loadMap() throws JSONException {
+        JSONObject object = new JSONObject();
+        object.put(RobotAction.CMD_CODE, RobotAction.CMD.LOAD_MAP);
+        object.put(RobotAction.DEVICE_ID, deviceID);
+        object.put(RobotAction.KEY, key);
+        object.put(RobotAction.TIME_STAMP, getTime());
+        writeToServer(object);
+    }
+
+    public void relocation() throws JSONException {
+        JSONObject object = new JSONObject();
+        object.put(RobotAction.CMD_CODE, RobotAction.CMD.RELOCATION);
+        object.put(RobotAction.DEVICE_ID, deviceID);
+        object.put(RobotAction.KEY, key);
+        object.put(RobotAction.TIME_STAMP, getTime());
+        writeToServer(object);
+    }
+
     public void getRobotPose() throws JSONException {
         JSONObject object = new JSONObject();
         object.put(RobotAction.CMD_CODE, RobotAction.CMD.GET_ROBOT_POSE);

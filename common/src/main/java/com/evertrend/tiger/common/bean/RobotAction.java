@@ -11,6 +11,9 @@ public class RobotAction {
         int GET_MAP = 0x28;
         int GET_MAP_CONDENSE = 0x29;
         int GET_MAP_CON_BIN = 0x2A;
+        int CLEAR_MAP = 0x2B;
+        int LOAD_MAP = 0x2C;
+        int RELOCATION = 0x2D;
         int GET_LASER_SCAN = 0x30;
         int GET_ROBOT_POSE = 0x31;
         int SET_ROBOT_POSE = 0x32;

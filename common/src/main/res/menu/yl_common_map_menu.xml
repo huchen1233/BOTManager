@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/item_relocation"
+        android:title="relocation"
+        app:showAsAction="always"
+        android:icon="@drawable/yl_common_ic_location_black_36dp"/>
+    <item
         android:id="@+id/item_set_centred"
         android:title="centred"
         app:showAsAction="always"

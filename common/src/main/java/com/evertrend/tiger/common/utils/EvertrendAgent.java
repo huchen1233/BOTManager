@@ -30,6 +30,9 @@ public class EvertrendAgent {
     private static TaskSetPose sTaskSetPose;
     private static TaskMoveTo sTaskMoveTo;
     private static TaskGetMap sTaskGetMap;
+    private static TaskClearMap sTaskClearMap;
+    private static TaskLoadMap sTaskLoadMap;
+    private static TaskRelocation sTaskRelocation;
     private static TaskGetRobotPose sTaskGetRobotPose;
     private static TaskGetLaserScan sTaskGetLaserScan;
     private static TaskGetWalls sTaskGetWalls;
@@ -53,6 +56,9 @@ public class EvertrendAgent {
         sTaskSetPose = new TaskSetPose();
         sTaskMoveTo = new TaskMoveTo();
         sTaskGetMap = new TaskGetMap();
+        sTaskClearMap = new TaskClearMap();
+        sTaskLoadMap = new TaskLoadMap();
+        sTaskRelocation = new TaskRelocation();
         sTaskGetRobotPose = new TaskGetRobotPose();
         sTaskGetLaserScan = new TaskGetLaserScan();
         sTaskGetWalls = new TaskGetWalls();
@@ -99,6 +105,18 @@ public class EvertrendAgent {
     public void getMap(int getType) {
         sTaskGetMap.setGetType(getType);
         pushTask(sTaskGetMap);
+    }
+
+    public void clearMap() {
+        pushTask(sTaskClearMap);
+    }
+
+    public void loadMap() {
+        pushTask(sTaskLoadMap);
+    }
+
+    public void relocation() {
+        pushTask(sTaskRelocation);
     }
 
     public void getRobotPose() {
@@ -406,6 +424,81 @@ public class EvertrendAgent {
             }
 
 //            EventBus.getDefault().postSticky(new MapGetEvent(map));
+        }
+    }
+
+    private class TaskClearMap implements Runnable {
+        @Override
+        public void run() {
+            SessionManager manager;
+
+            synchronized (this) {
+                manager = mSessionManager;
+            }
+
+            if (mSessionManager == null) {
+                return;
+            }
+            if (mSessionManager.getIoSession() == null) {
+                onRequestError(new Exception("connect closed"));
+                return;
+            }
+
+            try {
+                manager.clearMap();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private class TaskLoadMap implements Runnable {
+        @Override
+        public void run() {
+            SessionManager manager;
+
+            synchronized (this) {
+                manager = mSessionManager;
+            }
+
+            if (mSessionManager == null) {
+                return;
+            }
+            if (mSessionManager.getIoSession() == null) {
+                onRequestError(new Exception("connect closed"));
+                return;
+            }
+
+            try {
+                manager.loadMap();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private class TaskRelocation implements Runnable {
+        @Override
+        public void run() {
+            SessionManager manager;
+
+            synchronized (this) {
+                manager = mSessionManager;
+            }
+
+            if (mSessionManager == null) {
+                return;
+            }
+            if (mSessionManager.getIoSession() == null) {
+                onRequestError(new Exception("connect closed"));
+                return;
+            }
+
+            try {
+                manager.relocation();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

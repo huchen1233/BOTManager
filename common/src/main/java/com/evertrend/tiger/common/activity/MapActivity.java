@@ -81,6 +81,8 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
     private TextView tv_robot_pose;
     private Button btn_virtual_walls;
     private Button btn_virtual_tracks;
+    private Button btn_clear_map;
+    private Button btn_load_map;
 
     private EvertrendAgent mAgent;
     private Pose robotPose;
@@ -184,6 +186,8 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
             showEditDialog();
         } else if (item.getItemId() == R.id.item_set_centred) {
             mv_map.setCentred();
+        } else if (item.getItemId() == R.id.item_relocation) {
+            mAgent.relocation();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -477,6 +481,10 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         btn_virtual_walls.setOnClickListener(this);
         btn_virtual_tracks = findViewById(R.id.btn_virtual_tracks);
         btn_virtual_tracks.setOnClickListener(this);
+        btn_clear_map = findViewById(R.id.btn_clear_map);
+        btn_clear_map.setOnClickListener(this);
+        btn_load_map = findViewById(R.id.btn_load_map);
+        btn_load_map.setOnClickListener(this);
     }
 
     private void moveToLocation(float x, float y) {
@@ -573,6 +581,10 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
             intent.putExtra("device", device);
             intent.setAction("android.intent.action.VirtualTrackActivity");
             startActivity(intent);
+        } else if (view.getId() == R.id.btn_clear_map) {
+            mAgent.clearMap();
+        } else if (view.getId() == R.id.btn_load_map) {
+            mAgent.loadMap();
         }
     }
 

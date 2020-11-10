@@ -121,6 +121,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/iv_device_type"
         app:layout_constraintBottom_toBottomOf="@id/iv_device_type"
-        android:background="@drawable/yl_device_ic_location_black_24dp"/>
+        android:background="@drawable/yl_common_ic_location_black_36dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
