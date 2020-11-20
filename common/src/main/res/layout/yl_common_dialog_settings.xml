@@ -1,84 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/yl_common_padding_5"
-    android:background="@drawable/yl_common_bottom_dialog_backgroud"
-    android:divider="?android:dividerHorizontal"
-    android:orientation="vertical"
-    android:showDividers="middle">
+    android:layout_height="wrap_content">
 
     <LinearLayout
-        android:id="@+id/ll_pose"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="4">
+        android:padding="@dimen/yl_common_padding_5"
+        android:background="@drawable/yl_common_bottom_dialog_backgroud"
+        android:divider="?android:dividerHorizontal"
+        android:orientation="vertical"
+        android:showDividers="middle">
 
-        <EditText
-            android:id="@+id/et_pose_x"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/ll_pose"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:inputType="numberDecimal|numberSigned"
-            android:hint="X"/>
-        <EditText
-            android:id="@+id/et_pose_y"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:inputType="numberDecimal|numberSigned"
-            android:hint="Y"/>
-        <EditText
-            android:id="@+id/et_pose_yaw"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:inputType="numberDecimal|numberSigned"
-            android:hint="Yaw"/>
-        <Button
-            android:id="@+id/btn_set_pose"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="@dimen/yl_common_margin_10"
-            android:background="@drawable/yl_common_btn_bg_round_click"
-            android:textColor="@drawable/yl_common_btn_click_text_color"
-            android:text="@string/yl_common_set_pose"/>
-    </LinearLayout>
+            android:orientation="horizontal"
+            android:weightSum="4">
 
-    <LinearLayout
-        android:id="@+id/ll_map_touch_mode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+            <EditText
+                android:id="@+id/et_pose_x"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="numberDecimal|numberSigned"
+                android:hint="X"/>
+            <EditText
+                android:id="@+id/et_pose_y"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="numberDecimal|numberSigned"
+                android:hint="Y"/>
+            <EditText
+                android:id="@+id/et_pose_yaw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="numberDecimal|numberSigned"
+                android:hint="Yaw"/>
+            <Button
+                android:id="@+id/btn_set_pose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/yl_common_margin_10"
+                android:background="@drawable/yl_common_btn_bg_round_click"
+                android:textColor="@drawable/yl_common_btn_click_text_color"
+                android:text="@string/yl_common_set_pose"/>
+        </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/ll_map_touch_mode"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/yl_common_map_touch_mode"
-            android:textSize="16sp" />
-
-        <RadioGroup
-            android:id="@+id/rg_map_touch_mode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <RadioButton
-                android:id="@+id/rb_mode_move_map"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="@string/yl_common_move_map" />
+                android:text="@string/yl_common_map_touch_mode"
+                android:textSize="16sp" />
 
-            <RadioButton
-                android:id="@+id/rb_mode_rotate_pose_angle"
+            <RadioGroup
+                android:id="@+id/rg_map_touch_mode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/yl_common_rotate_pose_angle" />
-        </RadioGroup>
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_mode_move_map"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/yl_common_move_map" />
+
+                <RadioButton
+                    android:id="@+id/rb_mode_rotate_pose_angle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yl_common_rotate_pose_angle" />
+            </RadioGroup>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_run_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/yl_common_run_mode"
+                android:textSize="16sp" />
+
+            <RadioGroup
+                android:id="@+id/rg_run_mode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_create_map_mode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yl_common_create_map_mode" />
+
+                <RadioButton
+                    android:id="@+id/rb_navigation_mode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yl_common_navigation_mode" />
+            </RadioGroup>
+        </LinearLayout>
     </LinearLayout>
 
-</LinearLayout>
+</androidx.core.widget.NestedScrollView>

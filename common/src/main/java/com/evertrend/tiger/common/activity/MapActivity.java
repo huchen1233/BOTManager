@@ -96,6 +96,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
     private float speed = 0.7f;
 //    private static final String IP = "192.168.0.129";
     private MapBottomPopupView mapBottomPopupView;
+    private MapSettingsBottomPopupView mapSettingsBottomPopupView;
 
     private ScheduledThreadPoolExecutor scheduledThreadUploadMapPic;
     private ScheduledThreadPoolExecutor scheduledThreadRelocationMapPages;
@@ -179,8 +180,9 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
         if (item.getItemId() == android.R.id.home) {
             finish();
         } else if (item.getItemId() == R.id.item_settings) {
+            mapSettingsBottomPopupView = new MapSettingsBottomPopupView(this, device, mAgent, mv_map);
             new XPopup.Builder(this)
-                    .asCustom(new MapSettingsBottomPopupView(this, device, mAgent, mv_map))
+                    .asCustom(mapSettingsBottomPopupView)
                     .show();
         } else if (item.getItemId() == R.id.item_save_map) {
             showEditDialog();
@@ -240,6 +242,7 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ConnectedEvent event) {
         LogUtil.d(TAG, "ConnectedEvent");
+        mAgent.getRunMode();
 //        startUpdate();
 //        mAgent.getMap();
     }
@@ -288,6 +291,9 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
                         updateVTracks(jsonObject.getJSONArray(RobotAction.DATA));
                     case RobotAction.CMD.GET_NAVIGATION_PATH_PLANNING:
                         updateNavigationPathPlanning(jsonObject.getJSONArray(RobotAction.DATA));
+                        break;
+                    case RobotAction.CMD.GET_RUN_MODE:
+                        AppSharePreference.getAppSharedPreference().saveRunMode(jsonObject.getJSONObject(RobotAction.DATA).getInt(RobotAction.RUN_MODE));
                         break;
                 }
 
@@ -385,12 +391,12 @@ public class MapActivity extends BaseActivity implements RadioGroup.OnCheckedCha
 //                data = Utils.decompress(Base64.decode(jsonObject.getString(RobotAction.DATA), Base64.DEFAULT));
                 byte[] bytes = Base64.decode(jsonObject.getString(RobotAction.DATA), Base64.DEFAULT);
 //                byte[] bytes = Utils.stringToBytes(jsonObject.getString(RobotAction.DATA));
-                LogUtil.d(TAG, "decode time all: "+(System.currentTimeMillis() - startT));
+//                LogUtil.d(TAG, "decode time all: "+(System.currentTimeMillis() - startT));
                 data = Utils.multiThreadDecompress(bytes);
             } else {
                 data = Utils.hexStringToByte(Utils.multiThreadDecompress(jsonObject.getString(RobotAction.DATA)));
             }
-            LogUtil.d(TAG, "time all: "+(System.currentTimeMillis() - startT));
+//            LogUtil.d(TAG, "time all: "+(System.currentTimeMillis() - startT));
         } else {//20毫秒左右，地图越大时间越长，
 //            LogUtil.d(TAG, "length: "+jsonObject.getString(RobotAction.DATA).length());
             long startT = System.currentTimeMillis();

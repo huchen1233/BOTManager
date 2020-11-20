@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Base64;
 
+import com.evertrend.tiger.common.bean.RobotAction;
 import com.evertrend.tiger.common.bean.mapview.utils.SlamGestureDetector;
 
 import java.util.Set;
@@ -33,6 +34,7 @@ public class AppSharePreference {
     public static final String DEVICE_LOG_GPS_SLAM = "DEVICE_LOG_GPS_SLAM";//
     public static final String DEVICE_DELETE_GPS_SLAM = "DEVICE_DELETE_GPS_SLAM";//
     public static final String MAP_TOUCH_MODE = "MAP_TOUCH_MODE";//地图单指触摸操作选择
+    public static final String RUN_MODE = "RUN_MODE";//
 //    public static final String DEVICE_TMP_TRACE_PATH = "DEVICE_TMP_TRACE_PATH";
 
     //初始化保存的环境
@@ -69,6 +71,16 @@ public class AppSharePreference {
 
     public int loadMapLoad(String key) {
         return sp.getInt(key, 0);
+    }
+
+    public void saveRunMode(int mode) {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt(RUN_MODE, mode);
+        editor.apply();
+    }
+
+    public int loadRunMode() {
+        return sp.getInt(RUN_MODE, RobotAction.RUN_MODE_CREATE_MAP);
     }
 
     public void saveMapTouchMode(int mode) {

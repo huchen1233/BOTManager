@@ -270,4 +270,25 @@ public class SessionManager {
         object.put(RobotAction.DATA, id);
         writeToServer(object);
     }
+
+    public void setRunMode(int runMode) throws JSONException {
+        JSONObject object = new JSONObject();
+//        JSONObject data = new JSONObject();
+//        data.put(RobotAction.RUN_MODE, runMode);
+        object.put(RobotAction.CMD_CODE, RobotAction.CMD.SET_RUN_MODE);
+        object.put(RobotAction.DEVICE_ID, deviceID);
+        object.put(RobotAction.KEY, key);
+        object.put(RobotAction.TIME_STAMP, getTime());
+        object.put(RobotAction.DATA, runMode);
+        writeToServer(object);
+    }
+
+    public void getRunMode() throws JSONException {
+        JSONObject object = new JSONObject();
+        object.put(RobotAction.CMD_CODE, RobotAction.CMD.GET_RUN_MODE);
+        object.put(RobotAction.DEVICE_ID, deviceID);
+        object.put(RobotAction.KEY, key);
+        object.put(RobotAction.TIME_STAMP, getTime());
+        writeToServer(object);
+    }
 }

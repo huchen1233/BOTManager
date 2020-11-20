@@ -9,8 +9,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
 import com.evertrend.tiger.common.R;
 import com.evertrend.tiger.common.bean.Device;
 import com.evertrend.tiger.common.bean.MapPages;
@@ -23,7 +21,6 @@ import com.evertrend.tiger.common.utils.general.AppSharePreference;
 import com.evertrend.tiger.common.utils.general.DialogUtil;
 import com.evertrend.tiger.common.utils.general.LogUtil;
 import com.evertrend.tiger.common.utils.general.Utils;
-import com.evertrend.tiger.common.utils.network.CommTaskUtils;
 import com.lxj.xpopup.core.BottomPopupView;
 import com.lxj.xpopup.util.XPopupUtils;
 import com.slamtec.slamware.robot.Location;
@@ -34,9 +31,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
 public class MapSettingsBottomPopupView extends BottomPopupView implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
     private static final String TAG = MapSettingsBottomPopupView.class.getSimpleName();
 
@@ -46,6 +40,8 @@ public class MapSettingsBottomPopupView extends BottomPopupView implements View.
     private Button btn_set_pose;
     private RadioGroup rg_map_touch_mode;
     private RadioButton rb_mode_move_map, rb_mode_rotate_pose_angle;
+    private RadioGroup rg_run_mode;
+    private RadioButton rb_create_map_mode, rb_navigation_mode;
 
     private Context context;
     private Device device;
@@ -91,7 +87,7 @@ public class MapSettingsBottomPopupView extends BottomPopupView implements View.
         return (int) (XPopupUtils.getWindowHeight(getContext()) * .5f);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void onEventMainThread(SetPoseOKEvent event) {
         DialogUtil.hideProgressDialog();
         dismiss();
@@ -118,6 +114,16 @@ public class MapSettingsBottomPopupView extends BottomPopupView implements View.
         }
         rg_map_touch_mode = findViewById(R.id.rg_map_touch_mode);
         rg_map_touch_mode.setOnCheckedChangeListener(this);
+
+        rb_create_map_mode = findViewById(R.id.rb_create_map_mode);
+        rb_navigation_mode = findViewById(R.id.rb_navigation_mode);
+        if (AppSharePreference.getAppSharedPreference().loadRunMode() == RobotAction.RUN_MODE_CREATE_MAP) {
+            rb_create_map_mode.setChecked(true);
+        } else {
+            rb_navigation_mode.setChecked(true);
+        }
+        rg_run_mode = findViewById(R.id.rg_run_mode);
+        rg_run_mode.setOnCheckedChangeListener(this);
     }
 
     @Override
@@ -153,6 +159,16 @@ public class MapSettingsBottomPopupView extends BottomPopupView implements View.
             LogUtil.d(TAG, "rb_mode_rotate_pose_angle");
             mapView.setGestureMode(SlamGestureDetector.MODE_ROTATE_POSE_ANGLE);
             AppSharePreference.getAppSharedPreference().saveMapTouchMode(SlamGestureDetector.MODE_ROTATE_POSE_ANGLE);
+            dismiss();
+        } else if (group.getCheckedRadioButtonId() == R.id.rb_create_map_mode) {
+            LogUtil.d(TAG, "rb_create_map_mode");
+            agent.setRunMode(RobotAction.RUN_MODE_CREATE_MAP);
+            AppSharePreference.getAppSharedPreference().saveRunMode(RobotAction.RUN_MODE_CREATE_MAP);
+            dismiss();
+        } else if (group.getCheckedRadioButtonId() == R.id.rb_navigation_mode) {
+            LogUtil.d(TAG, "rb_navigation_mode");
+            agent.setRunMode(RobotAction.RUN_MODE_NAVIGATION);
+            AppSharePreference.getAppSharedPreference().saveRunMode(RobotAction.RUN_MODE_NAVIGATION);
             dismiss();
         }
     }

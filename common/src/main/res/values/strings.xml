@@ -98,4 +98,6 @@
     <string name="yl_common_map_touch_mode">One finger touch:</string>
     <string name="yl_common_move_map">Move map</string>
     <string name="yl_common_rotate_pose_angle">Set pose angle</string>
+    <string name="yl_common_run_mode">run mode</string>
+    <string name="yl_common_create_map_mode">create map mode:</string>
 </resources>

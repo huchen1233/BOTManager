@@ -44,6 +44,8 @@ public class EvertrendAgent {
     private static TaskClearAllVtracks sTaskClearAllVtracks;
     private static TaskClearOneVtrack sTaskClearOneVtrack;
     private static TaskNavigationPathPlanning sTaskNavigationPathPlanning;
+    private static TaskSetRunMode sTaskSetRunMode;
+    private static TaskGetRunMode sTaskGetRunMode;
 
     public EvertrendAgent() {
         mThreadManager = ThreadManager.getInstance();
@@ -70,6 +72,8 @@ public class EvertrendAgent {
         sTaskClearAllVtracks = new TaskClearAllVtracks();
         sTaskClearOneVtrack = new TaskClearOneVtrack();
         sTaskNavigationPathPlanning = new TaskNavigationPathPlanning();
+        sTaskSetRunMode = new TaskSetRunMode();
+        sTaskGetRunMode = new TaskGetRunMode();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -159,6 +163,14 @@ public class EvertrendAgent {
     public void getNavigationPathPlanning() {
         pushTask(sTaskNavigationPathPlanning);
     }
+
+    public void setRunMode(int runMode) {
+        sTaskSetRunMode.setRunMode(runMode);
+        pushTask(sTaskSetRunMode);
+    }
+    public void getRunMode() {
+        pushTask(sTaskGetRunMode);
+    }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private synchronized void pushTask(Runnable Task) {
         mPoolProxy.execute(Task);
@@ -175,7 +187,6 @@ public class EvertrendAgent {
         }
         EventBus.getDefault().post(new ConnectionLostEvent());
     }
-
     //////////////////////////////////// Runnable //////////////////////////////////////////////////
     private class TaskConnect implements Runnable {
         String deviceID;
@@ -769,7 +780,7 @@ public class EvertrendAgent {
     }
 
     private class TaskClearOneVtrack implements Runnable {
-        private Line line;
+            private Line line;
 
         public TaskClearOneVtrack() {
         }
@@ -823,6 +834,67 @@ public class EvertrendAgent {
 
             try {
                 manager.getNavigationPathPlanning();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private class TaskSetRunMode implements Runnable {
+        private int runMode;
+
+        public TaskSetRunMode() {
+        }
+
+        public void setRunMode(int runMode) {
+            this.runMode = runMode;
+        }
+
+        @Override
+        public void run() {
+            SessionManager manager;
+
+            synchronized (this) {
+                manager = mSessionManager;
+            }
+
+            if (mSessionManager == null) {
+                return;
+            }
+            if (mSessionManager.getIoSession() == null) {
+                onRequestError(new Exception("connect closed"));
+                return;
+            }
+
+            try {
+                manager.setRunMode(runMode);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private class TaskGetRunMode implements Runnable {
+        public TaskGetRunMode() {
+        }
+        @Override
+        public void run() {
+            SessionManager manager;
+
+            synchronized (this) {
+                manager = mSessionManager;
+            }
+
+            if (mSessionManager == null) {
+                return;
+            }
+            if (mSessionManager.getIoSession() == null) {
+                onRequestError(new Exception("connect closed"));
+                return;
+            }
+
+            try {
+                manager.getRunMode();
             } catch (Exception e) {
                 e.printStackTrace();
             }

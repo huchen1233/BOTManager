@@ -98,4 +98,6 @@
     <string name="yl_common_map_touch_mode">单指触摸:</string>
     <string name="yl_common_move_map">移动地图</string>
     <string name="yl_common_rotate_pose_angle">设置目的点角度</string>
+    <string name="yl_common_run_mode">运行模式:</string>
+    <string name="yl_common_create_map_mode">建图模式</string>
 </resources>

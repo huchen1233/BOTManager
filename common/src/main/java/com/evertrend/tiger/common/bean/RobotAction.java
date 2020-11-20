@@ -27,7 +27,12 @@ public class RobotAction {
         int CLEAR_ALL_VIRTUAL_TRACK = 0x3A;
         int MOVE_TO_POSE = 0x40;
         int GET_NAVIGATION_PATH_PLANNING = 0x41;
+        int SET_RUN_MODE = 0x42;
+        int GET_RUN_MODE = 0x43;
     }
+
+    public static final int RUN_MODE_CREATE_MAP = 0;
+    public static final int RUN_MODE_NAVIGATION = 1;
 
     public static final String DEVICE_ID = "device_id";
     public static final String KEY = "key";
@@ -49,4 +54,5 @@ public class RobotAction {
     public static final String ANGLE_MIN = "angle_min";
     public static final String ROBOT_WIDTH = "robot_width";
     public static final String ROBOT_LENGTH = "robot_length";
+    public static final String RUN_MODE = "run_mode";
 }
