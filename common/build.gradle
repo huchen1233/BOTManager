@@ -1,12 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 2
         versionName "1.2"
 
@@ -57,7 +57,7 @@ dependencies {
     api 'org.greenrobot:eventbus:3.2.0'
     api 'cn.yipianfengye.android:zxing-library:2.2'
     api 'org.litepal.android:java:3.0.0'
-    api 'com.lxj:xpopup:1.8.12'
+    api 'com.lxj:xpopup:2.2.2'
     api files('libs/slamware_sdk_android.jar')
 //    api 'com.liaoinstan.springview:library:1.7.0'
     // 注意：分包之后不会有默认的Header和Footer需要手动添加！还是原来的三种方法！

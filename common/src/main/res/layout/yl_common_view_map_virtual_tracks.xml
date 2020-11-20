@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:text="@string/save"
+            android:text="@string/yl_common_save"
             android:textSize="20sp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

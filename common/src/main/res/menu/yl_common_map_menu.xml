@@ -13,7 +13,7 @@
         android:icon="@drawable/yl_common_ic_center_black_36dp"/>
     <item
         android:id="@+id/item_save_map"
-        android:title="@string/save"
+        android:title="@string/yl_common_save_map"
         app:showAsAction="always"
         android:icon="@drawable/yl_common_ic_save_map_black_36dp"/>
     <item
