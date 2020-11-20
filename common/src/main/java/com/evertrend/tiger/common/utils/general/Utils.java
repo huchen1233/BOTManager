@@ -46,11 +46,13 @@ public class Utils {
 
     private static byte[] bBlack = new byte[256];
     private static byte[] bWhite = new byte[256];
+    private static byte[] b64 = new byte[256];
 
     static {
         for (int i = 0; i < bBlack.length; i++) {
             bBlack[i] = (byte)-1;
             bWhite[i] = (byte)0;
+            b64[i] = (byte)100;
         }
     }
 
@@ -261,7 +263,7 @@ public class Utils {
 
     public static byte[] multiThreadDecompress(byte[] source) {
         int length = source.length;
-        LogUtil.d(TAG, "length: "+length);
+//        LogUtil.d(TAG, "length: "+length);
         if (length <= 200000) {
             return decompress(source);
         }
@@ -360,13 +362,18 @@ public class Utils {
         try {
             while (i < length) {
                 byte b = source[i];
-//                LogUtil.d(TAG, "byte: "+b[0]);
+//                LogUtil.d(TAG, "byte: "+b);
                 if (b == -1) {//FF
                     byte[] result = repeatByte(b, Utils.bytesToInt1b(source, i+1));
                     outputStream.write(result);
                     i+=2;
                     continue;
                 } else if (b == 0) {//00
+                    byte[] result = repeatByte(b, Utils.bytesToInt1b(source, i+1));
+                    outputStream.write(result);
+                    i+=2;
+                    continue;
+                } else if (b == 100) {//100
                     byte[] result = repeatByte(b, Utils.bytesToInt1b(source, i+1));
                     outputStream.write(result);
                     i+=2;
@@ -394,6 +401,8 @@ public class Utils {
             System.arraycopy(bBlack, 0, result, 0, num);
         } else if (b == 0) {
             System.arraycopy(bWhite, 0, result, 0, num);
+        } else if (b == 100) {
+            System.arraycopy(b64, 0, result, 0, num);
         }
         return result;
     }
